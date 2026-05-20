@@ -87,9 +87,17 @@ function LoginForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              密码 <span className="text-gray-400 text-xs">/ Password</span>
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-gray-700">
+                密码 <span className="text-gray-400 text-xs">/ Password</span>
+              </label>
+              <Link
+                href="/forgot-password"
+                className="text-xs text-red-600 hover:text-red-500"
+              >
+                忘记密码？/ Forgot password?
+              </Link>
+            </div>
             <input
               {...register("password")}
               type="password"
