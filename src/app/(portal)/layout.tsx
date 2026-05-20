@@ -20,25 +20,25 @@ export default async function PortalLayout({ children }: { children: React.React
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
           {/* Left: school name + nav links */}
           <div className="flex items-center gap-8">
-            <Link href="/portal/dashboard" className="flex flex-col leading-tight">
+            <Link href="/dashboard" className="flex flex-col leading-tight">
               <span className="font-bold text-red-700 text-base">XX中文学校</span>
               <span className="text-xs text-gray-400">XX Chinese School</span>
             </Link>
             <div className="hidden sm:flex items-center gap-6 text-sm font-medium">
               <Link
-                href="/portal/dashboard"
+                href="/dashboard"
                 className="text-gray-600 hover:text-red-700 transition-colors"
               >
                 仪表盘 / Dashboard
               </Link>
               <Link
-                href="/portal/classes"
+                href="/classes"
                 className="text-gray-600 hover:text-red-700 transition-colors"
               >
                 班级 / Classes
               </Link>
               <Link
-                href="/portal/enroll"
+                href="/enroll"
                 className="text-gray-600 hover:text-red-700 transition-colors"
               >
                 报名 / Enroll
@@ -64,13 +64,13 @@ export default async function PortalLayout({ children }: { children: React.React
 
         {/* Mobile nav links */}
         <div className="flex sm:hidden items-center gap-5 px-4 pb-2 text-sm font-medium">
-          <Link href="/portal/dashboard" className="text-gray-600 hover:text-red-700">
+          <Link href="/dashboard" className="text-gray-600 hover:text-red-700">
             Dashboard
           </Link>
-          <Link href="/portal/classes" className="text-gray-600 hover:text-red-700">
+          <Link href="/classes" className="text-gray-600 hover:text-red-700">
             Classes
           </Link>
-          <Link href="/portal/enroll" className="text-gray-600 hover:text-red-700">
+          <Link href="/enroll" className="text-gray-600 hover:text-red-700">
             Enroll
           </Link>
         </div>

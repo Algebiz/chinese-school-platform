@@ -59,12 +59,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session
     },
     async redirect({ url, baseUrl }) {
-      // Allow relative URLs (e.g. /portal/dashboard, /admin)
+      // Allow relative URLs (e.g. /dashboard, /admin)
       if (url.startsWith('/')) return `${baseUrl}${url}`
       // Allow same-origin absolute URLs
       if (new URL(url).origin === baseUrl) return url
       // Default fallback for any external or unknown URL
-      return `${baseUrl}/portal/dashboard`
+      return `${baseUrl}/dashboard`
     },
   },
 })

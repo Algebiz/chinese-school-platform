@@ -35,7 +35,7 @@ function LoginForm() {
       email: data.email,
       password: data.password,
       redirect: false,
-      callbackUrl: '/portal/dashboard',
+      callbackUrl: '/dashboard',
     })
     setLoading(false)
 
@@ -45,7 +45,7 @@ function LoginForm() {
     }
 
     const session = await getSession()
-    const destination = session?.user?.role === 'ADMIN' ? '/admin' : '/portal/dashboard'
+    const destination = session?.user?.role === 'ADMIN' ? '/admin' : '/dashboard'
     router.push(destination)
     router.refresh()
   }

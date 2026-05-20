@@ -9,8 +9,13 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth
   const userRole = req.auth?.user?.role
 
-  const isPortalRoute = nextUrl.pathname.startsWith("/portal")
-  const isAdminRoute = nextUrl.pathname.startsWith("/admin")
+  const { pathname } = nextUrl
+  const isPortalRoute =
+    pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/classes') ||
+    pathname.startsWith('/enroll') ||
+    pathname.startsWith('/checkout')
+  const isAdminRoute = pathname.startsWith('/admin')
 
   if (isPortalRoute && !isLoggedIn) {
     return NextResponse.redirect(new URL("/login", nextUrl))
@@ -21,7 +26,7 @@ export default auth((req) => {
       return NextResponse.redirect(new URL("/login", nextUrl))
     }
     if (userRole !== "ADMIN") {
-      return NextResponse.redirect(new URL("/portal/dashboard", nextUrl))
+      return NextResponse.redirect(new URL("/dashboard", nextUrl))
     }
   }
 })

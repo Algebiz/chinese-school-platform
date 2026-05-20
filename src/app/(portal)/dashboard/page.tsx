@@ -124,7 +124,7 @@ export default async function DashboardPage() {
             You have {pendingEnrollments.length} enrollment(s) awaiting payment. Complete payment to secure your spot.
           </p>
           <Link
-            href={`/portal/checkout?enrollmentIds=${pendingEnrollments.map((e) => e.id).join(',')}`}
+            href={`/checkout?enrollmentIds=${pendingEnrollments.map((e) => e.id).join(',')}`}
             className="mt-3 inline-block rounded-md bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 transition-colors"
           >
             完成付款 / Complete Payment →
@@ -142,7 +142,7 @@ export default async function DashboardPage() {
           <div className="rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center">
             <p className="text-gray-500">尚未添加学生 / No students added yet</p>
             <Link
-              href="/portal/enroll"
+              href="/enroll"
               className="mt-3 inline-block rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
             >
               开始报名 / Start Enrollment
@@ -160,7 +160,7 @@ export default async function DashboardPage() {
                   )}
                 </div>
                 <Link
-                  href="/portal/enroll"
+                  href="/enroll"
                   className="text-xs font-medium text-red-600 hover:text-red-700"
                 >
                   + 添加课程 / Add class
@@ -212,13 +212,13 @@ export default async function DashboardPage() {
         <h2 className="mb-4 font-semibold text-gray-900">快速操作 / Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
           <Link
-            href="/portal/classes"
+            href="/classes"
             className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
             浏览班级 / Browse Classes
           </Link>
           <Link
-            href="/portal/enroll"
+            href="/enroll"
             className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
           >
             为学生报名 / Enroll a Student
