@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { stripe } from '@/lib/stripe'
 import { prisma } from '@/lib/db'
-import { createEnrollments } from '@/lib/enrollment-logic'
 import { sendEnrollmentConfirmationByIds } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
@@ -40,9 +39,6 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
   if (!studentId || !classIdsJson || !academicYear) return
 
   const classIds = JSON.parse(classIdsJson) as string[]
-
-  // Ensure enrollment records exist (skips duplicates automatically)
-  await createEnrollments(studentId, classIds, academicYear)
 
   await prisma.$transaction(async (tx) => {
     // Promote PENDING → CONFIRMED
