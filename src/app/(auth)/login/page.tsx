@@ -4,7 +4,7 @@ import { useState, Suspense } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { signIn } from "next-auth/react"
+import { signIn, getSession } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 
@@ -35,6 +35,7 @@ function LoginForm() {
       email: data.email,
       password: data.password,
       redirect: false,
+      callbackUrl: '/portal/dashboard',
     })
     setLoading(false)
 
@@ -43,7 +44,9 @@ function LoginForm() {
       return
     }
 
-    router.push("/portal/dashboard")
+    const session = await getSession()
+    const destination = session?.user?.role === 'ADMIN' ? '/admin' : '/portal/dashboard'
+    router.push(destination)
     router.refresh()
   }
 
