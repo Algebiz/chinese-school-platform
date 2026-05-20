@@ -29,7 +29,9 @@ export default async function AdminDashboard() {
   const session = await auth()
   if (session?.user?.role !== 'ADMIN') redirect('/dashboard')
 
-  const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent] = await Promise.all([
+  let dbError: string | null = null
+
+  const rows = await Promise.all([
     prisma.student.count(),
     prisma.enrollment.count({
       where: { status: 'CONFIRMED', class: { year: YEAR } },
@@ -59,15 +61,36 @@ export default async function AdminDashboard() {
       orderBy: { createdAt: 'desc' },
       take: 20,
     }),
-  ])
+  ]).catch((err: unknown) => {
+    dbError = String(err)
+    console.error('[AdminDashboard] query error:', err)
+    return null
+  })
 
-  const totalRevenue = revenue._sum.amount?.toNumber() ?? 0
+  const studentCount   = rows?.[0] ?? 0
+  const enrollmentCount = rows?.[1] ?? 0
+  const pendingCount   = rows?.[2] ?? 0
+  const totalRevenue   = rows?.[3]?._sum?.amount?.toNumber() ?? 0
+  const classes        = rows?.[4] ?? []
+  const recent         = rows?.[5] ?? []
+
+  console.log('[AdminDashboard] stats:', { studentCount, enrollmentCount, pendingCount, totalRevenue, classCount: classes.length, recentCount: recent.length, dbError })
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">管理后台</h1>
         <p className="mt-1 text-sm text-gray-500">Admin Dashboard · {YEAR} 学年</p>
+      </div>
+
+      {/* Temporary debug banner — remove after diagnosis */}
+      <div className="rounded-md bg-yellow-50 border border-yellow-300 p-4 text-sm font-mono text-yellow-900">
+        <p className="font-bold mb-1">Debug (raw values from DB):</p>
+        {dbError ? (
+          <p className="text-red-700">ERROR: {dbError}</p>
+        ) : (
+          <p>students={studentCount} confirmed={enrollmentCount} pending={pendingCount} revenue=${totalRevenue} classes={classes.length} recent={recent.length}</p>
+        )}
       </div>
 
       {/* Stat cards */}
