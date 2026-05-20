@@ -1,0 +1,197 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  PARENT
+  ADMIN
+}
+
+enum ClassType {
+  CHINESE
+  ARTS
+}
+
+enum EnrollmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  TRANSFERRED
+}
+
+enum PaymentMethod {
+  STRIPE
+  PAYPAL
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// ─── NextAuth tables ──────────────────────────────────────────────────────────
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Core domain ──────────────────────────────────────────────────────────────
+
+model Family {
+  id        String    @id @default(cuid())
+  phone     String?
+  address   String?
+  users     User[]
+  students  Student[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(PARENT)
+  phone         String?
+  familyId      String?
+  family        Family?   @relation(fields: [familyId], references: [id])
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Student {
+  id          String       @id @default(cuid())
+  name        String
+  nameEn      String?
+  birthDate   DateTime?
+  grade       String?
+  familyId    String
+  family      Family       @relation(fields: [familyId], references: [id])
+  enrollments Enrollment[]
+  waitlists   Waitlist[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Teacher {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  classes   Class[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Class {
+  id          String       @id @default(cuid())
+  name        String
+  nameEn      String?
+  type        ClassType
+  description String?
+  teacherId   String?
+  teacher     Teacher?     @relation(fields: [teacherId], references: [id])
+  schedule    Json
+  capacity    Int
+  fee         Decimal      @db.Decimal(10, 2)
+  year        String
+  enrollments Enrollment[]
+  waitlists   Waitlist[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Enrollment {
+  id        String           @id @default(cuid())
+  studentId String
+  student   Student          @relation(fields: [studentId], references: [id])
+  classId   String
+  class     Class            @relation(fields: [classId], references: [id])
+  status    EnrollmentStatus @default(PENDING)
+  payments  Payment[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@unique([studentId, classId])
+}
+
+model Payment {
+  id             String        @id @default(cuid())
+  enrollmentId   String
+  enrollment     Enrollment    @relation(fields: [enrollmentId], references: [id])
+  amount         Decimal       @db.Decimal(10, 2)
+  method         PaymentMethod
+  status         PaymentStatus @default(PENDING)
+  stripeIntentId String?
+  paypalOrderId  String?
+  paidAt         DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Waitlist {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id])
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id])
+  position  Int
+  notified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@unique([studentId, classId])
+}
+
+model AdjustmentLog {
+  id         String   @id @default(cuid())
+  studentId  String
+  adminId    String
+  fromClassId String?
+  toClassId  String?
+  reason     String
+  createdAt  DateTime @default(now())
+}
