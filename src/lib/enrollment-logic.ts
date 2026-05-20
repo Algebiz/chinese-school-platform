@@ -113,12 +113,20 @@ export async function createEnrollments(
 
   await prisma.$transaction(async (tx) => {
     for (const classId of classIds) {
-      // Skip if already enrolled or waitlisted
-      const [existingEnrollment, existingWaitlist] = await Promise.all([
-        tx.enrollment.findUnique({ where: { studentId_classId: { studentId, classId } } }),
-        tx.waitlist.findUnique({ where: { studentId_classId: { studentId, classId } } }),
-      ])
-      if (existingEnrollment || existingWaitlist) continue
+      // Skip if already on waitlist
+      const existingWaitlist = await tx.waitlist.findUnique({
+        where: { studentId_classId: { studentId, classId } },
+      })
+      if (existingWaitlist) continue
+
+      // If already enrolled, include PENDING enrollment so checkout can proceed
+      const existingEnrollment = await tx.enrollment.findUnique({
+        where: { studentId_classId: { studentId, classId } },
+      })
+      if (existingEnrollment) {
+        if (existingEnrollment.status === 'PENDING') enrollments.push(existingEnrollment)
+        continue
+      }
 
       // Count non-cancelled enrollments against capacity (PENDING + CONFIRMED)
       const [takenCount, cls] = await Promise.all([
