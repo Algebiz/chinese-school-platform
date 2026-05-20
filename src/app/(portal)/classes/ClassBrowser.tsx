@@ -27,7 +27,7 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
 
   function handleToggle(cls: ClassData) {
     if (cls.spotsRemaining === 0) {
-      router.push(`/portal/enroll/waitlist?classId=${cls.id}`)
+      router.push(`/enroll/waitlist?classId=${cls.id}`)
       return
     }
     setSelectedIds((prev) => {
@@ -91,7 +91,7 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
             <button
               onClick={() => {
                 const ids = Array.from(selectedIds).join(',')
-                router.push(`/portal/enroll?classIds=${ids}`)
+                router.push(`/enroll?classIds=${ids}`)
               }}
               className="rounded-md bg-red-600 px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-700"
             >

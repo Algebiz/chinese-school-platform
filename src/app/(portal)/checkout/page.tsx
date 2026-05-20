@@ -16,7 +16,7 @@ export default async function CheckoutPage({
   const { enrollmentIds: param } = await searchParams
   const enrollmentIds = param ? param.split(',').filter(Boolean) : []
 
-  if (enrollmentIds.length === 0) redirect('/portal/classes')
+  if (enrollmentIds.length === 0) redirect('/classes')
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
@@ -31,13 +31,13 @@ export default async function CheckoutPage({
     },
   })
 
-  if (enrollments.length === 0) redirect('/portal/classes')
+  if (enrollments.length === 0) redirect('/classes')
 
   // Verify all enrollments belong to the logged-in user's family
   const unauthorized = enrollments.some(
     (e) => e.student.familyId !== user?.familyId
   )
-  if (unauthorized) redirect('/portal/dashboard')
+  if (unauthorized) redirect('/dashboard')
 
   const student = enrollments[0].student
   const breakdown = enrollments.map((e) => ({

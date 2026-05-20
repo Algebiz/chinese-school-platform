@@ -6,7 +6,7 @@ import type { WaitlistGroup } from './WaitlistClient'
 
 export default async function WaitlistPage() {
   const session = await auth()
-  if (session?.user?.role !== 'ADMIN') redirect('/portal/dashboard')
+  if (session?.user?.role !== 'ADMIN') redirect('/dashboard')
 
   const waitlistEntries = await prisma.waitlist.findMany({
     include: {

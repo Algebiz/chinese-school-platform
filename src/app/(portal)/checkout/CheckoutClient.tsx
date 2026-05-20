@@ -40,7 +40,7 @@ export function CheckoutClient({ data }: Props) {
           <span className="font-medium">{studentName}</span>！
         </p>
         <button
-          onClick={() => router.push('/portal/dashboard')}
+          onClick={() => router.push('/dashboard')}
           className="mt-6 rounded-md bg-red-600 px-6 py-2 text-sm font-semibold text-white hover:bg-red-700"
         >
           返回首页 / Go to Dashboard

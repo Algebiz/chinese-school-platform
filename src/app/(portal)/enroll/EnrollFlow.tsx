@@ -297,7 +297,7 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
         return
       }
       const enrollmentIds = json.data.enrollments.map((e: { id: string }) => e.id).join(',')
-      router.push(`/portal/checkout?enrollmentIds=${enrollmentIds}`)
+      router.push(`/checkout?enrollmentIds=${enrollmentIds}`)
     } catch {
       setSubmitError('网络错误，请重试')
     } finally {

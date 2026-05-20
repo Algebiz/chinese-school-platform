@@ -16,7 +16,7 @@ export default async function ClassDetailPage({
   params: Promise<{ classId: string }>
 }) {
   const session = await auth()
-  if (session?.user?.role !== 'ADMIN') redirect('/portal/dashboard')
+  if (session?.user?.role !== 'ADMIN') redirect('/dashboard')
 
   const { classId } = await params
 

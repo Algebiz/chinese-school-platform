@@ -25,7 +25,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             ))}
           </div>
           <div className="ml-auto">
-            <Link href="/portal/dashboard" className="text-xs text-gray-500 hover:text-gray-300">
+            <Link href="/dashboard" className="text-xs text-gray-500 hover:text-gray-300">
               ← 家长门户
             </Link>
           </div>
