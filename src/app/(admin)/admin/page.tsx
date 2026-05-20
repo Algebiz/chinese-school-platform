@@ -29,15 +29,18 @@ export default async function AdminDashboard() {
   const session = await auth()
   if (session?.user?.role !== 'ADMIN') redirect('/dashboard')
 
-  const [enrollmentCount, revenue, waitlistCount, classes, recent] = await Promise.all([
+  const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent] = await Promise.all([
+    prisma.student.count(),
     prisma.enrollment.count({
       where: { status: 'CONFIRMED', class: { year: YEAR } },
+    }),
+    prisma.enrollment.count({
+      where: { status: 'PENDING', class: { year: YEAR } },
     }),
     prisma.payment.aggregate({
       _sum: { amount: true },
       where: { status: 'COMPLETED' },
     }),
-    prisma.waitlist.count(),
     prisma.class.findMany({
       where: { year: YEAR },
       include: {
@@ -69,10 +72,10 @@ export default async function AdminDashboard() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <StatCard title="学生总数" en="Total Students" value={studentCount} />
         <StatCard title="已确认报名" en="Confirmed Enrollments" value={enrollmentCount} />
+        <StatCard title="待付款报名" en="Pending Payment" value={pendingCount} />
         <StatCard title="已收学费" en="Revenue Collected" value={`$${totalRevenue.toFixed(2)}`} />
-        <StatCard title="候补学生" en="Waitlisted Students" value={waitlistCount} />
-        <StatCard title="当前学年" en="Academic Year" value={YEAR} />
       </div>
 
       {/* Capacity bars */}
