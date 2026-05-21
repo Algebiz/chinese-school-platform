@@ -417,7 +417,17 @@ export function EnrollFlow({
   }
 
   async function handleSubmit() {
-    if (!selectedStudentId || !selectedChineseId) return
+    if (!selectedStudentId) return
+    // In normal flow a language class is required; arts-only skips this
+    if (!isArtsOnly && !selectedChineseId) return
+    // Nothing to enroll
+    if (allSelectedClassIds.length === 0) {
+      setSubmitError({
+        code: 'NO_CLASSES',
+        message: '请至少选择一门才艺课程 / Please select at least one arts class',
+      })
+      return
+    }
     setIsSubmitting(true)
     setSubmitError(null)
     try {
@@ -819,7 +829,7 @@ export function EnrollFlow({
   function canAdvance() {
     if (step === 1) return !!selectedStudentId
     if (step === 2) return isArtsOnly ? true : !!selectedChineseId
-    if (step === 3) return true // arts classes are optional
+    if (step === 3) return isArtsOnly ? selectedArtsIds.size > 0 : true
     return false
   }
 
