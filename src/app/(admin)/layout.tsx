@@ -3,8 +3,10 @@ import Link from 'next/link'
 const NAV = [
   { href: '/admin', label: '仪表盘', en: 'Dashboard' },
   { href: '/admin/classes', label: '班级管理', en: 'Classes' },
+  { href: '/admin/students', label: '学生管理', en: 'Students' },
   { href: '/admin/waitlist', label: '候补名单', en: 'Waitlist' },
   { href: '/admin/export', label: '数据导出', en: 'Export' },
+  { href: '/admin/enrollment-settings', label: '注册设置', en: 'Settings' },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

@@ -246,6 +246,25 @@ exports.Prisma.AdjustmentLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.AcademicYearConfigScalarFieldEnum = {
+  id: 'id',
+  academicYear: 'academicYear',
+  nextYear: 'nextYear',
+  reEnrollmentOpenDate: 'reEnrollmentOpenDate',
+  newEnrollmentOpenDate: 'newEnrollmentOpenDate',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.StudentNextClassOverrideScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  academicYear: 'academicYear',
+  classId: 'classId',
+  adminId: 'adminId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -311,7 +330,9 @@ exports.Prisma.ModelName = {
   Enrollment: 'Enrollment',
   Payment: 'Payment',
   Waitlist: 'Waitlist',
-  AdjustmentLog: 'AdjustmentLog'
+  AdjustmentLog: 'AdjustmentLog',
+  AcademicYearConfig: 'AcademicYearConfig',
+  StudentNextClassOverride: 'StudentNextClassOverride'
 };
 
 /**

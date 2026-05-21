@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { createEnrollments } from '@/lib/enrollment-logic'
+import { isReEnrollmentOpen } from '@/lib/re-enrollment-logic'
 
 const enrollSchema = z.object({
   studentId: z.string().min(1),
@@ -10,6 +11,7 @@ const enrollSchema = z.object({
 })
 
 const CURRENT_YEAR = '2025-2026'
+const PREVIOUS_YEAR = '2024-2025'
 
 export async function POST(req: NextRequest) {
   try {
@@ -45,6 +47,40 @@ export async function POST(req: NextRequest) {
     if (!user?.familyId || student?.familyId !== user.familyId) {
       return NextResponse.json(
         { success: false, error: 'Student not found in your family', code: 'FORBIDDEN' },
+        { status: 403 }
+      )
+    }
+
+    // Check enrollment window
+    const [window, previousEnrollment] = await Promise.all([
+      isReEnrollmentOpen(CURRENT_YEAR),
+      prisma.enrollment.findFirst({
+        where: { studentId, status: 'CONFIRMED', class: { year: PREVIOUS_YEAR } },
+      }),
+    ])
+    const isReturning = !!previousEnrollment
+
+    if (isReturning && !window.returningStudentsCanEnroll) {
+      const openDate = window.reEnrollmentOpenDate?.toLocaleDateString('en-US') ?? '(TBD)'
+      const newDate = window.newEnrollmentOpenDate?.toLocaleDateString('en-US') ?? '(TBD)'
+      return NextResponse.json(
+        {
+          success: false,
+          error: `老生优先报名开放于 ${openDate}，新生报名开放于 ${newDate}。/ Re-enrollment opens on ${openDate}. New student enrollment opens on ${newDate}.`,
+          code: 'ENROLLMENT_NOT_OPEN',
+        },
+        { status: 403 }
+      )
+    }
+
+    if (!isReturning && !window.newStudentsCanEnroll) {
+      const newDate = window.newEnrollmentOpenDate?.toLocaleDateString('en-US') ?? '(TBD)'
+      return NextResponse.json(
+        {
+          success: false,
+          error: `新生报名开放于 ${newDate}。/ Enrollment for new students opens on ${newDate}.`,
+          code: 'ENROLLMENT_NOT_OPEN',
+        },
         { status: 403 }
       )
     }

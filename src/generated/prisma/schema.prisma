@@ -104,17 +104,18 @@ model User {
 }
 
 model Student {
-  id          String       @id @default(cuid())
-  name        String
-  nameEn      String?
-  birthDate   DateTime?
-  grade       String?
-  familyId    String
-  family      Family       @relation(fields: [familyId], references: [id])
-  enrollments Enrollment[]
-  waitlists   Waitlist[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id                 String                     @id @default(cuid())
+  name               String
+  nameEn             String?
+  birthDate          DateTime?
+  grade              String?
+  familyId           String
+  family             Family                     @relation(fields: [familyId], references: [id])
+  enrollments        Enrollment[]
+  waitlists          Waitlist[]
+  nextClassOverrides StudentNextClassOverride[]
+  createdAt          DateTime                   @default(now())
+  updatedAt          DateTime                   @updatedAt
 }
 
 model Teacher {
@@ -128,21 +129,22 @@ model Teacher {
 }
 
 model Class {
-  id          String       @id @default(cuid())
-  name        String
-  nameEn      String?
-  type        ClassType
-  description String?
-  teacherId   String?
-  teacher     Teacher?     @relation(fields: [teacherId], references: [id])
-  schedule    Json
-  capacity    Int
-  fee         Decimal      @db.Decimal(10, 2)
-  year        String
-  enrollments Enrollment[]
-  waitlists   Waitlist[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id                 String                     @id @default(cuid())
+  name               String
+  nameEn             String?
+  type               ClassType
+  description        String?
+  teacherId          String?
+  teacher            Teacher?                   @relation(fields: [teacherId], references: [id])
+  schedule           Json
+  capacity           Int
+  fee                Decimal                    @db.Decimal(10, 2)
+  year               String
+  enrollments        Enrollment[]
+  waitlists          Waitlist[]
+  nextClassOverrides StudentNextClassOverride[]
+  createdAt          DateTime                   @default(now())
+  updatedAt          DateTime                   @updatedAt
 }
 
 model Enrollment {
@@ -194,4 +196,28 @@ model AdjustmentLog {
   toClassId   String?
   reason      String
   createdAt   DateTime @default(now())
+}
+
+model AcademicYearConfig {
+  id                    String   @id @default(cuid())
+  academicYear          String   @unique // e.g. "2025-2026" (the year that is ending)
+  nextYear              String // e.g. "2026-2027" (the year being enrolled into)
+  reEnrollmentOpenDate  DateTime
+  newEnrollmentOpenDate DateTime
+  isActive              Boolean  @default(true)
+  createdAt             DateTime @default(now())
+}
+
+model StudentNextClassOverride {
+  id           String   @id @default(cuid())
+  studentId    String
+  academicYear String // the NEW year being enrolled into
+  classId      String
+  adminId      String
+  createdAt    DateTime @default(now())
+
+  student Student @relation(fields: [studentId], references: [id])
+  class   Class   @relation(fields: [classId], references: [id])
+
+  @@unique([studentId, academicYear])
 }

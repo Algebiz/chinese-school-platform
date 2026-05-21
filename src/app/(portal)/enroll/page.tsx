@@ -2,9 +2,11 @@ import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { EnrollFlow } from './EnrollFlow'
+import { getReturningStudentData } from '@/lib/re-enrollment-logic'
 import type { ClassData } from '@/components/ClassCard'
 
 const CURRENT_YEAR = '2025-2026'
+const PREVIOUS_YEAR = '2024-2025'
 
 async function fetchClasses(): Promise<ClassData[]> {
   const baseUrl = process.env.NEXTAUTH_URL ?? 'http://localhost:3000'
@@ -51,7 +53,16 @@ export default async function EnrollPage({
     grade: s.grade,
   }))
 
-  const allClasses = await fetchClasses()
+  const [allClasses, ...returningInfoList] = await Promise.all([
+    fetchClasses(),
+    ...students.map((s) => getReturningStudentData(s.id, PREVIOUS_YEAR)),
+  ])
+
+  const returningStudentData: Record<string, ReturnType<typeof getReturningStudentData> extends Promise<infer T> ? T : never> = {}
+  students.forEach((s, i) => {
+    returningStudentData[s.id] = returningInfoList[i] as Awaited<ReturnType<typeof getReturningStudentData>>
+  })
+
   const chineseClasses = allClasses.filter((c) => c.type === 'CHINESE')
   const artsClasses = allClasses.filter((c) => c.type === 'ARTS')
 
@@ -69,6 +80,7 @@ export default async function EnrollPage({
           chineseClasses={chineseClasses}
           artsClasses={artsClasses}
           preselectedClassIds={preselectedClassIds}
+          returningStudentData={returningStudentData}
         />
       </div>
     </div>

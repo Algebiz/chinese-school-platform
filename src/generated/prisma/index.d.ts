@@ -73,6 +73,16 @@ export type Waitlist = $Result.DefaultSelection<Prisma.$WaitlistPayload>
  * 
  */
 export type AdjustmentLog = $Result.DefaultSelection<Prisma.$AdjustmentLogPayload>
+/**
+ * Model AcademicYearConfig
+ * 
+ */
+export type AcademicYearConfig = $Result.DefaultSelection<Prisma.$AcademicYearConfigPayload>
+/**
+ * Model StudentNextClassOverride
+ * 
+ */
+export type StudentNextClassOverride = $Result.DefaultSelection<Prisma.$StudentNextClassOverridePayload>
 
 /**
  * Enums
@@ -383,6 +393,26 @@ export class PrismaClient<
     * ```
     */
   get adjustmentLog(): Prisma.AdjustmentLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.academicYearConfig`: Exposes CRUD operations for the **AcademicYearConfig** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AcademicYearConfigs
+    * const academicYearConfigs = await prisma.academicYearConfig.findMany()
+    * ```
+    */
+  get academicYearConfig(): Prisma.AcademicYearConfigDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.studentNextClassOverride`: Exposes CRUD operations for the **StudentNextClassOverride** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StudentNextClassOverrides
+    * const studentNextClassOverrides = await prisma.studentNextClassOverride.findMany()
+    * ```
+    */
+  get studentNextClassOverride(): Prisma.StudentNextClassOverrideDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -828,7 +858,9 @@ export namespace Prisma {
     Enrollment: 'Enrollment',
     Payment: 'Payment',
     Waitlist: 'Waitlist',
-    AdjustmentLog: 'AdjustmentLog'
+    AdjustmentLog: 'AdjustmentLog',
+    AcademicYearConfig: 'AcademicYearConfig',
+    StudentNextClassOverride: 'StudentNextClassOverride'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -844,7 +876,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "verificationToken" | "family" | "user" | "student" | "teacher" | "class" | "enrollment" | "payment" | "waitlist" | "adjustmentLog"
+      modelProps: "account" | "session" | "verificationToken" | "family" | "user" | "student" | "teacher" | "class" | "enrollment" | "payment" | "waitlist" | "adjustmentLog" | "academicYearConfig" | "studentNextClassOverride"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1736,6 +1768,154 @@ export namespace Prisma {
           }
         }
       }
+      AcademicYearConfig: {
+        payload: Prisma.$AcademicYearConfigPayload<ExtArgs>
+        fields: Prisma.AcademicYearConfigFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AcademicYearConfigFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicYearConfigPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AcademicYearConfigFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicYearConfigPayload>
+          }
+          findFirst: {
+            args: Prisma.AcademicYearConfigFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicYearConfigPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AcademicYearConfigFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicYearConfigPayload>
+          }
+          findMany: {
+            args: Prisma.AcademicYearConfigFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicYearConfigPayload>[]
+          }
+          create: {
+            args: Prisma.AcademicYearConfigCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicYearConfigPayload>
+          }
+          createMany: {
+            args: Prisma.AcademicYearConfigCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AcademicYearConfigCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicYearConfigPayload>[]
+          }
+          delete: {
+            args: Prisma.AcademicYearConfigDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicYearConfigPayload>
+          }
+          update: {
+            args: Prisma.AcademicYearConfigUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicYearConfigPayload>
+          }
+          deleteMany: {
+            args: Prisma.AcademicYearConfigDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AcademicYearConfigUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AcademicYearConfigUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicYearConfigPayload>[]
+          }
+          upsert: {
+            args: Prisma.AcademicYearConfigUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicYearConfigPayload>
+          }
+          aggregate: {
+            args: Prisma.AcademicYearConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAcademicYearConfig>
+          }
+          groupBy: {
+            args: Prisma.AcademicYearConfigGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AcademicYearConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AcademicYearConfigCountArgs<ExtArgs>
+            result: $Utils.Optional<AcademicYearConfigCountAggregateOutputType> | number
+          }
+        }
+      }
+      StudentNextClassOverride: {
+        payload: Prisma.$StudentNextClassOverridePayload<ExtArgs>
+        fields: Prisma.StudentNextClassOverrideFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StudentNextClassOverrideFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentNextClassOverridePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StudentNextClassOverrideFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentNextClassOverridePayload>
+          }
+          findFirst: {
+            args: Prisma.StudentNextClassOverrideFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentNextClassOverridePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StudentNextClassOverrideFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentNextClassOverridePayload>
+          }
+          findMany: {
+            args: Prisma.StudentNextClassOverrideFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentNextClassOverridePayload>[]
+          }
+          create: {
+            args: Prisma.StudentNextClassOverrideCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentNextClassOverridePayload>
+          }
+          createMany: {
+            args: Prisma.StudentNextClassOverrideCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StudentNextClassOverrideCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentNextClassOverridePayload>[]
+          }
+          delete: {
+            args: Prisma.StudentNextClassOverrideDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentNextClassOverridePayload>
+          }
+          update: {
+            args: Prisma.StudentNextClassOverrideUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentNextClassOverridePayload>
+          }
+          deleteMany: {
+            args: Prisma.StudentNextClassOverrideDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StudentNextClassOverrideUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StudentNextClassOverrideUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentNextClassOverridePayload>[]
+          }
+          upsert: {
+            args: Prisma.StudentNextClassOverrideUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentNextClassOverridePayload>
+          }
+          aggregate: {
+            args: Prisma.StudentNextClassOverrideAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStudentNextClassOverride>
+          }
+          groupBy: {
+            args: Prisma.StudentNextClassOverrideGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StudentNextClassOverrideGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StudentNextClassOverrideCountArgs<ExtArgs>
+            result: $Utils.Optional<StudentNextClassOverrideCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1856,6 +2036,8 @@ export namespace Prisma {
     payment?: PaymentOmit
     waitlist?: WaitlistOmit
     adjustmentLog?: AdjustmentLogOmit
+    academicYearConfig?: AcademicYearConfigOmit
+    studentNextClassOverride?: StudentNextClassOverrideOmit
   }
 
   /* Types for Logging */
@@ -2018,11 +2200,13 @@ export namespace Prisma {
   export type StudentCountOutputType = {
     enrollments: number
     waitlists: number
+    nextClassOverrides: number
   }
 
   export type StudentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     enrollments?: boolean | StudentCountOutputTypeCountEnrollmentsArgs
     waitlists?: boolean | StudentCountOutputTypeCountWaitlistsArgs
+    nextClassOverrides?: boolean | StudentCountOutputTypeCountNextClassOverridesArgs
   }
 
   // Custom InputTypes
@@ -2048,6 +2232,13 @@ export namespace Prisma {
    */
   export type StudentCountOutputTypeCountWaitlistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WaitlistWhereInput
+  }
+
+  /**
+   * StudentCountOutputType without action
+   */
+  export type StudentCountOutputTypeCountNextClassOverridesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentNextClassOverrideWhereInput
   }
 
 
@@ -2089,11 +2280,13 @@ export namespace Prisma {
   export type ClassCountOutputType = {
     enrollments: number
     waitlists: number
+    nextClassOverrides: number
   }
 
   export type ClassCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     enrollments?: boolean | ClassCountOutputTypeCountEnrollmentsArgs
     waitlists?: boolean | ClassCountOutputTypeCountWaitlistsArgs
+    nextClassOverrides?: boolean | ClassCountOutputTypeCountNextClassOverridesArgs
   }
 
   // Custom InputTypes
@@ -2119,6 +2312,13 @@ export namespace Prisma {
    */
   export type ClassCountOutputTypeCountWaitlistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WaitlistWhereInput
+  }
+
+  /**
+   * ClassCountOutputType without action
+   */
+  export type ClassCountOutputTypeCountNextClassOverridesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentNextClassOverrideWhereInput
   }
 
 
@@ -7881,6 +8081,7 @@ export namespace Prisma {
     family?: boolean | FamilyDefaultArgs<ExtArgs>
     enrollments?: boolean | Student$enrollmentsArgs<ExtArgs>
     waitlists?: boolean | Student$waitlistsArgs<ExtArgs>
+    nextClassOverrides?: boolean | Student$nextClassOverridesArgs<ExtArgs>
     _count?: boolean | StudentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["student"]>
 
@@ -7924,6 +8125,7 @@ export namespace Prisma {
     family?: boolean | FamilyDefaultArgs<ExtArgs>
     enrollments?: boolean | Student$enrollmentsArgs<ExtArgs>
     waitlists?: boolean | Student$waitlistsArgs<ExtArgs>
+    nextClassOverrides?: boolean | Student$nextClassOverridesArgs<ExtArgs>
     _count?: boolean | StudentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type StudentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7939,6 +8141,7 @@ export namespace Prisma {
       family: Prisma.$FamilyPayload<ExtArgs>
       enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
       waitlists: Prisma.$WaitlistPayload<ExtArgs>[]
+      nextClassOverrides: Prisma.$StudentNextClassOverridePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8346,6 +8549,7 @@ export namespace Prisma {
     family<T extends FamilyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FamilyDefaultArgs<ExtArgs>>): Prisma__FamilyClient<$Result.GetResult<Prisma.$FamilyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     enrollments<T extends Student$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, Student$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     waitlists<T extends Student$waitlistsArgs<ExtArgs> = {}>(args?: Subset<T, Student$waitlistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WaitlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    nextClassOverrides<T extends Student$nextClassOverridesArgs<ExtArgs> = {}>(args?: Subset<T, Student$nextClassOverridesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8829,6 +9033,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WaitlistScalarFieldEnum | WaitlistScalarFieldEnum[]
+  }
+
+  /**
+   * Student.nextClassOverrides
+   */
+  export type Student$nextClassOverridesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+    where?: StudentNextClassOverrideWhereInput
+    orderBy?: StudentNextClassOverrideOrderByWithRelationInput | StudentNextClassOverrideOrderByWithRelationInput[]
+    cursor?: StudentNextClassOverrideWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudentNextClassOverrideScalarFieldEnum | StudentNextClassOverrideScalarFieldEnum[]
   }
 
   /**
@@ -10195,6 +10423,7 @@ export namespace Prisma {
     teacher?: boolean | Class$teacherArgs<ExtArgs>
     enrollments?: boolean | Class$enrollmentsArgs<ExtArgs>
     waitlists?: boolean | Class$waitlistsArgs<ExtArgs>
+    nextClassOverrides?: boolean | Class$nextClassOverridesArgs<ExtArgs>
     _count?: boolean | ClassCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["class"]>
 
@@ -10250,6 +10479,7 @@ export namespace Prisma {
     teacher?: boolean | Class$teacherArgs<ExtArgs>
     enrollments?: boolean | Class$enrollmentsArgs<ExtArgs>
     waitlists?: boolean | Class$waitlistsArgs<ExtArgs>
+    nextClassOverrides?: boolean | Class$nextClassOverridesArgs<ExtArgs>
     _count?: boolean | ClassCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ClassIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10265,6 +10495,7 @@ export namespace Prisma {
       teacher: Prisma.$TeacherPayload<ExtArgs> | null
       enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
       waitlists: Prisma.$WaitlistPayload<ExtArgs>[]
+      nextClassOverrides: Prisma.$StudentNextClassOverridePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10676,6 +10907,7 @@ export namespace Prisma {
     teacher<T extends Class$teacherArgs<ExtArgs> = {}>(args?: Subset<T, Class$teacherArgs<ExtArgs>>): Prisma__TeacherClient<$Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     enrollments<T extends Class$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, Class$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     waitlists<T extends Class$waitlistsArgs<ExtArgs> = {}>(args?: Subset<T, Class$waitlistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WaitlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    nextClassOverrides<T extends Class$nextClassOverridesArgs<ExtArgs> = {}>(args?: Subset<T, Class$nextClassOverridesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11182,6 +11414,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WaitlistScalarFieldEnum | WaitlistScalarFieldEnum[]
+  }
+
+  /**
+   * Class.nextClassOverrides
+   */
+  export type Class$nextClassOverridesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+    where?: StudentNextClassOverrideWhereInput
+    orderBy?: StudentNextClassOverrideOrderByWithRelationInput | StudentNextClassOverrideOrderByWithRelationInput[]
+    cursor?: StudentNextClassOverrideWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudentNextClassOverrideScalarFieldEnum | StudentNextClassOverrideScalarFieldEnum[]
   }
 
   /**
@@ -15624,6 +15880,2116 @@ export namespace Prisma {
 
 
   /**
+   * Model AcademicYearConfig
+   */
+
+  export type AggregateAcademicYearConfig = {
+    _count: AcademicYearConfigCountAggregateOutputType | null
+    _min: AcademicYearConfigMinAggregateOutputType | null
+    _max: AcademicYearConfigMaxAggregateOutputType | null
+  }
+
+  export type AcademicYearConfigMinAggregateOutputType = {
+    id: string | null
+    academicYear: string | null
+    nextYear: string | null
+    reEnrollmentOpenDate: Date | null
+    newEnrollmentOpenDate: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AcademicYearConfigMaxAggregateOutputType = {
+    id: string | null
+    academicYear: string | null
+    nextYear: string | null
+    reEnrollmentOpenDate: Date | null
+    newEnrollmentOpenDate: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AcademicYearConfigCountAggregateOutputType = {
+    id: number
+    academicYear: number
+    nextYear: number
+    reEnrollmentOpenDate: number
+    newEnrollmentOpenDate: number
+    isActive: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AcademicYearConfigMinAggregateInputType = {
+    id?: true
+    academicYear?: true
+    nextYear?: true
+    reEnrollmentOpenDate?: true
+    newEnrollmentOpenDate?: true
+    isActive?: true
+    createdAt?: true
+  }
+
+  export type AcademicYearConfigMaxAggregateInputType = {
+    id?: true
+    academicYear?: true
+    nextYear?: true
+    reEnrollmentOpenDate?: true
+    newEnrollmentOpenDate?: true
+    isActive?: true
+    createdAt?: true
+  }
+
+  export type AcademicYearConfigCountAggregateInputType = {
+    id?: true
+    academicYear?: true
+    nextYear?: true
+    reEnrollmentOpenDate?: true
+    newEnrollmentOpenDate?: true
+    isActive?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AcademicYearConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicYearConfig to aggregate.
+     */
+    where?: AcademicYearConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicYearConfigs to fetch.
+     */
+    orderBy?: AcademicYearConfigOrderByWithRelationInput | AcademicYearConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AcademicYearConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicYearConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicYearConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AcademicYearConfigs
+    **/
+    _count?: true | AcademicYearConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AcademicYearConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AcademicYearConfigMaxAggregateInputType
+  }
+
+  export type GetAcademicYearConfigAggregateType<T extends AcademicYearConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregateAcademicYearConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAcademicYearConfig[P]>
+      : GetScalarType<T[P], AggregateAcademicYearConfig[P]>
+  }
+
+
+
+
+  export type AcademicYearConfigGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicYearConfigWhereInput
+    orderBy?: AcademicYearConfigOrderByWithAggregationInput | AcademicYearConfigOrderByWithAggregationInput[]
+    by: AcademicYearConfigScalarFieldEnum[] | AcademicYearConfigScalarFieldEnum
+    having?: AcademicYearConfigScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AcademicYearConfigCountAggregateInputType | true
+    _min?: AcademicYearConfigMinAggregateInputType
+    _max?: AcademicYearConfigMaxAggregateInputType
+  }
+
+  export type AcademicYearConfigGroupByOutputType = {
+    id: string
+    academicYear: string
+    nextYear: string
+    reEnrollmentOpenDate: Date
+    newEnrollmentOpenDate: Date
+    isActive: boolean
+    createdAt: Date
+    _count: AcademicYearConfigCountAggregateOutputType | null
+    _min: AcademicYearConfigMinAggregateOutputType | null
+    _max: AcademicYearConfigMaxAggregateOutputType | null
+  }
+
+  type GetAcademicYearConfigGroupByPayload<T extends AcademicYearConfigGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AcademicYearConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AcademicYearConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AcademicYearConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], AcademicYearConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AcademicYearConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicYear?: boolean
+    nextYear?: boolean
+    reEnrollmentOpenDate?: boolean
+    newEnrollmentOpenDate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["academicYearConfig"]>
+
+  export type AcademicYearConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicYear?: boolean
+    nextYear?: boolean
+    reEnrollmentOpenDate?: boolean
+    newEnrollmentOpenDate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["academicYearConfig"]>
+
+  export type AcademicYearConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicYear?: boolean
+    nextYear?: boolean
+    reEnrollmentOpenDate?: boolean
+    newEnrollmentOpenDate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["academicYearConfig"]>
+
+  export type AcademicYearConfigSelectScalar = {
+    id?: boolean
+    academicYear?: boolean
+    nextYear?: boolean
+    reEnrollmentOpenDate?: boolean
+    newEnrollmentOpenDate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }
+
+  export type AcademicYearConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicYear" | "nextYear" | "reEnrollmentOpenDate" | "newEnrollmentOpenDate" | "isActive" | "createdAt", ExtArgs["result"]["academicYearConfig"]>
+
+  export type $AcademicYearConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AcademicYearConfig"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      academicYear: string
+      nextYear: string
+      reEnrollmentOpenDate: Date
+      newEnrollmentOpenDate: Date
+      isActive: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["academicYearConfig"]>
+    composites: {}
+  }
+
+  type AcademicYearConfigGetPayload<S extends boolean | null | undefined | AcademicYearConfigDefaultArgs> = $Result.GetResult<Prisma.$AcademicYearConfigPayload, S>
+
+  type AcademicYearConfigCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AcademicYearConfigFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AcademicYearConfigCountAggregateInputType | true
+    }
+
+  export interface AcademicYearConfigDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AcademicYearConfig'], meta: { name: 'AcademicYearConfig' } }
+    /**
+     * Find zero or one AcademicYearConfig that matches the filter.
+     * @param {AcademicYearConfigFindUniqueArgs} args - Arguments to find a AcademicYearConfig
+     * @example
+     * // Get one AcademicYearConfig
+     * const academicYearConfig = await prisma.academicYearConfig.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AcademicYearConfigFindUniqueArgs>(args: SelectSubset<T, AcademicYearConfigFindUniqueArgs<ExtArgs>>): Prisma__AcademicYearConfigClient<$Result.GetResult<Prisma.$AcademicYearConfigPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AcademicYearConfig that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AcademicYearConfigFindUniqueOrThrowArgs} args - Arguments to find a AcademicYearConfig
+     * @example
+     * // Get one AcademicYearConfig
+     * const academicYearConfig = await prisma.academicYearConfig.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AcademicYearConfigFindUniqueOrThrowArgs>(args: SelectSubset<T, AcademicYearConfigFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AcademicYearConfigClient<$Result.GetResult<Prisma.$AcademicYearConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicYearConfig that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicYearConfigFindFirstArgs} args - Arguments to find a AcademicYearConfig
+     * @example
+     * // Get one AcademicYearConfig
+     * const academicYearConfig = await prisma.academicYearConfig.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AcademicYearConfigFindFirstArgs>(args?: SelectSubset<T, AcademicYearConfigFindFirstArgs<ExtArgs>>): Prisma__AcademicYearConfigClient<$Result.GetResult<Prisma.$AcademicYearConfigPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicYearConfig that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicYearConfigFindFirstOrThrowArgs} args - Arguments to find a AcademicYearConfig
+     * @example
+     * // Get one AcademicYearConfig
+     * const academicYearConfig = await prisma.academicYearConfig.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AcademicYearConfigFindFirstOrThrowArgs>(args?: SelectSubset<T, AcademicYearConfigFindFirstOrThrowArgs<ExtArgs>>): Prisma__AcademicYearConfigClient<$Result.GetResult<Prisma.$AcademicYearConfigPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AcademicYearConfigs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicYearConfigFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AcademicYearConfigs
+     * const academicYearConfigs = await prisma.academicYearConfig.findMany()
+     * 
+     * // Get first 10 AcademicYearConfigs
+     * const academicYearConfigs = await prisma.academicYearConfig.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const academicYearConfigWithIdOnly = await prisma.academicYearConfig.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AcademicYearConfigFindManyArgs>(args?: SelectSubset<T, AcademicYearConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicYearConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AcademicYearConfig.
+     * @param {AcademicYearConfigCreateArgs} args - Arguments to create a AcademicYearConfig.
+     * @example
+     * // Create one AcademicYearConfig
+     * const AcademicYearConfig = await prisma.academicYearConfig.create({
+     *   data: {
+     *     // ... data to create a AcademicYearConfig
+     *   }
+     * })
+     * 
+     */
+    create<T extends AcademicYearConfigCreateArgs>(args: SelectSubset<T, AcademicYearConfigCreateArgs<ExtArgs>>): Prisma__AcademicYearConfigClient<$Result.GetResult<Prisma.$AcademicYearConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AcademicYearConfigs.
+     * @param {AcademicYearConfigCreateManyArgs} args - Arguments to create many AcademicYearConfigs.
+     * @example
+     * // Create many AcademicYearConfigs
+     * const academicYearConfig = await prisma.academicYearConfig.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AcademicYearConfigCreateManyArgs>(args?: SelectSubset<T, AcademicYearConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AcademicYearConfigs and returns the data saved in the database.
+     * @param {AcademicYearConfigCreateManyAndReturnArgs} args - Arguments to create many AcademicYearConfigs.
+     * @example
+     * // Create many AcademicYearConfigs
+     * const academicYearConfig = await prisma.academicYearConfig.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AcademicYearConfigs and only return the `id`
+     * const academicYearConfigWithIdOnly = await prisma.academicYearConfig.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AcademicYearConfigCreateManyAndReturnArgs>(args?: SelectSubset<T, AcademicYearConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicYearConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AcademicYearConfig.
+     * @param {AcademicYearConfigDeleteArgs} args - Arguments to delete one AcademicYearConfig.
+     * @example
+     * // Delete one AcademicYearConfig
+     * const AcademicYearConfig = await prisma.academicYearConfig.delete({
+     *   where: {
+     *     // ... filter to delete one AcademicYearConfig
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AcademicYearConfigDeleteArgs>(args: SelectSubset<T, AcademicYearConfigDeleteArgs<ExtArgs>>): Prisma__AcademicYearConfigClient<$Result.GetResult<Prisma.$AcademicYearConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AcademicYearConfig.
+     * @param {AcademicYearConfigUpdateArgs} args - Arguments to update one AcademicYearConfig.
+     * @example
+     * // Update one AcademicYearConfig
+     * const academicYearConfig = await prisma.academicYearConfig.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AcademicYearConfigUpdateArgs>(args: SelectSubset<T, AcademicYearConfigUpdateArgs<ExtArgs>>): Prisma__AcademicYearConfigClient<$Result.GetResult<Prisma.$AcademicYearConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AcademicYearConfigs.
+     * @param {AcademicYearConfigDeleteManyArgs} args - Arguments to filter AcademicYearConfigs to delete.
+     * @example
+     * // Delete a few AcademicYearConfigs
+     * const { count } = await prisma.academicYearConfig.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AcademicYearConfigDeleteManyArgs>(args?: SelectSubset<T, AcademicYearConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicYearConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicYearConfigUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AcademicYearConfigs
+     * const academicYearConfig = await prisma.academicYearConfig.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AcademicYearConfigUpdateManyArgs>(args: SelectSubset<T, AcademicYearConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicYearConfigs and returns the data updated in the database.
+     * @param {AcademicYearConfigUpdateManyAndReturnArgs} args - Arguments to update many AcademicYearConfigs.
+     * @example
+     * // Update many AcademicYearConfigs
+     * const academicYearConfig = await prisma.academicYearConfig.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AcademicYearConfigs and only return the `id`
+     * const academicYearConfigWithIdOnly = await prisma.academicYearConfig.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AcademicYearConfigUpdateManyAndReturnArgs>(args: SelectSubset<T, AcademicYearConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicYearConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AcademicYearConfig.
+     * @param {AcademicYearConfigUpsertArgs} args - Arguments to update or create a AcademicYearConfig.
+     * @example
+     * // Update or create a AcademicYearConfig
+     * const academicYearConfig = await prisma.academicYearConfig.upsert({
+     *   create: {
+     *     // ... data to create a AcademicYearConfig
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AcademicYearConfig we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AcademicYearConfigUpsertArgs>(args: SelectSubset<T, AcademicYearConfigUpsertArgs<ExtArgs>>): Prisma__AcademicYearConfigClient<$Result.GetResult<Prisma.$AcademicYearConfigPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AcademicYearConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicYearConfigCountArgs} args - Arguments to filter AcademicYearConfigs to count.
+     * @example
+     * // Count the number of AcademicYearConfigs
+     * const count = await prisma.academicYearConfig.count({
+     *   where: {
+     *     // ... the filter for the AcademicYearConfigs we want to count
+     *   }
+     * })
+    **/
+    count<T extends AcademicYearConfigCountArgs>(
+      args?: Subset<T, AcademicYearConfigCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AcademicYearConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AcademicYearConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicYearConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AcademicYearConfigAggregateArgs>(args: Subset<T, AcademicYearConfigAggregateArgs>): Prisma.PrismaPromise<GetAcademicYearConfigAggregateType<T>>
+
+    /**
+     * Group by AcademicYearConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicYearConfigGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AcademicYearConfigGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AcademicYearConfigGroupByArgs['orderBy'] }
+        : { orderBy?: AcademicYearConfigGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AcademicYearConfigGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAcademicYearConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AcademicYearConfig model
+   */
+  readonly fields: AcademicYearConfigFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AcademicYearConfig.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AcademicYearConfigClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AcademicYearConfig model
+   */
+  interface AcademicYearConfigFieldRefs {
+    readonly id: FieldRef<"AcademicYearConfig", 'String'>
+    readonly academicYear: FieldRef<"AcademicYearConfig", 'String'>
+    readonly nextYear: FieldRef<"AcademicYearConfig", 'String'>
+    readonly reEnrollmentOpenDate: FieldRef<"AcademicYearConfig", 'DateTime'>
+    readonly newEnrollmentOpenDate: FieldRef<"AcademicYearConfig", 'DateTime'>
+    readonly isActive: FieldRef<"AcademicYearConfig", 'Boolean'>
+    readonly createdAt: FieldRef<"AcademicYearConfig", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AcademicYearConfig findUnique
+   */
+  export type AcademicYearConfigFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicYearConfig to fetch.
+     */
+    where: AcademicYearConfigWhereUniqueInput
+  }
+
+  /**
+   * AcademicYearConfig findUniqueOrThrow
+   */
+  export type AcademicYearConfigFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicYearConfig to fetch.
+     */
+    where: AcademicYearConfigWhereUniqueInput
+  }
+
+  /**
+   * AcademicYearConfig findFirst
+   */
+  export type AcademicYearConfigFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicYearConfig to fetch.
+     */
+    where?: AcademicYearConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicYearConfigs to fetch.
+     */
+    orderBy?: AcademicYearConfigOrderByWithRelationInput | AcademicYearConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicYearConfigs.
+     */
+    cursor?: AcademicYearConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicYearConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicYearConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicYearConfigs.
+     */
+    distinct?: AcademicYearConfigScalarFieldEnum | AcademicYearConfigScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicYearConfig findFirstOrThrow
+   */
+  export type AcademicYearConfigFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicYearConfig to fetch.
+     */
+    where?: AcademicYearConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicYearConfigs to fetch.
+     */
+    orderBy?: AcademicYearConfigOrderByWithRelationInput | AcademicYearConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicYearConfigs.
+     */
+    cursor?: AcademicYearConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicYearConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicYearConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicYearConfigs.
+     */
+    distinct?: AcademicYearConfigScalarFieldEnum | AcademicYearConfigScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicYearConfig findMany
+   */
+  export type AcademicYearConfigFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicYearConfigs to fetch.
+     */
+    where?: AcademicYearConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicYearConfigs to fetch.
+     */
+    orderBy?: AcademicYearConfigOrderByWithRelationInput | AcademicYearConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AcademicYearConfigs.
+     */
+    cursor?: AcademicYearConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicYearConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicYearConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicYearConfigs.
+     */
+    distinct?: AcademicYearConfigScalarFieldEnum | AcademicYearConfigScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicYearConfig create
+   */
+  export type AcademicYearConfigCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AcademicYearConfig.
+     */
+    data: XOR<AcademicYearConfigCreateInput, AcademicYearConfigUncheckedCreateInput>
+  }
+
+  /**
+   * AcademicYearConfig createMany
+   */
+  export type AcademicYearConfigCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AcademicYearConfigs.
+     */
+    data: AcademicYearConfigCreateManyInput | AcademicYearConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicYearConfig createManyAndReturn
+   */
+  export type AcademicYearConfigCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+    /**
+     * The data used to create many AcademicYearConfigs.
+     */
+    data: AcademicYearConfigCreateManyInput | AcademicYearConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicYearConfig update
+   */
+  export type AcademicYearConfigUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AcademicYearConfig.
+     */
+    data: XOR<AcademicYearConfigUpdateInput, AcademicYearConfigUncheckedUpdateInput>
+    /**
+     * Choose, which AcademicYearConfig to update.
+     */
+    where: AcademicYearConfigWhereUniqueInput
+  }
+
+  /**
+   * AcademicYearConfig updateMany
+   */
+  export type AcademicYearConfigUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AcademicYearConfigs.
+     */
+    data: XOR<AcademicYearConfigUpdateManyMutationInput, AcademicYearConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicYearConfigs to update
+     */
+    where?: AcademicYearConfigWhereInput
+    /**
+     * Limit how many AcademicYearConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicYearConfig updateManyAndReturn
+   */
+  export type AcademicYearConfigUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+    /**
+     * The data used to update AcademicYearConfigs.
+     */
+    data: XOR<AcademicYearConfigUpdateManyMutationInput, AcademicYearConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicYearConfigs to update
+     */
+    where?: AcademicYearConfigWhereInput
+    /**
+     * Limit how many AcademicYearConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicYearConfig upsert
+   */
+  export type AcademicYearConfigUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AcademicYearConfig to update in case it exists.
+     */
+    where: AcademicYearConfigWhereUniqueInput
+    /**
+     * In case the AcademicYearConfig found by the `where` argument doesn't exist, create a new AcademicYearConfig with this data.
+     */
+    create: XOR<AcademicYearConfigCreateInput, AcademicYearConfigUncheckedCreateInput>
+    /**
+     * In case the AcademicYearConfig was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AcademicYearConfigUpdateInput, AcademicYearConfigUncheckedUpdateInput>
+  }
+
+  /**
+   * AcademicYearConfig delete
+   */
+  export type AcademicYearConfigDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+    /**
+     * Filter which AcademicYearConfig to delete.
+     */
+    where: AcademicYearConfigWhereUniqueInput
+  }
+
+  /**
+   * AcademicYearConfig deleteMany
+   */
+  export type AcademicYearConfigDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicYearConfigs to delete
+     */
+    where?: AcademicYearConfigWhereInput
+    /**
+     * Limit how many AcademicYearConfigs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicYearConfig without action
+   */
+  export type AcademicYearConfigDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYearConfig
+     */
+    select?: AcademicYearConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYearConfig
+     */
+    omit?: AcademicYearConfigOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model StudentNextClassOverride
+   */
+
+  export type AggregateStudentNextClassOverride = {
+    _count: StudentNextClassOverrideCountAggregateOutputType | null
+    _min: StudentNextClassOverrideMinAggregateOutputType | null
+    _max: StudentNextClassOverrideMaxAggregateOutputType | null
+  }
+
+  export type StudentNextClassOverrideMinAggregateOutputType = {
+    id: string | null
+    studentId: string | null
+    academicYear: string | null
+    classId: string | null
+    adminId: string | null
+    createdAt: Date | null
+  }
+
+  export type StudentNextClassOverrideMaxAggregateOutputType = {
+    id: string | null
+    studentId: string | null
+    academicYear: string | null
+    classId: string | null
+    adminId: string | null
+    createdAt: Date | null
+  }
+
+  export type StudentNextClassOverrideCountAggregateOutputType = {
+    id: number
+    studentId: number
+    academicYear: number
+    classId: number
+    adminId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type StudentNextClassOverrideMinAggregateInputType = {
+    id?: true
+    studentId?: true
+    academicYear?: true
+    classId?: true
+    adminId?: true
+    createdAt?: true
+  }
+
+  export type StudentNextClassOverrideMaxAggregateInputType = {
+    id?: true
+    studentId?: true
+    academicYear?: true
+    classId?: true
+    adminId?: true
+    createdAt?: true
+  }
+
+  export type StudentNextClassOverrideCountAggregateInputType = {
+    id?: true
+    studentId?: true
+    academicYear?: true
+    classId?: true
+    adminId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type StudentNextClassOverrideAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StudentNextClassOverride to aggregate.
+     */
+    where?: StudentNextClassOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentNextClassOverrides to fetch.
+     */
+    orderBy?: StudentNextClassOverrideOrderByWithRelationInput | StudentNextClassOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StudentNextClassOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentNextClassOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentNextClassOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StudentNextClassOverrides
+    **/
+    _count?: true | StudentNextClassOverrideCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StudentNextClassOverrideMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StudentNextClassOverrideMaxAggregateInputType
+  }
+
+  export type GetStudentNextClassOverrideAggregateType<T extends StudentNextClassOverrideAggregateArgs> = {
+        [P in keyof T & keyof AggregateStudentNextClassOverride]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStudentNextClassOverride[P]>
+      : GetScalarType<T[P], AggregateStudentNextClassOverride[P]>
+  }
+
+
+
+
+  export type StudentNextClassOverrideGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentNextClassOverrideWhereInput
+    orderBy?: StudentNextClassOverrideOrderByWithAggregationInput | StudentNextClassOverrideOrderByWithAggregationInput[]
+    by: StudentNextClassOverrideScalarFieldEnum[] | StudentNextClassOverrideScalarFieldEnum
+    having?: StudentNextClassOverrideScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StudentNextClassOverrideCountAggregateInputType | true
+    _min?: StudentNextClassOverrideMinAggregateInputType
+    _max?: StudentNextClassOverrideMaxAggregateInputType
+  }
+
+  export type StudentNextClassOverrideGroupByOutputType = {
+    id: string
+    studentId: string
+    academicYear: string
+    classId: string
+    adminId: string
+    createdAt: Date
+    _count: StudentNextClassOverrideCountAggregateOutputType | null
+    _min: StudentNextClassOverrideMinAggregateOutputType | null
+    _max: StudentNextClassOverrideMaxAggregateOutputType | null
+  }
+
+  type GetStudentNextClassOverrideGroupByPayload<T extends StudentNextClassOverrideGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StudentNextClassOverrideGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StudentNextClassOverrideGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StudentNextClassOverrideGroupByOutputType[P]>
+            : GetScalarType<T[P], StudentNextClassOverrideGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StudentNextClassOverrideSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    studentId?: boolean
+    academicYear?: boolean
+    classId?: boolean
+    adminId?: boolean
+    createdAt?: boolean
+    student?: boolean | StudentDefaultArgs<ExtArgs>
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["studentNextClassOverride"]>
+
+  export type StudentNextClassOverrideSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    studentId?: boolean
+    academicYear?: boolean
+    classId?: boolean
+    adminId?: boolean
+    createdAt?: boolean
+    student?: boolean | StudentDefaultArgs<ExtArgs>
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["studentNextClassOverride"]>
+
+  export type StudentNextClassOverrideSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    studentId?: boolean
+    academicYear?: boolean
+    classId?: boolean
+    adminId?: boolean
+    createdAt?: boolean
+    student?: boolean | StudentDefaultArgs<ExtArgs>
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["studentNextClassOverride"]>
+
+  export type StudentNextClassOverrideSelectScalar = {
+    id?: boolean
+    studentId?: boolean
+    academicYear?: boolean
+    classId?: boolean
+    adminId?: boolean
+    createdAt?: boolean
+  }
+
+  export type StudentNextClassOverrideOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentId" | "academicYear" | "classId" | "adminId" | "createdAt", ExtArgs["result"]["studentNextClassOverride"]>
+  export type StudentNextClassOverrideInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    student?: boolean | StudentDefaultArgs<ExtArgs>
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+  }
+  export type StudentNextClassOverrideIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    student?: boolean | StudentDefaultArgs<ExtArgs>
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+  }
+  export type StudentNextClassOverrideIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    student?: boolean | StudentDefaultArgs<ExtArgs>
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+  }
+
+  export type $StudentNextClassOverridePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StudentNextClassOverride"
+    objects: {
+      student: Prisma.$StudentPayload<ExtArgs>
+      class: Prisma.$ClassPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      studentId: string
+      academicYear: string
+      classId: string
+      adminId: string
+      createdAt: Date
+    }, ExtArgs["result"]["studentNextClassOverride"]>
+    composites: {}
+  }
+
+  type StudentNextClassOverrideGetPayload<S extends boolean | null | undefined | StudentNextClassOverrideDefaultArgs> = $Result.GetResult<Prisma.$StudentNextClassOverridePayload, S>
+
+  type StudentNextClassOverrideCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StudentNextClassOverrideFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StudentNextClassOverrideCountAggregateInputType | true
+    }
+
+  export interface StudentNextClassOverrideDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StudentNextClassOverride'], meta: { name: 'StudentNextClassOverride' } }
+    /**
+     * Find zero or one StudentNextClassOverride that matches the filter.
+     * @param {StudentNextClassOverrideFindUniqueArgs} args - Arguments to find a StudentNextClassOverride
+     * @example
+     * // Get one StudentNextClassOverride
+     * const studentNextClassOverride = await prisma.studentNextClassOverride.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StudentNextClassOverrideFindUniqueArgs>(args: SelectSubset<T, StudentNextClassOverrideFindUniqueArgs<ExtArgs>>): Prisma__StudentNextClassOverrideClient<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one StudentNextClassOverride that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StudentNextClassOverrideFindUniqueOrThrowArgs} args - Arguments to find a StudentNextClassOverride
+     * @example
+     * // Get one StudentNextClassOverride
+     * const studentNextClassOverride = await prisma.studentNextClassOverride.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StudentNextClassOverrideFindUniqueOrThrowArgs>(args: SelectSubset<T, StudentNextClassOverrideFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StudentNextClassOverrideClient<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StudentNextClassOverride that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentNextClassOverrideFindFirstArgs} args - Arguments to find a StudentNextClassOverride
+     * @example
+     * // Get one StudentNextClassOverride
+     * const studentNextClassOverride = await prisma.studentNextClassOverride.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StudentNextClassOverrideFindFirstArgs>(args?: SelectSubset<T, StudentNextClassOverrideFindFirstArgs<ExtArgs>>): Prisma__StudentNextClassOverrideClient<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StudentNextClassOverride that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentNextClassOverrideFindFirstOrThrowArgs} args - Arguments to find a StudentNextClassOverride
+     * @example
+     * // Get one StudentNextClassOverride
+     * const studentNextClassOverride = await prisma.studentNextClassOverride.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StudentNextClassOverrideFindFirstOrThrowArgs>(args?: SelectSubset<T, StudentNextClassOverrideFindFirstOrThrowArgs<ExtArgs>>): Prisma__StudentNextClassOverrideClient<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more StudentNextClassOverrides that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentNextClassOverrideFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StudentNextClassOverrides
+     * const studentNextClassOverrides = await prisma.studentNextClassOverride.findMany()
+     * 
+     * // Get first 10 StudentNextClassOverrides
+     * const studentNextClassOverrides = await prisma.studentNextClassOverride.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const studentNextClassOverrideWithIdOnly = await prisma.studentNextClassOverride.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StudentNextClassOverrideFindManyArgs>(args?: SelectSubset<T, StudentNextClassOverrideFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a StudentNextClassOverride.
+     * @param {StudentNextClassOverrideCreateArgs} args - Arguments to create a StudentNextClassOverride.
+     * @example
+     * // Create one StudentNextClassOverride
+     * const StudentNextClassOverride = await prisma.studentNextClassOverride.create({
+     *   data: {
+     *     // ... data to create a StudentNextClassOverride
+     *   }
+     * })
+     * 
+     */
+    create<T extends StudentNextClassOverrideCreateArgs>(args: SelectSubset<T, StudentNextClassOverrideCreateArgs<ExtArgs>>): Prisma__StudentNextClassOverrideClient<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many StudentNextClassOverrides.
+     * @param {StudentNextClassOverrideCreateManyArgs} args - Arguments to create many StudentNextClassOverrides.
+     * @example
+     * // Create many StudentNextClassOverrides
+     * const studentNextClassOverride = await prisma.studentNextClassOverride.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StudentNextClassOverrideCreateManyArgs>(args?: SelectSubset<T, StudentNextClassOverrideCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many StudentNextClassOverrides and returns the data saved in the database.
+     * @param {StudentNextClassOverrideCreateManyAndReturnArgs} args - Arguments to create many StudentNextClassOverrides.
+     * @example
+     * // Create many StudentNextClassOverrides
+     * const studentNextClassOverride = await prisma.studentNextClassOverride.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many StudentNextClassOverrides and only return the `id`
+     * const studentNextClassOverrideWithIdOnly = await prisma.studentNextClassOverride.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StudentNextClassOverrideCreateManyAndReturnArgs>(args?: SelectSubset<T, StudentNextClassOverrideCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a StudentNextClassOverride.
+     * @param {StudentNextClassOverrideDeleteArgs} args - Arguments to delete one StudentNextClassOverride.
+     * @example
+     * // Delete one StudentNextClassOverride
+     * const StudentNextClassOverride = await prisma.studentNextClassOverride.delete({
+     *   where: {
+     *     // ... filter to delete one StudentNextClassOverride
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StudentNextClassOverrideDeleteArgs>(args: SelectSubset<T, StudentNextClassOverrideDeleteArgs<ExtArgs>>): Prisma__StudentNextClassOverrideClient<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one StudentNextClassOverride.
+     * @param {StudentNextClassOverrideUpdateArgs} args - Arguments to update one StudentNextClassOverride.
+     * @example
+     * // Update one StudentNextClassOverride
+     * const studentNextClassOverride = await prisma.studentNextClassOverride.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StudentNextClassOverrideUpdateArgs>(args: SelectSubset<T, StudentNextClassOverrideUpdateArgs<ExtArgs>>): Prisma__StudentNextClassOverrideClient<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more StudentNextClassOverrides.
+     * @param {StudentNextClassOverrideDeleteManyArgs} args - Arguments to filter StudentNextClassOverrides to delete.
+     * @example
+     * // Delete a few StudentNextClassOverrides
+     * const { count } = await prisma.studentNextClassOverride.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StudentNextClassOverrideDeleteManyArgs>(args?: SelectSubset<T, StudentNextClassOverrideDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StudentNextClassOverrides.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentNextClassOverrideUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StudentNextClassOverrides
+     * const studentNextClassOverride = await prisma.studentNextClassOverride.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StudentNextClassOverrideUpdateManyArgs>(args: SelectSubset<T, StudentNextClassOverrideUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StudentNextClassOverrides and returns the data updated in the database.
+     * @param {StudentNextClassOverrideUpdateManyAndReturnArgs} args - Arguments to update many StudentNextClassOverrides.
+     * @example
+     * // Update many StudentNextClassOverrides
+     * const studentNextClassOverride = await prisma.studentNextClassOverride.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more StudentNextClassOverrides and only return the `id`
+     * const studentNextClassOverrideWithIdOnly = await prisma.studentNextClassOverride.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StudentNextClassOverrideUpdateManyAndReturnArgs>(args: SelectSubset<T, StudentNextClassOverrideUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one StudentNextClassOverride.
+     * @param {StudentNextClassOverrideUpsertArgs} args - Arguments to update or create a StudentNextClassOverride.
+     * @example
+     * // Update or create a StudentNextClassOverride
+     * const studentNextClassOverride = await prisma.studentNextClassOverride.upsert({
+     *   create: {
+     *     // ... data to create a StudentNextClassOverride
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StudentNextClassOverride we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StudentNextClassOverrideUpsertArgs>(args: SelectSubset<T, StudentNextClassOverrideUpsertArgs<ExtArgs>>): Prisma__StudentNextClassOverrideClient<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of StudentNextClassOverrides.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentNextClassOverrideCountArgs} args - Arguments to filter StudentNextClassOverrides to count.
+     * @example
+     * // Count the number of StudentNextClassOverrides
+     * const count = await prisma.studentNextClassOverride.count({
+     *   where: {
+     *     // ... the filter for the StudentNextClassOverrides we want to count
+     *   }
+     * })
+    **/
+    count<T extends StudentNextClassOverrideCountArgs>(
+      args?: Subset<T, StudentNextClassOverrideCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StudentNextClassOverrideCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StudentNextClassOverride.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentNextClassOverrideAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StudentNextClassOverrideAggregateArgs>(args: Subset<T, StudentNextClassOverrideAggregateArgs>): Prisma.PrismaPromise<GetStudentNextClassOverrideAggregateType<T>>
+
+    /**
+     * Group by StudentNextClassOverride.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentNextClassOverrideGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StudentNextClassOverrideGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StudentNextClassOverrideGroupByArgs['orderBy'] }
+        : { orderBy?: StudentNextClassOverrideGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StudentNextClassOverrideGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStudentNextClassOverrideGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StudentNextClassOverride model
+   */
+  readonly fields: StudentNextClassOverrideFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StudentNextClassOverride.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StudentNextClassOverrideClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    student<T extends StudentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentDefaultArgs<ExtArgs>>): Prisma__StudentClient<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    class<T extends ClassDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClassDefaultArgs<ExtArgs>>): Prisma__ClassClient<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StudentNextClassOverride model
+   */
+  interface StudentNextClassOverrideFieldRefs {
+    readonly id: FieldRef<"StudentNextClassOverride", 'String'>
+    readonly studentId: FieldRef<"StudentNextClassOverride", 'String'>
+    readonly academicYear: FieldRef<"StudentNextClassOverride", 'String'>
+    readonly classId: FieldRef<"StudentNextClassOverride", 'String'>
+    readonly adminId: FieldRef<"StudentNextClassOverride", 'String'>
+    readonly createdAt: FieldRef<"StudentNextClassOverride", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StudentNextClassOverride findUnique
+   */
+  export type StudentNextClassOverrideFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentNextClassOverride to fetch.
+     */
+    where: StudentNextClassOverrideWhereUniqueInput
+  }
+
+  /**
+   * StudentNextClassOverride findUniqueOrThrow
+   */
+  export type StudentNextClassOverrideFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentNextClassOverride to fetch.
+     */
+    where: StudentNextClassOverrideWhereUniqueInput
+  }
+
+  /**
+   * StudentNextClassOverride findFirst
+   */
+  export type StudentNextClassOverrideFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentNextClassOverride to fetch.
+     */
+    where?: StudentNextClassOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentNextClassOverrides to fetch.
+     */
+    orderBy?: StudentNextClassOverrideOrderByWithRelationInput | StudentNextClassOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StudentNextClassOverrides.
+     */
+    cursor?: StudentNextClassOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentNextClassOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentNextClassOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentNextClassOverrides.
+     */
+    distinct?: StudentNextClassOverrideScalarFieldEnum | StudentNextClassOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * StudentNextClassOverride findFirstOrThrow
+   */
+  export type StudentNextClassOverrideFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentNextClassOverride to fetch.
+     */
+    where?: StudentNextClassOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentNextClassOverrides to fetch.
+     */
+    orderBy?: StudentNextClassOverrideOrderByWithRelationInput | StudentNextClassOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StudentNextClassOverrides.
+     */
+    cursor?: StudentNextClassOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentNextClassOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentNextClassOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentNextClassOverrides.
+     */
+    distinct?: StudentNextClassOverrideScalarFieldEnum | StudentNextClassOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * StudentNextClassOverride findMany
+   */
+  export type StudentNextClassOverrideFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentNextClassOverrides to fetch.
+     */
+    where?: StudentNextClassOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentNextClassOverrides to fetch.
+     */
+    orderBy?: StudentNextClassOverrideOrderByWithRelationInput | StudentNextClassOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StudentNextClassOverrides.
+     */
+    cursor?: StudentNextClassOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentNextClassOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentNextClassOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentNextClassOverrides.
+     */
+    distinct?: StudentNextClassOverrideScalarFieldEnum | StudentNextClassOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * StudentNextClassOverride create
+   */
+  export type StudentNextClassOverrideCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StudentNextClassOverride.
+     */
+    data: XOR<StudentNextClassOverrideCreateInput, StudentNextClassOverrideUncheckedCreateInput>
+  }
+
+  /**
+   * StudentNextClassOverride createMany
+   */
+  export type StudentNextClassOverrideCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StudentNextClassOverrides.
+     */
+    data: StudentNextClassOverrideCreateManyInput | StudentNextClassOverrideCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StudentNextClassOverride createManyAndReturn
+   */
+  export type StudentNextClassOverrideCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * The data used to create many StudentNextClassOverrides.
+     */
+    data: StudentNextClassOverrideCreateManyInput | StudentNextClassOverrideCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StudentNextClassOverride update
+   */
+  export type StudentNextClassOverrideUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StudentNextClassOverride.
+     */
+    data: XOR<StudentNextClassOverrideUpdateInput, StudentNextClassOverrideUncheckedUpdateInput>
+    /**
+     * Choose, which StudentNextClassOverride to update.
+     */
+    where: StudentNextClassOverrideWhereUniqueInput
+  }
+
+  /**
+   * StudentNextClassOverride updateMany
+   */
+  export type StudentNextClassOverrideUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StudentNextClassOverrides.
+     */
+    data: XOR<StudentNextClassOverrideUpdateManyMutationInput, StudentNextClassOverrideUncheckedUpdateManyInput>
+    /**
+     * Filter which StudentNextClassOverrides to update
+     */
+    where?: StudentNextClassOverrideWhereInput
+    /**
+     * Limit how many StudentNextClassOverrides to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * StudentNextClassOverride updateManyAndReturn
+   */
+  export type StudentNextClassOverrideUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * The data used to update StudentNextClassOverrides.
+     */
+    data: XOR<StudentNextClassOverrideUpdateManyMutationInput, StudentNextClassOverrideUncheckedUpdateManyInput>
+    /**
+     * Filter which StudentNextClassOverrides to update
+     */
+    where?: StudentNextClassOverrideWhereInput
+    /**
+     * Limit how many StudentNextClassOverrides to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StudentNextClassOverride upsert
+   */
+  export type StudentNextClassOverrideUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StudentNextClassOverride to update in case it exists.
+     */
+    where: StudentNextClassOverrideWhereUniqueInput
+    /**
+     * In case the StudentNextClassOverride found by the `where` argument doesn't exist, create a new StudentNextClassOverride with this data.
+     */
+    create: XOR<StudentNextClassOverrideCreateInput, StudentNextClassOverrideUncheckedCreateInput>
+    /**
+     * In case the StudentNextClassOverride was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StudentNextClassOverrideUpdateInput, StudentNextClassOverrideUncheckedUpdateInput>
+  }
+
+  /**
+   * StudentNextClassOverride delete
+   */
+  export type StudentNextClassOverrideDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+    /**
+     * Filter which StudentNextClassOverride to delete.
+     */
+    where: StudentNextClassOverrideWhereUniqueInput
+  }
+
+  /**
+   * StudentNextClassOverride deleteMany
+   */
+  export type StudentNextClassOverrideDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StudentNextClassOverrides to delete
+     */
+    where?: StudentNextClassOverrideWhereInput
+    /**
+     * Limit how many StudentNextClassOverrides to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * StudentNextClassOverride without action
+   */
+  export type StudentNextClassOverrideDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentNextClassOverride
+     */
+    select?: StudentNextClassOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentNextClassOverride
+     */
+    omit?: StudentNextClassOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentNextClassOverrideInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -15797,6 +18163,31 @@ export namespace Prisma {
   };
 
   export type AdjustmentLogScalarFieldEnum = (typeof AdjustmentLogScalarFieldEnum)[keyof typeof AdjustmentLogScalarFieldEnum]
+
+
+  export const AcademicYearConfigScalarFieldEnum: {
+    id: 'id',
+    academicYear: 'academicYear',
+    nextYear: 'nextYear',
+    reEnrollmentOpenDate: 'reEnrollmentOpenDate',
+    newEnrollmentOpenDate: 'newEnrollmentOpenDate',
+    isActive: 'isActive',
+    createdAt: 'createdAt'
+  };
+
+  export type AcademicYearConfigScalarFieldEnum = (typeof AcademicYearConfigScalarFieldEnum)[keyof typeof AcademicYearConfigScalarFieldEnum]
+
+
+  export const StudentNextClassOverrideScalarFieldEnum: {
+    id: 'id',
+    studentId: 'studentId',
+    academicYear: 'academicYear',
+    classId: 'classId',
+    adminId: 'adminId',
+    createdAt: 'createdAt'
+  };
+
+  export type StudentNextClassOverrideScalarFieldEnum = (typeof StudentNextClassOverrideScalarFieldEnum)[keyof typeof StudentNextClassOverrideScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -16358,6 +18749,7 @@ export namespace Prisma {
     family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
     enrollments?: EnrollmentListRelationFilter
     waitlists?: WaitlistListRelationFilter
+    nextClassOverrides?: StudentNextClassOverrideListRelationFilter
   }
 
   export type StudentOrderByWithRelationInput = {
@@ -16372,6 +18764,7 @@ export namespace Prisma {
     family?: FamilyOrderByWithRelationInput
     enrollments?: EnrollmentOrderByRelationAggregateInput
     waitlists?: WaitlistOrderByRelationAggregateInput
+    nextClassOverrides?: StudentNextClassOverrideOrderByRelationAggregateInput
   }
 
   export type StudentWhereUniqueInput = Prisma.AtLeast<{
@@ -16389,6 +18782,7 @@ export namespace Prisma {
     family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
     enrollments?: EnrollmentListRelationFilter
     waitlists?: WaitlistListRelationFilter
+    nextClassOverrides?: StudentNextClassOverrideListRelationFilter
   }, "id">
 
   export type StudentOrderByWithAggregationInput = {
@@ -16498,6 +18892,7 @@ export namespace Prisma {
     teacher?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
     enrollments?: EnrollmentListRelationFilter
     waitlists?: WaitlistListRelationFilter
+    nextClassOverrides?: StudentNextClassOverrideListRelationFilter
   }
 
   export type ClassOrderByWithRelationInput = {
@@ -16516,6 +18911,7 @@ export namespace Prisma {
     teacher?: TeacherOrderByWithRelationInput
     enrollments?: EnrollmentOrderByRelationAggregateInput
     waitlists?: WaitlistOrderByRelationAggregateInput
+    nextClassOverrides?: StudentNextClassOverrideOrderByRelationAggregateInput
   }
 
   export type ClassWhereUniqueInput = Prisma.AtLeast<{
@@ -16537,6 +18933,7 @@ export namespace Prisma {
     teacher?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
     enrollments?: EnrollmentListRelationFilter
     waitlists?: WaitlistListRelationFilter
+    nextClassOverrides?: StudentNextClassOverrideListRelationFilter
   }, "id">
 
   export type ClassOrderByWithAggregationInput = {
@@ -16852,6 +19249,132 @@ export namespace Prisma {
     toClassId?: StringNullableWithAggregatesFilter<"AdjustmentLog"> | string | null
     reason?: StringWithAggregatesFilter<"AdjustmentLog"> | string
     createdAt?: DateTimeWithAggregatesFilter<"AdjustmentLog"> | Date | string
+  }
+
+  export type AcademicYearConfigWhereInput = {
+    AND?: AcademicYearConfigWhereInput | AcademicYearConfigWhereInput[]
+    OR?: AcademicYearConfigWhereInput[]
+    NOT?: AcademicYearConfigWhereInput | AcademicYearConfigWhereInput[]
+    id?: StringFilter<"AcademicYearConfig"> | string
+    academicYear?: StringFilter<"AcademicYearConfig"> | string
+    nextYear?: StringFilter<"AcademicYearConfig"> | string
+    reEnrollmentOpenDate?: DateTimeFilter<"AcademicYearConfig"> | Date | string
+    newEnrollmentOpenDate?: DateTimeFilter<"AcademicYearConfig"> | Date | string
+    isActive?: BoolFilter<"AcademicYearConfig"> | boolean
+    createdAt?: DateTimeFilter<"AcademicYearConfig"> | Date | string
+  }
+
+  export type AcademicYearConfigOrderByWithRelationInput = {
+    id?: SortOrder
+    academicYear?: SortOrder
+    nextYear?: SortOrder
+    reEnrollmentOpenDate?: SortOrder
+    newEnrollmentOpenDate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AcademicYearConfigWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    academicYear?: string
+    AND?: AcademicYearConfigWhereInput | AcademicYearConfigWhereInput[]
+    OR?: AcademicYearConfigWhereInput[]
+    NOT?: AcademicYearConfigWhereInput | AcademicYearConfigWhereInput[]
+    nextYear?: StringFilter<"AcademicYearConfig"> | string
+    reEnrollmentOpenDate?: DateTimeFilter<"AcademicYearConfig"> | Date | string
+    newEnrollmentOpenDate?: DateTimeFilter<"AcademicYearConfig"> | Date | string
+    isActive?: BoolFilter<"AcademicYearConfig"> | boolean
+    createdAt?: DateTimeFilter<"AcademicYearConfig"> | Date | string
+  }, "id" | "academicYear">
+
+  export type AcademicYearConfigOrderByWithAggregationInput = {
+    id?: SortOrder
+    academicYear?: SortOrder
+    nextYear?: SortOrder
+    reEnrollmentOpenDate?: SortOrder
+    newEnrollmentOpenDate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    _count?: AcademicYearConfigCountOrderByAggregateInput
+    _max?: AcademicYearConfigMaxOrderByAggregateInput
+    _min?: AcademicYearConfigMinOrderByAggregateInput
+  }
+
+  export type AcademicYearConfigScalarWhereWithAggregatesInput = {
+    AND?: AcademicYearConfigScalarWhereWithAggregatesInput | AcademicYearConfigScalarWhereWithAggregatesInput[]
+    OR?: AcademicYearConfigScalarWhereWithAggregatesInput[]
+    NOT?: AcademicYearConfigScalarWhereWithAggregatesInput | AcademicYearConfigScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AcademicYearConfig"> | string
+    academicYear?: StringWithAggregatesFilter<"AcademicYearConfig"> | string
+    nextYear?: StringWithAggregatesFilter<"AcademicYearConfig"> | string
+    reEnrollmentOpenDate?: DateTimeWithAggregatesFilter<"AcademicYearConfig"> | Date | string
+    newEnrollmentOpenDate?: DateTimeWithAggregatesFilter<"AcademicYearConfig"> | Date | string
+    isActive?: BoolWithAggregatesFilter<"AcademicYearConfig"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AcademicYearConfig"> | Date | string
+  }
+
+  export type StudentNextClassOverrideWhereInput = {
+    AND?: StudentNextClassOverrideWhereInput | StudentNextClassOverrideWhereInput[]
+    OR?: StudentNextClassOverrideWhereInput[]
+    NOT?: StudentNextClassOverrideWhereInput | StudentNextClassOverrideWhereInput[]
+    id?: StringFilter<"StudentNextClassOverride"> | string
+    studentId?: StringFilter<"StudentNextClassOverride"> | string
+    academicYear?: StringFilter<"StudentNextClassOverride"> | string
+    classId?: StringFilter<"StudentNextClassOverride"> | string
+    adminId?: StringFilter<"StudentNextClassOverride"> | string
+    createdAt?: DateTimeFilter<"StudentNextClassOverride"> | Date | string
+    student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
+    class?: XOR<ClassScalarRelationFilter, ClassWhereInput>
+  }
+
+  export type StudentNextClassOverrideOrderByWithRelationInput = {
+    id?: SortOrder
+    studentId?: SortOrder
+    academicYear?: SortOrder
+    classId?: SortOrder
+    adminId?: SortOrder
+    createdAt?: SortOrder
+    student?: StudentOrderByWithRelationInput
+    class?: ClassOrderByWithRelationInput
+  }
+
+  export type StudentNextClassOverrideWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    studentId_academicYear?: StudentNextClassOverrideStudentIdAcademicYearCompoundUniqueInput
+    AND?: StudentNextClassOverrideWhereInput | StudentNextClassOverrideWhereInput[]
+    OR?: StudentNextClassOverrideWhereInput[]
+    NOT?: StudentNextClassOverrideWhereInput | StudentNextClassOverrideWhereInput[]
+    studentId?: StringFilter<"StudentNextClassOverride"> | string
+    academicYear?: StringFilter<"StudentNextClassOverride"> | string
+    classId?: StringFilter<"StudentNextClassOverride"> | string
+    adminId?: StringFilter<"StudentNextClassOverride"> | string
+    createdAt?: DateTimeFilter<"StudentNextClassOverride"> | Date | string
+    student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
+    class?: XOR<ClassScalarRelationFilter, ClassWhereInput>
+  }, "id" | "studentId_academicYear">
+
+  export type StudentNextClassOverrideOrderByWithAggregationInput = {
+    id?: SortOrder
+    studentId?: SortOrder
+    academicYear?: SortOrder
+    classId?: SortOrder
+    adminId?: SortOrder
+    createdAt?: SortOrder
+    _count?: StudentNextClassOverrideCountOrderByAggregateInput
+    _max?: StudentNextClassOverrideMaxOrderByAggregateInput
+    _min?: StudentNextClassOverrideMinOrderByAggregateInput
+  }
+
+  export type StudentNextClassOverrideScalarWhereWithAggregatesInput = {
+    AND?: StudentNextClassOverrideScalarWhereWithAggregatesInput | StudentNextClassOverrideScalarWhereWithAggregatesInput[]
+    OR?: StudentNextClassOverrideScalarWhereWithAggregatesInput[]
+    NOT?: StudentNextClassOverrideScalarWhereWithAggregatesInput | StudentNextClassOverrideScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"StudentNextClassOverride"> | string
+    studentId?: StringWithAggregatesFilter<"StudentNextClassOverride"> | string
+    academicYear?: StringWithAggregatesFilter<"StudentNextClassOverride"> | string
+    classId?: StringWithAggregatesFilter<"StudentNextClassOverride"> | string
+    adminId?: StringWithAggregatesFilter<"StudentNextClassOverride"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"StudentNextClassOverride"> | Date | string
   }
 
   export type AccountCreateInput = {
@@ -17228,6 +19751,7 @@ export namespace Prisma {
     family: FamilyCreateNestedOneWithoutStudentsInput
     enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
     waitlists?: WaitlistCreateNestedManyWithoutStudentInput
+    nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateInput = {
@@ -17241,6 +19765,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutStudentInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUpdateInput = {
@@ -17254,6 +19779,7 @@ export namespace Prisma {
     family?: FamilyUpdateOneRequiredWithoutStudentsNestedInput
     enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
     waitlists?: WaitlistUpdateManyWithoutStudentNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateInput = {
@@ -17267,6 +19793,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
     waitlists?: WaitlistUncheckedUpdateManyWithoutStudentNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentCreateManyInput = {
@@ -17383,6 +19910,7 @@ export namespace Prisma {
     teacher?: TeacherCreateNestedOneWithoutClassesInput
     enrollments?: EnrollmentCreateNestedManyWithoutClassInput
     waitlists?: WaitlistCreateNestedManyWithoutClassInput
+    nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutClassInput
   }
 
   export type ClassUncheckedCreateInput = {
@@ -17400,6 +19928,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutClassInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutClassInput
   }
 
   export type ClassUpdateInput = {
@@ -17417,6 +19946,7 @@ export namespace Prisma {
     teacher?: TeacherUpdateOneWithoutClassesNestedInput
     enrollments?: EnrollmentUpdateManyWithoutClassNestedInput
     waitlists?: WaitlistUpdateManyWithoutClassNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutClassNestedInput
   }
 
   export type ClassUncheckedUpdateInput = {
@@ -17434,6 +19964,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
     waitlists?: WaitlistUncheckedUpdateManyWithoutClassNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutClassNestedInput
   }
 
   export type ClassCreateManyInput = {
@@ -17763,6 +20294,137 @@ export namespace Prisma {
     fromClassId?: NullableStringFieldUpdateOperationsInput | string | null
     toClassId?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicYearConfigCreateInput = {
+    id?: string
+    academicYear: string
+    nextYear: string
+    reEnrollmentOpenDate: Date | string
+    newEnrollmentOpenDate: Date | string
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AcademicYearConfigUncheckedCreateInput = {
+    id?: string
+    academicYear: string
+    nextYear: string
+    reEnrollmentOpenDate: Date | string
+    newEnrollmentOpenDate: Date | string
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AcademicYearConfigUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    nextYear?: StringFieldUpdateOperationsInput | string
+    reEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    newEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicYearConfigUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    nextYear?: StringFieldUpdateOperationsInput | string
+    reEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    newEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicYearConfigCreateManyInput = {
+    id?: string
+    academicYear: string
+    nextYear: string
+    reEnrollmentOpenDate: Date | string
+    newEnrollmentOpenDate: Date | string
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AcademicYearConfigUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    nextYear?: StringFieldUpdateOperationsInput | string
+    reEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    newEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicYearConfigUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    nextYear?: StringFieldUpdateOperationsInput | string
+    reEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    newEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentNextClassOverrideCreateInput = {
+    id?: string
+    academicYear: string
+    adminId: string
+    createdAt?: Date | string
+    student: StudentCreateNestedOneWithoutNextClassOverridesInput
+    class: ClassCreateNestedOneWithoutNextClassOverridesInput
+  }
+
+  export type StudentNextClassOverrideUncheckedCreateInput = {
+    id?: string
+    studentId: string
+    academicYear: string
+    classId: string
+    adminId: string
+    createdAt?: Date | string
+  }
+
+  export type StudentNextClassOverrideUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentUpdateOneRequiredWithoutNextClassOverridesNestedInput
+    class?: ClassUpdateOneRequiredWithoutNextClassOverridesNestedInput
+  }
+
+  export type StudentNextClassOverrideUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentNextClassOverrideCreateManyInput = {
+    id?: string
+    studentId: string
+    academicYear: string
+    classId: string
+    adminId: string
+    createdAt?: Date | string
+  }
+
+  export type StudentNextClassOverrideUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentNextClassOverrideUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -18166,11 +20828,21 @@ export namespace Prisma {
     none?: WaitlistWhereInput
   }
 
+  export type StudentNextClassOverrideListRelationFilter = {
+    every?: StudentNextClassOverrideWhereInput
+    some?: StudentNextClassOverrideWhereInput
+    none?: StudentNextClassOverrideWhereInput
+  }
+
   export type EnrollmentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type WaitlistOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StudentNextClassOverrideOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -18660,6 +21332,68 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type AcademicYearConfigCountOrderByAggregateInput = {
+    id?: SortOrder
+    academicYear?: SortOrder
+    nextYear?: SortOrder
+    reEnrollmentOpenDate?: SortOrder
+    newEnrollmentOpenDate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AcademicYearConfigMaxOrderByAggregateInput = {
+    id?: SortOrder
+    academicYear?: SortOrder
+    nextYear?: SortOrder
+    reEnrollmentOpenDate?: SortOrder
+    newEnrollmentOpenDate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AcademicYearConfigMinOrderByAggregateInput = {
+    id?: SortOrder
+    academicYear?: SortOrder
+    nextYear?: SortOrder
+    reEnrollmentOpenDate?: SortOrder
+    newEnrollmentOpenDate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StudentNextClassOverrideStudentIdAcademicYearCompoundUniqueInput = {
+    studentId: string
+    academicYear: string
+  }
+
+  export type StudentNextClassOverrideCountOrderByAggregateInput = {
+    id?: SortOrder
+    studentId?: SortOrder
+    academicYear?: SortOrder
+    classId?: SortOrder
+    adminId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StudentNextClassOverrideMaxOrderByAggregateInput = {
+    id?: SortOrder
+    studentId?: SortOrder
+    academicYear?: SortOrder
+    classId?: SortOrder
+    adminId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StudentNextClassOverrideMinOrderByAggregateInput = {
+    id?: SortOrder
+    studentId?: SortOrder
+    academicYear?: SortOrder
+    classId?: SortOrder
+    adminId?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -18920,6 +21654,13 @@ export namespace Prisma {
     connect?: WaitlistWhereUniqueInput | WaitlistWhereUniqueInput[]
   }
 
+  export type StudentNextClassOverrideCreateNestedManyWithoutStudentInput = {
+    create?: XOR<StudentNextClassOverrideCreateWithoutStudentInput, StudentNextClassOverrideUncheckedCreateWithoutStudentInput> | StudentNextClassOverrideCreateWithoutStudentInput[] | StudentNextClassOverrideUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: StudentNextClassOverrideCreateOrConnectWithoutStudentInput | StudentNextClassOverrideCreateOrConnectWithoutStudentInput[]
+    createMany?: StudentNextClassOverrideCreateManyStudentInputEnvelope
+    connect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+  }
+
   export type EnrollmentUncheckedCreateNestedManyWithoutStudentInput = {
     create?: XOR<EnrollmentCreateWithoutStudentInput, EnrollmentUncheckedCreateWithoutStudentInput> | EnrollmentCreateWithoutStudentInput[] | EnrollmentUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutStudentInput | EnrollmentCreateOrConnectWithoutStudentInput[]
@@ -18932,6 +21673,13 @@ export namespace Prisma {
     connectOrCreate?: WaitlistCreateOrConnectWithoutStudentInput | WaitlistCreateOrConnectWithoutStudentInput[]
     createMany?: WaitlistCreateManyStudentInputEnvelope
     connect?: WaitlistWhereUniqueInput | WaitlistWhereUniqueInput[]
+  }
+
+  export type StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput = {
+    create?: XOR<StudentNextClassOverrideCreateWithoutStudentInput, StudentNextClassOverrideUncheckedCreateWithoutStudentInput> | StudentNextClassOverrideCreateWithoutStudentInput[] | StudentNextClassOverrideUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: StudentNextClassOverrideCreateOrConnectWithoutStudentInput | StudentNextClassOverrideCreateOrConnectWithoutStudentInput[]
+    createMany?: StudentNextClassOverrideCreateManyStudentInputEnvelope
+    connect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
   }
 
   export type FamilyUpdateOneRequiredWithoutStudentsNestedInput = {
@@ -18970,6 +21718,20 @@ export namespace Prisma {
     deleteMany?: WaitlistScalarWhereInput | WaitlistScalarWhereInput[]
   }
 
+  export type StudentNextClassOverrideUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<StudentNextClassOverrideCreateWithoutStudentInput, StudentNextClassOverrideUncheckedCreateWithoutStudentInput> | StudentNextClassOverrideCreateWithoutStudentInput[] | StudentNextClassOverrideUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: StudentNextClassOverrideCreateOrConnectWithoutStudentInput | StudentNextClassOverrideCreateOrConnectWithoutStudentInput[]
+    upsert?: StudentNextClassOverrideUpsertWithWhereUniqueWithoutStudentInput | StudentNextClassOverrideUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: StudentNextClassOverrideCreateManyStudentInputEnvelope
+    set?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    disconnect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    delete?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    connect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    update?: StudentNextClassOverrideUpdateWithWhereUniqueWithoutStudentInput | StudentNextClassOverrideUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: StudentNextClassOverrideUpdateManyWithWhereWithoutStudentInput | StudentNextClassOverrideUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: StudentNextClassOverrideScalarWhereInput | StudentNextClassOverrideScalarWhereInput[]
+  }
+
   export type EnrollmentUncheckedUpdateManyWithoutStudentNestedInput = {
     create?: XOR<EnrollmentCreateWithoutStudentInput, EnrollmentUncheckedCreateWithoutStudentInput> | EnrollmentCreateWithoutStudentInput[] | EnrollmentUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutStudentInput | EnrollmentCreateOrConnectWithoutStudentInput[]
@@ -18996,6 +21758,20 @@ export namespace Prisma {
     update?: WaitlistUpdateWithWhereUniqueWithoutStudentInput | WaitlistUpdateWithWhereUniqueWithoutStudentInput[]
     updateMany?: WaitlistUpdateManyWithWhereWithoutStudentInput | WaitlistUpdateManyWithWhereWithoutStudentInput[]
     deleteMany?: WaitlistScalarWhereInput | WaitlistScalarWhereInput[]
+  }
+
+  export type StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<StudentNextClassOverrideCreateWithoutStudentInput, StudentNextClassOverrideUncheckedCreateWithoutStudentInput> | StudentNextClassOverrideCreateWithoutStudentInput[] | StudentNextClassOverrideUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: StudentNextClassOverrideCreateOrConnectWithoutStudentInput | StudentNextClassOverrideCreateOrConnectWithoutStudentInput[]
+    upsert?: StudentNextClassOverrideUpsertWithWhereUniqueWithoutStudentInput | StudentNextClassOverrideUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: StudentNextClassOverrideCreateManyStudentInputEnvelope
+    set?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    disconnect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    delete?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    connect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    update?: StudentNextClassOverrideUpdateWithWhereUniqueWithoutStudentInput | StudentNextClassOverrideUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: StudentNextClassOverrideUpdateManyWithWhereWithoutStudentInput | StudentNextClassOverrideUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: StudentNextClassOverrideScalarWhereInput | StudentNextClassOverrideScalarWhereInput[]
   }
 
   export type ClassCreateNestedManyWithoutTeacherInput = {
@@ -19060,6 +21836,13 @@ export namespace Prisma {
     connect?: WaitlistWhereUniqueInput | WaitlistWhereUniqueInput[]
   }
 
+  export type StudentNextClassOverrideCreateNestedManyWithoutClassInput = {
+    create?: XOR<StudentNextClassOverrideCreateWithoutClassInput, StudentNextClassOverrideUncheckedCreateWithoutClassInput> | StudentNextClassOverrideCreateWithoutClassInput[] | StudentNextClassOverrideUncheckedCreateWithoutClassInput[]
+    connectOrCreate?: StudentNextClassOverrideCreateOrConnectWithoutClassInput | StudentNextClassOverrideCreateOrConnectWithoutClassInput[]
+    createMany?: StudentNextClassOverrideCreateManyClassInputEnvelope
+    connect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+  }
+
   export type EnrollmentUncheckedCreateNestedManyWithoutClassInput = {
     create?: XOR<EnrollmentCreateWithoutClassInput, EnrollmentUncheckedCreateWithoutClassInput> | EnrollmentCreateWithoutClassInput[] | EnrollmentUncheckedCreateWithoutClassInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutClassInput | EnrollmentCreateOrConnectWithoutClassInput[]
@@ -19072,6 +21855,13 @@ export namespace Prisma {
     connectOrCreate?: WaitlistCreateOrConnectWithoutClassInput | WaitlistCreateOrConnectWithoutClassInput[]
     createMany?: WaitlistCreateManyClassInputEnvelope
     connect?: WaitlistWhereUniqueInput | WaitlistWhereUniqueInput[]
+  }
+
+  export type StudentNextClassOverrideUncheckedCreateNestedManyWithoutClassInput = {
+    create?: XOR<StudentNextClassOverrideCreateWithoutClassInput, StudentNextClassOverrideUncheckedCreateWithoutClassInput> | StudentNextClassOverrideCreateWithoutClassInput[] | StudentNextClassOverrideUncheckedCreateWithoutClassInput[]
+    connectOrCreate?: StudentNextClassOverrideCreateOrConnectWithoutClassInput | StudentNextClassOverrideCreateOrConnectWithoutClassInput[]
+    createMany?: StudentNextClassOverrideCreateManyClassInputEnvelope
+    connect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
   }
 
   export type EnumClassTypeFieldUpdateOperationsInput = {
@@ -19132,6 +21922,20 @@ export namespace Prisma {
     deleteMany?: WaitlistScalarWhereInput | WaitlistScalarWhereInput[]
   }
 
+  export type StudentNextClassOverrideUpdateManyWithoutClassNestedInput = {
+    create?: XOR<StudentNextClassOverrideCreateWithoutClassInput, StudentNextClassOverrideUncheckedCreateWithoutClassInput> | StudentNextClassOverrideCreateWithoutClassInput[] | StudentNextClassOverrideUncheckedCreateWithoutClassInput[]
+    connectOrCreate?: StudentNextClassOverrideCreateOrConnectWithoutClassInput | StudentNextClassOverrideCreateOrConnectWithoutClassInput[]
+    upsert?: StudentNextClassOverrideUpsertWithWhereUniqueWithoutClassInput | StudentNextClassOverrideUpsertWithWhereUniqueWithoutClassInput[]
+    createMany?: StudentNextClassOverrideCreateManyClassInputEnvelope
+    set?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    disconnect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    delete?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    connect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    update?: StudentNextClassOverrideUpdateWithWhereUniqueWithoutClassInput | StudentNextClassOverrideUpdateWithWhereUniqueWithoutClassInput[]
+    updateMany?: StudentNextClassOverrideUpdateManyWithWhereWithoutClassInput | StudentNextClassOverrideUpdateManyWithWhereWithoutClassInput[]
+    deleteMany?: StudentNextClassOverrideScalarWhereInput | StudentNextClassOverrideScalarWhereInput[]
+  }
+
   export type EnrollmentUncheckedUpdateManyWithoutClassNestedInput = {
     create?: XOR<EnrollmentCreateWithoutClassInput, EnrollmentUncheckedCreateWithoutClassInput> | EnrollmentCreateWithoutClassInput[] | EnrollmentUncheckedCreateWithoutClassInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutClassInput | EnrollmentCreateOrConnectWithoutClassInput[]
@@ -19158,6 +21962,20 @@ export namespace Prisma {
     update?: WaitlistUpdateWithWhereUniqueWithoutClassInput | WaitlistUpdateWithWhereUniqueWithoutClassInput[]
     updateMany?: WaitlistUpdateManyWithWhereWithoutClassInput | WaitlistUpdateManyWithWhereWithoutClassInput[]
     deleteMany?: WaitlistScalarWhereInput | WaitlistScalarWhereInput[]
+  }
+
+  export type StudentNextClassOverrideUncheckedUpdateManyWithoutClassNestedInput = {
+    create?: XOR<StudentNextClassOverrideCreateWithoutClassInput, StudentNextClassOverrideUncheckedCreateWithoutClassInput> | StudentNextClassOverrideCreateWithoutClassInput[] | StudentNextClassOverrideUncheckedCreateWithoutClassInput[]
+    connectOrCreate?: StudentNextClassOverrideCreateOrConnectWithoutClassInput | StudentNextClassOverrideCreateOrConnectWithoutClassInput[]
+    upsert?: StudentNextClassOverrideUpsertWithWhereUniqueWithoutClassInput | StudentNextClassOverrideUpsertWithWhereUniqueWithoutClassInput[]
+    createMany?: StudentNextClassOverrideCreateManyClassInputEnvelope
+    set?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    disconnect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    delete?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    connect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+    update?: StudentNextClassOverrideUpdateWithWhereUniqueWithoutClassInput | StudentNextClassOverrideUpdateWithWhereUniqueWithoutClassInput[]
+    updateMany?: StudentNextClassOverrideUpdateManyWithWhereWithoutClassInput | StudentNextClassOverrideUpdateManyWithWhereWithoutClassInput[]
+    deleteMany?: StudentNextClassOverrideScalarWhereInput | StudentNextClassOverrideScalarWhereInput[]
   }
 
   export type StudentCreateNestedOneWithoutEnrollmentsInput = {
@@ -19286,6 +22104,34 @@ export namespace Prisma {
     upsert?: ClassUpsertWithoutWaitlistsInput
     connect?: ClassWhereUniqueInput
     update?: XOR<XOR<ClassUpdateToOneWithWhereWithoutWaitlistsInput, ClassUpdateWithoutWaitlistsInput>, ClassUncheckedUpdateWithoutWaitlistsInput>
+  }
+
+  export type StudentCreateNestedOneWithoutNextClassOverridesInput = {
+    create?: XOR<StudentCreateWithoutNextClassOverridesInput, StudentUncheckedCreateWithoutNextClassOverridesInput>
+    connectOrCreate?: StudentCreateOrConnectWithoutNextClassOverridesInput
+    connect?: StudentWhereUniqueInput
+  }
+
+  export type ClassCreateNestedOneWithoutNextClassOverridesInput = {
+    create?: XOR<ClassCreateWithoutNextClassOverridesInput, ClassUncheckedCreateWithoutNextClassOverridesInput>
+    connectOrCreate?: ClassCreateOrConnectWithoutNextClassOverridesInput
+    connect?: ClassWhereUniqueInput
+  }
+
+  export type StudentUpdateOneRequiredWithoutNextClassOverridesNestedInput = {
+    create?: XOR<StudentCreateWithoutNextClassOverridesInput, StudentUncheckedCreateWithoutNextClassOverridesInput>
+    connectOrCreate?: StudentCreateOrConnectWithoutNextClassOverridesInput
+    upsert?: StudentUpsertWithoutNextClassOverridesInput
+    connect?: StudentWhereUniqueInput
+    update?: XOR<XOR<StudentUpdateToOneWithWhereWithoutNextClassOverridesInput, StudentUpdateWithoutNextClassOverridesInput>, StudentUncheckedUpdateWithoutNextClassOverridesInput>
+  }
+
+  export type ClassUpdateOneRequiredWithoutNextClassOverridesNestedInput = {
+    create?: XOR<ClassCreateWithoutNextClassOverridesInput, ClassUncheckedCreateWithoutNextClassOverridesInput>
+    connectOrCreate?: ClassCreateOrConnectWithoutNextClassOverridesInput
+    upsert?: ClassUpsertWithoutNextClassOverridesInput
+    connect?: ClassWhereUniqueInput
+    update?: XOR<XOR<ClassUpdateToOneWithWhereWithoutNextClassOverridesInput, ClassUpdateWithoutNextClassOverridesInput>, ClassUncheckedUpdateWithoutNextClassOverridesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -19826,6 +22672,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
     waitlists?: WaitlistCreateNestedManyWithoutStudentInput
+    nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutFamilyInput = {
@@ -19838,6 +22685,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutStudentInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutFamilyInput = {
@@ -20162,6 +23010,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type StudentNextClassOverrideCreateWithoutStudentInput = {
+    id?: string
+    academicYear: string
+    adminId: string
+    createdAt?: Date | string
+    class: ClassCreateNestedOneWithoutNextClassOverridesInput
+  }
+
+  export type StudentNextClassOverrideUncheckedCreateWithoutStudentInput = {
+    id?: string
+    academicYear: string
+    classId: string
+    adminId: string
+    createdAt?: Date | string
+  }
+
+  export type StudentNextClassOverrideCreateOrConnectWithoutStudentInput = {
+    where: StudentNextClassOverrideWhereUniqueInput
+    create: XOR<StudentNextClassOverrideCreateWithoutStudentInput, StudentNextClassOverrideUncheckedCreateWithoutStudentInput>
+  }
+
+  export type StudentNextClassOverrideCreateManyStudentInputEnvelope = {
+    data: StudentNextClassOverrideCreateManyStudentInput | StudentNextClassOverrideCreateManyStudentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type FamilyUpsertWithoutStudentsInput = {
     update: XOR<FamilyUpdateWithoutStudentsInput, FamilyUncheckedUpdateWithoutStudentsInput>
     create: XOR<FamilyCreateWithoutStudentsInput, FamilyUncheckedCreateWithoutStudentsInput>
@@ -20247,6 +23121,34 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Waitlist"> | Date | string
   }
 
+  export type StudentNextClassOverrideUpsertWithWhereUniqueWithoutStudentInput = {
+    where: StudentNextClassOverrideWhereUniqueInput
+    update: XOR<StudentNextClassOverrideUpdateWithoutStudentInput, StudentNextClassOverrideUncheckedUpdateWithoutStudentInput>
+    create: XOR<StudentNextClassOverrideCreateWithoutStudentInput, StudentNextClassOverrideUncheckedCreateWithoutStudentInput>
+  }
+
+  export type StudentNextClassOverrideUpdateWithWhereUniqueWithoutStudentInput = {
+    where: StudentNextClassOverrideWhereUniqueInput
+    data: XOR<StudentNextClassOverrideUpdateWithoutStudentInput, StudentNextClassOverrideUncheckedUpdateWithoutStudentInput>
+  }
+
+  export type StudentNextClassOverrideUpdateManyWithWhereWithoutStudentInput = {
+    where: StudentNextClassOverrideScalarWhereInput
+    data: XOR<StudentNextClassOverrideUpdateManyMutationInput, StudentNextClassOverrideUncheckedUpdateManyWithoutStudentInput>
+  }
+
+  export type StudentNextClassOverrideScalarWhereInput = {
+    AND?: StudentNextClassOverrideScalarWhereInput | StudentNextClassOverrideScalarWhereInput[]
+    OR?: StudentNextClassOverrideScalarWhereInput[]
+    NOT?: StudentNextClassOverrideScalarWhereInput | StudentNextClassOverrideScalarWhereInput[]
+    id?: StringFilter<"StudentNextClassOverride"> | string
+    studentId?: StringFilter<"StudentNextClassOverride"> | string
+    academicYear?: StringFilter<"StudentNextClassOverride"> | string
+    classId?: StringFilter<"StudentNextClassOverride"> | string
+    adminId?: StringFilter<"StudentNextClassOverride"> | string
+    createdAt?: DateTimeFilter<"StudentNextClassOverride"> | Date | string
+  }
+
   export type ClassCreateWithoutTeacherInput = {
     id?: string
     name: string
@@ -20261,6 +23163,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     enrollments?: EnrollmentCreateNestedManyWithoutClassInput
     waitlists?: WaitlistCreateNestedManyWithoutClassInput
+    nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutClassInput
   }
 
   export type ClassUncheckedCreateWithoutTeacherInput = {
@@ -20277,6 +23180,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutClassInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutClassInput
   }
 
   export type ClassCreateOrConnectWithoutTeacherInput = {
@@ -20400,6 +23304,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type StudentNextClassOverrideCreateWithoutClassInput = {
+    id?: string
+    academicYear: string
+    adminId: string
+    createdAt?: Date | string
+    student: StudentCreateNestedOneWithoutNextClassOverridesInput
+  }
+
+  export type StudentNextClassOverrideUncheckedCreateWithoutClassInput = {
+    id?: string
+    studentId: string
+    academicYear: string
+    adminId: string
+    createdAt?: Date | string
+  }
+
+  export type StudentNextClassOverrideCreateOrConnectWithoutClassInput = {
+    where: StudentNextClassOverrideWhereUniqueInput
+    create: XOR<StudentNextClassOverrideCreateWithoutClassInput, StudentNextClassOverrideUncheckedCreateWithoutClassInput>
+  }
+
+  export type StudentNextClassOverrideCreateManyClassInputEnvelope = {
+    data: StudentNextClassOverrideCreateManyClassInput | StudentNextClassOverrideCreateManyClassInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TeacherUpsertWithoutClassesInput = {
     update: XOR<TeacherUpdateWithoutClassesInput, TeacherUncheckedUpdateWithoutClassesInput>
     create: XOR<TeacherCreateWithoutClassesInput, TeacherUncheckedCreateWithoutClassesInput>
@@ -20461,6 +23391,22 @@ export namespace Prisma {
     data: XOR<WaitlistUpdateManyMutationInput, WaitlistUncheckedUpdateManyWithoutClassInput>
   }
 
+  export type StudentNextClassOverrideUpsertWithWhereUniqueWithoutClassInput = {
+    where: StudentNextClassOverrideWhereUniqueInput
+    update: XOR<StudentNextClassOverrideUpdateWithoutClassInput, StudentNextClassOverrideUncheckedUpdateWithoutClassInput>
+    create: XOR<StudentNextClassOverrideCreateWithoutClassInput, StudentNextClassOverrideUncheckedCreateWithoutClassInput>
+  }
+
+  export type StudentNextClassOverrideUpdateWithWhereUniqueWithoutClassInput = {
+    where: StudentNextClassOverrideWhereUniqueInput
+    data: XOR<StudentNextClassOverrideUpdateWithoutClassInput, StudentNextClassOverrideUncheckedUpdateWithoutClassInput>
+  }
+
+  export type StudentNextClassOverrideUpdateManyWithWhereWithoutClassInput = {
+    where: StudentNextClassOverrideScalarWhereInput
+    data: XOR<StudentNextClassOverrideUpdateManyMutationInput, StudentNextClassOverrideUncheckedUpdateManyWithoutClassInput>
+  }
+
   export type StudentCreateWithoutEnrollmentsInput = {
     id?: string
     name: string
@@ -20471,6 +23417,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutStudentsInput
     waitlists?: WaitlistCreateNestedManyWithoutStudentInput
+    nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutEnrollmentsInput = {
@@ -20483,6 +23430,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutStudentInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutEnrollmentsInput = {
@@ -20504,6 +23452,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     teacher?: TeacherCreateNestedOneWithoutClassesInput
     waitlists?: WaitlistCreateNestedManyWithoutClassInput
+    nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutClassInput
   }
 
   export type ClassUncheckedCreateWithoutEnrollmentsInput = {
@@ -20520,6 +23469,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutClassInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutClassInput
   }
 
   export type ClassCreateOrConnectWithoutEnrollmentsInput = {
@@ -20582,6 +23532,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutStudentsNestedInput
     waitlists?: WaitlistUpdateManyWithoutStudentNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutEnrollmentsInput = {
@@ -20594,6 +23545,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     waitlists?: WaitlistUncheckedUpdateManyWithoutStudentNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type ClassUpsertWithoutEnrollmentsInput = {
@@ -20621,6 +23573,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teacher?: TeacherUpdateOneWithoutClassesNestedInput
     waitlists?: WaitlistUpdateManyWithoutClassNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutClassNestedInput
   }
 
   export type ClassUncheckedUpdateWithoutEnrollmentsInput = {
@@ -20637,6 +23590,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     waitlists?: WaitlistUncheckedUpdateManyWithoutClassNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutClassNestedInput
   }
 
   export type PaymentUpsertWithWhereUniqueWithoutEnrollmentInput = {
@@ -20733,6 +23687,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutStudentsInput
     enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
+    nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutWaitlistsInput = {
@@ -20745,6 +23700,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutWaitlistsInput = {
@@ -20766,6 +23722,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     teacher?: TeacherCreateNestedOneWithoutClassesInput
     enrollments?: EnrollmentCreateNestedManyWithoutClassInput
+    nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutClassInput
   }
 
   export type ClassUncheckedCreateWithoutWaitlistsInput = {
@@ -20782,6 +23739,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutClassInput
   }
 
   export type ClassCreateOrConnectWithoutWaitlistsInput = {
@@ -20810,6 +23768,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutStudentsNestedInput
     enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutWaitlistsInput = {
@@ -20822,6 +23781,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type ClassUpsertWithoutWaitlistsInput = {
@@ -20849,6 +23809,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teacher?: TeacherUpdateOneWithoutClassesNestedInput
     enrollments?: EnrollmentUpdateManyWithoutClassNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutClassNestedInput
   }
 
   export type ClassUncheckedUpdateWithoutWaitlistsInput = {
@@ -20865,6 +23826,159 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutClassNestedInput
+  }
+
+  export type StudentCreateWithoutNextClassOverridesInput = {
+    id?: string
+    name: string
+    nameEn?: string | null
+    birthDate?: Date | string | null
+    grade?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    family: FamilyCreateNestedOneWithoutStudentsInput
+    enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
+    waitlists?: WaitlistCreateNestedManyWithoutStudentInput
+  }
+
+  export type StudentUncheckedCreateWithoutNextClassOverridesInput = {
+    id?: string
+    name: string
+    nameEn?: string | null
+    birthDate?: Date | string | null
+    grade?: string | null
+    familyId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
+    waitlists?: WaitlistUncheckedCreateNestedManyWithoutStudentInput
+  }
+
+  export type StudentCreateOrConnectWithoutNextClassOverridesInput = {
+    where: StudentWhereUniqueInput
+    create: XOR<StudentCreateWithoutNextClassOverridesInput, StudentUncheckedCreateWithoutNextClassOverridesInput>
+  }
+
+  export type ClassCreateWithoutNextClassOverridesInput = {
+    id?: string
+    name: string
+    nameEn?: string | null
+    type: $Enums.ClassType
+    description?: string | null
+    schedule: JsonNullValueInput | InputJsonValue
+    capacity: number
+    fee: Decimal | DecimalJsLike | number | string
+    year: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    teacher?: TeacherCreateNestedOneWithoutClassesInput
+    enrollments?: EnrollmentCreateNestedManyWithoutClassInput
+    waitlists?: WaitlistCreateNestedManyWithoutClassInput
+  }
+
+  export type ClassUncheckedCreateWithoutNextClassOverridesInput = {
+    id?: string
+    name: string
+    nameEn?: string | null
+    type: $Enums.ClassType
+    description?: string | null
+    teacherId?: string | null
+    schedule: JsonNullValueInput | InputJsonValue
+    capacity: number
+    fee: Decimal | DecimalJsLike | number | string
+    year: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
+    waitlists?: WaitlistUncheckedCreateNestedManyWithoutClassInput
+  }
+
+  export type ClassCreateOrConnectWithoutNextClassOverridesInput = {
+    where: ClassWhereUniqueInput
+    create: XOR<ClassCreateWithoutNextClassOverridesInput, ClassUncheckedCreateWithoutNextClassOverridesInput>
+  }
+
+  export type StudentUpsertWithoutNextClassOverridesInput = {
+    update: XOR<StudentUpdateWithoutNextClassOverridesInput, StudentUncheckedUpdateWithoutNextClassOverridesInput>
+    create: XOR<StudentCreateWithoutNextClassOverridesInput, StudentUncheckedCreateWithoutNextClassOverridesInput>
+    where?: StudentWhereInput
+  }
+
+  export type StudentUpdateToOneWithWhereWithoutNextClassOverridesInput = {
+    where?: StudentWhereInput
+    data: XOR<StudentUpdateWithoutNextClassOverridesInput, StudentUncheckedUpdateWithoutNextClassOverridesInput>
+  }
+
+  export type StudentUpdateWithoutNextClassOverridesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameEn?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    grade?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    family?: FamilyUpdateOneRequiredWithoutStudentsNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
+    waitlists?: WaitlistUpdateManyWithoutStudentNestedInput
+  }
+
+  export type StudentUncheckedUpdateWithoutNextClassOverridesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameEn?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    grade?: NullableStringFieldUpdateOperationsInput | string | null
+    familyId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
+    waitlists?: WaitlistUncheckedUpdateManyWithoutStudentNestedInput
+  }
+
+  export type ClassUpsertWithoutNextClassOverridesInput = {
+    update: XOR<ClassUpdateWithoutNextClassOverridesInput, ClassUncheckedUpdateWithoutNextClassOverridesInput>
+    create: XOR<ClassCreateWithoutNextClassOverridesInput, ClassUncheckedCreateWithoutNextClassOverridesInput>
+    where?: ClassWhereInput
+  }
+
+  export type ClassUpdateToOneWithWhereWithoutNextClassOverridesInput = {
+    where?: ClassWhereInput
+    data: XOR<ClassUpdateWithoutNextClassOverridesInput, ClassUncheckedUpdateWithoutNextClassOverridesInput>
+  }
+
+  export type ClassUpdateWithoutNextClassOverridesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameEn?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumClassTypeFieldUpdateOperationsInput | $Enums.ClassType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    schedule?: JsonNullValueInput | InputJsonValue
+    capacity?: IntFieldUpdateOperationsInput | number
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    year?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teacher?: TeacherUpdateOneWithoutClassesNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutClassNestedInput
+    waitlists?: WaitlistUpdateManyWithoutClassNestedInput
+  }
+
+  export type ClassUncheckedUpdateWithoutNextClassOverridesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameEn?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumClassTypeFieldUpdateOperationsInput | $Enums.ClassType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    schedule?: JsonNullValueInput | InputJsonValue
+    capacity?: IntFieldUpdateOperationsInput | number
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    year?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
+    waitlists?: WaitlistUncheckedUpdateManyWithoutClassNestedInput
   }
 
   export type UserCreateManyFamilyInput = {
@@ -20943,6 +24057,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
     waitlists?: WaitlistUpdateManyWithoutStudentNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutFamilyInput = {
@@ -20955,6 +24070,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
     waitlists?: WaitlistUncheckedUpdateManyWithoutStudentNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateManyWithoutFamilyInput = {
@@ -21063,6 +24179,14 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type StudentNextClassOverrideCreateManyStudentInput = {
+    id?: string
+    academicYear: string
+    classId: string
+    adminId: string
+    createdAt?: Date | string
+  }
+
   export type EnrollmentUpdateWithoutStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
@@ -21113,6 +24237,30 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type StudentNextClassOverrideUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    class?: ClassUpdateOneRequiredWithoutNextClassOverridesNestedInput
+  }
+
+  export type StudentNextClassOverrideUncheckedUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentNextClassOverrideUncheckedUpdateManyWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ClassCreateManyTeacherInput = {
     id?: string
     name: string
@@ -21141,6 +24289,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUpdateManyWithoutClassNestedInput
     waitlists?: WaitlistUpdateManyWithoutClassNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutClassNestedInput
   }
 
   export type ClassUncheckedUpdateWithoutTeacherInput = {
@@ -21157,6 +24306,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
     waitlists?: WaitlistUncheckedUpdateManyWithoutClassNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutClassNestedInput
   }
 
   export type ClassUncheckedUpdateManyWithoutTeacherInput = {
@@ -21186,6 +24336,14 @@ export namespace Prisma {
     studentId: string
     position: number
     notified?: boolean
+    createdAt?: Date | string
+  }
+
+  export type StudentNextClassOverrideCreateManyClassInput = {
+    id?: string
+    studentId: string
+    academicYear: string
+    adminId: string
     createdAt?: Date | string
   }
 
@@ -21236,6 +24394,30 @@ export namespace Prisma {
     studentId?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
     notified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentNextClassOverrideUpdateWithoutClassInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentUpdateOneRequiredWithoutNextClassOverridesNestedInput
+  }
+
+  export type StudentNextClassOverrideUncheckedUpdateWithoutClassInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentNextClassOverrideUncheckedUpdateManyWithoutClassInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -15,6 +15,16 @@ export interface StudentData {
   grade: string | null
 }
 
+interface ReturningStudentInfo {
+  isReturning: boolean
+  previousChineseClass: { id: string; name: string; nameEn: string | null } | null
+  previousArtsClasses: { id: string; name: string; nameEn: string | null }[]
+  suggestedNextChineseClassIds: string[]
+  suggestedArtsClassIds: string[]
+  adminOverrideClassId: string | null
+  isGraduation: boolean
+}
+
 type Step = 1 | 2 | 3 | 4
 
 interface Props {
@@ -22,6 +32,7 @@ interface Props {
   chineseClasses: ClassData[]
   artsClasses: ClassData[]
   preselectedClassIds: string[]
+  returningStudentData: Record<string, ReturningStudentInfo>
 }
 
 // ── Schedule conflict (client-side mirror of enrollment-logic.ts) ─────────────
@@ -171,30 +182,41 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   )
 }
 
-// ── Mini class card (for steps 2 & 3) ────────────────────────────────────────
+// ── Mini class card ───────────────────────────────────────────────────────────
+
+type BadgeVariant = 'recommended' | 'sameAsLastYear' | 'adminOverride' | 'gradeMatch'
+
+const BADGE_CONFIG: Record<BadgeVariant, { text: string; badgeCls: string; borderCls: string; bgCls: string }> = {
+  recommended:   { text: '推荐升级',   badgeCls: 'bg-blue-100 text-blue-700',    borderCls: 'border-blue-300',  bgCls: 'bg-blue-50' },
+  sameAsLastYear:{ text: '去年同款',   badgeCls: 'bg-green-100 text-green-700',  borderCls: 'border-green-300', bgCls: 'bg-green-50' },
+  adminOverride: { text: '管理员推荐', badgeCls: 'bg-yellow-100 text-yellow-700',borderCls: 'border-yellow-300',bgCls: 'bg-yellow-50' },
+  gradeMatch:    { text: '推荐',       badgeCls: 'bg-blue-100 text-blue-700',    borderCls: 'border-blue-200',  bgCls: 'bg-blue-50' },
+}
 
 function MiniClassCard({
   cls,
   selected,
   disabled,
   conflicted,
-  highlighted,
+  badgeVariant,
   onClick,
 }: {
   cls: ClassData
   selected: boolean
   disabled?: boolean
   conflicted?: boolean
-  highlighted?: boolean
+  badgeVariant?: BadgeVariant
   onClick: () => void
 }) {
+  const badge = badgeVariant ? BADGE_CONFIG[badgeVariant] : null
+
   return (
     <div className={clsx(
       'relative rounded-lg border p-4 transition-all',
       selected && 'border-red-500 bg-red-50 ring-2 ring-red-500',
       conflicted && !selected && 'border-orange-300 bg-orange-50',
-      highlighted && !selected && !conflicted && 'border-blue-300 bg-blue-50',
-      !selected && !conflicted && !highlighted && 'border-gray-200 bg-white hover:border-gray-300',
+      badge && !selected && !conflicted && `${badge.borderCls} ${badge.bgCls}`,
+      !selected && !conflicted && !badge && 'border-gray-200 bg-white hover:border-gray-300',
       disabled && 'opacity-60'
     )}>
       {conflicted && (
@@ -202,19 +224,19 @@ function MiniClassCard({
           时间冲突
         </span>
       )}
-      {highlighted && !conflicted && (
-        <span className="absolute right-2 top-2 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
-          推荐
+      {badge && !conflicted && (
+        <span className={`absolute right-2 top-2 rounded-full px-2 py-0.5 text-xs font-medium ${badge.badgeCls}`}>
+          {badge.text}
         </span>
       )}
-      <h4 className="text-sm font-semibold text-gray-900">{cls.name}</h4>
+      <h4 className="text-sm font-semibold text-gray-900 pr-20">{cls.name}</h4>
       {cls.nameEn && <p className="text-xs text-gray-400">{cls.nameEn}</p>}
       <p className="mt-2 text-xs text-gray-500">{fmtSchedule(cls.schedule)}</p>
       {cls.teacher && <p className="text-xs text-gray-500">老师：{cls.teacher.name}</p>}
       <div className="mt-2 flex items-center justify-between">
         <span className="text-sm font-medium text-gray-900">${cls.fee}</span>
         {cls.spotsRemaining === 0 ? (
-          <span className="text-xs text-red-600">已满</span>
+          <span className="text-xs text-red-600">已满 · 可候补</span>
         ) : (
           <span className="text-xs text-green-600">余 {cls.spotsRemaining} 位</span>
         )}
@@ -229,15 +251,48 @@ function MiniClassCard({
             : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
         )}
       >
-        {selected ? '已选 ✓' : conflicted ? '时间冲突' : '选择'}
+        {selected ? '已选 ✓' : conflicted ? '时间冲突' : cls.spotsRemaining === 0 ? '选择（加候补）' : '选择'}
       </button>
+    </div>
+  )
+}
+
+// ── Returning student banner ──────────────────────────────────────────────────
+
+function ReturningBanner({ info }: { info: ReturningStudentInfo }) {
+  if (!info.isReturning) return null
+  return (
+    <div className="mb-5 rounded-lg border border-amber-200 bg-amber-50 p-4">
+      <p className="font-semibold text-amber-900">欢迎回来！/ Welcome Back!</p>
+      {info.isGraduation ? (
+        <p className="mt-1 text-sm text-amber-800">
+          恭喜！该学生已完成最高级别，请联系学校了解进一步安排。
+          <br />
+          <span className="text-xs text-amber-700">
+            Congratulations! This student has completed the highest level. Please contact the school.
+          </span>
+        </p>
+      ) : (
+        <p className="mt-1 text-sm text-amber-800">
+          根据去年的报名记录，我们已为您预选了推荐班级，您可以自由调整。
+          <br />
+          <span className="text-xs text-amber-700">
+            Based on last year's enrollment, we've pre-selected recommended classes. You may change them freely.
+          </span>
+        </p>
+      )}
+      {info.previousChineseClass && (
+        <p className="mt-2 text-xs text-amber-700">
+          去年中文班 / Last year's Chinese class：<span className="font-medium">{info.previousChineseClass.name}</span>
+        </p>
+      )}
     </div>
   )
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, preselectedClassIds }: Props) {
+export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, preselectedClassIds, returningStudentData }: Props) {
   const router = useRouter()
   const [step, setStep] = useState<Step>(1)
   const [students, setStudents] = useState<StudentData[]>(initialStudents)
@@ -255,6 +310,7 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
   const selectedStudent = students.find(s => s.id === selectedStudentId)
   const selectedChineseClass = chineseClasses.find(c => c.id === selectedChineseId)
   const selectedArtsClasses = artsClasses.filter(c => selectedArtsIds.has(c.id))
+  const currentReturningInfo = selectedStudentId ? returningStudentData[selectedStudentId] : undefined
 
   const allSelectedClassIds = [
     ...(selectedChineseId ? [selectedChineseId] : []),
@@ -271,6 +327,19 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
       if (other && hasScheduleConflict(cls, other)) return true
     }
     return false
+  }
+
+  function handleSelectStudent(studentId: string) {
+    setSelectedStudentId(studentId)
+    const info = returningStudentData[studentId]
+    if (info?.isReturning) {
+      const chineseId = info.adminOverrideClassId ?? info.suggestedNextChineseClassIds[0] ?? null
+      setSelectedChineseId(chineseId)
+      setSelectedArtsIds(new Set(info.suggestedArtsClassIds))
+    } else {
+      setSelectedChineseId(null)
+      setSelectedArtsIds(new Set())
+    }
   }
 
   function toggleArts(cls: ClassData) {
@@ -293,7 +362,7 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
       })
       const json = await res.json()
       if (!json.success) {
-        setSubmitError('报名失败，请重试 / Enrollment failed, please try again')
+        setSubmitError(json.error ?? '报名失败，请重试 / Enrollment failed, please try again')
         return
       }
       const enrollmentIds = json.data.enrollments.map((e: { id: string }) => e.id).join(',')
@@ -313,24 +382,37 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
         <h2 className="text-lg font-semibold text-gray-900 mb-1">选择学生</h2>
         <p className="text-sm text-gray-400 mb-5">Select Student</p>
         <div className="grid gap-3 sm:grid-cols-2 mb-4">
-          {students.map(s => (
-            <button key={s.id} onClick={() => setSelectedStudentId(s.id)}
-              className={clsx(
-                'rounded-lg border p-4 text-left transition-all',
-                selectedStudentId === s.id
-                  ? 'border-red-500 bg-red-50 ring-2 ring-red-500'
-                  : 'border-gray-200 bg-white hover:border-gray-300'
-              )}>
-              <p className="font-medium text-gray-900">{s.name}</p>
-              {s.nameEn && <p className="text-sm text-gray-500">{s.nameEn}</p>}
-              {s.grade && <p className="mt-1 text-xs text-gray-400">年级：{s.grade}</p>}
-              {s.birthDate && (
-                <p className="text-xs text-gray-400">
-                  生日：{new Date(s.birthDate).toLocaleDateString('zh-CN')}
-                </p>
-              )}
-            </button>
-          ))}
+          {students.map(s => {
+            const info = returningStudentData[s.id]
+            const isSelected = selectedStudentId === s.id
+            return (
+              <button key={s.id} onClick={() => handleSelectStudent(s.id)}
+                className={clsx(
+                  'rounded-lg border p-4 text-left transition-all',
+                  isSelected
+                    ? 'border-red-500 bg-red-50 ring-2 ring-red-500'
+                    : 'border-gray-200 bg-white hover:border-gray-300'
+                )}>
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="font-medium text-gray-900">{s.name}</p>
+                    {s.nameEn && <p className="text-sm text-gray-500">{s.nameEn}</p>}
+                    {s.grade && <p className="mt-1 text-xs text-gray-400">年级：{s.grade}</p>}
+                    {s.birthDate && (
+                      <p className="text-xs text-gray-400">
+                        生日：{new Date(s.birthDate).toLocaleDateString('zh-CN')}
+                      </p>
+                    )}
+                  </div>
+                  {info?.isReturning && (
+                    <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                      老生
+                    </span>
+                  )}
+                </div>
+              </button>
+            )
+          })}
           <button onClick={() => setShowAddModal(true)}
             className="rounded-lg border-2 border-dashed border-gray-300 p-4 text-center text-sm text-gray-500 hover:border-red-300 hover:text-red-600 transition-colors">
             <span className="text-2xl">+</span>
@@ -342,21 +424,32 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
   }
 
   function renderStep2() {
+    const info = currentReturningInfo
     return (
       <div>
+        {info && <ReturningBanner info={info} />}
         <h2 className="text-lg font-semibold text-gray-900 mb-1">选择中文班</h2>
         <p className="text-sm text-gray-400 mb-1">Select Chinese Class (required, choose one)</p>
-        {selectedStudent?.grade && (
-          <p className="text-xs text-blue-600 mb-4">蓝色标注为推荐年级班级 / Blue = recommended for {selectedStudent.grade}</p>
+        {info?.isReturning && !info.isGraduation && info.suggestedNextChineseClassIds.length > 0 && (
+          <p className="text-xs text-blue-600 mb-4">蓝色高亮为推荐升级班级 / Blue = recommended next level</p>
         )}
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {chineseClasses.map(cls => {
-            const highlighted = !!(selectedStudent?.grade &&
-              (cls.name.includes(selectedStudent.grade) || cls.nameEn?.includes(selectedStudent.grade)))
+            let badgeVariant: BadgeVariant | undefined
+            if (info?.isReturning) {
+              if (info.adminOverrideClassId === cls.id) {
+                badgeVariant = 'adminOverride'
+              } else if (info.suggestedNextChineseClassIds.includes(cls.id)) {
+                badgeVariant = 'recommended'
+              }
+            } else if (selectedStudent?.grade &&
+              (cls.name.includes(selectedStudent.grade) || cls.nameEn?.includes(selectedStudent.grade))) {
+              badgeVariant = 'gradeMatch'
+            }
             return (
               <MiniClassCard key={cls.id} cls={cls}
                 selected={selectedChineseId === cls.id}
-                highlighted={highlighted}
+                badgeVariant={badgeVariant}
                 onClick={() => setSelectedChineseId(prev => prev === cls.id ? null : cls.id)}
               />
             )
@@ -367,8 +460,10 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
   }
 
   function renderStep3() {
+    const info = currentReturningInfo
     return (
       <div>
+        {info && <ReturningBanner info={info} />}
         <h2 className="text-lg font-semibold text-gray-900 mb-1">选择才艺班</h2>
         <p className="text-sm text-gray-400 mb-5">Select Arts Classes (optional, choose any)</p>
         {artsClasses.length === 0 ? (
@@ -377,11 +472,16 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {artsClasses.map(cls => {
               const conflicted = isConflictedWithSelections(cls)
+              let badgeVariant: BadgeVariant | undefined
+              if (info?.isReturning && info.suggestedArtsClassIds.includes(cls.id)) {
+                badgeVariant = 'sameAsLastYear'
+              }
               return (
                 <MiniClassCard key={cls.id} cls={cls}
                   selected={selectedArtsIds.has(cls.id)}
                   conflicted={conflicted && !selectedArtsIds.has(cls.id)}
                   disabled={conflicted}
+                  badgeVariant={badgeVariant}
                   onClick={() => toggleArts(cls)}
                 />
               )
@@ -393,6 +493,7 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
   }
 
   function renderStep4() {
+    const info = currentReturningInfo
     return (
       <div>
         <h2 className="text-lg font-semibold text-gray-900 mb-1">确认报名信息</h2>
@@ -401,7 +502,14 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
           {/* Student */}
           <div className="p-4">
             <p className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-2">学生 / Student</p>
-            <p className="font-medium text-gray-900">{selectedStudent?.name}</p>
+            <div className="flex items-center gap-2">
+              <p className="font-medium text-gray-900">{selectedStudent?.name}</p>
+              {info?.isReturning && (
+                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                  老生续报
+                </span>
+              )}
+            </div>
             {selectedStudent?.nameEn && <p className="text-sm text-gray-500">{selectedStudent.nameEn}</p>}
             {selectedStudent?.grade && <p className="text-sm text-gray-500">年级：{selectedStudent.grade}</p>}
           </div>
@@ -500,7 +608,7 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
           onClose={() => setShowAddModal(false)}
           onAdded={(s) => {
             setStudents(prev => [...prev, s])
-            setSelectedStudentId(s.id)
+            handleSelectStudent(s.id)
             setShowAddModal(false)
           }}
         />
