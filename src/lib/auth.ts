@@ -48,6 +48,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.id = user.id as string
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         token.role = (user as any).role as string
+      } else if (token.id) {
+        // Re-read role on every token refresh so DB role changes take effect
+        // without requiring the user to sign out and back in.
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { role: true },
+        })
+        if (dbUser) token.role = dbUser.role
       }
       return token
     },
