@@ -303,6 +303,7 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
   const [selectedArtsIds, setSelectedArtsIds] = useState<Set<string>>(
     new Set(preselectedClassIds.filter(id => artsClasses.some(c => c.id === id)))
   )
+  const [languageTab, setLanguageTab] = useState<'CHL' | 'CSL'>('CHL')
   const [showAddModal, setShowAddModal] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -425,16 +426,44 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
 
   function renderStep2() {
     const info = currentReturningInfo
+    const chlClasses = chineseClasses.filter((c) => !c.nameEn?.startsWith('CSL'))
+    const cslClasses = chineseClasses.filter((c) => c.nameEn?.startsWith('CSL'))
+    const activeClasses = languageTab === 'CHL' ? chlClasses : cslClasses
+
     return (
       <div>
         {info && <ReturningBanner info={info} />}
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">选择中文班</h2>
-        <p className="text-sm text-gray-400 mb-1">Select Chinese Class (required, choose one)</p>
+        <h2 className="text-lg font-semibold text-gray-900 mb-1">选择中文课程</h2>
+        <p className="text-sm text-gray-400 mb-4">Select Language Class (choose 1 — required)</p>
+
+        {/* CHL / CSL tabs */}
+        <div className="flex gap-0 mb-5 border-b border-gray-200">
+          {(
+            [
+              { key: 'CHL', label: 'CHL 母语班', count: chlClasses.length },
+              { key: 'CSL', label: 'CSL 第二语言班', count: cslClasses.length },
+            ] as const
+          ).map(({ key, label, count }) => (
+            <button
+              key={key}
+              onClick={() => setLanguageTab(key)}
+              className={clsx(
+                'px-5 py-2 text-sm font-medium border-b-2 -mb-px transition-colors',
+                languageTab === key
+                  ? 'border-red-600 text-red-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              )}
+            >
+              {label} <span className="ml-1 text-xs opacity-70">({count})</span>
+            </button>
+          ))}
+        </div>
+
         {info?.isReturning && !info.isGraduation && info.suggestedNextChineseClassIds.length > 0 && (
           <p className="text-xs text-blue-600 mb-4">蓝色高亮为推荐升级班级 / Blue = recommended next level</p>
         )}
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {chineseClasses.map(cls => {
+          {activeClasses.map((cls) => {
             let badgeVariant: BadgeVariant | undefined
             if (info?.isReturning) {
               if (info.adminOverrideClassId === cls.id) {
@@ -442,15 +471,19 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
               } else if (info.suggestedNextChineseClassIds.includes(cls.id)) {
                 badgeVariant = 'recommended'
               }
-            } else if (selectedStudent?.grade &&
-              (cls.name.includes(selectedStudent.grade) || cls.nameEn?.includes(selectedStudent.grade))) {
+            } else if (
+              selectedStudent?.grade &&
+              (cls.name.includes(selectedStudent.grade) || cls.nameEn?.includes(selectedStudent.grade))
+            ) {
               badgeVariant = 'gradeMatch'
             }
             return (
-              <MiniClassCard key={cls.id} cls={cls}
+              <MiniClassCard
+                key={cls.id}
+                cls={cls}
                 selected={selectedChineseId === cls.id}
                 badgeVariant={badgeVariant}
-                onClick={() => setSelectedChineseId(prev => prev === cls.id ? null : cls.id)}
+                onClick={() => setSelectedChineseId((prev) => (prev === cls.id ? null : cls.id))}
               />
             )
           })}
@@ -464,8 +497,8 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
     return (
       <div>
         {info && <ReturningBanner info={info} />}
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">选择才艺班</h2>
-        <p className="text-sm text-gray-400 mb-5">Select Arts Classes (optional, choose any)</p>
+        <h2 className="text-lg font-semibold text-gray-900 mb-1">选择才艺课程</h2>
+        <p className="text-sm text-gray-400 mb-5">Select Arts Class (optional, Sunday 11:00 AM - 12:00 PM)</p>
         {artsClasses.length === 0 ? (
           <p className="text-sm text-gray-400">暂无才艺班 / No arts classes available</p>
         ) : (
