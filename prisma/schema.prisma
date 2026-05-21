@@ -144,8 +144,38 @@ model Class {
   enrollments        Enrollment[]
   waitlists          Waitlist[]
   nextClassOverrides StudentNextClassOverride[]
+  textbooks          Textbook[]
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
+}
+
+model Textbook {
+  id            String   @id @default(cuid())
+  classId       String
+  name          String
+  nameZh        String
+  description   String?
+  descriptionZh String?
+  price         Decimal  @db.Decimal(10, 2)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  class           Class                @relation(fields: [classId], references: [id], onDelete: Cascade)
+  enrollmentBooks EnrollmentTextbook[]
+}
+
+model EnrollmentTextbook {
+  id           String   @id @default(cuid())
+  enrollmentId String
+  textbookId   String
+  price        Decimal  @db.Decimal(10, 2)
+  createdAt    DateTime @default(now())
+
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  textbook   Textbook   @relation(fields: [textbookId], references: [id])
+
+  @@unique([enrollmentId, textbookId])
 }
 
 model Enrollment {
@@ -156,6 +186,7 @@ model Enrollment {
   class     Class            @relation(fields: [classId], references: [id])
   status    EnrollmentStatus @default(PENDING)
   payments  Payment[]
+  textbooks EnrollmentTextbook[]
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
 

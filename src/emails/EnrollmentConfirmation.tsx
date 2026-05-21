@@ -23,6 +23,11 @@ export interface EnrollmentConfirmationProps {
     schedule?: string
     fee: string
   }[]
+  textbooks?: {
+    name: string
+    nameZh: string
+    price: string
+  }[]
   total: string
   paymentMethod: 'STRIPE' | 'PAYPAL'
   transactionId: string
@@ -32,6 +37,7 @@ export function EnrollmentConfirmation({
   parentName,
   studentName,
   classes,
+  textbooks = [],
   total,
   paymentMethod,
   transactionId,
@@ -103,6 +109,27 @@ export function EnrollmentConfirmation({
                 </Column>
               </Row>
             </Section>
+
+            {/* Textbooks section */}
+            {textbooks.length > 0 && (
+              <Section style={textbookBox}>
+                <Text style={{ ...p, margin: '0 0 8px', fontWeight: 'bold' }}>
+                  教材订购 / Textbooks Ordered
+                </Text>
+                {textbooks.map((tb, i) => (
+                  <Row key={i}>
+                    <Column style={{ ...cell, paddingTop: 4, paddingBottom: 4 }}>
+                      <Text style={{ ...pEn, margin: 0 }}>
+                        {tb.name} / {tb.nameZh} — ${parseFloat(tb.price).toFixed(2)}
+                      </Text>
+                    </Column>
+                  </Row>
+                ))}
+                <Text style={{ ...pEn, margin: '8px 0 0', color: '#92400e' }}>
+                  请在上课当日到校领取教材。/ Please pick up your textbooks at school on class day.
+                </Text>
+              </Section>
+            )}
 
             {/* Payment info */}
             <Section style={paymentBox}>
@@ -196,6 +223,14 @@ const rowOdd: React.CSSProperties = { backgroundColor: '#f9fafb' }
 const totalRow: React.CSSProperties = { backgroundColor: '#fef2f2', borderTop: '2px solid #fca5a5' }
 
 const cell: React.CSSProperties = { padding: '10px 12px', fontSize: 13, verticalAlign: 'top' }
+
+const textbookBox: React.CSSProperties = {
+  backgroundColor: '#fffbeb',
+  border: '1px solid #fde68a',
+  borderRadius: 6,
+  padding: '12px 16px',
+  margin: '16px 0',
+}
 
 const paymentBox: React.CSSProperties = {
   backgroundColor: '#f9fafb',

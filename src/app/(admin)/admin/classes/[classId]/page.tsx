@@ -3,6 +3,8 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { ClassDetailClient } from './ClassDetailClient'
 import type { EnrolledStudent, AvailableClass } from './ClassDetailClient'
+import { TextbookManager } from './TextbookManager'
+import type { TextbookRow } from './TextbookManager'
 
 function fmtSchedule(s: unknown): string {
   if (!s || typeof s !== 'object') return '—'
@@ -23,7 +25,10 @@ export default async function ClassDetailPage({
   const [cls, enrollments, allSameTypeClasses] = await Promise.all([
     prisma.class.findUnique({
       where: { id: classId },
-      include: { teacher: { select: { name: true } } },
+      include: {
+        teacher: { select: { name: true } },
+        textbooks: { where: { isActive: true }, orderBy: { createdAt: 'asc' } },
+      },
     }),
     prisma.enrollment.findMany({
       where: { classId, status: 'CONFIRMED' },
@@ -35,6 +40,7 @@ export default async function ClassDetailPage({
             },
           },
         },
+        textbooks: { include: { textbook: { select: { name: true } } } },
       },
       orderBy: { createdAt: 'asc' },
     }),
@@ -58,6 +64,7 @@ export default async function ClassDetailPage({
       phone: parent?.phone ?? null,
       email: parent?.email ?? '—',
       enrolledAt: e.createdAt.toISOString(),
+      textbookNames: e.textbooks.map((et) => et.textbook.name),
     }
   })
 
@@ -119,6 +126,24 @@ export default async function ClassDetailPage({
           availableClasses={availableClasses}
         />
       </div>
+
+      {/* Textbook management — language classes only */}
+      {cls.type === 'CHINESE' && (
+        <div>
+          <TextbookManager
+            classId={classId}
+            initialTextbooks={cls.textbooks.map((t): TextbookRow => ({
+              id: t.id,
+              name: t.name,
+              nameZh: t.nameZh,
+              description: t.description,
+              descriptionZh: t.descriptionZh,
+              price: t.price.toString(),
+              isActive: t.isActive,
+            }))}
+          />
+        </div>
+      )}
     </div>
   )
 }

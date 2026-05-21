@@ -344,6 +344,44 @@ async function main() {
 
   console.log('  ✓ Arts classes created (5)')
 
+  // ── Sample textbooks ──────────────────────────────────────────────────────────
+  const sampleTextbooks = [
+    {
+      id: 'textbook-chl3a-book',
+      classId: 'chl-3a',
+      name: 'CHL Level 3A Textbook',
+      nameZh: '三班A课本',
+      description: 'Main textbook for CHL Level 3A',
+      price: 25.00,
+    },
+    {
+      id: 'textbook-chl3a-workbook',
+      classId: 'chl-3a',
+      name: 'CHL Level 3A Workbook',
+      nameZh: '三班A练习册',
+      description: 'Workbook for CHL Level 3A',
+      price: 15.00,
+    },
+    {
+      id: 'textbook-csl1a-book',
+      classId: 'csl-1a',
+      name: 'CSL Level 1A Textbook',
+      nameZh: 'CSL一班A课本',
+      description: 'Main textbook for CSL Level 1A',
+      price: 20.00,
+    },
+  ]
+
+  for (const tb of sampleTextbooks) {
+    await prisma.textbook.upsert({
+      where: { id: tb.id },
+      update: { name: tb.name, nameZh: tb.nameZh, price: tb.price },
+      create: { ...tb, isActive: true },
+    })
+  }
+
+  console.log('  ✓ Sample textbooks created (3)')
+
   // ── Admin account ────────────────────────────────────────────────────────────
   const adminHash = await bcrypt.hash('Admin123!', 12)
   await prisma.user.upsert({
@@ -444,6 +482,7 @@ async function main() {
   console.log('\n✅ Seeding complete!')
   console.log('\nSummary:')
   console.log('  Teachers:          19 (language) + 4 (arts) + 汪倩 (shared) = 23')
+  console.log('  Sample textbooks:  CHL 3A (×2), CSL 1A (×1)')
   console.log('  CHL language:      15')
   console.log('  CSL language:       4')
   console.log('  Total language:    19')

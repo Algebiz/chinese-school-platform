@@ -114,10 +114,11 @@ function fmtSchedule(schedule: unknown): string {
 export async function sendEnrollmentConfirmationByIds(
   studentId: string,
   classIds: string[],
+  textbookIds: string[],
   paymentMethod: 'STRIPE' | 'PAYPAL',
   transactionId: string
 ): Promise<void> {
-  const [student, classes] = await Promise.all([
+  const [student, classes, textbooks] = await Promise.all([
     prisma.student.findUnique({
       where: { id: studentId },
       include: {
@@ -128,12 +129,19 @@ export async function sendEnrollmentConfirmationByIds(
       where: { id: { in: classIds } },
       include: { teacher: { select: { name: true } } },
     }),
+    textbookIds.length > 0
+      ? prisma.textbook.findMany({
+          where: { id: { in: textbookIds } },
+          select: { name: true, nameZh: true, price: true },
+        })
+      : [],
   ])
 
   const parentUser = student?.family?.users[0]
   if (!parentUser?.email || !student) return
 
-  const total = classes.reduce((sum, c) => sum + parseFloat(c.fee.toString()), 0)
+  const tuitionTotal = classes.reduce((sum, c) => sum + parseFloat(c.fee.toString()), 0)
+  const textbookTotal = textbooks.reduce((sum, t) => sum + parseFloat(t.price.toString()), 0)
 
   await sendEnrollmentConfirmation(parentUser.email, {
     parentName: parentUser.name ?? '家长',
@@ -144,7 +152,12 @@ export async function sendEnrollmentConfirmationByIds(
       schedule: fmtSchedule(c.schedule),
       fee: c.fee.toString(),
     })),
-    total: total.toFixed(2),
+    textbooks: textbooks.map((t) => ({
+      name: t.name,
+      nameZh: t.nameZh,
+      price: t.price.toString(),
+    })),
+    total: (tuitionTotal + textbookTotal).toFixed(2),
     paymentMethod,
     transactionId,
   })

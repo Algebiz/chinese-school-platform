@@ -6,11 +6,12 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
 interface PayPalButtonProps {
   studentId: string
   classIds: string[]
+  textbookIds?: string[]
   academicYear: string
   onSuccess: () => void
 }
 
-export function PayPalButton({ studentId, classIds, academicYear, onSuccess }: PayPalButtonProps) {
+export function PayPalButton({ studentId, classIds, textbookIds = [], academicYear, onSuccess }: PayPalButtonProps) {
   const [error, setError] = useState<string | null>(null)
 
   return (
@@ -32,7 +33,7 @@ export function PayPalButton({ studentId, classIds, academicYear, onSuccess }: P
             const res = await fetch('/api/payments/paypal/create-order', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ studentId, classIds, academicYear }),
+              body: JSON.stringify({ studentId, classIds, textbookIds, academicYear }),
             })
             const json = await res.json()
             if (!json.success) {
@@ -48,6 +49,7 @@ export function PayPalButton({ studentId, classIds, academicYear, onSuccess }: P
                 orderId: data.orderID,
                 studentId,
                 classIds,
+                textbookIds,
                 academicYear,
               }),
             })

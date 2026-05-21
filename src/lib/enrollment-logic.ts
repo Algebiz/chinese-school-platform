@@ -85,31 +85,57 @@ export async function checkCapacity(
   return { available: remaining > 0, remaining }
 }
 
-export async function calculateTotalFee(classIds: string[]): Promise<{
-  total: Prisma.Decimal
-  breakdown: { classId: string; className: string; fee: Prisma.Decimal }[]
+export async function calculateTotalFee(
+  classIds: string[],
+  textbookIds: string[] = []
+): Promise<{
+  grandTotal: Prisma.Decimal
+  tuitionTotal: Prisma.Decimal
+  textbookTotal: Prisma.Decimal
+  breakdown: (
+    | { type: 'tuition'; classId: string; className: string; fee: Prisma.Decimal }
+    | { type: 'textbook'; textbookId: string; textbookName: string; classId: string; fee: Prisma.Decimal }
+  )[]
 }> {
-  const classes = await prisma.class.findMany({
-    where: { id: { in: classIds } },
-    select: { id: true, name: true, fee: true },
-  })
+  const [classes, textbooks] = await Promise.all([
+    prisma.class.findMany({ where: { id: { in: classIds } }, select: { id: true, name: true, fee: true } }),
+    textbookIds.length > 0
+      ? prisma.textbook.findMany({ where: { id: { in: textbookIds }, isActive: true }, select: { id: true, name: true, classId: true, price: true } })
+      : [],
+  ])
 
-  let total = new Prisma.Decimal(0)
-  const breakdown = classes.map((c) => {
-    total = total.plus(c.fee)
-    return { classId: c.id, className: c.name, fee: c.fee }
-  })
+  let tuitionTotal = new Prisma.Decimal(0)
+  let textbookTotal = new Prisma.Decimal(0)
+  const breakdown: Awaited<ReturnType<typeof calculateTotalFee>>['breakdown'] = []
 
-  return { total, breakdown }
+  for (const c of classes) {
+    tuitionTotal = tuitionTotal.plus(c.fee)
+    breakdown.push({ type: 'tuition', classId: c.id, className: c.name, fee: c.fee })
+  }
+  for (const t of textbooks) {
+    textbookTotal = textbookTotal.plus(t.price)
+    breakdown.push({ type: 'textbook', textbookId: t.id, textbookName: t.name, classId: t.classId, fee: t.price })
+  }
+
+  return { grandTotal: tuitionTotal.plus(textbookTotal), tuitionTotal, textbookTotal, breakdown }
 }
 
 export async function createEnrollments(
   studentId: string,
   classIds: string[],
+  textbookIds: string[],
   academicYear: string
 ) {
   const enrollments: Awaited<ReturnType<typeof prisma.enrollment.create>>[] = []
   const waitlists: Awaited<ReturnType<typeof prisma.waitlist.create>>[] = []
+
+  // Pre-fetch active textbooks for the selected IDs so we have price snapshots
+  const selectedTextbooks = textbookIds.length > 0
+    ? await prisma.textbook.findMany({
+        where: { id: { in: textbookIds }, isActive: true },
+        select: { id: true, classId: true, price: true },
+      })
+    : []
 
   await prisma.$transaction(async (tx) => {
     for (const classId of classIds) {
@@ -144,11 +170,20 @@ export async function createEnrollments(
           data: { studentId, classId, status: 'PENDING' },
         })
         enrollments.push(enrollment)
+
+        // Create EnrollmentTextbook records for textbooks belonging to this class
+        const classTextbooks = selectedTextbooks.filter((t) => t.classId === classId)
+        for (const tb of classTextbooks) {
+          await tx.enrollmentTextbook.upsert({
+            where: { enrollmentId_textbookId: { enrollmentId: enrollment.id, textbookId: tb.id } },
+            update: {},
+            create: { enrollmentId: enrollment.id, textbookId: tb.id, price: tb.price },
+          })
+        }
       }
     }
   })
 
-  // Attach academic year reference for context (not stored on Enrollment itself)
   void academicYear
   return { enrollments, waitlists }
 }

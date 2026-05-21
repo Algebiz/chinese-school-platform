@@ -2,6 +2,14 @@
 
 import { clsx } from 'clsx'
 
+export interface TextbookInfo {
+  id: string
+  name: string
+  nameZh: string
+  price: string
+  description?: string | null
+}
+
 export interface ClassData {
   id: string
   name: string
@@ -15,6 +23,7 @@ export interface ClassData {
   year: string
   enrolledCount: number
   spotsRemaining: number
+  textbooks: TextbookInfo[]
 }
 
 interface ClassCardProps {

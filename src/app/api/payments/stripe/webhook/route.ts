@@ -35,10 +35,11 @@ export async function POST(request: NextRequest) {
 }
 
 async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
-  const { studentId, classIds: classIdsJson, academicYear } = paymentIntent.metadata
+  const { studentId, classIds: classIdsJson, textbookIds: textbookIdsJson, academicYear } = paymentIntent.metadata
   if (!studentId || !classIdsJson || !academicYear) return
 
   const classIds = JSON.parse(classIdsJson) as string[]
+  const textbookIds = textbookIdsJson ? (JSON.parse(textbookIdsJson) as string[]) : []
 
   await prisma.$transaction(async (tx) => {
     // Promote PENDING → CONFIRMED
@@ -75,7 +76,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
 
   // Send confirmation email — non-fatal if it fails
   try {
-    await sendEnrollmentConfirmationByIds(studentId, classIds, 'STRIPE', paymentIntent.id)
+    await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'STRIPE', paymentIntent.id)
   } catch (err) {
     console.error('Failed to send confirmation email:', err)
   }

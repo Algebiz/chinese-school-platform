@@ -24,6 +24,11 @@ export async function GET(req: NextRequest) {
             enrollments: { where: { status: 'CONFIRMED' } },
           },
         },
+        textbooks: {
+          where: { isActive: true },
+          select: { id: true, name: true, nameZh: true, price: true, description: true },
+          orderBy: { createdAt: 'asc' },
+        },
       },
     })
 
@@ -40,6 +45,13 @@ export async function GET(req: NextRequest) {
       year: c.year,
       enrolledCount: c._count.enrollments,
       spotsRemaining: Math.max(0, c.capacity - c._count.enrollments),
+      textbooks: c.textbooks.map((t) => ({
+        id: t.id,
+        name: t.name,
+        nameZh: t.nameZh,
+        price: t.price.toString(),
+        description: t.description,
+      })),
     })))
 
     return NextResponse.json({ success: true, data })

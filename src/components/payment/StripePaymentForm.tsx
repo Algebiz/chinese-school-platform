@@ -86,14 +86,18 @@ function CardForm({ clientSecret, onSuccess }: CardFormProps) {
 // ── Public component ──────────────────────────────────────────────────────────
 
 export interface PaymentBreakdownItem {
+  type?: 'tuition' | 'textbook'
   classId: string
   className: string
   fee: string
+  textbookId?: string
+  textbookName?: string
 }
 
 interface StripePaymentFormProps {
   studentId: string
   classIds: string[]
+  textbookIds?: string[]
   academicYear: string
   breakdown: PaymentBreakdownItem[]
   onSuccess: () => void
@@ -102,6 +106,7 @@ interface StripePaymentFormProps {
 export function StripePaymentForm({
   studentId,
   classIds,
+  textbookIds = [],
   academicYear,
   breakdown,
   onSuccess,
@@ -116,7 +121,7 @@ export function StripePaymentForm({
     fetch('/api/payments/stripe/create-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ studentId, classIds, academicYear }),
+      body: JSON.stringify({ studentId, classIds, textbookIds, academicYear }),
     })
       .then((r) => r.json())
       .then((json) => {

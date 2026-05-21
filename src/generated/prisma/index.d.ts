@@ -54,6 +54,16 @@ export type Teacher = $Result.DefaultSelection<Prisma.$TeacherPayload>
  */
 export type Class = $Result.DefaultSelection<Prisma.$ClassPayload>
 /**
+ * Model Textbook
+ * 
+ */
+export type Textbook = $Result.DefaultSelection<Prisma.$TextbookPayload>
+/**
+ * Model EnrollmentTextbook
+ * 
+ */
+export type EnrollmentTextbook = $Result.DefaultSelection<Prisma.$EnrollmentTextbookPayload>
+/**
  * Model Enrollment
  * 
  */
@@ -359,6 +369,26 @@ export class PrismaClient<
     * ```
     */
   get class(): Prisma.ClassDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.textbook`: Exposes CRUD operations for the **Textbook** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Textbooks
+    * const textbooks = await prisma.textbook.findMany()
+    * ```
+    */
+  get textbook(): Prisma.TextbookDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.enrollmentTextbook`: Exposes CRUD operations for the **EnrollmentTextbook** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EnrollmentTextbooks
+    * const enrollmentTextbooks = await prisma.enrollmentTextbook.findMany()
+    * ```
+    */
+  get enrollmentTextbook(): Prisma.EnrollmentTextbookDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.enrollment`: Exposes CRUD operations for the **Enrollment** model.
@@ -871,6 +901,8 @@ export namespace Prisma {
     Student: 'Student',
     Teacher: 'Teacher',
     Class: 'Class',
+    Textbook: 'Textbook',
+    EnrollmentTextbook: 'EnrollmentTextbook',
     Enrollment: 'Enrollment',
     Payment: 'Payment',
     Waitlist: 'Waitlist',
@@ -893,7 +925,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "verificationToken" | "family" | "user" | "student" | "teacher" | "class" | "enrollment" | "payment" | "waitlist" | "adjustmentLog" | "academicYearConfig" | "studentNextClassOverride" | "systemSettings"
+      modelProps: "account" | "session" | "verificationToken" | "family" | "user" | "student" | "teacher" | "class" | "textbook" | "enrollmentTextbook" | "enrollment" | "payment" | "waitlist" | "adjustmentLog" | "academicYearConfig" | "studentNextClassOverride" | "systemSettings"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1486,6 +1518,154 @@ export namespace Prisma {
           count: {
             args: Prisma.ClassCountArgs<ExtArgs>
             result: $Utils.Optional<ClassCountAggregateOutputType> | number
+          }
+        }
+      }
+      Textbook: {
+        payload: Prisma.$TextbookPayload<ExtArgs>
+        fields: Prisma.TextbookFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TextbookFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TextbookPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TextbookFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TextbookPayload>
+          }
+          findFirst: {
+            args: Prisma.TextbookFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TextbookPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TextbookFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TextbookPayload>
+          }
+          findMany: {
+            args: Prisma.TextbookFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TextbookPayload>[]
+          }
+          create: {
+            args: Prisma.TextbookCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TextbookPayload>
+          }
+          createMany: {
+            args: Prisma.TextbookCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TextbookCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TextbookPayload>[]
+          }
+          delete: {
+            args: Prisma.TextbookDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TextbookPayload>
+          }
+          update: {
+            args: Prisma.TextbookUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TextbookPayload>
+          }
+          deleteMany: {
+            args: Prisma.TextbookDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TextbookUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TextbookUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TextbookPayload>[]
+          }
+          upsert: {
+            args: Prisma.TextbookUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TextbookPayload>
+          }
+          aggregate: {
+            args: Prisma.TextbookAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTextbook>
+          }
+          groupBy: {
+            args: Prisma.TextbookGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TextbookGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TextbookCountArgs<ExtArgs>
+            result: $Utils.Optional<TextbookCountAggregateOutputType> | number
+          }
+        }
+      }
+      EnrollmentTextbook: {
+        payload: Prisma.$EnrollmentTextbookPayload<ExtArgs>
+        fields: Prisma.EnrollmentTextbookFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EnrollmentTextbookFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnrollmentTextbookPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EnrollmentTextbookFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnrollmentTextbookPayload>
+          }
+          findFirst: {
+            args: Prisma.EnrollmentTextbookFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnrollmentTextbookPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EnrollmentTextbookFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnrollmentTextbookPayload>
+          }
+          findMany: {
+            args: Prisma.EnrollmentTextbookFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnrollmentTextbookPayload>[]
+          }
+          create: {
+            args: Prisma.EnrollmentTextbookCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnrollmentTextbookPayload>
+          }
+          createMany: {
+            args: Prisma.EnrollmentTextbookCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EnrollmentTextbookCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnrollmentTextbookPayload>[]
+          }
+          delete: {
+            args: Prisma.EnrollmentTextbookDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnrollmentTextbookPayload>
+          }
+          update: {
+            args: Prisma.EnrollmentTextbookUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnrollmentTextbookPayload>
+          }
+          deleteMany: {
+            args: Prisma.EnrollmentTextbookDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EnrollmentTextbookUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EnrollmentTextbookUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnrollmentTextbookPayload>[]
+          }
+          upsert: {
+            args: Prisma.EnrollmentTextbookUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnrollmentTextbookPayload>
+          }
+          aggregate: {
+            args: Prisma.EnrollmentTextbookAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEnrollmentTextbook>
+          }
+          groupBy: {
+            args: Prisma.EnrollmentTextbookGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EnrollmentTextbookGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EnrollmentTextbookCountArgs<ExtArgs>
+            result: $Utils.Optional<EnrollmentTextbookCountAggregateOutputType> | number
           }
         }
       }
@@ -2123,6 +2303,8 @@ export namespace Prisma {
     student?: StudentOmit
     teacher?: TeacherOmit
     class?: ClassOmit
+    textbook?: TextbookOmit
+    enrollmentTextbook?: EnrollmentTextbookOmit
     enrollment?: EnrollmentOmit
     payment?: PaymentOmit
     waitlist?: WaitlistOmit
@@ -2373,12 +2555,14 @@ export namespace Prisma {
     enrollments: number
     waitlists: number
     nextClassOverrides: number
+    textbooks: number
   }
 
   export type ClassCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     enrollments?: boolean | ClassCountOutputTypeCountEnrollmentsArgs
     waitlists?: boolean | ClassCountOutputTypeCountWaitlistsArgs
     nextClassOverrides?: boolean | ClassCountOutputTypeCountNextClassOverridesArgs
+    textbooks?: boolean | ClassCountOutputTypeCountTextbooksArgs
   }
 
   // Custom InputTypes
@@ -2413,6 +2597,44 @@ export namespace Prisma {
     where?: StudentNextClassOverrideWhereInput
   }
 
+  /**
+   * ClassCountOutputType without action
+   */
+  export type ClassCountOutputTypeCountTextbooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TextbookWhereInput
+  }
+
+
+  /**
+   * Count Type TextbookCountOutputType
+   */
+
+  export type TextbookCountOutputType = {
+    enrollmentBooks: number
+  }
+
+  export type TextbookCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    enrollmentBooks?: boolean | TextbookCountOutputTypeCountEnrollmentBooksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TextbookCountOutputType without action
+   */
+  export type TextbookCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TextbookCountOutputType
+     */
+    select?: TextbookCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TextbookCountOutputType without action
+   */
+  export type TextbookCountOutputTypeCountEnrollmentBooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnrollmentTextbookWhereInput
+  }
+
 
   /**
    * Count Type EnrollmentCountOutputType
@@ -2420,10 +2642,12 @@ export namespace Prisma {
 
   export type EnrollmentCountOutputType = {
     payments: number
+    textbooks: number
   }
 
   export type EnrollmentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     payments?: boolean | EnrollmentCountOutputTypeCountPaymentsArgs
+    textbooks?: boolean | EnrollmentCountOutputTypeCountTextbooksArgs
   }
 
   // Custom InputTypes
@@ -2442,6 +2666,13 @@ export namespace Prisma {
    */
   export type EnrollmentCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PaymentWhereInput
+  }
+
+  /**
+   * EnrollmentCountOutputType without action
+   */
+  export type EnrollmentCountOutputTypeCountTextbooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnrollmentTextbookWhereInput
   }
 
 
@@ -10516,6 +10747,7 @@ export namespace Prisma {
     enrollments?: boolean | Class$enrollmentsArgs<ExtArgs>
     waitlists?: boolean | Class$waitlistsArgs<ExtArgs>
     nextClassOverrides?: boolean | Class$nextClassOverridesArgs<ExtArgs>
+    textbooks?: boolean | Class$textbooksArgs<ExtArgs>
     _count?: boolean | ClassCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["class"]>
 
@@ -10572,6 +10804,7 @@ export namespace Prisma {
     enrollments?: boolean | Class$enrollmentsArgs<ExtArgs>
     waitlists?: boolean | Class$waitlistsArgs<ExtArgs>
     nextClassOverrides?: boolean | Class$nextClassOverridesArgs<ExtArgs>
+    textbooks?: boolean | Class$textbooksArgs<ExtArgs>
     _count?: boolean | ClassCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ClassIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10588,6 +10821,7 @@ export namespace Prisma {
       enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
       waitlists: Prisma.$WaitlistPayload<ExtArgs>[]
       nextClassOverrides: Prisma.$StudentNextClassOverridePayload<ExtArgs>[]
+      textbooks: Prisma.$TextbookPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11000,6 +11234,7 @@ export namespace Prisma {
     enrollments<T extends Class$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, Class$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     waitlists<T extends Class$waitlistsArgs<ExtArgs> = {}>(args?: Subset<T, Class$waitlistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WaitlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     nextClassOverrides<T extends Class$nextClassOverridesArgs<ExtArgs> = {}>(args?: Subset<T, Class$nextClassOverridesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    textbooks<T extends Class$textbooksArgs<ExtArgs> = {}>(args?: Subset<T, Class$textbooksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11533,6 +11768,30 @@ export namespace Prisma {
   }
 
   /**
+   * Class.textbooks
+   */
+  export type Class$textbooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookInclude<ExtArgs> | null
+    where?: TextbookWhereInput
+    orderBy?: TextbookOrderByWithRelationInput | TextbookOrderByWithRelationInput[]
+    cursor?: TextbookWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TextbookScalarFieldEnum | TextbookScalarFieldEnum[]
+  }
+
+  /**
    * Class without action
    */
   export type ClassDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11548,6 +11807,2303 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ClassInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Textbook
+   */
+
+  export type AggregateTextbook = {
+    _count: TextbookCountAggregateOutputType | null
+    _avg: TextbookAvgAggregateOutputType | null
+    _sum: TextbookSumAggregateOutputType | null
+    _min: TextbookMinAggregateOutputType | null
+    _max: TextbookMaxAggregateOutputType | null
+  }
+
+  export type TextbookAvgAggregateOutputType = {
+    price: Decimal | null
+  }
+
+  export type TextbookSumAggregateOutputType = {
+    price: Decimal | null
+  }
+
+  export type TextbookMinAggregateOutputType = {
+    id: string | null
+    classId: string | null
+    name: string | null
+    nameZh: string | null
+    description: string | null
+    descriptionZh: string | null
+    price: Decimal | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TextbookMaxAggregateOutputType = {
+    id: string | null
+    classId: string | null
+    name: string | null
+    nameZh: string | null
+    description: string | null
+    descriptionZh: string | null
+    price: Decimal | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TextbookCountAggregateOutputType = {
+    id: number
+    classId: number
+    name: number
+    nameZh: number
+    description: number
+    descriptionZh: number
+    price: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TextbookAvgAggregateInputType = {
+    price?: true
+  }
+
+  export type TextbookSumAggregateInputType = {
+    price?: true
+  }
+
+  export type TextbookMinAggregateInputType = {
+    id?: true
+    classId?: true
+    name?: true
+    nameZh?: true
+    description?: true
+    descriptionZh?: true
+    price?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TextbookMaxAggregateInputType = {
+    id?: true
+    classId?: true
+    name?: true
+    nameZh?: true
+    description?: true
+    descriptionZh?: true
+    price?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TextbookCountAggregateInputType = {
+    id?: true
+    classId?: true
+    name?: true
+    nameZh?: true
+    description?: true
+    descriptionZh?: true
+    price?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TextbookAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Textbook to aggregate.
+     */
+    where?: TextbookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Textbooks to fetch.
+     */
+    orderBy?: TextbookOrderByWithRelationInput | TextbookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TextbookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Textbooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Textbooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Textbooks
+    **/
+    _count?: true | TextbookCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TextbookAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TextbookSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TextbookMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TextbookMaxAggregateInputType
+  }
+
+  export type GetTextbookAggregateType<T extends TextbookAggregateArgs> = {
+        [P in keyof T & keyof AggregateTextbook]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTextbook[P]>
+      : GetScalarType<T[P], AggregateTextbook[P]>
+  }
+
+
+
+
+  export type TextbookGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TextbookWhereInput
+    orderBy?: TextbookOrderByWithAggregationInput | TextbookOrderByWithAggregationInput[]
+    by: TextbookScalarFieldEnum[] | TextbookScalarFieldEnum
+    having?: TextbookScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TextbookCountAggregateInputType | true
+    _avg?: TextbookAvgAggregateInputType
+    _sum?: TextbookSumAggregateInputType
+    _min?: TextbookMinAggregateInputType
+    _max?: TextbookMaxAggregateInputType
+  }
+
+  export type TextbookGroupByOutputType = {
+    id: string
+    classId: string
+    name: string
+    nameZh: string
+    description: string | null
+    descriptionZh: string | null
+    price: Decimal
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: TextbookCountAggregateOutputType | null
+    _avg: TextbookAvgAggregateOutputType | null
+    _sum: TextbookSumAggregateOutputType | null
+    _min: TextbookMinAggregateOutputType | null
+    _max: TextbookMaxAggregateOutputType | null
+  }
+
+  type GetTextbookGroupByPayload<T extends TextbookGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TextbookGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TextbookGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TextbookGroupByOutputType[P]>
+            : GetScalarType<T[P], TextbookGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TextbookSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    classId?: boolean
+    name?: boolean
+    nameZh?: boolean
+    description?: boolean
+    descriptionZh?: boolean
+    price?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+    enrollmentBooks?: boolean | Textbook$enrollmentBooksArgs<ExtArgs>
+    _count?: boolean | TextbookCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["textbook"]>
+
+  export type TextbookSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    classId?: boolean
+    name?: boolean
+    nameZh?: boolean
+    description?: boolean
+    descriptionZh?: boolean
+    price?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["textbook"]>
+
+  export type TextbookSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    classId?: boolean
+    name?: boolean
+    nameZh?: boolean
+    description?: boolean
+    descriptionZh?: boolean
+    price?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["textbook"]>
+
+  export type TextbookSelectScalar = {
+    id?: boolean
+    classId?: boolean
+    name?: boolean
+    nameZh?: boolean
+    description?: boolean
+    descriptionZh?: boolean
+    price?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TextbookOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "classId" | "name" | "nameZh" | "description" | "descriptionZh" | "price" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["textbook"]>
+  export type TextbookInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+    enrollmentBooks?: boolean | Textbook$enrollmentBooksArgs<ExtArgs>
+    _count?: boolean | TextbookCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TextbookIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+  }
+  export type TextbookIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    class?: boolean | ClassDefaultArgs<ExtArgs>
+  }
+
+  export type $TextbookPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Textbook"
+    objects: {
+      class: Prisma.$ClassPayload<ExtArgs>
+      enrollmentBooks: Prisma.$EnrollmentTextbookPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      classId: string
+      name: string
+      nameZh: string
+      description: string | null
+      descriptionZh: string | null
+      price: Prisma.Decimal
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["textbook"]>
+    composites: {}
+  }
+
+  type TextbookGetPayload<S extends boolean | null | undefined | TextbookDefaultArgs> = $Result.GetResult<Prisma.$TextbookPayload, S>
+
+  type TextbookCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TextbookFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TextbookCountAggregateInputType | true
+    }
+
+  export interface TextbookDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Textbook'], meta: { name: 'Textbook' } }
+    /**
+     * Find zero or one Textbook that matches the filter.
+     * @param {TextbookFindUniqueArgs} args - Arguments to find a Textbook
+     * @example
+     * // Get one Textbook
+     * const textbook = await prisma.textbook.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TextbookFindUniqueArgs>(args: SelectSubset<T, TextbookFindUniqueArgs<ExtArgs>>): Prisma__TextbookClient<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Textbook that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TextbookFindUniqueOrThrowArgs} args - Arguments to find a Textbook
+     * @example
+     * // Get one Textbook
+     * const textbook = await prisma.textbook.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TextbookFindUniqueOrThrowArgs>(args: SelectSubset<T, TextbookFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TextbookClient<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Textbook that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TextbookFindFirstArgs} args - Arguments to find a Textbook
+     * @example
+     * // Get one Textbook
+     * const textbook = await prisma.textbook.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TextbookFindFirstArgs>(args?: SelectSubset<T, TextbookFindFirstArgs<ExtArgs>>): Prisma__TextbookClient<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Textbook that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TextbookFindFirstOrThrowArgs} args - Arguments to find a Textbook
+     * @example
+     * // Get one Textbook
+     * const textbook = await prisma.textbook.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TextbookFindFirstOrThrowArgs>(args?: SelectSubset<T, TextbookFindFirstOrThrowArgs<ExtArgs>>): Prisma__TextbookClient<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Textbooks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TextbookFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Textbooks
+     * const textbooks = await prisma.textbook.findMany()
+     * 
+     * // Get first 10 Textbooks
+     * const textbooks = await prisma.textbook.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const textbookWithIdOnly = await prisma.textbook.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TextbookFindManyArgs>(args?: SelectSubset<T, TextbookFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Textbook.
+     * @param {TextbookCreateArgs} args - Arguments to create a Textbook.
+     * @example
+     * // Create one Textbook
+     * const Textbook = await prisma.textbook.create({
+     *   data: {
+     *     // ... data to create a Textbook
+     *   }
+     * })
+     * 
+     */
+    create<T extends TextbookCreateArgs>(args: SelectSubset<T, TextbookCreateArgs<ExtArgs>>): Prisma__TextbookClient<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Textbooks.
+     * @param {TextbookCreateManyArgs} args - Arguments to create many Textbooks.
+     * @example
+     * // Create many Textbooks
+     * const textbook = await prisma.textbook.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TextbookCreateManyArgs>(args?: SelectSubset<T, TextbookCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Textbooks and returns the data saved in the database.
+     * @param {TextbookCreateManyAndReturnArgs} args - Arguments to create many Textbooks.
+     * @example
+     * // Create many Textbooks
+     * const textbook = await prisma.textbook.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Textbooks and only return the `id`
+     * const textbookWithIdOnly = await prisma.textbook.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TextbookCreateManyAndReturnArgs>(args?: SelectSubset<T, TextbookCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Textbook.
+     * @param {TextbookDeleteArgs} args - Arguments to delete one Textbook.
+     * @example
+     * // Delete one Textbook
+     * const Textbook = await prisma.textbook.delete({
+     *   where: {
+     *     // ... filter to delete one Textbook
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TextbookDeleteArgs>(args: SelectSubset<T, TextbookDeleteArgs<ExtArgs>>): Prisma__TextbookClient<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Textbook.
+     * @param {TextbookUpdateArgs} args - Arguments to update one Textbook.
+     * @example
+     * // Update one Textbook
+     * const textbook = await prisma.textbook.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TextbookUpdateArgs>(args: SelectSubset<T, TextbookUpdateArgs<ExtArgs>>): Prisma__TextbookClient<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Textbooks.
+     * @param {TextbookDeleteManyArgs} args - Arguments to filter Textbooks to delete.
+     * @example
+     * // Delete a few Textbooks
+     * const { count } = await prisma.textbook.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TextbookDeleteManyArgs>(args?: SelectSubset<T, TextbookDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Textbooks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TextbookUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Textbooks
+     * const textbook = await prisma.textbook.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TextbookUpdateManyArgs>(args: SelectSubset<T, TextbookUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Textbooks and returns the data updated in the database.
+     * @param {TextbookUpdateManyAndReturnArgs} args - Arguments to update many Textbooks.
+     * @example
+     * // Update many Textbooks
+     * const textbook = await prisma.textbook.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Textbooks and only return the `id`
+     * const textbookWithIdOnly = await prisma.textbook.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TextbookUpdateManyAndReturnArgs>(args: SelectSubset<T, TextbookUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Textbook.
+     * @param {TextbookUpsertArgs} args - Arguments to update or create a Textbook.
+     * @example
+     * // Update or create a Textbook
+     * const textbook = await prisma.textbook.upsert({
+     *   create: {
+     *     // ... data to create a Textbook
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Textbook we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TextbookUpsertArgs>(args: SelectSubset<T, TextbookUpsertArgs<ExtArgs>>): Prisma__TextbookClient<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Textbooks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TextbookCountArgs} args - Arguments to filter Textbooks to count.
+     * @example
+     * // Count the number of Textbooks
+     * const count = await prisma.textbook.count({
+     *   where: {
+     *     // ... the filter for the Textbooks we want to count
+     *   }
+     * })
+    **/
+    count<T extends TextbookCountArgs>(
+      args?: Subset<T, TextbookCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TextbookCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Textbook.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TextbookAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TextbookAggregateArgs>(args: Subset<T, TextbookAggregateArgs>): Prisma.PrismaPromise<GetTextbookAggregateType<T>>
+
+    /**
+     * Group by Textbook.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TextbookGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TextbookGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TextbookGroupByArgs['orderBy'] }
+        : { orderBy?: TextbookGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TextbookGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTextbookGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Textbook model
+   */
+  readonly fields: TextbookFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Textbook.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TextbookClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    class<T extends ClassDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClassDefaultArgs<ExtArgs>>): Prisma__ClassClient<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    enrollmentBooks<T extends Textbook$enrollmentBooksArgs<ExtArgs> = {}>(args?: Subset<T, Textbook$enrollmentBooksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Textbook model
+   */
+  interface TextbookFieldRefs {
+    readonly id: FieldRef<"Textbook", 'String'>
+    readonly classId: FieldRef<"Textbook", 'String'>
+    readonly name: FieldRef<"Textbook", 'String'>
+    readonly nameZh: FieldRef<"Textbook", 'String'>
+    readonly description: FieldRef<"Textbook", 'String'>
+    readonly descriptionZh: FieldRef<"Textbook", 'String'>
+    readonly price: FieldRef<"Textbook", 'Decimal'>
+    readonly isActive: FieldRef<"Textbook", 'Boolean'>
+    readonly createdAt: FieldRef<"Textbook", 'DateTime'>
+    readonly updatedAt: FieldRef<"Textbook", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Textbook findUnique
+   */
+  export type TextbookFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookInclude<ExtArgs> | null
+    /**
+     * Filter, which Textbook to fetch.
+     */
+    where: TextbookWhereUniqueInput
+  }
+
+  /**
+   * Textbook findUniqueOrThrow
+   */
+  export type TextbookFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookInclude<ExtArgs> | null
+    /**
+     * Filter, which Textbook to fetch.
+     */
+    where: TextbookWhereUniqueInput
+  }
+
+  /**
+   * Textbook findFirst
+   */
+  export type TextbookFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookInclude<ExtArgs> | null
+    /**
+     * Filter, which Textbook to fetch.
+     */
+    where?: TextbookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Textbooks to fetch.
+     */
+    orderBy?: TextbookOrderByWithRelationInput | TextbookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Textbooks.
+     */
+    cursor?: TextbookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Textbooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Textbooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Textbooks.
+     */
+    distinct?: TextbookScalarFieldEnum | TextbookScalarFieldEnum[]
+  }
+
+  /**
+   * Textbook findFirstOrThrow
+   */
+  export type TextbookFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookInclude<ExtArgs> | null
+    /**
+     * Filter, which Textbook to fetch.
+     */
+    where?: TextbookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Textbooks to fetch.
+     */
+    orderBy?: TextbookOrderByWithRelationInput | TextbookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Textbooks.
+     */
+    cursor?: TextbookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Textbooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Textbooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Textbooks.
+     */
+    distinct?: TextbookScalarFieldEnum | TextbookScalarFieldEnum[]
+  }
+
+  /**
+   * Textbook findMany
+   */
+  export type TextbookFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookInclude<ExtArgs> | null
+    /**
+     * Filter, which Textbooks to fetch.
+     */
+    where?: TextbookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Textbooks to fetch.
+     */
+    orderBy?: TextbookOrderByWithRelationInput | TextbookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Textbooks.
+     */
+    cursor?: TextbookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Textbooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Textbooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Textbooks.
+     */
+    distinct?: TextbookScalarFieldEnum | TextbookScalarFieldEnum[]
+  }
+
+  /**
+   * Textbook create
+   */
+  export type TextbookCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Textbook.
+     */
+    data: XOR<TextbookCreateInput, TextbookUncheckedCreateInput>
+  }
+
+  /**
+   * Textbook createMany
+   */
+  export type TextbookCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Textbooks.
+     */
+    data: TextbookCreateManyInput | TextbookCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Textbook createManyAndReturn
+   */
+  export type TextbookCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * The data used to create many Textbooks.
+     */
+    data: TextbookCreateManyInput | TextbookCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Textbook update
+   */
+  export type TextbookUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Textbook.
+     */
+    data: XOR<TextbookUpdateInput, TextbookUncheckedUpdateInput>
+    /**
+     * Choose, which Textbook to update.
+     */
+    where: TextbookWhereUniqueInput
+  }
+
+  /**
+   * Textbook updateMany
+   */
+  export type TextbookUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Textbooks.
+     */
+    data: XOR<TextbookUpdateManyMutationInput, TextbookUncheckedUpdateManyInput>
+    /**
+     * Filter which Textbooks to update
+     */
+    where?: TextbookWhereInput
+    /**
+     * Limit how many Textbooks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Textbook updateManyAndReturn
+   */
+  export type TextbookUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * The data used to update Textbooks.
+     */
+    data: XOR<TextbookUpdateManyMutationInput, TextbookUncheckedUpdateManyInput>
+    /**
+     * Filter which Textbooks to update
+     */
+    where?: TextbookWhereInput
+    /**
+     * Limit how many Textbooks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Textbook upsert
+   */
+  export type TextbookUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Textbook to update in case it exists.
+     */
+    where: TextbookWhereUniqueInput
+    /**
+     * In case the Textbook found by the `where` argument doesn't exist, create a new Textbook with this data.
+     */
+    create: XOR<TextbookCreateInput, TextbookUncheckedCreateInput>
+    /**
+     * In case the Textbook was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TextbookUpdateInput, TextbookUncheckedUpdateInput>
+  }
+
+  /**
+   * Textbook delete
+   */
+  export type TextbookDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookInclude<ExtArgs> | null
+    /**
+     * Filter which Textbook to delete.
+     */
+    where: TextbookWhereUniqueInput
+  }
+
+  /**
+   * Textbook deleteMany
+   */
+  export type TextbookDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Textbooks to delete
+     */
+    where?: TextbookWhereInput
+    /**
+     * Limit how many Textbooks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Textbook.enrollmentBooks
+   */
+  export type Textbook$enrollmentBooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
+    where?: EnrollmentTextbookWhereInput
+    orderBy?: EnrollmentTextbookOrderByWithRelationInput | EnrollmentTextbookOrderByWithRelationInput[]
+    cursor?: EnrollmentTextbookWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EnrollmentTextbookScalarFieldEnum | EnrollmentTextbookScalarFieldEnum[]
+  }
+
+  /**
+   * Textbook without action
+   */
+  export type TextbookDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Textbook
+     */
+    select?: TextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Textbook
+     */
+    omit?: TextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TextbookInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EnrollmentTextbook
+   */
+
+  export type AggregateEnrollmentTextbook = {
+    _count: EnrollmentTextbookCountAggregateOutputType | null
+    _avg: EnrollmentTextbookAvgAggregateOutputType | null
+    _sum: EnrollmentTextbookSumAggregateOutputType | null
+    _min: EnrollmentTextbookMinAggregateOutputType | null
+    _max: EnrollmentTextbookMaxAggregateOutputType | null
+  }
+
+  export type EnrollmentTextbookAvgAggregateOutputType = {
+    price: Decimal | null
+  }
+
+  export type EnrollmentTextbookSumAggregateOutputType = {
+    price: Decimal | null
+  }
+
+  export type EnrollmentTextbookMinAggregateOutputType = {
+    id: string | null
+    enrollmentId: string | null
+    textbookId: string | null
+    price: Decimal | null
+    createdAt: Date | null
+  }
+
+  export type EnrollmentTextbookMaxAggregateOutputType = {
+    id: string | null
+    enrollmentId: string | null
+    textbookId: string | null
+    price: Decimal | null
+    createdAt: Date | null
+  }
+
+  export type EnrollmentTextbookCountAggregateOutputType = {
+    id: number
+    enrollmentId: number
+    textbookId: number
+    price: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type EnrollmentTextbookAvgAggregateInputType = {
+    price?: true
+  }
+
+  export type EnrollmentTextbookSumAggregateInputType = {
+    price?: true
+  }
+
+  export type EnrollmentTextbookMinAggregateInputType = {
+    id?: true
+    enrollmentId?: true
+    textbookId?: true
+    price?: true
+    createdAt?: true
+  }
+
+  export type EnrollmentTextbookMaxAggregateInputType = {
+    id?: true
+    enrollmentId?: true
+    textbookId?: true
+    price?: true
+    createdAt?: true
+  }
+
+  export type EnrollmentTextbookCountAggregateInputType = {
+    id?: true
+    enrollmentId?: true
+    textbookId?: true
+    price?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type EnrollmentTextbookAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EnrollmentTextbook to aggregate.
+     */
+    where?: EnrollmentTextbookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnrollmentTextbooks to fetch.
+     */
+    orderBy?: EnrollmentTextbookOrderByWithRelationInput | EnrollmentTextbookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EnrollmentTextbookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnrollmentTextbooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnrollmentTextbooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EnrollmentTextbooks
+    **/
+    _count?: true | EnrollmentTextbookCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EnrollmentTextbookAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EnrollmentTextbookSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EnrollmentTextbookMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EnrollmentTextbookMaxAggregateInputType
+  }
+
+  export type GetEnrollmentTextbookAggregateType<T extends EnrollmentTextbookAggregateArgs> = {
+        [P in keyof T & keyof AggregateEnrollmentTextbook]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEnrollmentTextbook[P]>
+      : GetScalarType<T[P], AggregateEnrollmentTextbook[P]>
+  }
+
+
+
+
+  export type EnrollmentTextbookGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnrollmentTextbookWhereInput
+    orderBy?: EnrollmentTextbookOrderByWithAggregationInput | EnrollmentTextbookOrderByWithAggregationInput[]
+    by: EnrollmentTextbookScalarFieldEnum[] | EnrollmentTextbookScalarFieldEnum
+    having?: EnrollmentTextbookScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EnrollmentTextbookCountAggregateInputType | true
+    _avg?: EnrollmentTextbookAvgAggregateInputType
+    _sum?: EnrollmentTextbookSumAggregateInputType
+    _min?: EnrollmentTextbookMinAggregateInputType
+    _max?: EnrollmentTextbookMaxAggregateInputType
+  }
+
+  export type EnrollmentTextbookGroupByOutputType = {
+    id: string
+    enrollmentId: string
+    textbookId: string
+    price: Decimal
+    createdAt: Date
+    _count: EnrollmentTextbookCountAggregateOutputType | null
+    _avg: EnrollmentTextbookAvgAggregateOutputType | null
+    _sum: EnrollmentTextbookSumAggregateOutputType | null
+    _min: EnrollmentTextbookMinAggregateOutputType | null
+    _max: EnrollmentTextbookMaxAggregateOutputType | null
+  }
+
+  type GetEnrollmentTextbookGroupByPayload<T extends EnrollmentTextbookGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EnrollmentTextbookGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EnrollmentTextbookGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EnrollmentTextbookGroupByOutputType[P]>
+            : GetScalarType<T[P], EnrollmentTextbookGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EnrollmentTextbookSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    enrollmentId?: boolean
+    textbookId?: boolean
+    price?: boolean
+    createdAt?: boolean
+    enrollment?: boolean | EnrollmentDefaultArgs<ExtArgs>
+    textbook?: boolean | TextbookDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["enrollmentTextbook"]>
+
+  export type EnrollmentTextbookSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    enrollmentId?: boolean
+    textbookId?: boolean
+    price?: boolean
+    createdAt?: boolean
+    enrollment?: boolean | EnrollmentDefaultArgs<ExtArgs>
+    textbook?: boolean | TextbookDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["enrollmentTextbook"]>
+
+  export type EnrollmentTextbookSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    enrollmentId?: boolean
+    textbookId?: boolean
+    price?: boolean
+    createdAt?: boolean
+    enrollment?: boolean | EnrollmentDefaultArgs<ExtArgs>
+    textbook?: boolean | TextbookDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["enrollmentTextbook"]>
+
+  export type EnrollmentTextbookSelectScalar = {
+    id?: boolean
+    enrollmentId?: boolean
+    textbookId?: boolean
+    price?: boolean
+    createdAt?: boolean
+  }
+
+  export type EnrollmentTextbookOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "enrollmentId" | "textbookId" | "price" | "createdAt", ExtArgs["result"]["enrollmentTextbook"]>
+  export type EnrollmentTextbookInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    enrollment?: boolean | EnrollmentDefaultArgs<ExtArgs>
+    textbook?: boolean | TextbookDefaultArgs<ExtArgs>
+  }
+  export type EnrollmentTextbookIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    enrollment?: boolean | EnrollmentDefaultArgs<ExtArgs>
+    textbook?: boolean | TextbookDefaultArgs<ExtArgs>
+  }
+  export type EnrollmentTextbookIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    enrollment?: boolean | EnrollmentDefaultArgs<ExtArgs>
+    textbook?: boolean | TextbookDefaultArgs<ExtArgs>
+  }
+
+  export type $EnrollmentTextbookPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EnrollmentTextbook"
+    objects: {
+      enrollment: Prisma.$EnrollmentPayload<ExtArgs>
+      textbook: Prisma.$TextbookPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      enrollmentId: string
+      textbookId: string
+      price: Prisma.Decimal
+      createdAt: Date
+    }, ExtArgs["result"]["enrollmentTextbook"]>
+    composites: {}
+  }
+
+  type EnrollmentTextbookGetPayload<S extends boolean | null | undefined | EnrollmentTextbookDefaultArgs> = $Result.GetResult<Prisma.$EnrollmentTextbookPayload, S>
+
+  type EnrollmentTextbookCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EnrollmentTextbookFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EnrollmentTextbookCountAggregateInputType | true
+    }
+
+  export interface EnrollmentTextbookDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EnrollmentTextbook'], meta: { name: 'EnrollmentTextbook' } }
+    /**
+     * Find zero or one EnrollmentTextbook that matches the filter.
+     * @param {EnrollmentTextbookFindUniqueArgs} args - Arguments to find a EnrollmentTextbook
+     * @example
+     * // Get one EnrollmentTextbook
+     * const enrollmentTextbook = await prisma.enrollmentTextbook.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EnrollmentTextbookFindUniqueArgs>(args: SelectSubset<T, EnrollmentTextbookFindUniqueArgs<ExtArgs>>): Prisma__EnrollmentTextbookClient<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EnrollmentTextbook that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EnrollmentTextbookFindUniqueOrThrowArgs} args - Arguments to find a EnrollmentTextbook
+     * @example
+     * // Get one EnrollmentTextbook
+     * const enrollmentTextbook = await prisma.enrollmentTextbook.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EnrollmentTextbookFindUniqueOrThrowArgs>(args: SelectSubset<T, EnrollmentTextbookFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EnrollmentTextbookClient<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EnrollmentTextbook that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnrollmentTextbookFindFirstArgs} args - Arguments to find a EnrollmentTextbook
+     * @example
+     * // Get one EnrollmentTextbook
+     * const enrollmentTextbook = await prisma.enrollmentTextbook.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EnrollmentTextbookFindFirstArgs>(args?: SelectSubset<T, EnrollmentTextbookFindFirstArgs<ExtArgs>>): Prisma__EnrollmentTextbookClient<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EnrollmentTextbook that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnrollmentTextbookFindFirstOrThrowArgs} args - Arguments to find a EnrollmentTextbook
+     * @example
+     * // Get one EnrollmentTextbook
+     * const enrollmentTextbook = await prisma.enrollmentTextbook.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EnrollmentTextbookFindFirstOrThrowArgs>(args?: SelectSubset<T, EnrollmentTextbookFindFirstOrThrowArgs<ExtArgs>>): Prisma__EnrollmentTextbookClient<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EnrollmentTextbooks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnrollmentTextbookFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EnrollmentTextbooks
+     * const enrollmentTextbooks = await prisma.enrollmentTextbook.findMany()
+     * 
+     * // Get first 10 EnrollmentTextbooks
+     * const enrollmentTextbooks = await prisma.enrollmentTextbook.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const enrollmentTextbookWithIdOnly = await prisma.enrollmentTextbook.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EnrollmentTextbookFindManyArgs>(args?: SelectSubset<T, EnrollmentTextbookFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EnrollmentTextbook.
+     * @param {EnrollmentTextbookCreateArgs} args - Arguments to create a EnrollmentTextbook.
+     * @example
+     * // Create one EnrollmentTextbook
+     * const EnrollmentTextbook = await prisma.enrollmentTextbook.create({
+     *   data: {
+     *     // ... data to create a EnrollmentTextbook
+     *   }
+     * })
+     * 
+     */
+    create<T extends EnrollmentTextbookCreateArgs>(args: SelectSubset<T, EnrollmentTextbookCreateArgs<ExtArgs>>): Prisma__EnrollmentTextbookClient<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EnrollmentTextbooks.
+     * @param {EnrollmentTextbookCreateManyArgs} args - Arguments to create many EnrollmentTextbooks.
+     * @example
+     * // Create many EnrollmentTextbooks
+     * const enrollmentTextbook = await prisma.enrollmentTextbook.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EnrollmentTextbookCreateManyArgs>(args?: SelectSubset<T, EnrollmentTextbookCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EnrollmentTextbooks and returns the data saved in the database.
+     * @param {EnrollmentTextbookCreateManyAndReturnArgs} args - Arguments to create many EnrollmentTextbooks.
+     * @example
+     * // Create many EnrollmentTextbooks
+     * const enrollmentTextbook = await prisma.enrollmentTextbook.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EnrollmentTextbooks and only return the `id`
+     * const enrollmentTextbookWithIdOnly = await prisma.enrollmentTextbook.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EnrollmentTextbookCreateManyAndReturnArgs>(args?: SelectSubset<T, EnrollmentTextbookCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EnrollmentTextbook.
+     * @param {EnrollmentTextbookDeleteArgs} args - Arguments to delete one EnrollmentTextbook.
+     * @example
+     * // Delete one EnrollmentTextbook
+     * const EnrollmentTextbook = await prisma.enrollmentTextbook.delete({
+     *   where: {
+     *     // ... filter to delete one EnrollmentTextbook
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EnrollmentTextbookDeleteArgs>(args: SelectSubset<T, EnrollmentTextbookDeleteArgs<ExtArgs>>): Prisma__EnrollmentTextbookClient<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EnrollmentTextbook.
+     * @param {EnrollmentTextbookUpdateArgs} args - Arguments to update one EnrollmentTextbook.
+     * @example
+     * // Update one EnrollmentTextbook
+     * const enrollmentTextbook = await prisma.enrollmentTextbook.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EnrollmentTextbookUpdateArgs>(args: SelectSubset<T, EnrollmentTextbookUpdateArgs<ExtArgs>>): Prisma__EnrollmentTextbookClient<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EnrollmentTextbooks.
+     * @param {EnrollmentTextbookDeleteManyArgs} args - Arguments to filter EnrollmentTextbooks to delete.
+     * @example
+     * // Delete a few EnrollmentTextbooks
+     * const { count } = await prisma.enrollmentTextbook.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EnrollmentTextbookDeleteManyArgs>(args?: SelectSubset<T, EnrollmentTextbookDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EnrollmentTextbooks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnrollmentTextbookUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EnrollmentTextbooks
+     * const enrollmentTextbook = await prisma.enrollmentTextbook.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EnrollmentTextbookUpdateManyArgs>(args: SelectSubset<T, EnrollmentTextbookUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EnrollmentTextbooks and returns the data updated in the database.
+     * @param {EnrollmentTextbookUpdateManyAndReturnArgs} args - Arguments to update many EnrollmentTextbooks.
+     * @example
+     * // Update many EnrollmentTextbooks
+     * const enrollmentTextbook = await prisma.enrollmentTextbook.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EnrollmentTextbooks and only return the `id`
+     * const enrollmentTextbookWithIdOnly = await prisma.enrollmentTextbook.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EnrollmentTextbookUpdateManyAndReturnArgs>(args: SelectSubset<T, EnrollmentTextbookUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EnrollmentTextbook.
+     * @param {EnrollmentTextbookUpsertArgs} args - Arguments to update or create a EnrollmentTextbook.
+     * @example
+     * // Update or create a EnrollmentTextbook
+     * const enrollmentTextbook = await prisma.enrollmentTextbook.upsert({
+     *   create: {
+     *     // ... data to create a EnrollmentTextbook
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EnrollmentTextbook we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EnrollmentTextbookUpsertArgs>(args: SelectSubset<T, EnrollmentTextbookUpsertArgs<ExtArgs>>): Prisma__EnrollmentTextbookClient<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EnrollmentTextbooks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnrollmentTextbookCountArgs} args - Arguments to filter EnrollmentTextbooks to count.
+     * @example
+     * // Count the number of EnrollmentTextbooks
+     * const count = await prisma.enrollmentTextbook.count({
+     *   where: {
+     *     // ... the filter for the EnrollmentTextbooks we want to count
+     *   }
+     * })
+    **/
+    count<T extends EnrollmentTextbookCountArgs>(
+      args?: Subset<T, EnrollmentTextbookCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EnrollmentTextbookCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EnrollmentTextbook.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnrollmentTextbookAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EnrollmentTextbookAggregateArgs>(args: Subset<T, EnrollmentTextbookAggregateArgs>): Prisma.PrismaPromise<GetEnrollmentTextbookAggregateType<T>>
+
+    /**
+     * Group by EnrollmentTextbook.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnrollmentTextbookGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EnrollmentTextbookGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EnrollmentTextbookGroupByArgs['orderBy'] }
+        : { orderBy?: EnrollmentTextbookGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EnrollmentTextbookGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEnrollmentTextbookGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EnrollmentTextbook model
+   */
+  readonly fields: EnrollmentTextbookFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EnrollmentTextbook.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EnrollmentTextbookClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    enrollment<T extends EnrollmentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EnrollmentDefaultArgs<ExtArgs>>): Prisma__EnrollmentClient<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    textbook<T extends TextbookDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TextbookDefaultArgs<ExtArgs>>): Prisma__TextbookClient<$Result.GetResult<Prisma.$TextbookPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EnrollmentTextbook model
+   */
+  interface EnrollmentTextbookFieldRefs {
+    readonly id: FieldRef<"EnrollmentTextbook", 'String'>
+    readonly enrollmentId: FieldRef<"EnrollmentTextbook", 'String'>
+    readonly textbookId: FieldRef<"EnrollmentTextbook", 'String'>
+    readonly price: FieldRef<"EnrollmentTextbook", 'Decimal'>
+    readonly createdAt: FieldRef<"EnrollmentTextbook", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EnrollmentTextbook findUnique
+   */
+  export type EnrollmentTextbookFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
+    /**
+     * Filter, which EnrollmentTextbook to fetch.
+     */
+    where: EnrollmentTextbookWhereUniqueInput
+  }
+
+  /**
+   * EnrollmentTextbook findUniqueOrThrow
+   */
+  export type EnrollmentTextbookFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
+    /**
+     * Filter, which EnrollmentTextbook to fetch.
+     */
+    where: EnrollmentTextbookWhereUniqueInput
+  }
+
+  /**
+   * EnrollmentTextbook findFirst
+   */
+  export type EnrollmentTextbookFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
+    /**
+     * Filter, which EnrollmentTextbook to fetch.
+     */
+    where?: EnrollmentTextbookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnrollmentTextbooks to fetch.
+     */
+    orderBy?: EnrollmentTextbookOrderByWithRelationInput | EnrollmentTextbookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EnrollmentTextbooks.
+     */
+    cursor?: EnrollmentTextbookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnrollmentTextbooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnrollmentTextbooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EnrollmentTextbooks.
+     */
+    distinct?: EnrollmentTextbookScalarFieldEnum | EnrollmentTextbookScalarFieldEnum[]
+  }
+
+  /**
+   * EnrollmentTextbook findFirstOrThrow
+   */
+  export type EnrollmentTextbookFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
+    /**
+     * Filter, which EnrollmentTextbook to fetch.
+     */
+    where?: EnrollmentTextbookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnrollmentTextbooks to fetch.
+     */
+    orderBy?: EnrollmentTextbookOrderByWithRelationInput | EnrollmentTextbookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EnrollmentTextbooks.
+     */
+    cursor?: EnrollmentTextbookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnrollmentTextbooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnrollmentTextbooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EnrollmentTextbooks.
+     */
+    distinct?: EnrollmentTextbookScalarFieldEnum | EnrollmentTextbookScalarFieldEnum[]
+  }
+
+  /**
+   * EnrollmentTextbook findMany
+   */
+  export type EnrollmentTextbookFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
+    /**
+     * Filter, which EnrollmentTextbooks to fetch.
+     */
+    where?: EnrollmentTextbookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnrollmentTextbooks to fetch.
+     */
+    orderBy?: EnrollmentTextbookOrderByWithRelationInput | EnrollmentTextbookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EnrollmentTextbooks.
+     */
+    cursor?: EnrollmentTextbookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnrollmentTextbooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnrollmentTextbooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EnrollmentTextbooks.
+     */
+    distinct?: EnrollmentTextbookScalarFieldEnum | EnrollmentTextbookScalarFieldEnum[]
+  }
+
+  /**
+   * EnrollmentTextbook create
+   */
+  export type EnrollmentTextbookCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EnrollmentTextbook.
+     */
+    data: XOR<EnrollmentTextbookCreateInput, EnrollmentTextbookUncheckedCreateInput>
+  }
+
+  /**
+   * EnrollmentTextbook createMany
+   */
+  export type EnrollmentTextbookCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EnrollmentTextbooks.
+     */
+    data: EnrollmentTextbookCreateManyInput | EnrollmentTextbookCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EnrollmentTextbook createManyAndReturn
+   */
+  export type EnrollmentTextbookCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * The data used to create many EnrollmentTextbooks.
+     */
+    data: EnrollmentTextbookCreateManyInput | EnrollmentTextbookCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EnrollmentTextbook update
+   */
+  export type EnrollmentTextbookUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EnrollmentTextbook.
+     */
+    data: XOR<EnrollmentTextbookUpdateInput, EnrollmentTextbookUncheckedUpdateInput>
+    /**
+     * Choose, which EnrollmentTextbook to update.
+     */
+    where: EnrollmentTextbookWhereUniqueInput
+  }
+
+  /**
+   * EnrollmentTextbook updateMany
+   */
+  export type EnrollmentTextbookUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EnrollmentTextbooks.
+     */
+    data: XOR<EnrollmentTextbookUpdateManyMutationInput, EnrollmentTextbookUncheckedUpdateManyInput>
+    /**
+     * Filter which EnrollmentTextbooks to update
+     */
+    where?: EnrollmentTextbookWhereInput
+    /**
+     * Limit how many EnrollmentTextbooks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EnrollmentTextbook updateManyAndReturn
+   */
+  export type EnrollmentTextbookUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * The data used to update EnrollmentTextbooks.
+     */
+    data: XOR<EnrollmentTextbookUpdateManyMutationInput, EnrollmentTextbookUncheckedUpdateManyInput>
+    /**
+     * Filter which EnrollmentTextbooks to update
+     */
+    where?: EnrollmentTextbookWhereInput
+    /**
+     * Limit how many EnrollmentTextbooks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EnrollmentTextbook upsert
+   */
+  export type EnrollmentTextbookUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EnrollmentTextbook to update in case it exists.
+     */
+    where: EnrollmentTextbookWhereUniqueInput
+    /**
+     * In case the EnrollmentTextbook found by the `where` argument doesn't exist, create a new EnrollmentTextbook with this data.
+     */
+    create: XOR<EnrollmentTextbookCreateInput, EnrollmentTextbookUncheckedCreateInput>
+    /**
+     * In case the EnrollmentTextbook was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EnrollmentTextbookUpdateInput, EnrollmentTextbookUncheckedUpdateInput>
+  }
+
+  /**
+   * EnrollmentTextbook delete
+   */
+  export type EnrollmentTextbookDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
+    /**
+     * Filter which EnrollmentTextbook to delete.
+     */
+    where: EnrollmentTextbookWhereUniqueInput
+  }
+
+  /**
+   * EnrollmentTextbook deleteMany
+   */
+  export type EnrollmentTextbookDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EnrollmentTextbooks to delete
+     */
+    where?: EnrollmentTextbookWhereInput
+    /**
+     * Limit how many EnrollmentTextbooks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EnrollmentTextbook without action
+   */
+  export type EnrollmentTextbookDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
   }
 
 
@@ -11726,6 +14282,7 @@ export namespace Prisma {
     student?: boolean | StudentDefaultArgs<ExtArgs>
     class?: boolean | ClassDefaultArgs<ExtArgs>
     payments?: boolean | Enrollment$paymentsArgs<ExtArgs>
+    textbooks?: boolean | Enrollment$textbooksArgs<ExtArgs>
     _count?: boolean | EnrollmentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["enrollment"]>
 
@@ -11765,6 +14322,7 @@ export namespace Prisma {
     student?: boolean | StudentDefaultArgs<ExtArgs>
     class?: boolean | ClassDefaultArgs<ExtArgs>
     payments?: boolean | Enrollment$paymentsArgs<ExtArgs>
+    textbooks?: boolean | Enrollment$textbooksArgs<ExtArgs>
     _count?: boolean | EnrollmentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EnrollmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11782,6 +14340,7 @@ export namespace Prisma {
       student: Prisma.$StudentPayload<ExtArgs>
       class: Prisma.$ClassPayload<ExtArgs>
       payments: Prisma.$PaymentPayload<ExtArgs>[]
+      textbooks: Prisma.$EnrollmentTextbookPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12187,6 +14746,7 @@ export namespace Prisma {
     student<T extends StudentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentDefaultArgs<ExtArgs>>): Prisma__StudentClient<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     class<T extends ClassDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClassDefaultArgs<ExtArgs>>): Prisma__ClassClient<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     payments<T extends Enrollment$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Enrollment$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    textbooks<T extends Enrollment$textbooksArgs<ExtArgs> = {}>(args?: Subset<T, Enrollment$textbooksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentTextbookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12644,6 +15204,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * Enrollment.textbooks
+   */
+  export type Enrollment$textbooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnrollmentTextbook
+     */
+    select?: EnrollmentTextbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnrollmentTextbook
+     */
+    omit?: EnrollmentTextbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentTextbookInclude<ExtArgs> | null
+    where?: EnrollmentTextbookWhereInput
+    orderBy?: EnrollmentTextbookOrderByWithRelationInput | EnrollmentTextbookOrderByWithRelationInput[]
+    cursor?: EnrollmentTextbookWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EnrollmentTextbookScalarFieldEnum | EnrollmentTextbookScalarFieldEnum[]
   }
 
   /**
@@ -19230,6 +21814,33 @@ export namespace Prisma {
   export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof ClassScalarFieldEnum]
 
 
+  export const TextbookScalarFieldEnum: {
+    id: 'id',
+    classId: 'classId',
+    name: 'name',
+    nameZh: 'nameZh',
+    description: 'description',
+    descriptionZh: 'descriptionZh',
+    price: 'price',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TextbookScalarFieldEnum = (typeof TextbookScalarFieldEnum)[keyof typeof TextbookScalarFieldEnum]
+
+
+  export const EnrollmentTextbookScalarFieldEnum: {
+    id: 'id',
+    enrollmentId: 'enrollmentId',
+    textbookId: 'textbookId',
+    price: 'price',
+    createdAt: 'createdAt'
+  };
+
+  export type EnrollmentTextbookScalarFieldEnum = (typeof EnrollmentTextbookScalarFieldEnum)[keyof typeof EnrollmentTextbookScalarFieldEnum]
+
+
   export const EnrollmentScalarFieldEnum: {
     id: 'id',
     studentId: 'studentId',
@@ -19465,6 +22076,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'EnrollmentStatus'
    */
   export type EnumEnrollmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EnrollmentStatus'>
@@ -19503,13 +22121,6 @@ export namespace Prisma {
    * Reference to a field of type 'PaymentStatus[]'
    */
   export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -20024,6 +22635,7 @@ export namespace Prisma {
     enrollments?: EnrollmentListRelationFilter
     waitlists?: WaitlistListRelationFilter
     nextClassOverrides?: StudentNextClassOverrideListRelationFilter
+    textbooks?: TextbookListRelationFilter
   }
 
   export type ClassOrderByWithRelationInput = {
@@ -20043,6 +22655,7 @@ export namespace Prisma {
     enrollments?: EnrollmentOrderByRelationAggregateInput
     waitlists?: WaitlistOrderByRelationAggregateInput
     nextClassOverrides?: StudentNextClassOverrideOrderByRelationAggregateInput
+    textbooks?: TextbookOrderByRelationAggregateInput
   }
 
   export type ClassWhereUniqueInput = Prisma.AtLeast<{
@@ -20065,6 +22678,7 @@ export namespace Prisma {
     enrollments?: EnrollmentListRelationFilter
     waitlists?: WaitlistListRelationFilter
     nextClassOverrides?: StudentNextClassOverrideListRelationFilter
+    textbooks?: TextbookListRelationFilter
   }, "id">
 
   export type ClassOrderByWithAggregationInput = {
@@ -20105,6 +22719,152 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Class"> | Date | string
   }
 
+  export type TextbookWhereInput = {
+    AND?: TextbookWhereInput | TextbookWhereInput[]
+    OR?: TextbookWhereInput[]
+    NOT?: TextbookWhereInput | TextbookWhereInput[]
+    id?: StringFilter<"Textbook"> | string
+    classId?: StringFilter<"Textbook"> | string
+    name?: StringFilter<"Textbook"> | string
+    nameZh?: StringFilter<"Textbook"> | string
+    description?: StringNullableFilter<"Textbook"> | string | null
+    descriptionZh?: StringNullableFilter<"Textbook"> | string | null
+    price?: DecimalFilter<"Textbook"> | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFilter<"Textbook"> | boolean
+    createdAt?: DateTimeFilter<"Textbook"> | Date | string
+    updatedAt?: DateTimeFilter<"Textbook"> | Date | string
+    class?: XOR<ClassScalarRelationFilter, ClassWhereInput>
+    enrollmentBooks?: EnrollmentTextbookListRelationFilter
+  }
+
+  export type TextbookOrderByWithRelationInput = {
+    id?: SortOrder
+    classId?: SortOrder
+    name?: SortOrder
+    nameZh?: SortOrder
+    description?: SortOrderInput | SortOrder
+    descriptionZh?: SortOrderInput | SortOrder
+    price?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    class?: ClassOrderByWithRelationInput
+    enrollmentBooks?: EnrollmentTextbookOrderByRelationAggregateInput
+  }
+
+  export type TextbookWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TextbookWhereInput | TextbookWhereInput[]
+    OR?: TextbookWhereInput[]
+    NOT?: TextbookWhereInput | TextbookWhereInput[]
+    classId?: StringFilter<"Textbook"> | string
+    name?: StringFilter<"Textbook"> | string
+    nameZh?: StringFilter<"Textbook"> | string
+    description?: StringNullableFilter<"Textbook"> | string | null
+    descriptionZh?: StringNullableFilter<"Textbook"> | string | null
+    price?: DecimalFilter<"Textbook"> | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFilter<"Textbook"> | boolean
+    createdAt?: DateTimeFilter<"Textbook"> | Date | string
+    updatedAt?: DateTimeFilter<"Textbook"> | Date | string
+    class?: XOR<ClassScalarRelationFilter, ClassWhereInput>
+    enrollmentBooks?: EnrollmentTextbookListRelationFilter
+  }, "id">
+
+  export type TextbookOrderByWithAggregationInput = {
+    id?: SortOrder
+    classId?: SortOrder
+    name?: SortOrder
+    nameZh?: SortOrder
+    description?: SortOrderInput | SortOrder
+    descriptionZh?: SortOrderInput | SortOrder
+    price?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TextbookCountOrderByAggregateInput
+    _avg?: TextbookAvgOrderByAggregateInput
+    _max?: TextbookMaxOrderByAggregateInput
+    _min?: TextbookMinOrderByAggregateInput
+    _sum?: TextbookSumOrderByAggregateInput
+  }
+
+  export type TextbookScalarWhereWithAggregatesInput = {
+    AND?: TextbookScalarWhereWithAggregatesInput | TextbookScalarWhereWithAggregatesInput[]
+    OR?: TextbookScalarWhereWithAggregatesInput[]
+    NOT?: TextbookScalarWhereWithAggregatesInput | TextbookScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Textbook"> | string
+    classId?: StringWithAggregatesFilter<"Textbook"> | string
+    name?: StringWithAggregatesFilter<"Textbook"> | string
+    nameZh?: StringWithAggregatesFilter<"Textbook"> | string
+    description?: StringNullableWithAggregatesFilter<"Textbook"> | string | null
+    descriptionZh?: StringNullableWithAggregatesFilter<"Textbook"> | string | null
+    price?: DecimalWithAggregatesFilter<"Textbook"> | Decimal | DecimalJsLike | number | string
+    isActive?: BoolWithAggregatesFilter<"Textbook"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Textbook"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Textbook"> | Date | string
+  }
+
+  export type EnrollmentTextbookWhereInput = {
+    AND?: EnrollmentTextbookWhereInput | EnrollmentTextbookWhereInput[]
+    OR?: EnrollmentTextbookWhereInput[]
+    NOT?: EnrollmentTextbookWhereInput | EnrollmentTextbookWhereInput[]
+    id?: StringFilter<"EnrollmentTextbook"> | string
+    enrollmentId?: StringFilter<"EnrollmentTextbook"> | string
+    textbookId?: StringFilter<"EnrollmentTextbook"> | string
+    price?: DecimalFilter<"EnrollmentTextbook"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"EnrollmentTextbook"> | Date | string
+    enrollment?: XOR<EnrollmentScalarRelationFilter, EnrollmentWhereInput>
+    textbook?: XOR<TextbookScalarRelationFilter, TextbookWhereInput>
+  }
+
+  export type EnrollmentTextbookOrderByWithRelationInput = {
+    id?: SortOrder
+    enrollmentId?: SortOrder
+    textbookId?: SortOrder
+    price?: SortOrder
+    createdAt?: SortOrder
+    enrollment?: EnrollmentOrderByWithRelationInput
+    textbook?: TextbookOrderByWithRelationInput
+  }
+
+  export type EnrollmentTextbookWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    enrollmentId_textbookId?: EnrollmentTextbookEnrollmentIdTextbookIdCompoundUniqueInput
+    AND?: EnrollmentTextbookWhereInput | EnrollmentTextbookWhereInput[]
+    OR?: EnrollmentTextbookWhereInput[]
+    NOT?: EnrollmentTextbookWhereInput | EnrollmentTextbookWhereInput[]
+    enrollmentId?: StringFilter<"EnrollmentTextbook"> | string
+    textbookId?: StringFilter<"EnrollmentTextbook"> | string
+    price?: DecimalFilter<"EnrollmentTextbook"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"EnrollmentTextbook"> | Date | string
+    enrollment?: XOR<EnrollmentScalarRelationFilter, EnrollmentWhereInput>
+    textbook?: XOR<TextbookScalarRelationFilter, TextbookWhereInput>
+  }, "id" | "enrollmentId_textbookId">
+
+  export type EnrollmentTextbookOrderByWithAggregationInput = {
+    id?: SortOrder
+    enrollmentId?: SortOrder
+    textbookId?: SortOrder
+    price?: SortOrder
+    createdAt?: SortOrder
+    _count?: EnrollmentTextbookCountOrderByAggregateInput
+    _avg?: EnrollmentTextbookAvgOrderByAggregateInput
+    _max?: EnrollmentTextbookMaxOrderByAggregateInput
+    _min?: EnrollmentTextbookMinOrderByAggregateInput
+    _sum?: EnrollmentTextbookSumOrderByAggregateInput
+  }
+
+  export type EnrollmentTextbookScalarWhereWithAggregatesInput = {
+    AND?: EnrollmentTextbookScalarWhereWithAggregatesInput | EnrollmentTextbookScalarWhereWithAggregatesInput[]
+    OR?: EnrollmentTextbookScalarWhereWithAggregatesInput[]
+    NOT?: EnrollmentTextbookScalarWhereWithAggregatesInput | EnrollmentTextbookScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EnrollmentTextbook"> | string
+    enrollmentId?: StringWithAggregatesFilter<"EnrollmentTextbook"> | string
+    textbookId?: StringWithAggregatesFilter<"EnrollmentTextbook"> | string
+    price?: DecimalWithAggregatesFilter<"EnrollmentTextbook"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeWithAggregatesFilter<"EnrollmentTextbook"> | Date | string
+  }
+
   export type EnrollmentWhereInput = {
     AND?: EnrollmentWhereInput | EnrollmentWhereInput[]
     OR?: EnrollmentWhereInput[]
@@ -20118,6 +22878,7 @@ export namespace Prisma {
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
     class?: XOR<ClassScalarRelationFilter, ClassWhereInput>
     payments?: PaymentListRelationFilter
+    textbooks?: EnrollmentTextbookListRelationFilter
   }
 
   export type EnrollmentOrderByWithRelationInput = {
@@ -20130,6 +22891,7 @@ export namespace Prisma {
     student?: StudentOrderByWithRelationInput
     class?: ClassOrderByWithRelationInput
     payments?: PaymentOrderByRelationAggregateInput
+    textbooks?: EnrollmentTextbookOrderByRelationAggregateInput
   }
 
   export type EnrollmentWhereUniqueInput = Prisma.AtLeast<{
@@ -20146,6 +22908,7 @@ export namespace Prisma {
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
     class?: XOR<ClassScalarRelationFilter, ClassWhereInput>
     payments?: PaymentListRelationFilter
+    textbooks?: EnrollmentTextbookListRelationFilter
   }, "id" | "studentId_classId">
 
   export type EnrollmentOrderByWithAggregationInput = {
@@ -21104,6 +23867,7 @@ export namespace Prisma {
     enrollments?: EnrollmentCreateNestedManyWithoutClassInput
     waitlists?: WaitlistCreateNestedManyWithoutClassInput
     nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutClassInput
+    textbooks?: TextbookCreateNestedManyWithoutClassInput
   }
 
   export type ClassUncheckedCreateInput = {
@@ -21122,6 +23886,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutClassInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutClassInput
+    textbooks?: TextbookUncheckedCreateNestedManyWithoutClassInput
   }
 
   export type ClassUpdateInput = {
@@ -21140,6 +23905,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUpdateManyWithoutClassNestedInput
     waitlists?: WaitlistUpdateManyWithoutClassNestedInput
     nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutClassNestedInput
+    textbooks?: TextbookUpdateManyWithoutClassNestedInput
   }
 
   export type ClassUncheckedUpdateInput = {
@@ -21158,6 +23924,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
     waitlists?: WaitlistUncheckedUpdateManyWithoutClassNestedInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutClassNestedInput
+    textbooks?: TextbookUncheckedUpdateManyWithoutClassNestedInput
   }
 
   export type ClassCreateManyInput = {
@@ -21204,6 +23971,154 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TextbookCreateInput = {
+    id?: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    class: ClassCreateNestedOneWithoutTextbooksInput
+    enrollmentBooks?: EnrollmentTextbookCreateNestedManyWithoutTextbookInput
+  }
+
+  export type TextbookUncheckedCreateInput = {
+    id?: string
+    classId: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollmentBooks?: EnrollmentTextbookUncheckedCreateNestedManyWithoutTextbookInput
+  }
+
+  export type TextbookUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    class?: ClassUpdateOneRequiredWithoutTextbooksNestedInput
+    enrollmentBooks?: EnrollmentTextbookUpdateManyWithoutTextbookNestedInput
+  }
+
+  export type TextbookUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollmentBooks?: EnrollmentTextbookUncheckedUpdateManyWithoutTextbookNestedInput
+  }
+
+  export type TextbookCreateManyInput = {
+    id?: string
+    classId: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TextbookUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TextbookUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnrollmentTextbookCreateInput = {
+    id?: string
+    price: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    enrollment: EnrollmentCreateNestedOneWithoutTextbooksInput
+    textbook: TextbookCreateNestedOneWithoutEnrollmentBooksInput
+  }
+
+  export type EnrollmentTextbookUncheckedCreateInput = {
+    id?: string
+    enrollmentId: string
+    textbookId: string
+    price: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+  }
+
+  export type EnrollmentTextbookUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollment?: EnrollmentUpdateOneRequiredWithoutTextbooksNestedInput
+    textbook?: TextbookUpdateOneRequiredWithoutEnrollmentBooksNestedInput
+  }
+
+  export type EnrollmentTextbookUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enrollmentId?: StringFieldUpdateOperationsInput | string
+    textbookId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnrollmentTextbookCreateManyInput = {
+    id?: string
+    enrollmentId: string
+    textbookId: string
+    price: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+  }
+
+  export type EnrollmentTextbookUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnrollmentTextbookUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enrollmentId?: StringFieldUpdateOperationsInput | string
+    textbookId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type EnrollmentCreateInput = {
     id?: string
     status?: $Enums.EnrollmentStatus
@@ -21212,6 +24127,7 @@ export namespace Prisma {
     student: StudentCreateNestedOneWithoutEnrollmentsInput
     class: ClassCreateNestedOneWithoutEnrollmentsInput
     payments?: PaymentCreateNestedManyWithoutEnrollmentInput
+    textbooks?: EnrollmentTextbookCreateNestedManyWithoutEnrollmentInput
   }
 
   export type EnrollmentUncheckedCreateInput = {
@@ -21222,6 +24138,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     payments?: PaymentUncheckedCreateNestedManyWithoutEnrollmentInput
+    textbooks?: EnrollmentTextbookUncheckedCreateNestedManyWithoutEnrollmentInput
   }
 
   export type EnrollmentUpdateInput = {
@@ -21232,6 +24149,7 @@ export namespace Prisma {
     student?: StudentUpdateOneRequiredWithoutEnrollmentsNestedInput
     class?: ClassUpdateOneRequiredWithoutEnrollmentsNestedInput
     payments?: PaymentUpdateManyWithoutEnrollmentNestedInput
+    textbooks?: EnrollmentTextbookUpdateManyWithoutEnrollmentNestedInput
   }
 
   export type EnrollmentUncheckedUpdateInput = {
@@ -21242,6 +24160,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payments?: PaymentUncheckedUpdateManyWithoutEnrollmentNestedInput
+    textbooks?: EnrollmentTextbookUncheckedUpdateManyWithoutEnrollmentNestedInput
   }
 
   export type EnrollmentCreateManyInput = {
@@ -22236,6 +25155,16 @@ export namespace Prisma {
     isNot?: TeacherWhereInput | null
   }
 
+  export type TextbookListRelationFilter = {
+    every?: TextbookWhereInput
+    some?: TextbookWhereInput
+    none?: TextbookWhereInput
+  }
+
+  export type TextbookOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ClassCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -22357,6 +25286,128 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type ClassScalarRelationFilter = {
+    is?: ClassWhereInput
+    isNot?: ClassWhereInput
+  }
+
+  export type EnrollmentTextbookListRelationFilter = {
+    every?: EnrollmentTextbookWhereInput
+    some?: EnrollmentTextbookWhereInput
+    none?: EnrollmentTextbookWhereInput
+  }
+
+  export type EnrollmentTextbookOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TextbookCountOrderByAggregateInput = {
+    id?: SortOrder
+    classId?: SortOrder
+    name?: SortOrder
+    nameZh?: SortOrder
+    description?: SortOrder
+    descriptionZh?: SortOrder
+    price?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TextbookAvgOrderByAggregateInput = {
+    price?: SortOrder
+  }
+
+  export type TextbookMaxOrderByAggregateInput = {
+    id?: SortOrder
+    classId?: SortOrder
+    name?: SortOrder
+    nameZh?: SortOrder
+    description?: SortOrder
+    descriptionZh?: SortOrder
+    price?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TextbookMinOrderByAggregateInput = {
+    id?: SortOrder
+    classId?: SortOrder
+    name?: SortOrder
+    nameZh?: SortOrder
+    description?: SortOrder
+    descriptionZh?: SortOrder
+    price?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TextbookSumOrderByAggregateInput = {
+    price?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type EnrollmentScalarRelationFilter = {
+    is?: EnrollmentWhereInput
+    isNot?: EnrollmentWhereInput
+  }
+
+  export type TextbookScalarRelationFilter = {
+    is?: TextbookWhereInput
+    isNot?: TextbookWhereInput
+  }
+
+  export type EnrollmentTextbookEnrollmentIdTextbookIdCompoundUniqueInput = {
+    enrollmentId: string
+    textbookId: string
+  }
+
+  export type EnrollmentTextbookCountOrderByAggregateInput = {
+    id?: SortOrder
+    enrollmentId?: SortOrder
+    textbookId?: SortOrder
+    price?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnrollmentTextbookAvgOrderByAggregateInput = {
+    price?: SortOrder
+  }
+
+  export type EnrollmentTextbookMaxOrderByAggregateInput = {
+    id?: SortOrder
+    enrollmentId?: SortOrder
+    textbookId?: SortOrder
+    price?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnrollmentTextbookMinOrderByAggregateInput = {
+    id?: SortOrder
+    enrollmentId?: SortOrder
+    textbookId?: SortOrder
+    price?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnrollmentTextbookSumOrderByAggregateInput = {
+    price?: SortOrder
+  }
+
   export type EnumEnrollmentStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.EnrollmentStatus | EnumEnrollmentStatusFieldRefInput<$PrismaModel>
     in?: $Enums.EnrollmentStatus[] | ListEnumEnrollmentStatusFieldRefInput<$PrismaModel>
@@ -22367,11 +25418,6 @@ export namespace Prisma {
   export type StudentScalarRelationFilter = {
     is?: StudentWhereInput
     isNot?: StudentWhereInput
-  }
-
-  export type ClassScalarRelationFilter = {
-    is?: ClassWhereInput
-    isNot?: ClassWhereInput
   }
 
   export type PaymentListRelationFilter = {
@@ -22438,11 +25484,6 @@ export namespace Prisma {
     in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumPaymentStatusFilter<$PrismaModel> | $Enums.PaymentStatus
-  }
-
-  export type EnrollmentScalarRelationFilter = {
-    is?: EnrollmentWhereInput
-    isNot?: EnrollmentWhereInput
   }
 
   export type PaymentCountOrderByAggregateInput = {
@@ -22512,11 +25553,6 @@ export namespace Prisma {
     _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type WaitlistStudentIdClassIdCompoundUniqueInput = {
     studentId: string
     classId: string
@@ -22555,14 +25591,6 @@ export namespace Prisma {
 
   export type WaitlistSumOrderByAggregateInput = {
     position?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type AdjustmentLogCountOrderByAggregateInput = {
@@ -23136,6 +26164,13 @@ export namespace Prisma {
     connect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
   }
 
+  export type TextbookCreateNestedManyWithoutClassInput = {
+    create?: XOR<TextbookCreateWithoutClassInput, TextbookUncheckedCreateWithoutClassInput> | TextbookCreateWithoutClassInput[] | TextbookUncheckedCreateWithoutClassInput[]
+    connectOrCreate?: TextbookCreateOrConnectWithoutClassInput | TextbookCreateOrConnectWithoutClassInput[]
+    createMany?: TextbookCreateManyClassInputEnvelope
+    connect?: TextbookWhereUniqueInput | TextbookWhereUniqueInput[]
+  }
+
   export type EnrollmentUncheckedCreateNestedManyWithoutClassInput = {
     create?: XOR<EnrollmentCreateWithoutClassInput, EnrollmentUncheckedCreateWithoutClassInput> | EnrollmentCreateWithoutClassInput[] | EnrollmentUncheckedCreateWithoutClassInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutClassInput | EnrollmentCreateOrConnectWithoutClassInput[]
@@ -23155,6 +26190,13 @@ export namespace Prisma {
     connectOrCreate?: StudentNextClassOverrideCreateOrConnectWithoutClassInput | StudentNextClassOverrideCreateOrConnectWithoutClassInput[]
     createMany?: StudentNextClassOverrideCreateManyClassInputEnvelope
     connect?: StudentNextClassOverrideWhereUniqueInput | StudentNextClassOverrideWhereUniqueInput[]
+  }
+
+  export type TextbookUncheckedCreateNestedManyWithoutClassInput = {
+    create?: XOR<TextbookCreateWithoutClassInput, TextbookUncheckedCreateWithoutClassInput> | TextbookCreateWithoutClassInput[] | TextbookUncheckedCreateWithoutClassInput[]
+    connectOrCreate?: TextbookCreateOrConnectWithoutClassInput | TextbookCreateOrConnectWithoutClassInput[]
+    createMany?: TextbookCreateManyClassInputEnvelope
+    connect?: TextbookWhereUniqueInput | TextbookWhereUniqueInput[]
   }
 
   export type EnumClassTypeFieldUpdateOperationsInput = {
@@ -23229,6 +26271,20 @@ export namespace Prisma {
     deleteMany?: StudentNextClassOverrideScalarWhereInput | StudentNextClassOverrideScalarWhereInput[]
   }
 
+  export type TextbookUpdateManyWithoutClassNestedInput = {
+    create?: XOR<TextbookCreateWithoutClassInput, TextbookUncheckedCreateWithoutClassInput> | TextbookCreateWithoutClassInput[] | TextbookUncheckedCreateWithoutClassInput[]
+    connectOrCreate?: TextbookCreateOrConnectWithoutClassInput | TextbookCreateOrConnectWithoutClassInput[]
+    upsert?: TextbookUpsertWithWhereUniqueWithoutClassInput | TextbookUpsertWithWhereUniqueWithoutClassInput[]
+    createMany?: TextbookCreateManyClassInputEnvelope
+    set?: TextbookWhereUniqueInput | TextbookWhereUniqueInput[]
+    disconnect?: TextbookWhereUniqueInput | TextbookWhereUniqueInput[]
+    delete?: TextbookWhereUniqueInput | TextbookWhereUniqueInput[]
+    connect?: TextbookWhereUniqueInput | TextbookWhereUniqueInput[]
+    update?: TextbookUpdateWithWhereUniqueWithoutClassInput | TextbookUpdateWithWhereUniqueWithoutClassInput[]
+    updateMany?: TextbookUpdateManyWithWhereWithoutClassInput | TextbookUpdateManyWithWhereWithoutClassInput[]
+    deleteMany?: TextbookScalarWhereInput | TextbookScalarWhereInput[]
+  }
+
   export type EnrollmentUncheckedUpdateManyWithoutClassNestedInput = {
     create?: XOR<EnrollmentCreateWithoutClassInput, EnrollmentUncheckedCreateWithoutClassInput> | EnrollmentCreateWithoutClassInput[] | EnrollmentUncheckedCreateWithoutClassInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutClassInput | EnrollmentCreateOrConnectWithoutClassInput[]
@@ -23271,6 +26327,108 @@ export namespace Prisma {
     deleteMany?: StudentNextClassOverrideScalarWhereInput | StudentNextClassOverrideScalarWhereInput[]
   }
 
+  export type TextbookUncheckedUpdateManyWithoutClassNestedInput = {
+    create?: XOR<TextbookCreateWithoutClassInput, TextbookUncheckedCreateWithoutClassInput> | TextbookCreateWithoutClassInput[] | TextbookUncheckedCreateWithoutClassInput[]
+    connectOrCreate?: TextbookCreateOrConnectWithoutClassInput | TextbookCreateOrConnectWithoutClassInput[]
+    upsert?: TextbookUpsertWithWhereUniqueWithoutClassInput | TextbookUpsertWithWhereUniqueWithoutClassInput[]
+    createMany?: TextbookCreateManyClassInputEnvelope
+    set?: TextbookWhereUniqueInput | TextbookWhereUniqueInput[]
+    disconnect?: TextbookWhereUniqueInput | TextbookWhereUniqueInput[]
+    delete?: TextbookWhereUniqueInput | TextbookWhereUniqueInput[]
+    connect?: TextbookWhereUniqueInput | TextbookWhereUniqueInput[]
+    update?: TextbookUpdateWithWhereUniqueWithoutClassInput | TextbookUpdateWithWhereUniqueWithoutClassInput[]
+    updateMany?: TextbookUpdateManyWithWhereWithoutClassInput | TextbookUpdateManyWithWhereWithoutClassInput[]
+    deleteMany?: TextbookScalarWhereInput | TextbookScalarWhereInput[]
+  }
+
+  export type ClassCreateNestedOneWithoutTextbooksInput = {
+    create?: XOR<ClassCreateWithoutTextbooksInput, ClassUncheckedCreateWithoutTextbooksInput>
+    connectOrCreate?: ClassCreateOrConnectWithoutTextbooksInput
+    connect?: ClassWhereUniqueInput
+  }
+
+  export type EnrollmentTextbookCreateNestedManyWithoutTextbookInput = {
+    create?: XOR<EnrollmentTextbookCreateWithoutTextbookInput, EnrollmentTextbookUncheckedCreateWithoutTextbookInput> | EnrollmentTextbookCreateWithoutTextbookInput[] | EnrollmentTextbookUncheckedCreateWithoutTextbookInput[]
+    connectOrCreate?: EnrollmentTextbookCreateOrConnectWithoutTextbookInput | EnrollmentTextbookCreateOrConnectWithoutTextbookInput[]
+    createMany?: EnrollmentTextbookCreateManyTextbookInputEnvelope
+    connect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+  }
+
+  export type EnrollmentTextbookUncheckedCreateNestedManyWithoutTextbookInput = {
+    create?: XOR<EnrollmentTextbookCreateWithoutTextbookInput, EnrollmentTextbookUncheckedCreateWithoutTextbookInput> | EnrollmentTextbookCreateWithoutTextbookInput[] | EnrollmentTextbookUncheckedCreateWithoutTextbookInput[]
+    connectOrCreate?: EnrollmentTextbookCreateOrConnectWithoutTextbookInput | EnrollmentTextbookCreateOrConnectWithoutTextbookInput[]
+    createMany?: EnrollmentTextbookCreateManyTextbookInputEnvelope
+    connect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type ClassUpdateOneRequiredWithoutTextbooksNestedInput = {
+    create?: XOR<ClassCreateWithoutTextbooksInput, ClassUncheckedCreateWithoutTextbooksInput>
+    connectOrCreate?: ClassCreateOrConnectWithoutTextbooksInput
+    upsert?: ClassUpsertWithoutTextbooksInput
+    connect?: ClassWhereUniqueInput
+    update?: XOR<XOR<ClassUpdateToOneWithWhereWithoutTextbooksInput, ClassUpdateWithoutTextbooksInput>, ClassUncheckedUpdateWithoutTextbooksInput>
+  }
+
+  export type EnrollmentTextbookUpdateManyWithoutTextbookNestedInput = {
+    create?: XOR<EnrollmentTextbookCreateWithoutTextbookInput, EnrollmentTextbookUncheckedCreateWithoutTextbookInput> | EnrollmentTextbookCreateWithoutTextbookInput[] | EnrollmentTextbookUncheckedCreateWithoutTextbookInput[]
+    connectOrCreate?: EnrollmentTextbookCreateOrConnectWithoutTextbookInput | EnrollmentTextbookCreateOrConnectWithoutTextbookInput[]
+    upsert?: EnrollmentTextbookUpsertWithWhereUniqueWithoutTextbookInput | EnrollmentTextbookUpsertWithWhereUniqueWithoutTextbookInput[]
+    createMany?: EnrollmentTextbookCreateManyTextbookInputEnvelope
+    set?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    disconnect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    delete?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    connect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    update?: EnrollmentTextbookUpdateWithWhereUniqueWithoutTextbookInput | EnrollmentTextbookUpdateWithWhereUniqueWithoutTextbookInput[]
+    updateMany?: EnrollmentTextbookUpdateManyWithWhereWithoutTextbookInput | EnrollmentTextbookUpdateManyWithWhereWithoutTextbookInput[]
+    deleteMany?: EnrollmentTextbookScalarWhereInput | EnrollmentTextbookScalarWhereInput[]
+  }
+
+  export type EnrollmentTextbookUncheckedUpdateManyWithoutTextbookNestedInput = {
+    create?: XOR<EnrollmentTextbookCreateWithoutTextbookInput, EnrollmentTextbookUncheckedCreateWithoutTextbookInput> | EnrollmentTextbookCreateWithoutTextbookInput[] | EnrollmentTextbookUncheckedCreateWithoutTextbookInput[]
+    connectOrCreate?: EnrollmentTextbookCreateOrConnectWithoutTextbookInput | EnrollmentTextbookCreateOrConnectWithoutTextbookInput[]
+    upsert?: EnrollmentTextbookUpsertWithWhereUniqueWithoutTextbookInput | EnrollmentTextbookUpsertWithWhereUniqueWithoutTextbookInput[]
+    createMany?: EnrollmentTextbookCreateManyTextbookInputEnvelope
+    set?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    disconnect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    delete?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    connect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    update?: EnrollmentTextbookUpdateWithWhereUniqueWithoutTextbookInput | EnrollmentTextbookUpdateWithWhereUniqueWithoutTextbookInput[]
+    updateMany?: EnrollmentTextbookUpdateManyWithWhereWithoutTextbookInput | EnrollmentTextbookUpdateManyWithWhereWithoutTextbookInput[]
+    deleteMany?: EnrollmentTextbookScalarWhereInput | EnrollmentTextbookScalarWhereInput[]
+  }
+
+  export type EnrollmentCreateNestedOneWithoutTextbooksInput = {
+    create?: XOR<EnrollmentCreateWithoutTextbooksInput, EnrollmentUncheckedCreateWithoutTextbooksInput>
+    connectOrCreate?: EnrollmentCreateOrConnectWithoutTextbooksInput
+    connect?: EnrollmentWhereUniqueInput
+  }
+
+  export type TextbookCreateNestedOneWithoutEnrollmentBooksInput = {
+    create?: XOR<TextbookCreateWithoutEnrollmentBooksInput, TextbookUncheckedCreateWithoutEnrollmentBooksInput>
+    connectOrCreate?: TextbookCreateOrConnectWithoutEnrollmentBooksInput
+    connect?: TextbookWhereUniqueInput
+  }
+
+  export type EnrollmentUpdateOneRequiredWithoutTextbooksNestedInput = {
+    create?: XOR<EnrollmentCreateWithoutTextbooksInput, EnrollmentUncheckedCreateWithoutTextbooksInput>
+    connectOrCreate?: EnrollmentCreateOrConnectWithoutTextbooksInput
+    upsert?: EnrollmentUpsertWithoutTextbooksInput
+    connect?: EnrollmentWhereUniqueInput
+    update?: XOR<XOR<EnrollmentUpdateToOneWithWhereWithoutTextbooksInput, EnrollmentUpdateWithoutTextbooksInput>, EnrollmentUncheckedUpdateWithoutTextbooksInput>
+  }
+
+  export type TextbookUpdateOneRequiredWithoutEnrollmentBooksNestedInput = {
+    create?: XOR<TextbookCreateWithoutEnrollmentBooksInput, TextbookUncheckedCreateWithoutEnrollmentBooksInput>
+    connectOrCreate?: TextbookCreateOrConnectWithoutEnrollmentBooksInput
+    upsert?: TextbookUpsertWithoutEnrollmentBooksInput
+    connect?: TextbookWhereUniqueInput
+    update?: XOR<XOR<TextbookUpdateToOneWithWhereWithoutEnrollmentBooksInput, TextbookUpdateWithoutEnrollmentBooksInput>, TextbookUncheckedUpdateWithoutEnrollmentBooksInput>
+  }
+
   export type StudentCreateNestedOneWithoutEnrollmentsInput = {
     create?: XOR<StudentCreateWithoutEnrollmentsInput, StudentUncheckedCreateWithoutEnrollmentsInput>
     connectOrCreate?: StudentCreateOrConnectWithoutEnrollmentsInput
@@ -23290,11 +26448,25 @@ export namespace Prisma {
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
   }
 
+  export type EnrollmentTextbookCreateNestedManyWithoutEnrollmentInput = {
+    create?: XOR<EnrollmentTextbookCreateWithoutEnrollmentInput, EnrollmentTextbookUncheckedCreateWithoutEnrollmentInput> | EnrollmentTextbookCreateWithoutEnrollmentInput[] | EnrollmentTextbookUncheckedCreateWithoutEnrollmentInput[]
+    connectOrCreate?: EnrollmentTextbookCreateOrConnectWithoutEnrollmentInput | EnrollmentTextbookCreateOrConnectWithoutEnrollmentInput[]
+    createMany?: EnrollmentTextbookCreateManyEnrollmentInputEnvelope
+    connect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+  }
+
   export type PaymentUncheckedCreateNestedManyWithoutEnrollmentInput = {
     create?: XOR<PaymentCreateWithoutEnrollmentInput, PaymentUncheckedCreateWithoutEnrollmentInput> | PaymentCreateWithoutEnrollmentInput[] | PaymentUncheckedCreateWithoutEnrollmentInput[]
     connectOrCreate?: PaymentCreateOrConnectWithoutEnrollmentInput | PaymentCreateOrConnectWithoutEnrollmentInput[]
     createMany?: PaymentCreateManyEnrollmentInputEnvelope
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type EnrollmentTextbookUncheckedCreateNestedManyWithoutEnrollmentInput = {
+    create?: XOR<EnrollmentTextbookCreateWithoutEnrollmentInput, EnrollmentTextbookUncheckedCreateWithoutEnrollmentInput> | EnrollmentTextbookCreateWithoutEnrollmentInput[] | EnrollmentTextbookUncheckedCreateWithoutEnrollmentInput[]
+    connectOrCreate?: EnrollmentTextbookCreateOrConnectWithoutEnrollmentInput | EnrollmentTextbookCreateOrConnectWithoutEnrollmentInput[]
+    createMany?: EnrollmentTextbookCreateManyEnrollmentInputEnvelope
+    connect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
   }
 
   export type EnumEnrollmentStatusFieldUpdateOperationsInput = {
@@ -23331,6 +26503,20 @@ export namespace Prisma {
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
   }
 
+  export type EnrollmentTextbookUpdateManyWithoutEnrollmentNestedInput = {
+    create?: XOR<EnrollmentTextbookCreateWithoutEnrollmentInput, EnrollmentTextbookUncheckedCreateWithoutEnrollmentInput> | EnrollmentTextbookCreateWithoutEnrollmentInput[] | EnrollmentTextbookUncheckedCreateWithoutEnrollmentInput[]
+    connectOrCreate?: EnrollmentTextbookCreateOrConnectWithoutEnrollmentInput | EnrollmentTextbookCreateOrConnectWithoutEnrollmentInput[]
+    upsert?: EnrollmentTextbookUpsertWithWhereUniqueWithoutEnrollmentInput | EnrollmentTextbookUpsertWithWhereUniqueWithoutEnrollmentInput[]
+    createMany?: EnrollmentTextbookCreateManyEnrollmentInputEnvelope
+    set?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    disconnect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    delete?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    connect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    update?: EnrollmentTextbookUpdateWithWhereUniqueWithoutEnrollmentInput | EnrollmentTextbookUpdateWithWhereUniqueWithoutEnrollmentInput[]
+    updateMany?: EnrollmentTextbookUpdateManyWithWhereWithoutEnrollmentInput | EnrollmentTextbookUpdateManyWithWhereWithoutEnrollmentInput[]
+    deleteMany?: EnrollmentTextbookScalarWhereInput | EnrollmentTextbookScalarWhereInput[]
+  }
+
   export type PaymentUncheckedUpdateManyWithoutEnrollmentNestedInput = {
     create?: XOR<PaymentCreateWithoutEnrollmentInput, PaymentUncheckedCreateWithoutEnrollmentInput> | PaymentCreateWithoutEnrollmentInput[] | PaymentUncheckedCreateWithoutEnrollmentInput[]
     connectOrCreate?: PaymentCreateOrConnectWithoutEnrollmentInput | PaymentCreateOrConnectWithoutEnrollmentInput[]
@@ -23343,6 +26529,20 @@ export namespace Prisma {
     update?: PaymentUpdateWithWhereUniqueWithoutEnrollmentInput | PaymentUpdateWithWhereUniqueWithoutEnrollmentInput[]
     updateMany?: PaymentUpdateManyWithWhereWithoutEnrollmentInput | PaymentUpdateManyWithWhereWithoutEnrollmentInput[]
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type EnrollmentTextbookUncheckedUpdateManyWithoutEnrollmentNestedInput = {
+    create?: XOR<EnrollmentTextbookCreateWithoutEnrollmentInput, EnrollmentTextbookUncheckedCreateWithoutEnrollmentInput> | EnrollmentTextbookCreateWithoutEnrollmentInput[] | EnrollmentTextbookUncheckedCreateWithoutEnrollmentInput[]
+    connectOrCreate?: EnrollmentTextbookCreateOrConnectWithoutEnrollmentInput | EnrollmentTextbookCreateOrConnectWithoutEnrollmentInput[]
+    upsert?: EnrollmentTextbookUpsertWithWhereUniqueWithoutEnrollmentInput | EnrollmentTextbookUpsertWithWhereUniqueWithoutEnrollmentInput[]
+    createMany?: EnrollmentTextbookCreateManyEnrollmentInputEnvelope
+    set?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    disconnect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    delete?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    connect?: EnrollmentTextbookWhereUniqueInput | EnrollmentTextbookWhereUniqueInput[]
+    update?: EnrollmentTextbookUpdateWithWhereUniqueWithoutEnrollmentInput | EnrollmentTextbookUpdateWithWhereUniqueWithoutEnrollmentInput[]
+    updateMany?: EnrollmentTextbookUpdateManyWithWhereWithoutEnrollmentInput | EnrollmentTextbookUpdateManyWithWhereWithoutEnrollmentInput[]
+    deleteMany?: EnrollmentTextbookScalarWhereInput | EnrollmentTextbookScalarWhereInput[]
   }
 
   export type EnrollmentCreateNestedOneWithoutPaymentsInput = {
@@ -23377,10 +26577,6 @@ export namespace Prisma {
     create?: XOR<ClassCreateWithoutWaitlistsInput, ClassUncheckedCreateWithoutWaitlistsInput>
     connectOrCreate?: ClassCreateOrConnectWithoutWaitlistsInput
     connect?: ClassWhereUniqueInput
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type StudentUpdateOneRequiredWithoutWaitlistsNestedInput = {
@@ -23699,6 +26895,19 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedEnumEnrollmentStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.EnrollmentStatus | EnumEnrollmentStatusFieldRefInput<$PrismaModel>
     in?: $Enums.EnrollmentStatus[] | ListEnumEnrollmentStatusFieldRefInput<$PrismaModel>
@@ -23748,19 +26957,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPaymentStatusFilter<$PrismaModel>
     _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -24256,6 +27452,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     class: ClassCreateNestedOneWithoutEnrollmentsInput
     payments?: PaymentCreateNestedManyWithoutEnrollmentInput
+    textbooks?: EnrollmentTextbookCreateNestedManyWithoutEnrollmentInput
   }
 
   export type EnrollmentUncheckedCreateWithoutStudentInput = {
@@ -24265,6 +27462,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     payments?: PaymentUncheckedCreateNestedManyWithoutEnrollmentInput
+    textbooks?: EnrollmentTextbookUncheckedCreateNestedManyWithoutEnrollmentInput
   }
 
   export type EnrollmentCreateOrConnectWithoutStudentInput = {
@@ -24457,6 +27655,7 @@ export namespace Prisma {
     enrollments?: EnrollmentCreateNestedManyWithoutClassInput
     waitlists?: WaitlistCreateNestedManyWithoutClassInput
     nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutClassInput
+    textbooks?: TextbookCreateNestedManyWithoutClassInput
   }
 
   export type ClassUncheckedCreateWithoutTeacherInput = {
@@ -24474,6 +27673,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutClassInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutClassInput
+    textbooks?: TextbookUncheckedCreateNestedManyWithoutClassInput
   }
 
   export type ClassCreateOrConnectWithoutTeacherInput = {
@@ -24550,6 +27750,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     student: StudentCreateNestedOneWithoutEnrollmentsInput
     payments?: PaymentCreateNestedManyWithoutEnrollmentInput
+    textbooks?: EnrollmentTextbookCreateNestedManyWithoutEnrollmentInput
   }
 
   export type EnrollmentUncheckedCreateWithoutClassInput = {
@@ -24559,6 +27760,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     payments?: PaymentUncheckedCreateNestedManyWithoutEnrollmentInput
+    textbooks?: EnrollmentTextbookUncheckedCreateNestedManyWithoutEnrollmentInput
   }
 
   export type EnrollmentCreateOrConnectWithoutClassInput = {
@@ -24620,6 +27822,42 @@ export namespace Prisma {
 
   export type StudentNextClassOverrideCreateManyClassInputEnvelope = {
     data: StudentNextClassOverrideCreateManyClassInput | StudentNextClassOverrideCreateManyClassInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TextbookCreateWithoutClassInput = {
+    id?: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollmentBooks?: EnrollmentTextbookCreateNestedManyWithoutTextbookInput
+  }
+
+  export type TextbookUncheckedCreateWithoutClassInput = {
+    id?: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollmentBooks?: EnrollmentTextbookUncheckedCreateNestedManyWithoutTextbookInput
+  }
+
+  export type TextbookCreateOrConnectWithoutClassInput = {
+    where: TextbookWhereUniqueInput
+    create: XOR<TextbookCreateWithoutClassInput, TextbookUncheckedCreateWithoutClassInput>
+  }
+
+  export type TextbookCreateManyClassInputEnvelope = {
+    data: TextbookCreateManyClassInput | TextbookCreateManyClassInput[]
     skipDuplicates?: boolean
   }
 
@@ -24700,6 +27938,301 @@ export namespace Prisma {
     data: XOR<StudentNextClassOverrideUpdateManyMutationInput, StudentNextClassOverrideUncheckedUpdateManyWithoutClassInput>
   }
 
+  export type TextbookUpsertWithWhereUniqueWithoutClassInput = {
+    where: TextbookWhereUniqueInput
+    update: XOR<TextbookUpdateWithoutClassInput, TextbookUncheckedUpdateWithoutClassInput>
+    create: XOR<TextbookCreateWithoutClassInput, TextbookUncheckedCreateWithoutClassInput>
+  }
+
+  export type TextbookUpdateWithWhereUniqueWithoutClassInput = {
+    where: TextbookWhereUniqueInput
+    data: XOR<TextbookUpdateWithoutClassInput, TextbookUncheckedUpdateWithoutClassInput>
+  }
+
+  export type TextbookUpdateManyWithWhereWithoutClassInput = {
+    where: TextbookScalarWhereInput
+    data: XOR<TextbookUpdateManyMutationInput, TextbookUncheckedUpdateManyWithoutClassInput>
+  }
+
+  export type TextbookScalarWhereInput = {
+    AND?: TextbookScalarWhereInput | TextbookScalarWhereInput[]
+    OR?: TextbookScalarWhereInput[]
+    NOT?: TextbookScalarWhereInput | TextbookScalarWhereInput[]
+    id?: StringFilter<"Textbook"> | string
+    classId?: StringFilter<"Textbook"> | string
+    name?: StringFilter<"Textbook"> | string
+    nameZh?: StringFilter<"Textbook"> | string
+    description?: StringNullableFilter<"Textbook"> | string | null
+    descriptionZh?: StringNullableFilter<"Textbook"> | string | null
+    price?: DecimalFilter<"Textbook"> | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFilter<"Textbook"> | boolean
+    createdAt?: DateTimeFilter<"Textbook"> | Date | string
+    updatedAt?: DateTimeFilter<"Textbook"> | Date | string
+  }
+
+  export type ClassCreateWithoutTextbooksInput = {
+    id?: string
+    name: string
+    nameEn?: string | null
+    type: $Enums.ClassType
+    description?: string | null
+    schedule: JsonNullValueInput | InputJsonValue
+    capacity: number
+    fee: Decimal | DecimalJsLike | number | string
+    year: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    teacher?: TeacherCreateNestedOneWithoutClassesInput
+    enrollments?: EnrollmentCreateNestedManyWithoutClassInput
+    waitlists?: WaitlistCreateNestedManyWithoutClassInput
+    nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutClassInput
+  }
+
+  export type ClassUncheckedCreateWithoutTextbooksInput = {
+    id?: string
+    name: string
+    nameEn?: string | null
+    type: $Enums.ClassType
+    description?: string | null
+    teacherId?: string | null
+    schedule: JsonNullValueInput | InputJsonValue
+    capacity: number
+    fee: Decimal | DecimalJsLike | number | string
+    year: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
+    waitlists?: WaitlistUncheckedCreateNestedManyWithoutClassInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutClassInput
+  }
+
+  export type ClassCreateOrConnectWithoutTextbooksInput = {
+    where: ClassWhereUniqueInput
+    create: XOR<ClassCreateWithoutTextbooksInput, ClassUncheckedCreateWithoutTextbooksInput>
+  }
+
+  export type EnrollmentTextbookCreateWithoutTextbookInput = {
+    id?: string
+    price: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    enrollment: EnrollmentCreateNestedOneWithoutTextbooksInput
+  }
+
+  export type EnrollmentTextbookUncheckedCreateWithoutTextbookInput = {
+    id?: string
+    enrollmentId: string
+    price: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+  }
+
+  export type EnrollmentTextbookCreateOrConnectWithoutTextbookInput = {
+    where: EnrollmentTextbookWhereUniqueInput
+    create: XOR<EnrollmentTextbookCreateWithoutTextbookInput, EnrollmentTextbookUncheckedCreateWithoutTextbookInput>
+  }
+
+  export type EnrollmentTextbookCreateManyTextbookInputEnvelope = {
+    data: EnrollmentTextbookCreateManyTextbookInput | EnrollmentTextbookCreateManyTextbookInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ClassUpsertWithoutTextbooksInput = {
+    update: XOR<ClassUpdateWithoutTextbooksInput, ClassUncheckedUpdateWithoutTextbooksInput>
+    create: XOR<ClassCreateWithoutTextbooksInput, ClassUncheckedCreateWithoutTextbooksInput>
+    where?: ClassWhereInput
+  }
+
+  export type ClassUpdateToOneWithWhereWithoutTextbooksInput = {
+    where?: ClassWhereInput
+    data: XOR<ClassUpdateWithoutTextbooksInput, ClassUncheckedUpdateWithoutTextbooksInput>
+  }
+
+  export type ClassUpdateWithoutTextbooksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameEn?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumClassTypeFieldUpdateOperationsInput | $Enums.ClassType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    schedule?: JsonNullValueInput | InputJsonValue
+    capacity?: IntFieldUpdateOperationsInput | number
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    year?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teacher?: TeacherUpdateOneWithoutClassesNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutClassNestedInput
+    waitlists?: WaitlistUpdateManyWithoutClassNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutClassNestedInput
+  }
+
+  export type ClassUncheckedUpdateWithoutTextbooksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameEn?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumClassTypeFieldUpdateOperationsInput | $Enums.ClassType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    schedule?: JsonNullValueInput | InputJsonValue
+    capacity?: IntFieldUpdateOperationsInput | number
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    year?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
+    waitlists?: WaitlistUncheckedUpdateManyWithoutClassNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutClassNestedInput
+  }
+
+  export type EnrollmentTextbookUpsertWithWhereUniqueWithoutTextbookInput = {
+    where: EnrollmentTextbookWhereUniqueInput
+    update: XOR<EnrollmentTextbookUpdateWithoutTextbookInput, EnrollmentTextbookUncheckedUpdateWithoutTextbookInput>
+    create: XOR<EnrollmentTextbookCreateWithoutTextbookInput, EnrollmentTextbookUncheckedCreateWithoutTextbookInput>
+  }
+
+  export type EnrollmentTextbookUpdateWithWhereUniqueWithoutTextbookInput = {
+    where: EnrollmentTextbookWhereUniqueInput
+    data: XOR<EnrollmentTextbookUpdateWithoutTextbookInput, EnrollmentTextbookUncheckedUpdateWithoutTextbookInput>
+  }
+
+  export type EnrollmentTextbookUpdateManyWithWhereWithoutTextbookInput = {
+    where: EnrollmentTextbookScalarWhereInput
+    data: XOR<EnrollmentTextbookUpdateManyMutationInput, EnrollmentTextbookUncheckedUpdateManyWithoutTextbookInput>
+  }
+
+  export type EnrollmentTextbookScalarWhereInput = {
+    AND?: EnrollmentTextbookScalarWhereInput | EnrollmentTextbookScalarWhereInput[]
+    OR?: EnrollmentTextbookScalarWhereInput[]
+    NOT?: EnrollmentTextbookScalarWhereInput | EnrollmentTextbookScalarWhereInput[]
+    id?: StringFilter<"EnrollmentTextbook"> | string
+    enrollmentId?: StringFilter<"EnrollmentTextbook"> | string
+    textbookId?: StringFilter<"EnrollmentTextbook"> | string
+    price?: DecimalFilter<"EnrollmentTextbook"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"EnrollmentTextbook"> | Date | string
+  }
+
+  export type EnrollmentCreateWithoutTextbooksInput = {
+    id?: string
+    status?: $Enums.EnrollmentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student: StudentCreateNestedOneWithoutEnrollmentsInput
+    class: ClassCreateNestedOneWithoutEnrollmentsInput
+    payments?: PaymentCreateNestedManyWithoutEnrollmentInput
+  }
+
+  export type EnrollmentUncheckedCreateWithoutTextbooksInput = {
+    id?: string
+    studentId: string
+    classId: string
+    status?: $Enums.EnrollmentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payments?: PaymentUncheckedCreateNestedManyWithoutEnrollmentInput
+  }
+
+  export type EnrollmentCreateOrConnectWithoutTextbooksInput = {
+    where: EnrollmentWhereUniqueInput
+    create: XOR<EnrollmentCreateWithoutTextbooksInput, EnrollmentUncheckedCreateWithoutTextbooksInput>
+  }
+
+  export type TextbookCreateWithoutEnrollmentBooksInput = {
+    id?: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    class: ClassCreateNestedOneWithoutTextbooksInput
+  }
+
+  export type TextbookUncheckedCreateWithoutEnrollmentBooksInput = {
+    id?: string
+    classId: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TextbookCreateOrConnectWithoutEnrollmentBooksInput = {
+    where: TextbookWhereUniqueInput
+    create: XOR<TextbookCreateWithoutEnrollmentBooksInput, TextbookUncheckedCreateWithoutEnrollmentBooksInput>
+  }
+
+  export type EnrollmentUpsertWithoutTextbooksInput = {
+    update: XOR<EnrollmentUpdateWithoutTextbooksInput, EnrollmentUncheckedUpdateWithoutTextbooksInput>
+    create: XOR<EnrollmentCreateWithoutTextbooksInput, EnrollmentUncheckedCreateWithoutTextbooksInput>
+    where?: EnrollmentWhereInput
+  }
+
+  export type EnrollmentUpdateToOneWithWhereWithoutTextbooksInput = {
+    where?: EnrollmentWhereInput
+    data: XOR<EnrollmentUpdateWithoutTextbooksInput, EnrollmentUncheckedUpdateWithoutTextbooksInput>
+  }
+
+  export type EnrollmentUpdateWithoutTextbooksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentUpdateOneRequiredWithoutEnrollmentsNestedInput
+    class?: ClassUpdateOneRequiredWithoutEnrollmentsNestedInput
+    payments?: PaymentUpdateManyWithoutEnrollmentNestedInput
+  }
+
+  export type EnrollmentUncheckedUpdateWithoutTextbooksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    status?: EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: PaymentUncheckedUpdateManyWithoutEnrollmentNestedInput
+  }
+
+  export type TextbookUpsertWithoutEnrollmentBooksInput = {
+    update: XOR<TextbookUpdateWithoutEnrollmentBooksInput, TextbookUncheckedUpdateWithoutEnrollmentBooksInput>
+    create: XOR<TextbookCreateWithoutEnrollmentBooksInput, TextbookUncheckedCreateWithoutEnrollmentBooksInput>
+    where?: TextbookWhereInput
+  }
+
+  export type TextbookUpdateToOneWithWhereWithoutEnrollmentBooksInput = {
+    where?: TextbookWhereInput
+    data: XOR<TextbookUpdateWithoutEnrollmentBooksInput, TextbookUncheckedUpdateWithoutEnrollmentBooksInput>
+  }
+
+  export type TextbookUpdateWithoutEnrollmentBooksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    class?: ClassUpdateOneRequiredWithoutTextbooksNestedInput
+  }
+
+  export type TextbookUncheckedUpdateWithoutEnrollmentBooksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StudentCreateWithoutEnrollmentsInput = {
     id?: string
     name: string
@@ -24746,6 +28279,7 @@ export namespace Prisma {
     teacher?: TeacherCreateNestedOneWithoutClassesInput
     waitlists?: WaitlistCreateNestedManyWithoutClassInput
     nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutClassInput
+    textbooks?: TextbookCreateNestedManyWithoutClassInput
   }
 
   export type ClassUncheckedCreateWithoutEnrollmentsInput = {
@@ -24763,6 +28297,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutClassInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutClassInput
+    textbooks?: TextbookUncheckedCreateNestedManyWithoutClassInput
   }
 
   export type ClassCreateOrConnectWithoutEnrollmentsInput = {
@@ -24801,6 +28336,30 @@ export namespace Prisma {
 
   export type PaymentCreateManyEnrollmentInputEnvelope = {
     data: PaymentCreateManyEnrollmentInput | PaymentCreateManyEnrollmentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EnrollmentTextbookCreateWithoutEnrollmentInput = {
+    id?: string
+    price: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    textbook: TextbookCreateNestedOneWithoutEnrollmentBooksInput
+  }
+
+  export type EnrollmentTextbookUncheckedCreateWithoutEnrollmentInput = {
+    id?: string
+    textbookId: string
+    price: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+  }
+
+  export type EnrollmentTextbookCreateOrConnectWithoutEnrollmentInput = {
+    where: EnrollmentTextbookWhereUniqueInput
+    create: XOR<EnrollmentTextbookCreateWithoutEnrollmentInput, EnrollmentTextbookUncheckedCreateWithoutEnrollmentInput>
+  }
+
+  export type EnrollmentTextbookCreateManyEnrollmentInputEnvelope = {
+    data: EnrollmentTextbookCreateManyEnrollmentInput | EnrollmentTextbookCreateManyEnrollmentInput[]
     skipDuplicates?: boolean
   }
 
@@ -24867,6 +28426,7 @@ export namespace Prisma {
     teacher?: TeacherUpdateOneWithoutClassesNestedInput
     waitlists?: WaitlistUpdateManyWithoutClassNestedInput
     nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutClassNestedInput
+    textbooks?: TextbookUpdateManyWithoutClassNestedInput
   }
 
   export type ClassUncheckedUpdateWithoutEnrollmentsInput = {
@@ -24884,6 +28444,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     waitlists?: WaitlistUncheckedUpdateManyWithoutClassNestedInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutClassNestedInput
+    textbooks?: TextbookUncheckedUpdateManyWithoutClassNestedInput
   }
 
   export type PaymentUpsertWithWhereUniqueWithoutEnrollmentInput = {
@@ -24918,6 +28479,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
   }
 
+  export type EnrollmentTextbookUpsertWithWhereUniqueWithoutEnrollmentInput = {
+    where: EnrollmentTextbookWhereUniqueInput
+    update: XOR<EnrollmentTextbookUpdateWithoutEnrollmentInput, EnrollmentTextbookUncheckedUpdateWithoutEnrollmentInput>
+    create: XOR<EnrollmentTextbookCreateWithoutEnrollmentInput, EnrollmentTextbookUncheckedCreateWithoutEnrollmentInput>
+  }
+
+  export type EnrollmentTextbookUpdateWithWhereUniqueWithoutEnrollmentInput = {
+    where: EnrollmentTextbookWhereUniqueInput
+    data: XOR<EnrollmentTextbookUpdateWithoutEnrollmentInput, EnrollmentTextbookUncheckedUpdateWithoutEnrollmentInput>
+  }
+
+  export type EnrollmentTextbookUpdateManyWithWhereWithoutEnrollmentInput = {
+    where: EnrollmentTextbookScalarWhereInput
+    data: XOR<EnrollmentTextbookUpdateManyMutationInput, EnrollmentTextbookUncheckedUpdateManyWithoutEnrollmentInput>
+  }
+
   export type EnrollmentCreateWithoutPaymentsInput = {
     id?: string
     status?: $Enums.EnrollmentStatus
@@ -24925,6 +28502,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     student: StudentCreateNestedOneWithoutEnrollmentsInput
     class: ClassCreateNestedOneWithoutEnrollmentsInput
+    textbooks?: EnrollmentTextbookCreateNestedManyWithoutEnrollmentInput
   }
 
   export type EnrollmentUncheckedCreateWithoutPaymentsInput = {
@@ -24934,6 +28512,7 @@ export namespace Prisma {
     status?: $Enums.EnrollmentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    textbooks?: EnrollmentTextbookUncheckedCreateNestedManyWithoutEnrollmentInput
   }
 
   export type EnrollmentCreateOrConnectWithoutPaymentsInput = {
@@ -24959,6 +28538,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutEnrollmentsNestedInput
     class?: ClassUpdateOneRequiredWithoutEnrollmentsNestedInput
+    textbooks?: EnrollmentTextbookUpdateManyWithoutEnrollmentNestedInput
   }
 
   export type EnrollmentUncheckedUpdateWithoutPaymentsInput = {
@@ -24968,6 +28548,7 @@ export namespace Prisma {
     status?: EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    textbooks?: EnrollmentTextbookUncheckedUpdateManyWithoutEnrollmentNestedInput
   }
 
   export type StudentCreateWithoutWaitlistsInput = {
@@ -25016,6 +28597,7 @@ export namespace Prisma {
     teacher?: TeacherCreateNestedOneWithoutClassesInput
     enrollments?: EnrollmentCreateNestedManyWithoutClassInput
     nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutClassInput
+    textbooks?: TextbookCreateNestedManyWithoutClassInput
   }
 
   export type ClassUncheckedCreateWithoutWaitlistsInput = {
@@ -25033,6 +28615,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutClassInput
+    textbooks?: TextbookUncheckedCreateNestedManyWithoutClassInput
   }
 
   export type ClassCreateOrConnectWithoutWaitlistsInput = {
@@ -25103,6 +28686,7 @@ export namespace Prisma {
     teacher?: TeacherUpdateOneWithoutClassesNestedInput
     enrollments?: EnrollmentUpdateManyWithoutClassNestedInput
     nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutClassNestedInput
+    textbooks?: TextbookUpdateManyWithoutClassNestedInput
   }
 
   export type ClassUncheckedUpdateWithoutWaitlistsInput = {
@@ -25120,6 +28704,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutClassNestedInput
+    textbooks?: TextbookUncheckedUpdateManyWithoutClassNestedInput
   }
 
   export type StudentCreateWithoutNextClassOverridesInput = {
@@ -25168,6 +28753,7 @@ export namespace Prisma {
     teacher?: TeacherCreateNestedOneWithoutClassesInput
     enrollments?: EnrollmentCreateNestedManyWithoutClassInput
     waitlists?: WaitlistCreateNestedManyWithoutClassInput
+    textbooks?: TextbookCreateNestedManyWithoutClassInput
   }
 
   export type ClassUncheckedCreateWithoutNextClassOverridesInput = {
@@ -25185,6 +28771,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutClassInput
+    textbooks?: TextbookUncheckedCreateNestedManyWithoutClassInput
   }
 
   export type ClassCreateOrConnectWithoutNextClassOverridesInput = {
@@ -25255,6 +28842,7 @@ export namespace Prisma {
     teacher?: TeacherUpdateOneWithoutClassesNestedInput
     enrollments?: EnrollmentUpdateManyWithoutClassNestedInput
     waitlists?: WaitlistUpdateManyWithoutClassNestedInput
+    textbooks?: TextbookUpdateManyWithoutClassNestedInput
   }
 
   export type ClassUncheckedUpdateWithoutNextClassOverridesInput = {
@@ -25272,6 +28860,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
     waitlists?: WaitlistUncheckedUpdateManyWithoutClassNestedInput
+    textbooks?: TextbookUncheckedUpdateManyWithoutClassNestedInput
   }
 
   export type UserCreateManyFamilyInput = {
@@ -25487,6 +29076,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     class?: ClassUpdateOneRequiredWithoutEnrollmentsNestedInput
     payments?: PaymentUpdateManyWithoutEnrollmentNestedInput
+    textbooks?: EnrollmentTextbookUpdateManyWithoutEnrollmentNestedInput
   }
 
   export type EnrollmentUncheckedUpdateWithoutStudentInput = {
@@ -25496,6 +29086,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payments?: PaymentUncheckedUpdateManyWithoutEnrollmentNestedInput
+    textbooks?: EnrollmentTextbookUncheckedUpdateManyWithoutEnrollmentNestedInput
   }
 
   export type EnrollmentUncheckedUpdateManyWithoutStudentInput = {
@@ -25583,6 +29174,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUpdateManyWithoutClassNestedInput
     waitlists?: WaitlistUpdateManyWithoutClassNestedInput
     nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutClassNestedInput
+    textbooks?: TextbookUpdateManyWithoutClassNestedInput
   }
 
   export type ClassUncheckedUpdateWithoutTeacherInput = {
@@ -25600,6 +29192,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
     waitlists?: WaitlistUncheckedUpdateManyWithoutClassNestedInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutClassNestedInput
+    textbooks?: TextbookUncheckedUpdateManyWithoutClassNestedInput
   }
 
   export type ClassUncheckedUpdateManyWithoutTeacherInput = {
@@ -25640,6 +29233,18 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type TextbookCreateManyClassInput = {
+    id?: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type EnrollmentUpdateWithoutClassInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
@@ -25647,6 +29252,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutEnrollmentsNestedInput
     payments?: PaymentUpdateManyWithoutEnrollmentNestedInput
+    textbooks?: EnrollmentTextbookUpdateManyWithoutEnrollmentNestedInput
   }
 
   export type EnrollmentUncheckedUpdateWithoutClassInput = {
@@ -25656,6 +29262,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payments?: PaymentUncheckedUpdateManyWithoutEnrollmentNestedInput
+    textbooks?: EnrollmentTextbookUncheckedUpdateManyWithoutEnrollmentNestedInput
   }
 
   export type EnrollmentUncheckedUpdateManyWithoutClassInput = {
@@ -25714,6 +29321,72 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TextbookUpdateWithoutClassInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollmentBooks?: EnrollmentTextbookUpdateManyWithoutTextbookNestedInput
+  }
+
+  export type TextbookUncheckedUpdateWithoutClassInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollmentBooks?: EnrollmentTextbookUncheckedUpdateManyWithoutTextbookNestedInput
+  }
+
+  export type TextbookUncheckedUpdateManyWithoutClassInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnrollmentTextbookCreateManyTextbookInput = {
+    id?: string
+    enrollmentId: string
+    price: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+  }
+
+  export type EnrollmentTextbookUpdateWithoutTextbookInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollment?: EnrollmentUpdateOneRequiredWithoutTextbooksNestedInput
+  }
+
+  export type EnrollmentTextbookUncheckedUpdateWithoutTextbookInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enrollmentId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnrollmentTextbookUncheckedUpdateManyWithoutTextbookInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enrollmentId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PaymentCreateManyEnrollmentInput = {
     id?: string
     amount: Decimal | DecimalJsLike | number | string
@@ -25724,6 +29397,13 @@ export namespace Prisma {
     paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type EnrollmentTextbookCreateManyEnrollmentInput = {
+    id?: string
+    textbookId: string
+    price: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
   }
 
   export type PaymentUpdateWithoutEnrollmentInput = {
@@ -25760,6 +29440,27 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnrollmentTextbookUpdateWithoutEnrollmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    textbook?: TextbookUpdateOneRequiredWithoutEnrollmentBooksNestedInput
+  }
+
+  export type EnrollmentTextbookUncheckedUpdateWithoutEnrollmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    textbookId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnrollmentTextbookUncheckedUpdateManyWithoutEnrollmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    textbookId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

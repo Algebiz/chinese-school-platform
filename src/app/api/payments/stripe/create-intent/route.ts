@@ -7,6 +7,7 @@ import { calculateTotalFee } from '@/lib/enrollment-logic'
 const schema = z.object({
   studentId: z.string().min(1),
   classIds: z.array(z.string().min(1)).min(1),
+  textbookIds: z.array(z.string()).optional().default([]),
   academicYear: z.string().min(1),
 })
 
@@ -29,9 +30,9 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { studentId, classIds, academicYear } = result.data
-    const { total, breakdown } = await calculateTotalFee(classIds)
-    const amountCents = Math.round(total.toNumber() * 100)
+    const { studentId, classIds, textbookIds, academicYear } = result.data
+    const { grandTotal, breakdown } = await calculateTotalFee(classIds, textbookIds)
+    const amountCents = Math.round(grandTotal.toNumber() * 100)
 
     if (amountCents <= 0) {
       return NextResponse.json(
@@ -46,6 +47,7 @@ export async function POST(req: NextRequest) {
       metadata: {
         studentId,
         classIds: JSON.stringify(classIds),
+        textbookIds: JSON.stringify(textbookIds),
         academicYear,
         userId: session.user.id,
       },
@@ -57,11 +59,11 @@ export async function POST(req: NextRequest) {
       data: {
         clientSecret: paymentIntent.client_secret,
         amount: amountCents,
-        breakdown: breakdown.map((b) => ({
-          classId: b.classId,
-          className: b.className,
-          fee: b.fee.toString(),
-        })),
+        breakdown: breakdown.map((b) =>
+          b.type === 'tuition'
+            ? { type: 'tuition', classId: b.classId, className: b.className, fee: b.fee.toString() }
+            : { type: 'textbook', textbookId: b.textbookId, textbookName: b.textbookName, classId: b.classId, fee: b.fee.toString() }
+        ),
       },
     })
   } catch (error) {

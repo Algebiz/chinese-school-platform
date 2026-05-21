@@ -303,6 +303,12 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
   const [selectedArtsIds, setSelectedArtsIds] = useState<Set<string>>(
     new Set(preselectedClassIds.filter(id => artsClasses.some(c => c.id === id)))
   )
+  const [selectedTextbookIds, setSelectedTextbookIds] = useState<Set<string>>(
+    () => {
+      const preClass = chineseClasses.find(c => preselectedClassIds.includes(c.id))
+      return new Set(preClass?.textbooks.map(t => t.id) ?? [])
+    }
+  )
   const [languageTab, setLanguageTab] = useState<'CHL' | 'CSL'>('CHL')
   const [showAddModal, setShowAddModal] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -317,8 +323,11 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
     ...(selectedChineseId ? [selectedChineseId] : []),
     ...Array.from(selectedArtsIds),
   ]
-  const totalFee = [...(selectedChineseClass ? [selectedChineseClass] : []), ...selectedArtsClasses]
+  const selectedTextbooks = (selectedChineseClass?.textbooks ?? []).filter(t => selectedTextbookIds.has(t.id))
+  const tuitionFee = [...(selectedChineseClass ? [selectedChineseClass] : []), ...selectedArtsClasses]
     .reduce((sum, c) => sum + parseFloat(c.fee), 0)
+  const textbookFee = selectedTextbooks.reduce((sum, t) => sum + parseFloat(t.price), 0)
+  const totalFee = tuitionFee + textbookFee
 
   function isConflictedWithSelections(cls: ClassData): boolean {
     if (selectedChineseClass && cls.id !== selectedChineseId && hasScheduleConflict(cls, selectedChineseClass)) return true
@@ -330,15 +339,34 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
     return false
   }
 
+  function selectChineseClass(classId: string | null) {
+    setSelectedChineseId(classId)
+    if (classId) {
+      const cls = chineseClasses.find(c => c.id === classId)
+      setSelectedTextbookIds(new Set(cls?.textbooks.map(t => t.id) ?? []))
+    } else {
+      setSelectedTextbookIds(new Set())
+    }
+  }
+
+  function toggleTextbook(textbookId: string) {
+    setSelectedTextbookIds(prev => {
+      const next = new Set(prev)
+      if (next.has(textbookId)) next.delete(textbookId)
+      else next.add(textbookId)
+      return next
+    })
+  }
+
   function handleSelectStudent(studentId: string) {
     setSelectedStudentId(studentId)
     const info = returningStudentData[studentId]
     if (info?.isReturning) {
       const chineseId = info.adminOverrideClassId ?? info.suggestedNextChineseClassIds[0] ?? null
-      setSelectedChineseId(chineseId)
+      selectChineseClass(chineseId)
       setSelectedArtsIds(new Set(info.suggestedArtsClassIds))
     } else {
-      setSelectedChineseId(null)
+      selectChineseClass(null)
       setSelectedArtsIds(new Set())
     }
   }
@@ -359,7 +387,11 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
       const res = await fetch('/api/enrollments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ studentId: selectedStudentId, classIds: allSelectedClassIds }),
+        body: JSON.stringify({
+          studentId: selectedStudentId,
+          classIds: allSelectedClassIds,
+          textbookIds: Array.from(selectedTextbookIds),
+        }),
       })
       const json = await res.json()
       if (!json.success) {
@@ -483,11 +515,45 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
                 cls={cls}
                 selected={selectedChineseId === cls.id}
                 badgeVariant={badgeVariant}
-                onClick={() => setSelectedChineseId((prev) => (prev === cls.id ? null : cls.id))}
+                onClick={() => selectChineseClass(selectedChineseId === cls.id ? null : cls.id)}
               />
             )
           })}
         </div>
+
+        {/* Textbook selection — shown when a class with textbooks is selected */}
+        {selectedChineseClass && selectedChineseClass.textbooks.length > 0 && (
+          <div className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
+            <p className="mb-3 text-sm font-semibold text-blue-900">
+              教材选择 / Textbooks for {selectedChineseClass.nameEn ?? selectedChineseClass.name}
+            </p>
+            <div className="space-y-2">
+              {selectedChineseClass.textbooks.map((tb) => (
+                <label key={tb.id} className="flex cursor-pointer items-center justify-between rounded-md border border-blue-200 bg-white px-4 py-3 hover:bg-blue-50">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={selectedTextbookIds.has(tb.id)}
+                      onChange={() => toggleTextbook(tb.id)}
+                      className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
+                    />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{tb.name}</p>
+                      <p className="text-xs text-gray-500">{tb.nameZh}</p>
+                    </div>
+                  </div>
+                  <span className="text-sm font-semibold text-gray-900">${parseFloat(tb.price).toFixed(2)}</span>
+                </label>
+              ))}
+            </div>
+            <p className="mt-3 text-xs text-gray-500">
+              默认全选 — 取消勾选可移除 / All selected by default — uncheck to remove
+            </p>
+            <p className="mt-1 text-xs text-blue-700">
+              教材将在上课当日在学校领取 / Books are picked up at school on class day
+            </p>
+          </div>
+        )}
       </div>
     )
   }
@@ -548,31 +614,50 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
           </div>
           {/* Classes */}
           <div className="p-4">
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-3">班级 / Classes</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-3">课程费用 / Tuition</p>
             <table className="w-full text-sm">
               <tbody className="divide-y divide-gray-50">
                 {selectedChineseClass && (
                   <tr>
-                    <td className="py-2 text-gray-900">{selectedChineseClass.name}</td>
-                    <td className="py-2 text-right font-medium">${selectedChineseClass.fee}</td>
+                    <td className="py-2 text-gray-900">{selectedChineseClass.nameEn ?? selectedChineseClass.name}</td>
+                    <td className="py-2 text-right font-medium">${parseFloat(selectedChineseClass.fee).toFixed(2)}</td>
                   </tr>
                 )}
                 {selectedArtsClasses.map(cls => (
                   <tr key={cls.id}>
-                    <td className="py-2 text-gray-900">{cls.name}</td>
-                    <td className="py-2 text-right font-medium">${cls.fee}</td>
+                    <td className="py-2 text-gray-900">{cls.nameEn ?? cls.name}</td>
+                    <td className="py-2 text-right font-medium">${parseFloat(cls.fee).toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
-              <tfoot>
-                <tr className="border-t border-gray-200">
-                  <td className="pt-3 font-semibold text-gray-900">合计 / Total</td>
-                  <td className="pt-3 text-right text-lg font-bold text-red-600">
-                    ${totalFee.toFixed(2)}
-                  </td>
-                </tr>
-              </tfoot>
             </table>
+          </div>
+          {/* Textbooks */}
+          {selectedTextbooks.length > 0 && (
+            <div className="p-4 border-t border-gray-100">
+              <p className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-3">教材费用 / Textbooks</p>
+              <table className="w-full text-sm">
+                <tbody className="divide-y divide-gray-50">
+                  {selectedTextbooks.map(tb => (
+                    <tr key={tb.id}>
+                      <td className="py-2 text-gray-900">
+                        {tb.name}
+                        <span className="ml-2 text-xs text-gray-400">{tb.nameZh}</span>
+                      </td>
+                      <td className="py-2 text-right font-medium">${parseFloat(tb.price).toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="mt-2 text-xs text-gray-400">教材将在上课当日在学校领取 / Books are picked up at school on class day</p>
+            </div>
+          )}
+          {/* Total */}
+          <div className="p-4 border-t border-gray-200 bg-gray-50">
+            <div className="flex justify-between text-base font-bold">
+              <span className="text-gray-900">合计 / Total</span>
+              <span className="text-red-600">${totalFee.toFixed(2)}</span>
+            </div>
           </div>
         </div>
         {submitError && (

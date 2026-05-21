@@ -4,16 +4,29 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { clsx } from 'clsx'
 import { StripePaymentForm } from '@/components/payment/StripePaymentForm'
-import type { PaymentBreakdownItem } from '@/components/payment/StripePaymentForm'
 import { PayPalButton } from '@/components/payment/PayPalButton'
 
 type PaymentTab = 'stripe' | 'paypal'
+
+export interface BreakdownItem {
+  type: 'tuition' | 'textbook'
+  classId: string
+  className: string
+  classNameEn: string | null
+  fee: string
+  // textbook-only fields
+  textbookId?: string
+  textbookName?: string
+  textbookNameZh?: string
+}
 
 export interface CheckoutData {
   studentId: string
   studentName: string
   academicYear: string
-  breakdown: PaymentBreakdownItem[]
+  classIds: string[]
+  textbookIds: string[]
+  breakdown: BreakdownItem[]
 }
 
 interface Props {
@@ -25,8 +38,10 @@ export function CheckoutClient({ data }: Props) {
   const [tab, setTab] = useState<PaymentTab>('stripe')
   const [paid, setPaid] = useState(false)
 
-  const { studentId, studentName, academicYear, breakdown } = data
-  const classIds = breakdown.map((b) => b.classId)
+  const { studentId, studentName, academicYear, classIds, textbookIds, breakdown } = data
+
+  const tuition = breakdown.filter((b) => b.type === 'tuition')
+  const textbooks = breakdown.filter((b) => b.type === 'textbook')
   const total = breakdown.reduce((sum, b) => sum + parseFloat(b.fee), 0)
 
   if (paid) {
@@ -53,21 +68,50 @@ export function CheckoutClient({ data }: Props) {
     <div className="mx-auto max-w-lg">
       {/* Order summary */}
       <div className="mb-6 rounded-lg border border-gray-200 bg-white p-5">
-        <h2 className="mb-3 text-base font-semibold text-gray-900">
-          订单确认 / Order Summary
-        </h2>
-        <p className="mb-3 text-sm text-gray-500">
+        <h2 className="mb-1 text-base font-semibold text-gray-900">订单确认 / Order Summary</h2>
+        <p className="mb-4 text-sm text-gray-500">
           学生：{studentName} · {academicYear} 学年
         </p>
-        <div className="space-y-1.5 text-sm">
-          {breakdown.map((b) => (
+
+        {/* Tuition */}
+        <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-gray-400">
+          课程费用 / Tuition
+        </p>
+        <div className="mb-3 space-y-1.5 text-sm">
+          {tuition.map((b) => (
             <div key={b.classId} className="flex justify-between">
-              <span className="text-gray-600">{b.className}</span>
+              <span className="text-gray-600">{b.classNameEn ?? b.className}</span>
               <span className="font-medium">${parseFloat(b.fee).toFixed(2)}</span>
             </div>
           ))}
         </div>
-        <div className="mt-3 flex justify-between border-t border-gray-200 pt-3 font-bold">
+
+        {/* Textbooks */}
+        {textbooks.length > 0 && (
+          <>
+            <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-gray-400">
+              教材费用 / Textbooks
+            </p>
+            <div className="mb-3 space-y-1.5 text-sm">
+              {textbooks.map((b) => (
+                <div key={b.textbookId} className="flex justify-between">
+                  <span className="text-gray-600">
+                    {b.textbookName}
+                    {b.textbookNameZh && (
+                      <span className="ml-1.5 text-xs text-gray-400">{b.textbookNameZh}</span>
+                    )}
+                  </span>
+                  <span className="font-medium">${parseFloat(b.fee).toFixed(2)}</span>
+                </div>
+              ))}
+            </div>
+            <p className="mb-3 text-xs text-gray-400">
+              教材将在上课当日在学校领取 / Books are picked up at school on class day
+            </p>
+          </>
+        )}
+
+        <div className="flex justify-between border-t border-gray-200 pt-3 font-bold">
           <span>合计 / Total</span>
           <span className="text-red-600">${total.toFixed(2)}</span>
         </div>
@@ -98,6 +142,7 @@ export function CheckoutClient({ data }: Props) {
           <StripePaymentForm
             studentId={studentId}
             classIds={classIds}
+            textbookIds={textbookIds}
             academicYear={academicYear}
             breakdown={breakdown}
             onSuccess={() => setPaid(true)}
@@ -107,6 +152,7 @@ export function CheckoutClient({ data }: Props) {
           <PayPalButton
             studentId={studentId}
             classIds={classIds}
+            textbookIds={textbookIds}
             academicYear={academicYear}
             onSuccess={() => setPaid(true)}
           />

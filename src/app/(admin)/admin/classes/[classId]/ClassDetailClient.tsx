@@ -12,6 +12,7 @@ export interface EnrolledStudent {
   phone: string | null
   email: string
   enrolledAt: string
+  textbookNames: string[]
 }
 
 export interface AvailableClass {
@@ -47,6 +48,7 @@ export function ClassDetailClient({ enrolledStudents, currentClassName, availabl
               <th className="px-4 py-3">家长姓名</th>
               <th className="px-4 py-3">电话</th>
               <th className="px-4 py-3">邮箱</th>
+              <th className="px-4 py-3">教材 / Books</th>
               <th className="px-4 py-3">报名时间</th>
               <th className="px-4 py-3" />
             </tr>
@@ -60,6 +62,17 @@ export function ClassDetailClient({ enrolledStudents, currentClassName, availabl
                 <td className="px-4 py-3 text-gray-600">{s.parentName}</td>
                 <td className="px-4 py-3 text-gray-500">{s.phone ?? '—'}</td>
                 <td className="px-4 py-3 text-gray-500">{s.email}</td>
+                <td className="px-4 py-3">
+                  {s.textbookNames.length === 0 ? (
+                    <span className="text-gray-300">—</span>
+                  ) : (
+                    <div className="space-y-0.5">
+                      {s.textbookNames.map((n) => (
+                        <span key={n} className="block text-xs text-green-700">✓ {n}</span>
+                      ))}
+                    </div>
+                  )}
+                </td>
                 <td className="px-4 py-3 text-gray-400">
                   {new Date(s.enrolledAt).toLocaleDateString('zh-CN')}
                 </td>
@@ -82,6 +95,11 @@ export function ClassDetailClient({ enrolledStudents, currentClassName, availabl
             )}
           </tbody>
         </table>
+        {enrolledStudents.length > 0 && enrolledStudents.some(s => s.textbookNames.length > 0) && (
+          <p className="px-4 py-2 text-xs text-gray-400 bg-gray-50 border-t border-gray-100">
+            ✓ = 已订购教材，可在上课当日准备发放 / ✓ = textbook ordered, prepare for pickup on class day
+          </p>
+        )}
       </div>
 
       {modal && (

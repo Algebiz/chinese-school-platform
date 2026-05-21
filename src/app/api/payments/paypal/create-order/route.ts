@@ -7,6 +7,7 @@ import { calculateTotalFee } from '@/lib/enrollment-logic'
 const schema = z.object({
   studentId: z.string().min(1),
   classIds: z.array(z.string().min(1)).min(1),
+  textbookIds: z.array(z.string()).optional().default([]),
   academicYear: z.string().min(1),
 })
 
@@ -29,9 +30,9 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { studentId, classIds, academicYear } = result.data
-    const { total } = await calculateTotalFee(classIds)
-    const amount = total.toNumber()
+    const { studentId, classIds, textbookIds, academicYear } = result.data
+    const { grandTotal } = await calculateTotalFee(classIds, textbookIds)
+    const amount = grandTotal.toNumber()
 
     if (amount <= 0) {
       return NextResponse.json(
@@ -43,6 +44,7 @@ export async function POST(req: NextRequest) {
     const orderId = await createOrder(amount, 'USD', {
       studentId,
       classIds,
+      textbookIds,
       academicYear,
       userId: session.user.id,
     })

@@ -10,6 +10,7 @@ const schema = z.object({
   orderId: z.string().min(1),
   studentId: z.string().min(1),
   classIds: z.array(z.string().min(1)).min(1),
+  textbookIds: z.array(z.string()).optional().default([]),
   academicYear: z.string().min(1),
 })
 
@@ -32,7 +33,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { orderId, studentId, classIds, academicYear } = result.data
+    const { orderId, studentId, classIds, textbookIds, academicYear } = result.data
 
     // Capture the PayPal order
     const captureResult = await captureOrder(orderId)
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Ensure enrollment records exist (skips duplicates automatically)
-    await createEnrollments(studentId, classIds, academicYear)
+    await createEnrollments(studentId, classIds, textbookIds, academicYear)
 
     await prisma.$transaction(async (tx) => {
       // Promote PENDING → CONFIRMED
@@ -83,7 +84,7 @@ export async function POST(req: NextRequest) {
 
     // Non-fatal email
     try {
-      await sendEnrollmentConfirmationByIds(studentId, classIds, 'PAYPAL', orderId)
+      await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'PAYPAL', orderId)
     } catch (err) {
       console.error('Failed to send confirmation email:', err)
     }

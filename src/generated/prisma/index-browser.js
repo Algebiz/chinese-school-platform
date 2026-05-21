@@ -205,6 +205,27 @@ exports.Prisma.ClassScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TextbookScalarFieldEnum = {
+  id: 'id',
+  classId: 'classId',
+  name: 'name',
+  nameZh: 'nameZh',
+  description: 'description',
+  descriptionZh: 'descriptionZh',
+  price: 'price',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EnrollmentTextbookScalarFieldEnum = {
+  id: 'id',
+  enrollmentId: 'enrollmentId',
+  textbookId: 'textbookId',
+  price: 'price',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.EnrollmentScalarFieldEnum = {
   id: 'id',
   studentId: 'studentId',
@@ -338,6 +359,8 @@ exports.Prisma.ModelName = {
   Student: 'Student',
   Teacher: 'Teacher',
   Class: 'Class',
+  Textbook: 'Textbook',
+  EnrollmentTextbook: 'EnrollmentTextbook',
   Enrollment: 'Enrollment',
   Payment: 'Payment',
   Waitlist: 'Waitlist',

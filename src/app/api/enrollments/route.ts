@@ -8,6 +8,7 @@ import { isReEnrollmentOpen } from '@/lib/re-enrollment-logic'
 const enrollSchema = z.object({
   studentId: z.string().min(1),
   classIds: z.array(z.string().min(1)).min(1),
+  textbookIds: z.array(z.string()).optional().default([]),
 })
 
 const CURRENT_YEAR = '2025-2026'
@@ -32,7 +33,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { studentId, classIds } = result.data
+    const { studentId, classIds, textbookIds } = result.data
 
     // Verify the student belongs to the logged-in user's family
     const user = await prisma.user.findUnique({
@@ -85,7 +86,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { enrollments, waitlists } = await createEnrollments(studentId, classIds, CURRENT_YEAR)
+    const { enrollments, waitlists } = await createEnrollments(studentId, classIds, textbookIds, CURRENT_YEAR)
 
     return NextResponse.json({
       success: true,
