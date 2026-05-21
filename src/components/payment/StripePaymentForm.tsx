@@ -133,7 +133,8 @@ export function StripePaymentForm({
       })
       .catch(() => setLoadError('网络错误，请刷新重试'))
       .finally(() => setLoading(false))
-  }, [studentId, classIds, academicYear])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [studentId, academicYear, classIds.join(','), textbookIds.join(',')])
 
   if (loading) {
     return (
@@ -159,8 +160,8 @@ export function StripePaymentForm({
           费用明细 / Fee Breakdown
         </p>
         <div className="space-y-1.5">
-          {breakdown.map((b) => (
-            <div key={b.classId} className="flex justify-between text-sm">
+          {breakdown.map((b, i) => (
+            <div key={b.textbookId ?? `${b.classId}-${i}`} className="flex justify-between text-sm">
               <span className="text-gray-600">{b.className}</span>
               <span className="font-medium">${parseFloat(b.fee).toFixed(2)}</span>
             </div>

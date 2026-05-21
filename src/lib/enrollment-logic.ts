@@ -150,7 +150,17 @@ export async function createEnrollments(
         where: { studentId_classId: { studentId, classId } },
       })
       if (existingEnrollment) {
-        if (existingEnrollment.status === 'PENDING') enrollments.push(existingEnrollment)
+        if (existingEnrollment.status === 'PENDING') {
+          enrollments.push(existingEnrollment)
+          const classTextbooks = selectedTextbooks.filter((t) => t.classId === classId)
+          for (const tb of classTextbooks) {
+            await tx.enrollmentTextbook.upsert({
+              where: { enrollmentId_textbookId: { enrollmentId: existingEnrollment.id, textbookId: tb.id } },
+              update: {},
+              create: { enrollmentId: existingEnrollment.id, textbookId: tb.id, price: tb.price },
+            })
+          }
+        }
         continue
       }
 
