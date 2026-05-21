@@ -7,6 +7,7 @@ import {
   Html,
   Preview,
   Section,
+  Img,
   Text,
 } from '@react-email/components'
 import { Footer } from './WelcomeEmail'
@@ -31,6 +32,13 @@ export function WaitlistPromotion({
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
+            <Img
+              src="https://chinese-school-platform.vercel.app/logo.png"
+              alt="Charlotte Chinese Academy"
+              width="80"
+              height="80"
+              style={{ margin: '0 auto 12px', display: 'block' }}
+            />
             <Heading style={schoolZh}>夏洛特中文学校</Heading>
             <Text style={schoolEn}>Charlotte Chinese Academy</Text>
           </Section>
