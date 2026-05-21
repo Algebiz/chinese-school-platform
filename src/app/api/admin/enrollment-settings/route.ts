@@ -13,7 +13,7 @@ const schema = z.object({
 async function verifyAdmin() {
   const session = await auth()
   if (!session) return null
-  if (session.user.role !== 'ADMIN') return null
+  if (session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN') return null
   return session
 }
 

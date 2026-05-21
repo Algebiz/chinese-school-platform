@@ -10,7 +10,7 @@ const CURRENT_YEAR = '2025-2026'
 
 export default async function AdminStudentsPage() {
   const session = await auth()
-  if (!session || session.user.role !== 'ADMIN') redirect('/dashboard')
+  if (!session || session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN') redirect('/dashboard')
 
   // Get the next year from config or derive it
   const config = await prisma.academicYearConfig.findUnique({

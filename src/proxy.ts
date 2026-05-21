@@ -11,6 +11,8 @@ export default auth((req) => {
 
   const { pathname } = nextUrl
 
+  console.log('proxy userRole:', userRole, 'pathname:', pathname)
+
   const isPortalRoute =
     pathname.startsWith('/dashboard') ||
     pathname.startsWith('/classes') ||

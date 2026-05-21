@@ -27,7 +27,7 @@ function PaymentBadge({ status }: { status: string }) {
 
 export default async function AdminDashboard() {
   const session = await auth()
-  if (session?.user?.role !== 'ADMIN') redirect('/dashboard')
+  if (session?.user?.role !== 'ADMIN' && session?.user?.role !== 'SUPER_ADMIN') redirect('/dashboard')
 
   const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent] = await Promise.all([
     prisma.student.count(),

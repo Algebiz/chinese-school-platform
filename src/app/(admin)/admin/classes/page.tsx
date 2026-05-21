@@ -12,7 +12,7 @@ const TYPE_LABEL: Record<string, string> = {
 
 export default async function AdminClassesPage() {
   const session = await auth()
-  if (session?.user?.role !== 'ADMIN') redirect('/dashboard')
+  if (session?.user?.role !== 'ADMIN' && session?.user?.role !== 'SUPER_ADMIN') redirect('/dashboard')
 
   const classes = await prisma.class.findMany({
     where: { year: YEAR },
