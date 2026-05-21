@@ -140,20 +140,40 @@ export default async function DashboardPage() {
             return (
               <div key={student.id} className="rounded-lg border border-gray-200 bg-white overflow-hidden">
                 {/* Student header */}
-                <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-5 py-3">
-                  <div>
-                    <span className="font-semibold text-gray-900">{student.name}</span>
-                    {student.nameEn && (
-                      <span className="ml-2 text-sm text-gray-500">{student.nameEn}</span>
-                    )}
-                  </div>
-                  <Link
-                    href="/enroll"
-                    className="text-xs font-medium text-red-600 hover:text-red-700"
-                  >
-                    + 添加课程 / Add class
-                  </Link>
-                </div>
+                {(() => {
+                  const hasConfirmedLanguage = student.enrollments.some(
+                    (e) => e.status === 'CONFIRMED' && e.class.type === 'CHINESE'
+                  )
+                  const hasConfirmedArts = student.enrollments.some(
+                    (e) => e.status === 'CONFIRMED' && e.class.type === 'ARTS'
+                  )
+                  return (
+                    <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-5 py-3">
+                      <div>
+                        <span className="font-semibold text-gray-900">{student.name}</span>
+                        {student.nameEn && (
+                          <span className="ml-2 text-sm text-gray-500">{student.nameEn}</span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-3">
+                        {hasConfirmedLanguage && !hasConfirmedArts && (
+                          <Link
+                            href={`/enroll?studentId=${student.id}&artsOnly=true`}
+                            className="rounded-md border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-100 transition-colors"
+                          >
+                            ➕ 添加才艺课 / Add Arts Class
+                          </Link>
+                        )}
+                        <Link
+                          href="/enroll"
+                          className="text-xs font-medium text-gray-500 hover:text-gray-700"
+                        >
+                          + 添加课程 / Add class
+                        </Link>
+                      </div>
+                    </div>
+                  )
+                })()}
 
                 {student.enrollments.length === 0 && student.waitlists.length === 0 ? (
                   <p className="px-5 py-4 text-sm text-gray-400">

@@ -28,12 +28,24 @@ interface ReturningStudentInfo {
 
 type Step = 1 | 2 | 3 | 4
 
+export interface ConfirmedLanguageClass {
+  id: string
+  name: string
+  nameEn: string | null
+  teacherName: string | null
+  schedule: string
+}
+
 interface Props {
   initialStudents: StudentData[]
   chineseClasses: ClassData[]
   artsClasses: ClassData[]
   preselectedClassIds: string[]
   returningStudentData: Record<string, ReturningStudentInfo>
+  initialStudentId?: string | null
+  initialStep?: Step
+  artsOnly?: boolean
+  confirmedLanguageClass?: ConfirmedLanguageClass | null
 }
 
 // ── Schedule conflict (client-side mirror of enrollment-logic.ts) ─────────────
@@ -293,19 +305,33 @@ function ReturningBanner({ info }: { info: ReturningStudentInfo }) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, preselectedClassIds, returningStudentData }: Props) {
+export function EnrollFlow({
+  initialStudents,
+  chineseClasses,
+  artsClasses,
+  preselectedClassIds,
+  returningStudentData,
+  initialStudentId = null,
+  initialStep = 1,
+  artsOnly = false,
+  confirmedLanguageClass = null,
+}: Props) {
   const router = useRouter()
-  const [step, setStep] = useState<Step>(1)
+  const [step, setStep] = useState<Step>(initialStep)
+  const [isArtsOnly, setIsArtsOnly] = useState(artsOnly)
   const [students, setStudents] = useState<StudentData[]>(initialStudents)
-  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null)
+  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(
+    initialStudentId ?? null
+  )
   const [selectedChineseId, setSelectedChineseId] = useState<string | null>(
-    preselectedClassIds.find(id => chineseClasses.some(c => c.id === id)) ?? null
+    artsOnly ? null : (preselectedClassIds.find(id => chineseClasses.some(c => c.id === id)) ?? null)
   )
   const [selectedArtsIds, setSelectedArtsIds] = useState<Set<string>>(
     new Set(preselectedClassIds.filter(id => artsClasses.some(c => c.id === id)))
   )
   const [selectedTextbookIds, setSelectedTextbookIds] = useState<Set<string>>(
     () => {
+      if (artsOnly) return new Set<string>()
       const preClass = chineseClasses.find(c => preselectedClassIds.includes(c.id))
       return new Set(preClass?.textbooks.map(t => t.id) ?? [])
     }
@@ -320,8 +346,9 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
   const selectedArtsClasses = artsClasses.filter(c => selectedArtsIds.has(c.id))
   const currentReturningInfo = selectedStudentId ? returningStudentData[selectedStudentId] : undefined
 
+  // In arts-only mode the language class is already paid — don't re-enroll it
   const allSelectedClassIds = [
-    ...(selectedChineseId ? [selectedChineseId] : []),
+    ...(!isArtsOnly && selectedChineseId ? [selectedChineseId] : []),
     ...Array.from(selectedArtsIds),
   ]
   const selectedTextbooks = (selectedChineseClass?.textbooks ?? []).filter(t => selectedTextbookIds.has(t.id))
@@ -361,15 +388,23 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
   }
 
   function handleSelectStudent(studentId: string) {
+    // If a different student is picked while in arts-only mode, exit arts-only
+    const exitingArtsOnly = isArtsOnly && studentId !== (initialStudentId ?? '')
+    if (exitingArtsOnly) setIsArtsOnly(false)
+
     setSelectedStudentId(studentId)
-    const info = returningStudentData[studentId]
-    if (info?.isReturning) {
-      const chineseId = info.adminOverrideClassId ?? info.suggestedNextChineseClassIds[0] ?? null
-      selectChineseClass(chineseId)
-      setSelectedArtsIds(new Set(info.suggestedArtsClassIds))
-    } else {
-      selectChineseClass(null)
-      setSelectedArtsIds(new Set())
+
+    // Only apply returning-student pre-selection in normal (non-arts-only) flow
+    if (!isArtsOnly || exitingArtsOnly) {
+      const info = returningStudentData[studentId]
+      if (info?.isReturning) {
+        const chineseId = info.adminOverrideClassId ?? info.suggestedNextChineseClassIds[0] ?? null
+        selectChineseClass(chineseId)
+        setSelectedArtsIds(new Set(info.suggestedArtsClassIds))
+      } else {
+        selectChineseClass(null)
+        setSelectedArtsIds(new Set())
+      }
     }
   }
 
@@ -462,6 +497,39 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
   }
 
   function renderStep2() {
+    // Arts-only mode: language class already confirmed, no re-selection needed
+    if (isArtsOnly && confirmedLanguageClass) {
+      return (
+        <div>
+          <h2 className="text-lg font-semibold text-gray-900 mb-1">中文课程</h2>
+          <p className="text-sm text-gray-400 mb-5">Language Class</p>
+          <div className="rounded-lg border border-green-200 bg-green-50 p-5 space-y-1.5">
+            <p className="text-sm font-semibold text-green-800">✅ 已注册中文课程 / Language Class Already Enrolled</p>
+            <p className="text-base font-medium text-green-900">
+              {confirmedLanguageClass.name}
+              {confirmedLanguageClass.nameEn && (
+                <span className="ml-2 text-sm font-normal text-green-700">{confirmedLanguageClass.nameEn}</span>
+              )}
+            </p>
+            {confirmedLanguageClass.teacherName && (
+              <p className="text-sm text-green-700">{confirmedLanguageClass.teacherName} 老师</p>
+            )}
+            {confirmedLanguageClass.schedule && (
+              <p className="text-sm text-green-700">{confirmedLanguageClass.schedule}</p>
+            )}
+            <p className="mt-3 text-sm text-gray-600">如需更改中文班级，请联系管理员。</p>
+            <p className="text-xs text-gray-500">To change your language class, please contact admin.</p>
+          </div>
+          <button
+            onClick={() => setStep(3)}
+            className="mt-5 rounded-md bg-red-600 px-6 py-2 text-sm font-semibold text-white hover:bg-red-700 transition-colors"
+          >
+            继续选择才艺课程 / Continue to Arts Classes →
+          </button>
+        </div>
+      )
+    }
+
     const info = currentReturningInfo
     const chlClasses = chineseClasses.filter((c) => !c.nameEn?.startsWith('CSL'))
     const cslClasses = chineseClasses.filter((c) => c.nameEn?.startsWith('CSL'))
@@ -567,7 +635,21 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
     const info = currentReturningInfo
     return (
       <div>
-        {info && <ReturningBanner info={info} />}
+        {/* Arts-only: show confirmed language class as read-only context */}
+        {isArtsOnly && confirmedLanguageClass ? (
+          <div className="mb-5 rounded-lg border border-green-200 bg-green-50 p-3 flex items-center gap-3">
+            <span className="text-green-600 text-lg">✅</span>
+            <div>
+              <p className="text-xs font-medium text-green-700 uppercase tracking-wide">已注册中文课 / Language Class Confirmed</p>
+              <p className="text-sm font-semibold text-green-900">{confirmedLanguageClass.name}</p>
+              {confirmedLanguageClass.teacherName && (
+                <p className="text-xs text-green-700">{confirmedLanguageClass.teacherName} 老师 · {confirmedLanguageClass.schedule}</p>
+              )}
+            </div>
+          </div>
+        ) : (
+          info && <ReturningBanner info={info} />
+        )}
         <h2 className="text-lg font-semibold text-gray-900 mb-1">选择才艺课程</h2>
         <p className="text-sm text-gray-400 mb-5">Select Arts Class (optional, Sunday 11:00 AM - 12:00 PM)</p>
         {artsClasses.length === 0 ? (
@@ -622,7 +704,19 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
             <p className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-3">课程费用 / Tuition</p>
             <table className="w-full text-sm">
               <tbody className="divide-y divide-gray-50">
-                {selectedChineseClass && (
+                {/* Arts-only: show confirmed language class as already-paid, greyed out */}
+                {isArtsOnly && confirmedLanguageClass && (
+                  <tr>
+                    <td className="py-2 text-gray-400">
+                      {confirmedLanguageClass.nameEn ?? confirmedLanguageClass.name}
+                      <span className="ml-2 inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                        已注册 / Already Enrolled
+                      </span>
+                    </td>
+                    <td className="py-2 text-right text-gray-400">—</td>
+                  </tr>
+                )}
+                {!isArtsOnly && selectedChineseClass && (
                   <tr>
                     <td className="py-2 text-gray-900">{selectedChineseClass.nameEn ?? selectedChineseClass.name}</td>
                     <td className="py-2 text-right font-medium">${parseFloat(selectedChineseClass.fee).toFixed(2)}</td>
@@ -724,7 +818,7 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
 
   function canAdvance() {
     if (step === 1) return !!selectedStudentId
-    if (step === 2) return !!selectedChineseId
+    if (step === 2) return isArtsOnly ? true : !!selectedChineseId
     if (step === 3) return true // arts classes are optional
     return false
   }

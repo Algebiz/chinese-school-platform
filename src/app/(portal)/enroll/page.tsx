@@ -25,13 +25,14 @@ async function fetchClasses(): Promise<ClassData[]> {
 export default async function EnrollPage({
   searchParams,
 }: {
-  searchParams: Promise<{ classIds?: string }>
+  searchParams: Promise<{ classIds?: string; studentId?: string; artsOnly?: string }>
 }) {
   const session = await auth()
   if (!session) redirect('/login')
 
-  const { classIds: classIdsParam } = await searchParams
+  const { classIds: classIdsParam, studentId: studentIdParam, artsOnly: artsOnlyParam } = await searchParams
   const preselectedClassIds = classIdsParam ? classIdsParam.split(',').filter(Boolean) : []
+  const wantsArtsOnly = artsOnlyParam === 'true' && !!studentIdParam
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
@@ -52,6 +53,45 @@ export default async function EnrollPage({
     birthDate: s.birthDate?.toISOString() ?? null,
     grade: s.grade,
   }))
+
+  // For arts-only flow: fetch the student's confirmed language class
+  let confirmedLanguageClass: {
+    id: string; name: string; nameEn: string | null; teacherName: string | null; schedule: string
+  } | null = null
+  let initialStudentId: string | null = null
+  let initialStep: 1 | 3 = 1
+
+  if (wantsArtsOnly && studentIdParam) {
+    const studentBelongsToFamily = students.some((s) => s.id === studentIdParam)
+    if (studentBelongsToFamily) {
+      const confirmedEnrollment = await prisma.enrollment.findFirst({
+        where: {
+          studentId: studentIdParam,
+          status: 'CONFIRMED',
+          class: { type: 'CHINESE', year: CURRENT_YEAR },
+        },
+        include: {
+          class: {
+            include: { teacher: { select: { name: true } } },
+          },
+        },
+      })
+      if (confirmedEnrollment) {
+        const sched = confirmedEnrollment.class.schedule as Record<string, string> | null
+        confirmedLanguageClass = {
+          id: confirmedEnrollment.class.id,
+          name: confirmedEnrollment.class.name,
+          nameEn: confirmedEnrollment.class.nameEn,
+          teacherName: confirmedEnrollment.class.teacher?.name ?? null,
+          schedule: sched
+            ? [sched.dayOfWeek, sched.startTime && sched.endTime ? `${sched.startTime}–${sched.endTime}` : ''].filter(Boolean).join(' ')
+            : '',
+        }
+        initialStudentId = studentIdParam
+        initialStep = 3
+      }
+    }
+  }
 
   const [allClasses, ...returningInfoList] = await Promise.all([
     fetchClasses(),
@@ -81,6 +121,10 @@ export default async function EnrollPage({
           artsClasses={artsClasses}
           preselectedClassIds={preselectedClassIds}
           returningStudentData={returningStudentData}
+          initialStudentId={initialStudentId}
+          initialStep={initialStep}
+          artsOnly={confirmedLanguageClass !== null}
+          confirmedLanguageClass={confirmedLanguageClass}
         />
       </div>
     </div>
