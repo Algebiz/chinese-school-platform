@@ -265,6 +265,16 @@ exports.Prisma.StudentNextClassOverrideScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.SystemSettingsScalarFieldEnum = {
+  id: 'id',
+  schoolNameZh: 'schoolNameZh',
+  schoolNameEn: 'schoolNameEn',
+  contactEmail: 'contactEmail',
+  contactPhone: 'contactPhone',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -291,7 +301,8 @@ exports.Prisma.JsonNullValueFilter = {
 };
 exports.Role = exports.$Enums.Role = {
   PARENT: 'PARENT',
-  ADMIN: 'ADMIN'
+  ADMIN: 'ADMIN',
+  SUPER_ADMIN: 'SUPER_ADMIN'
 };
 
 exports.ClassType = exports.$Enums.ClassType = {
@@ -332,7 +343,8 @@ exports.Prisma.ModelName = {
   Waitlist: 'Waitlist',
   AdjustmentLog: 'AdjustmentLog',
   AcademicYearConfig: 'AcademicYearConfig',
-  StudentNextClassOverride: 'StudentNextClassOverride'
+  StudentNextClassOverride: 'StudentNextClassOverride',
+  SystemSettings: 'SystemSettings'
 };
 
 /**

@@ -12,6 +12,7 @@ datasource db {
 enum Role {
   PARENT
   ADMIN
+  SUPER_ADMIN
 }
 
 enum ClassType {
@@ -220,4 +221,14 @@ model StudentNextClassOverride {
   class   Class   @relation(fields: [classId], references: [id])
 
   @@unique([studentId, academicYear])
+}
+
+model SystemSettings {
+  id           String   @id @default(cuid())
+  schoolNameZh String   @default("夏洛特中文学校")
+  schoolNameEn String   @default("Charlotte Chinese Academy")
+  contactEmail String   @default("")
+  contactPhone String   @default("")
+  updatedAt    DateTime @updatedAt
+  updatedBy    String?
 }

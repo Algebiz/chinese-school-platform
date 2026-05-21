@@ -10,22 +10,31 @@ export default auth((req) => {
   const userRole = req.auth?.user?.role
 
   const { pathname } = nextUrl
+
   const isPortalRoute =
     pathname.startsWith('/dashboard') ||
     pathname.startsWith('/classes') ||
     pathname.startsWith('/enroll') ||
     pathname.startsWith('/checkout')
   const isAdminRoute = pathname.startsWith('/admin')
+  const isSuperAdminRoute = pathname.startsWith('/super-admin')
 
   if (isPortalRoute && !isLoggedIn) {
     return NextResponse.redirect(new URL("/login", nextUrl))
   }
 
-  if (isAdminRoute) {
-    if (!isLoggedIn) {
-      return NextResponse.redirect(new URL("/login", nextUrl))
+  if (isSuperAdminRoute) {
+    if (!isLoggedIn) return NextResponse.redirect(new URL("/login", nextUrl))
+    if (userRole !== "SUPER_ADMIN") {
+      // ADMIN gets bounced to admin panel; everyone else to dashboard
+      const dest = userRole === "ADMIN" ? "/admin" : "/dashboard"
+      return NextResponse.redirect(new URL(dest, nextUrl))
     }
-    if (userRole !== "ADMIN") {
+  }
+
+  if (isAdminRoute) {
+    if (!isLoggedIn) return NextResponse.redirect(new URL("/login", nextUrl))
+    if (userRole !== "ADMIN" && userRole !== "SUPER_ADMIN") {
       return NextResponse.redirect(new URL("/dashboard", nextUrl))
     }
   }

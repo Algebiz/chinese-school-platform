@@ -243,7 +243,7 @@ async function main() {
       email: 'admin@chineseschool.com',
       name: 'Admin',
       password: adminHash,
-      role: 'ADMIN',
+      role: 'SUPER_ADMIN',
     },
   })
 
