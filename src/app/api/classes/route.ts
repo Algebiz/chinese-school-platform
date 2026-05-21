@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
       },
       include: {
         teacher: {
-          select: { id: true, name: true, email: true },
+          select: { id: true, name: true, nameEn: true, bioEn: true, bioZh: true, photoUrl: true },
         },
         _count: {
           select: {

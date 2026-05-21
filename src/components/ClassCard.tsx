@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { clsx } from 'clsx'
 
 export interface TextbookInfo {
@@ -10,13 +11,22 @@ export interface TextbookInfo {
   description?: string | null
 }
 
+export interface TeacherInfo {
+  id: string
+  name: string
+  nameEn: string | null
+  bioEn: string | null
+  bioZh: string | null
+  photoUrl: string | null
+}
+
 export interface ClassData {
   id: string
   name: string
   nameEn: string | null
   type: 'CHINESE' | 'ARTS'
   description: string | null
-  teacher: { id: string; name: string; email: string | null } | null
+  teacher: TeacherInfo | null
   schedule: unknown
   capacity: number
   fee: string
@@ -39,8 +49,31 @@ function formatSchedule(schedule: unknown): string {
   return parts.join(' ') + (s.room ? ` | ${s.room}` : '')
 }
 
+function TeacherAvatar({ teacher }: { teacher: TeacherInfo }) {
+  if (teacher.photoUrl) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={teacher.photoUrl}
+        alt={teacher.name}
+        className="h-8 w-8 rounded-full object-cover border border-gray-200"
+      />
+    )
+  }
+  const initials = teacher.nameEn
+    ? teacher.nameEn.split(' ').map((w) => w[0]).slice(0, 2).join('')
+    : teacher.name.slice(0, 1)
+  return (
+    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 text-xs font-semibold text-red-700 border border-red-200">
+      {initials}
+    </div>
+  )
+}
+
 export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) {
+  const [showBio, setShowBio] = useState(false)
   const isFull = cls.spotsRemaining === 0
+  const hasBio = cls.teacher && (cls.teacher.bioEn || cls.teacher.bioZh)
 
   return (
     <div
@@ -67,11 +100,32 @@ export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) 
 
       <div className="mt-3 grow space-y-1.5 text-sm text-gray-600">
         {cls.teacher && (
-          <p>
-            <span className="text-gray-400">老师：</span>
-            {cls.teacher.name}
-          </p>
+          <div className="flex items-center gap-2">
+            <TeacherAvatar teacher={cls.teacher} />
+            <div className="min-w-0">
+              <span className="text-gray-800 font-medium">{cls.teacher.name}</span>
+              {cls.teacher.nameEn && (
+                <span className="ml-1 text-gray-400 text-xs">{cls.teacher.nameEn}</span>
+              )}
+            </div>
+            {hasBio && (
+              <button
+                onClick={(e) => { e.stopPropagation(); setShowBio((v) => !v) }}
+                className="ml-auto shrink-0 text-xs text-red-600 hover:text-red-800 underline underline-offset-2"
+              >
+                {showBio ? '收起' : '了解老师 / About'}
+              </button>
+            )}
+          </div>
         )}
+
+        {showBio && cls.teacher && (hasBio) && (
+          <div className="rounded-md bg-gray-50 p-3 text-xs text-gray-600 space-y-1.5 border border-gray-100">
+            {cls.teacher.bioEn && <p>{cls.teacher.bioEn}</p>}
+            {cls.teacher.bioZh && <p className="text-gray-500">{cls.teacher.bioZh}</p>}
+          </div>
+        )}
+
         <p>
           <span className="text-gray-400">时间：</span>
           {formatSchedule(cls.schedule)}

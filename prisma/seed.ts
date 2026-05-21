@@ -46,32 +46,108 @@ async function main() {
 
   // ── Real CCA teachers (19) ───────────────────────────────────────────────────
   const teacherDefs = [
-    { id: 'teacher-xueli',        name: '薛丽 (Xue Li)' },
-    { id: 'teacher-xuxiyue',      name: '徐希玥 (Xu Xiyue)' },
-    { id: 'teacher-sunhongyuan',  name: '孙宏远 (Sun Hongyuan)' },
-    { id: 'teacher-wangfuchao',   name: '王伏超 (Wang Fuchao)' },
-    { id: 'teacher-cuijing',      name: '崔静 (Cui Jing)' },
-    { id: 'teacher-shenxianshu',  name: '申贤淑 (Shen Xianshu)' },
-    { id: 'teacher-chaijing',     name: '柴静 (Chai Jing)' },
-    { id: 'teacher-zhangjing',    name: '张静 (Zhang Jing)' },
-    { id: 'teacher-mengxiaoying', name: '孟晓莺 (Meng Xiaoying)' },
-    { id: 'teacher-qiangshu',     name: '强恕 (Qiang Shu)' },
-    { id: 'teacher-zhangyongling',name: '张永龄 (Zhang Yongling)' },
-    { id: 'teacher-wangluming',   name: '王路明 (Wang Luming)' },
-    { id: 'teacher-wangyan',      name: '王燕 (Wang Yan)' },
-    { id: 'teacher-wangqian',     name: '汪倩 (Wang Qian)' },
-    { id: 'teacher-chengxuling',  name: '程旭灵 (Cheng Xuling)' },
-    { id: 'teacher-zengwenchan',  name: '曾雯婵 (Zeng Wenchan)' },
-    { id: 'teacher-chenxiahuan',  name: '陈夏欢 (Chen Xiahuan)' },
-    { id: 'teacher-limeili',      name: '李美丽 (Li Meili)' },
-    { id: 'teacher-zhongying',    name: '钟莹 (Zhong Ying)' },
+    {
+      id: 'teacher-xueli', name: '薛丽', nameEn: 'Xue Li',
+      bioEn: 'Ms. Xue Li teaches AP Chinese at CCA, bringing extensive experience in Chinese language education. She prepares students for the AP Chinese Language and Culture exam with rigorous instruction and deep cultural enrichment.',
+      bioZh: '薛丽老师主教AP中文课程，拥有丰富的中文教育经验。她以严格的教学方式和深厚的文化内涵培养学生，帮助他们备战AP中文语言与文化考试。',
+    },
+    {
+      id: 'teacher-xuxiyue', name: '徐希玥', nameEn: 'Xu Xiyue',
+      bioEn: 'Ms. Xu Xiyue teaches CHL Level 1A, specializing in early Chinese literacy for young learners. She creates an engaging, nurturing environment to build foundational reading and writing skills.',
+      bioZh: '徐希玥老师主教中文母语一班A，专注于低年级学生的中文启蒙教育。她以寓教于乐的方式为学生打好读写基础。',
+    },
+    {
+      id: 'teacher-sunhongyuan', name: '孙宏远', nameEn: 'Sun Hongyuan',
+      bioEn: 'Mr. Sun Hongyuan teaches CHL Level 1B, with a passion for inspiring young students to love the Chinese language through interactive lessons and storytelling.',
+      bioZh: '孙宏远老师主教中文母语一班B，致力于通过互动教学和故事讲述激发学生对中文的热爱。',
+    },
+    {
+      id: 'teacher-wangfuchao', name: '王伏超', nameEn: 'Wang Fuchao',
+      bioEn: 'Mr. Wang Fuchao teaches CHL Level 2, building on students\' foundational skills with a focus on reading comprehension and character recognition.',
+      bioZh: '王伏超老师主教中文母语二班，在学生已有基础上进一步强化阅读理解和汉字识别能力。',
+    },
+    {
+      id: 'teacher-cuijing', name: '崔静', nameEn: 'Cui Jing',
+      bioEn: 'Ms. Cui Jing teaches CHL Level 3A, helping students transition to more advanced reading and writing with a structured and supportive approach.',
+      bioZh: '崔静老师主教中文母语三班A，以有条理、有支持的教学方式引导学生进入更高阶的读写学习。',
+    },
+    {
+      id: 'teacher-shenxianshu', name: '申贤淑', nameEn: 'Shen Xianshu',
+      bioEn: 'Ms. Shen Xianshu teaches CHL Level 3B, combining traditional methods with creative activities to strengthen students\' Chinese proficiency.',
+      bioZh: '申贤淑老师主教中文母语三班B，将传统教学法与创意活动相结合，全面提升学生的中文能力。',
+    },
+    {
+      id: 'teacher-chaijing', name: '柴静', nameEn: 'Chai Jing',
+      bioEn: 'Ms. Chai Jing teaches CHL Level 4A, focusing on essay writing and deeper comprehension skills for intermediate learners.',
+      bioZh: '柴静老师主教中文母语四班A，专注于培养中级学生的作文写作与深度理解能力。',
+    },
+    {
+      id: 'teacher-zhangjing', name: '张静', nameEn: 'Zhang Jing',
+      bioEn: 'Ms. Zhang Jing teaches CHL Level 4B, engaging students with rich literature and composition practice to develop strong Chinese writing skills.',
+      bioZh: '张静老师主教中文母语四班B，通过丰富的文学阅读和写作练习培养学生扎实的中文写作能力。',
+    },
+    {
+      id: 'teacher-mengxiaoying', name: '孟晓莺', nameEn: 'Meng Xiaoying',
+      bioEn: 'Ms. Meng Xiaoying teaches CHL Level 4 Intensive, offering accelerated instruction for students who want to advance quickly in Chinese language mastery.',
+      bioZh: '孟晓莺老师主教中文母语四班强化班，为希望快速提升中文水平的学生提供强化教学。',
+    },
+    {
+      id: 'teacher-qiangshu', name: '强恕', nameEn: 'Qiang Shu',
+      bioEn: 'Mr. Qiang Shu teaches CHL Level 5, guiding students through advanced reading texts and expository writing to prepare for higher-level Chinese.',
+      bioZh: '强恕老师主教中文母语五班，指导学生阅读高难度文本并进行说明文写作，为更高年级的中文学习打好基础。',
+    },
+    {
+      id: 'teacher-zhangyongling', name: '张永龄', nameEn: 'Zhang Yongling',
+      bioEn: 'Ms. Zhang Yongling teaches CHL Level 6, emphasizing classical Chinese literature and formal writing styles for pre-teen learners.',
+      bioZh: '张永龄老师主教中文母语六班，注重古典文学赏析与正式写作风格，为青少年学生奠定深厚的文化底蕴。',
+    },
+    {
+      id: 'teacher-wangluming', name: '王路明', nameEn: 'Wang Luming',
+      bioEn: 'Mr. Wang Luming teaches CHL Level 7, developing students\' analytical reading and argumentative writing skills with challenging texts.',
+      bioZh: '王路明老师主教中文母语七班，通过富有挑战性的文本培养学生的分析阅读与议论文写作能力。',
+    },
+    {
+      id: 'teacher-wangyan', name: '王燕', nameEn: 'Wang Yan',
+      bioEn: 'Ms. Wang Yan teaches CHL Level 8, preparing advanced students for high-school-level Chinese with rigorous literary study and composition.',
+      bioZh: '王燕老师主教中文母语八班，以严格的文学学习和写作训练为高阶学生备战高中中文课程。',
+    },
+    {
+      id: 'teacher-wangqian', name: '汪倩', nameEn: 'Wang Qian',
+      bioEn: 'Ms. Wang Qian teaches both CHL Level 9 and Art Class. She brings a unique blend of Chinese language expertise and artistic creativity, inspiring students to explore Chinese culture through language and visual arts.',
+      bioZh: '汪倩老师同时执教中文母语九班与美术班，将中文语言教学与艺术创作融为一体，引导学生通过语言与视觉艺术探索中国文化。',
+    },
+    {
+      id: 'teacher-chengxuling', name: '程旭灵', nameEn: 'Cheng Xuling',
+      bioEn: 'Ms. Cheng Xuling teaches CHL Level 9 Intensive, offering accelerated advanced instruction for students preparing for AP Chinese or heritage language certification.',
+      bioZh: '程旭灵老师主教中文母语九班强化班，为备战AP中文考试或传承语言认证的学生提供高阶强化课程。',
+    },
+    {
+      id: 'teacher-zengwenchan', name: '曾雯婵', nameEn: 'Zeng Wenchan',
+      bioEn: 'Ms. Zeng Wenchan teaches CSL Level 1A, welcoming young beginners to Mandarin as a second language through songs, games, and hands-on activities.',
+      bioZh: '曾雯婵老师主教中文第二语言一班A，通过歌谣、游戏和动手活动引导小学生快乐入门普通话。',
+    },
+    {
+      id: 'teacher-chenxiahuan', name: '陈夏欢', nameEn: 'Chen Xiahuan',
+      bioEn: 'Ms. Chen Xiahuan teaches CSL Level 1B, creating a fun and immersive learning environment for young beginners discovering Mandarin for the first time.',
+      bioZh: '陈夏欢老师主教中文第二语言一班B，为初次接触普通话的小学生营造轻松沉浸式的学习氛围。',
+    },
+    {
+      id: 'teacher-limeili', name: '李美丽', nameEn: 'Li Meili',
+      bioEn: 'Ms. Li Meili teaches CSL Level 2, building on beginner vocabulary and conversation skills with engaging real-life topics and cultural themes.',
+      bioZh: '李美丽老师主教中文第二语言二班，以贴近生活的话题和文化主题为基础，帮助学生扩展词汇并提升会话能力。',
+    },
+    {
+      id: 'teacher-zhongying', name: '钟莹', nameEn: 'Zhong Ying',
+      bioEn: 'Ms. Zhong Ying teaches CSL Level 3, guiding intermediate second-language learners toward greater fluency through reading, writing, and conversational practice.',
+      bioZh: '钟莹老师主教中文第二语言三班，通过读写与口语练习引导中级学生进一步提升普通话流利度。',
+    },
   ]
 
   const teachers = await Promise.all(
     teacherDefs.map((t) =>
       prisma.teacher.upsert({
         where: { id: t.id },
-        update: { name: t.name },
+        update: { name: t.name, nameEn: t.nameEn, bioEn: t.bioEn, bioZh: t.bioZh },
         create: t,
       })
     )
@@ -87,28 +163,37 @@ async function main() {
   console.log('  ✓ Language teachers created (19)')
 
   // ── Arts teachers ────────────────────────────────────────────────────────────
-  const [tJonathan, tSeanPeeler, tTbdDance, tTbdMath] = await Promise.all([
-    prisma.teacher.upsert({
-      where: { id: 'teacher-jonathan' },
-      update: { name: 'Jonathan' },
-      create: { id: 'teacher-jonathan', name: 'Jonathan' },
-    }),
-    prisma.teacher.upsert({
-      where: { id: 'teacher-seanpeeler' },
-      update: { name: 'Sean Peeler' },
-      create: { id: 'teacher-seanpeeler', name: 'Sean Peeler' },
-    }),
-    prisma.teacher.upsert({
-      where: { id: 'teacher-tbd-dance' },
-      update: { name: 'TBD Teacher Dance' },
-      create: { id: 'teacher-tbd-dance', name: 'TBD Teacher Dance' },
-    }),
-    prisma.teacher.upsert({
-      where: { id: 'teacher-tbd-math' },
-      update: { name: 'TBD Teacher Math' },
-      create: { id: 'teacher-tbd-math', name: 'TBD Teacher Math' },
-    }),
-  ])
+  const artsDefs = [
+    {
+      id: 'teacher-jonathan', name: 'Jonathan', nameEn: 'Jonathan',
+      bioEn: 'Jonathan is a seasoned instructor in Chinese martial arts and lion dance performance. He has trained performers across the region and brings infectious energy and discipline to every class.',
+      bioZh: 'Jonathan是一位经验丰富的中国武术与舞狮表演指导教师，曾培训全国各地的表演者，将活力与自律带入每一堂课。',
+    },
+    {
+      id: 'teacher-seanpeeler', name: 'Sean Peeler', nameEn: 'Sean Peeler',
+      bioEn: 'Sean Peeler is a competitive chess coach with years of experience developing junior players. He focuses on strategic thinking, patience, and the joy of the game.',
+      bioZh: 'Sean Peeler是一位资深青少年国际象棋教练，专注于培养学生的战略思维、耐心与对棋局的热爱。',
+    },
+    {
+      id: 'teacher-tbd-dance', name: 'TBD Teacher Dance', nameEn: null,
+      bioEn: 'Teacher information coming soon. This class covers classical and folk Chinese dance for all skill levels.',
+      bioZh: '教师信息敬请期待。本课程涵盖古典舞与民族舞，适合各程度学生。',
+    },
+    {
+      id: 'teacher-tbd-math', name: 'TBD Teacher Math', nameEn: null,
+      bioEn: 'Teacher information coming soon. This class offers math enrichment to strengthen problem-solving and analytical skills.',
+      bioZh: '教师信息敬请期待。本课程为数学强化班，旨在提升学生的解题思维与分析能力。',
+    },
+  ]
+  const [tJonathan, tSeanPeeler, tTbdDance, tTbdMath] = await Promise.all(
+    artsDefs.map((t) =>
+      prisma.teacher.upsert({
+        where: { id: t.id },
+        update: { name: t.name, nameEn: t.nameEn, bioEn: t.bioEn, bioZh: t.bioZh },
+        create: t,
+      })
+    )
+  )
 
   console.log('  ✓ Arts teachers created (4 new + 汪倩 reused)')
 
