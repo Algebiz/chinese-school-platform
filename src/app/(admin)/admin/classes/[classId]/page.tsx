@@ -22,7 +22,7 @@ export default async function ClassDetailPage({
 
   const { classId } = await params
 
-  const [cls, enrollments, allSameTypeClasses] = await Promise.all([
+  const [cls, enrollments, allSameTypeClasses, pendingCount, cancelledCount] = await Promise.all([
     prisma.class.findUnique({
       where: { id: classId },
       include: {
@@ -50,6 +50,8 @@ export default async function ClassDetailPage({
         _count: { select: { enrollments: { where: { status: 'CONFIRMED' } } } },
       },
     }),
+    prisma.enrollment.count({ where: { classId, status: 'PENDING' } }),
+    prisma.enrollment.count({ where: { classId, status: 'CANCELLED' } }),
   ])
 
   if (!cls) notFound()
@@ -111,6 +113,11 @@ export default async function ClassDetailPage({
             <span className="ml-1 text-sm text-gray-400">
               / {cls.capacity} ({Math.max(0, cls.capacity - enrollments.length)} 余)
             </span>
+          </p>
+          <p className="mt-0.5 text-xs text-gray-400">
+            {enrollments.length} 已确认
+            {pendingCount > 0 && <span className="ml-1 text-amber-600">· {pendingCount} 待付款</span>}
+            {cancelledCount > 0 && <span className="ml-1 text-gray-400">· {cancelledCount} 已取消</span>}
           </p>
         </div>
       </div>

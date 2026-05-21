@@ -15,12 +15,12 @@ function StatCard({ title, en, value }: { title: string; en: string; value: stri
   )
 }
 
-function PaymentBadge({ status }: { status: string }) {
+function EnrollmentStatusBadge({ status }: { status: string }) {
   const map: Record<string, { label: string; cls: string }> = {
-    COMPLETED: { label: '已支付', cls: 'bg-green-100 text-green-700' },
-    PENDING: { label: '待支付', cls: 'bg-yellow-100 text-yellow-700' },
-    FAILED: { label: '失败', cls: 'bg-red-100 text-red-700' },
-    REFUNDED: { label: '已退款', cls: 'bg-gray-100 text-gray-600' },
+    CONFIRMED:   { label: '已支付',  cls: 'bg-green-100 text-green-700' },
+    PENDING:     { label: '待支付',  cls: 'bg-amber-100 text-amber-700' },
+    CANCELLED:   { label: '已取消',  cls: 'bg-gray-100 text-gray-500' },
+    TRANSFERRED: { label: '已转班',  cls: 'bg-blue-100 text-blue-700' },
   }
   const { label, cls } = map[status] ?? { label: status, cls: 'bg-gray-100 text-gray-600' }
   return <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${cls}`}>{label}</span>
@@ -31,7 +31,10 @@ export default async function AdminDashboard() {
   if (session?.user?.role !== 'ADMIN' && session?.user?.role !== 'SUPER_ADMIN') redirect('/dashboard')
 
   const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent] = await Promise.all([
-    prisma.student.count(),
+    // Students who have at least one CONFIRMED enrollment this year
+    prisma.student.count({
+      where: { enrollments: { some: { status: 'CONFIRMED', class: { year: YEAR } } } },
+    }),
     prisma.enrollment.count({
       where: { status: 'CONFIRMED', class: { year: YEAR } },
     }),
@@ -50,11 +53,10 @@ export default async function AdminDashboard() {
       },
     }).then(sortClasses),
     prisma.enrollment.findMany({
-      where: { class: { year: YEAR } },
+      where: { class: { year: YEAR }, status: { not: 'CANCELLED' } },
       include: {
         student: { select: { name: true } },
         class: { select: { name: true } },
-        payments: { select: { status: true }, orderBy: { createdAt: 'desc' }, take: 1 },
       },
       orderBy: { createdAt: 'desc' },
       take: 20,
@@ -120,7 +122,7 @@ export default async function AdminDashboard() {
               <tr className="border-b border-gray-200 bg-gray-50 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
                 <th className="px-6 py-3">学生</th>
                 <th className="px-6 py-3">班级</th>
-                <th className="px-6 py-3">支付状态</th>
+                <th className="px-6 py-3">状态 / Status</th>
                 <th className="px-6 py-3">报名时间</th>
               </tr>
             </thead>
@@ -130,7 +132,7 @@ export default async function AdminDashboard() {
                   <td className="px-6 py-3 font-medium text-gray-900">{e.student.name}</td>
                   <td className="px-6 py-3 text-gray-600">{e.class.name}</td>
                   <td className="px-6 py-3">
-                    <PaymentBadge status={e.payments[0]?.status ?? 'PENDING'} />
+                    <EnrollmentStatusBadge status={e.status} />
                   </td>
                   <td className="px-6 py-3 text-gray-400">
                     {new Date(e.createdAt).toLocaleDateString('zh-CN')}
