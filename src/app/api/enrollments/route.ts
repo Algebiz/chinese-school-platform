@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-import { createEnrollments } from '@/lib/enrollment-logic'
+import { createEnrollments, checkTimeConflict } from '@/lib/enrollment-logic'
 import { isReEnrollmentOpen } from '@/lib/re-enrollment-logic'
 
 const enrollSchema = z.object({
@@ -68,6 +68,38 @@ export async function POST(req: NextRequest) {
         },
         { status: 409 }
       )
+    }
+
+    // Block if student is already confirmed in any of the requested classes
+    const alreadyConfirmed = await prisma.enrollment.findFirst({
+      where: { studentId, classId: { in: classIds }, status: 'CONFIRMED' },
+      include: { class: { select: { name: true } } },
+    })
+    if (alreadyConfirmed) {
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'ALREADY_ENROLLED',
+          error: `Student is already enrolled in ${alreadyConfirmed.class.name}.`,
+        },
+        { status: 409 }
+      )
+    }
+
+    // Block if any requested class has a schedule conflict with existing enrollments
+    for (const classId of classIds) {
+      const conflict = await checkTimeConflict(studentId, classId, CURRENT_YEAR)
+      if (conflict.hasConflict) {
+        return NextResponse.json(
+          {
+            success: false,
+            code: 'TIME_CONFLICT',
+            error: `Schedule conflict with existing class: ${conflict.conflictingClass?.name ?? 'another class'}`,
+            conflictingClassName: conflict.conflictingClass?.name,
+          },
+          { status: 409 }
+        )
+      }
     }
 
     // Check enrollment window

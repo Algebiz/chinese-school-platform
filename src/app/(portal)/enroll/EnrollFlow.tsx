@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { clsx } from 'clsx'
 import type { ClassData } from '@/components/ClassCard'
 
@@ -312,7 +313,7 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
   const [languageTab, setLanguageTab] = useState<'CHL' | 'CSL'>('CHL')
   const [showAddModal, setShowAddModal] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitError, setSubmitError] = useState<{ code: string; message: string } | null>(null)
 
   const selectedStudent = students.find(s => s.id === selectedStudentId)
   const selectedChineseClass = chineseClasses.find(c => c.id === selectedChineseId)
@@ -341,6 +342,7 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
 
   function selectChineseClass(classId: string | null) {
     setSelectedChineseId(classId)
+    setSubmitError(null)
     if (classId) {
       const cls = chineseClasses.find(c => c.id === classId)
       setSelectedTextbookIds(new Set(cls?.textbooks.map(t => t.id) ?? []))
@@ -395,13 +397,16 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
       })
       const json = await res.json()
       if (!json.success) {
-        setSubmitError(json.error ?? '报名失败，请重试 / Enrollment failed, please try again')
+        setSubmitError({
+          code: json.code ?? 'UNKNOWN',
+          message: json.error ?? '报名失败，请重试 / Enrollment failed, please try again',
+        })
         return
       }
       const enrollmentIds = json.data.enrollments.map((e: { id: string }) => e.id).join(',')
       router.push(`/checkout?enrollmentIds=${enrollmentIds}`)
     } catch {
-      setSubmitError('网络错误，请重试')
+      setSubmitError({ code: 'NETWORK_ERROR', message: '网络错误，请重试' })
     } finally {
       setIsSubmitting(false)
     }
@@ -661,7 +666,55 @@ export function EnrollFlow({ initialStudents, chineseClasses, artsClasses, prese
           </div>
         </div>
         {submitError && (
-          <p className="mt-3 rounded bg-red-50 p-3 text-sm text-red-700">{submitError}</p>
+          <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-4 space-y-2">
+            {submitError.code === 'TIME_CONFLICT' ? (
+              <>
+                <p className="text-sm font-semibold text-red-800">⚠ 无法完成报名 / Enrollment Blocked</p>
+                <p className="text-sm text-red-700">
+                  该学生已注册同一时间段的课程（每周日上午9:00–10:50），无法再选择其他中文课程。每位学生每学年只能注册一门中文课。
+                </p>
+                <p className="text-sm text-red-600">
+                  This student already has a language class at this time (Sunday 9:00–10:50 AM). Each student can only enroll in one language class per academic year.
+                </p>
+                <button
+                  onClick={() => { setSubmitError(null); setStep(2) }}
+                  className="mt-1 rounded-md border border-red-300 bg-white px-4 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 transition-colors"
+                >
+                  返回选课 / Back to Class Selection
+                </button>
+              </>
+            ) : submitError.code === 'ALREADY_ENROLLED' ? (
+              <>
+                <p className="text-sm font-semibold text-red-800">⚠ 已报名 / Already Enrolled</p>
+                <p className="text-sm text-red-700">该学生已成功注册此课程。</p>
+                <p className="text-sm text-red-600">This student is already enrolled in this class.</p>
+                <Link
+                  href="/dashboard"
+                  className="mt-1 inline-block rounded-md border border-red-300 bg-white px-4 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 transition-colors"
+                >
+                  前往仪表盘 / Go to Dashboard →
+                </Link>
+              </>
+            ) : submitError.code === 'PENDING_EXISTS' ? (
+              <>
+                <p className="text-sm font-semibold text-red-800">⚠ 有待付款记录 / Pending Enrollment Exists</p>
+                <p className="text-sm text-red-700">
+                  该学生有一个待付款的注册记录，请先完成付款或取消后再重新报名。
+                </p>
+                <p className="text-sm text-red-600">
+                  This student has a pending enrollment. Please complete payment or cancel it before enrolling again.
+                </p>
+                <Link
+                  href="/dashboard"
+                  className="mt-1 inline-block rounded-md border border-red-300 bg-white px-4 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 transition-colors"
+                >
+                  前往仪表盘查看 / View Dashboard →
+                </Link>
+              </>
+            ) : (
+              <p className="text-sm text-red-700">{submitError.message}</p>
+            )}
+          </div>
         )}
       </div>
     )
