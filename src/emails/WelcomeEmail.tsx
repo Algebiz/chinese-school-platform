@@ -18,13 +18,13 @@ export function WelcomeEmail({ parentName }: WelcomeEmailProps) {
   return (
     <Html lang="zh">
       <Head />
-      <Preview>欢迎加入XX中文学校 / Welcome to XX Chinese School</Preview>
+      <Preview>欢迎加入夏洛特中文学校 / Welcome to Charlotte Chinese Academy</Preview>
       <Body style={body}>
         <Container style={container}>
           {/* Header / logo */}
           <Section style={header}>
-            <Heading style={schoolZh}>XX中文学校</Heading>
-            <Text style={schoolEn}>XX Chinese School</Text>
+            <Heading style={schoolZh}>夏洛特中文学校</Heading>
+            <Text style={schoolEn}>Charlotte Chinese Academy</Text>
           </Section>
 
           <Section style={content}>
@@ -32,10 +32,10 @@ export function WelcomeEmail({ parentName }: WelcomeEmailProps) {
             <Text style={subtitle}>Welcome, {parentName}!</Text>
 
             <Text style={p}>
-              感谢您注册XX中文学校家长账号。请按照以下步骤为您的孩子完成报名：
+              感谢您注册夏洛特中文学校家长账号。请按照以下步骤为您的孩子完成报名：
             </Text>
             <Text style={pEn}>
-              Thank you for creating your account with XX Chinese School. Follow the steps below to enroll your children:
+              Thank you for creating your account with Charlotte Chinese Academy. Follow the steps below to enroll your children:
             </Text>
 
             <Section style={steps}>
@@ -75,7 +75,7 @@ function Step({ n, zh, en }: { n: string; zh: string; en: string }) {
 export function Footer() {
   return (
     <Section style={footer}>
-      <Text style={footerText}>XX中文学校 / XX Chinese School</Text>
+      <Text style={footerText}>夏洛特中文学校 / Charlotte Chinese Academy</Text>
       <Text style={footerText}>info@school.com · (XXX) XXX-XXXX</Text>
       <Text style={{ ...footerText, color: '#9ca3af', fontSize: 11 }}>
         2025–2026 学年 / Academic Year

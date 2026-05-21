@@ -21,12 +21,12 @@ export function PasswordResetEmail({ parentName, resetUrl }: PasswordResetEmailP
   return (
     <Html lang="zh">
       <Head />
-      <Preview>重置您的密码 / Reset your password — XX Chinese School</Preview>
+      <Preview>重置您的密码 / Reset your password — Charlotte Chinese Academy</Preview>
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
-            <Heading style={schoolZh}>XX中文学校</Heading>
-            <Text style={schoolEn}>XX Chinese School</Text>
+            <Heading style={schoolZh}>夏洛特中文学校</Heading>
+            <Text style={schoolEn}>Charlotte Chinese Academy</Text>
           </Section>
 
           <Section style={content}>

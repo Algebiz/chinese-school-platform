@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: FROM,
       to: email,
-      subject: '重置密码 / Password Reset — XX Chinese School',
+      subject: '重置密码 / Password Reset — Charlotte Chinese Academy',
       html,
     })
   } catch (err) {

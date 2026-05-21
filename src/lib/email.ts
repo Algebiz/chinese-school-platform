@@ -42,7 +42,7 @@ export async function sendWelcomeEmail(to: string, parentName: string): Promise<
   await resend.emails.send({
     from: FROM,
     to,
-    subject: `欢迎加入XX中文学校 / Welcome to XX Chinese School`,
+    subject: `欢迎加入夏洛特中文学校 / Welcome to Charlotte Chinese Academy`,
     html,
   })
 }

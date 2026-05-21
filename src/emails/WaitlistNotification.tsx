@@ -31,8 +31,8 @@ export function WaitlistNotification({
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
-            <Heading style={schoolZh}>XX中文学校</Heading>
-            <Text style={schoolEn}>XX Chinese School</Text>
+            <Heading style={schoolZh}>夏洛特中文学校</Heading>
+            <Text style={schoolEn}>Charlotte Chinese Academy</Text>
           </Section>
 
           <Section style={content}>

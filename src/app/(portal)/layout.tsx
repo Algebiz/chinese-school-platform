@@ -20,9 +20,12 @@ export default async function PortalLayout({ children }: { children: React.React
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
           {/* Left: school name + nav links */}
           <div className="flex items-center gap-8">
-            <Link href="/dashboard" className="flex flex-col leading-tight">
-              <span className="font-bold text-red-700 text-base">XX中文学校</span>
-              <span className="text-xs text-gray-400">XX Chinese School</span>
+            <Link href="/dashboard" className="flex items-center gap-2 leading-tight">
+              <img src="/logo.png" alt="CCA Logo" className="h-10 w-10 object-contain" />
+              <div className="flex flex-col">
+                <span className="font-bold text-red-700 text-base">夏洛特中文学校</span>
+                <span className="text-xs text-gray-400">Charlotte Chinese Academy</span>
+              </div>
             </Link>
             <div className="hidden sm:flex items-center gap-6 text-sm font-medium">
               <Link
