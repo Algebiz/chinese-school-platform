@@ -52,6 +52,24 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Block if student already has PENDING enrollments for any requested class
+    const existingPending = await prisma.enrollment.findMany({
+      where: { studentId, classId: { in: classIds }, status: 'PENDING' },
+      include: { class: { select: { name: true } } },
+    })
+    if (existingPending.length > 0) {
+      const classNames = existingPending.map((e) => e.class.name).join(', ')
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'PENDING_EXISTS',
+          error: `This student already has a pending enrollment for ${classNames}. Please complete or cancel it before enrolling again.`,
+          pendingEnrollmentIds: existingPending.map((e) => e.id),
+        },
+        { status: 409 }
+      )
+    }
+
     // Check enrollment window
     const [window, previousEnrollment] = await Promise.all([
       isReEnrollmentOpen(CURRENT_YEAR),

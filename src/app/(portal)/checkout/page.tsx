@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { CheckoutClient } from './CheckoutClient'
@@ -23,6 +24,37 @@ export default async function CheckoutPage({
     select: { familyId: true },
   })
 
+  // Fetch without status filter to detect cancelled enrollments
+  const rawEnrollments = await prisma.enrollment.findMany({
+    where: { id: { in: enrollmentIds } },
+    select: { id: true, status: true, student: { select: { familyId: true } } },
+  })
+
+  const unauthorized = rawEnrollments.some((e) => e.student.familyId !== user?.familyId)
+  if (unauthorized) redirect('/dashboard')
+
+  const hasCancelled = rawEnrollments.some((e) => e.status === 'CANCELLED')
+  if (hasCancelled) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="mx-auto max-w-xl px-4 py-16">
+          <div className="rounded-lg border border-red-200 bg-red-50 p-8 text-center">
+            <p className="text-lg font-semibold text-red-800">此注册已被取消</p>
+            <p className="mt-2 text-sm text-red-600">
+              This enrollment has been cancelled. Please enroll again.
+            </p>
+            <Link
+              href="/enroll"
+              className="mt-5 inline-block rounded-md bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
+            >
+              重新报名 / Enroll Again
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const enrollments = await prisma.enrollment.findMany({
     where: { id: { in: enrollmentIds }, status: 'PENDING' },
     include: {
@@ -35,9 +67,6 @@ export default async function CheckoutPage({
   })
 
   if (enrollments.length === 0) redirect('/classes')
-
-  const unauthorized = enrollments.some((e) => e.student.familyId !== user?.familyId)
-  if (unauthorized) redirect('/dashboard')
 
   const student = enrollments[0].student
 
