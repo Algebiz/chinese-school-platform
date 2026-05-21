@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { sortClasses } from '@/lib/class-order'
 
 const CURRENT_YEAR = '2025-2026'
 
@@ -24,10 +25,9 @@ export async function GET(req: NextRequest) {
           },
         },
       },
-      orderBy: { name: 'asc' },
     })
 
-    const data = classes.map((c) => ({
+    const data = sortClasses(classes.map((c) => ({
       id: c.id,
       name: c.name,
       nameEn: c.nameEn,
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
       year: c.year,
       enrolledCount: c._count.enrollments,
       spotsRemaining: Math.max(0, c.capacity - c._count.enrollments),
-    }))
+    })))
 
     return NextResponse.json({ success: true, data })
   } catch (error) {

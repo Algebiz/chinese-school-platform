@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { ClassBrowser } from './ClassBrowser'
 import type { ClassData } from '@/components/ClassCard'
+import { sortClasses } from '@/lib/class-order'
 
 const CURRENT_YEAR = '2025-2026'
 
@@ -23,7 +24,7 @@ export default async function ClassesPage() {
   const session = await auth()
   if (!session) redirect('/login')
 
-  const classes = await fetchClasses()
+  const classes = sortClasses(await fetchClasses())
   const chineseClasses = classes.filter((c) => c.type === 'CHINESE')
   const artsClasses = classes.filter((c) => c.type === 'ARTS')
 

@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import { StudentsClient } from './StudentsClient'
 import type { ReturningStudentRow, ChineseClassOption } from './StudentsClient'
 import { CLASS_LEVEL_PROGRESSION, deriveNextYear } from '@/lib/class-levels'
+import { sortClasses } from '@/lib/class-order'
 
 const PREVIOUS_YEAR = '2024-2025'
 const CURRENT_YEAR = '2025-2026'
@@ -57,11 +58,10 @@ export default async function AdminStudentsPage() {
   }
 
   // All Chinese classes in the next year (for the override dropdown + suggested labels)
-  const chineseClassesNextYear = await prisma.class.findMany({
+  const chineseClassesNextYear = sortClasses(await prisma.class.findMany({
     where: { year: nextYear, type: 'CHINESE' },
     select: { id: true, name: true, nameEn: true },
-    orderBy: { nameEn: 'asc' },
-  })
+  }))
   const classNameMap = new Map(chineseClassesNextYear.map((c) => [c.id, c.name]))
 
   // Build rows

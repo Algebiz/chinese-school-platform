@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { sortClasses } from '@/lib/class-order'
 
 const YEAR = '2025-2026'
 
@@ -47,8 +48,7 @@ export default async function AdminDashboard() {
         teacher: { select: { name: true } },
         _count: { select: { enrollments: { where: { status: 'CONFIRMED' } } } },
       },
-      orderBy: [{ type: 'asc' }, { name: 'asc' }],
-    }),
+    }).then(sortClasses),
     prisma.enrollment.findMany({
       where: { class: { year: YEAR } },
       include: {

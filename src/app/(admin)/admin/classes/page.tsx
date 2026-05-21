@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { sortClasses } from '@/lib/class-order'
 
 const YEAR = '2025-2026'
 
@@ -14,14 +15,13 @@ export default async function AdminClassesPage() {
   const session = await auth()
   if (session?.user?.role !== 'ADMIN' && session?.user?.role !== 'SUPER_ADMIN') redirect('/dashboard')
 
-  const classes = await prisma.class.findMany({
+  const classes = sortClasses(await prisma.class.findMany({
     where: { year: YEAR },
     include: {
       teacher: { select: { name: true } },
       _count: { select: { enrollments: { where: { status: 'CONFIRMED' } } } },
     },
-    orderBy: [{ type: 'asc' }, { name: 'asc' }],
-  })
+  }))
 
   return (
     <div className="space-y-6">
