@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { LegalFooter } from "@/components/LegalFooter"
 
 const schema = z
   .object({
@@ -63,7 +64,8 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <div className="flex flex-1 items-center justify-center py-12 px-4">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">创建账号</h1>
@@ -155,6 +157,18 @@ export default function RegisterPage() {
             {loading ? "注册中..." : "注册 / Register"}
           </button>
 
+          <p className="text-center text-xs text-gray-500">
+            By creating an account, you agree to our{" "}
+            <Link href="/terms-of-use" className="underline hover:text-gray-700">
+              Terms of Use
+            </Link>
+            {" "}and{" "}
+            <Link href="/privacy-policy" className="underline hover:text-gray-700">
+              Privacy Policy
+            </Link>
+            .
+          </p>
+
           <p className="text-center text-sm text-gray-600">
             已有账号？{" "}
             <Link href="/login" className="font-medium text-red-600 hover:text-red-500">
@@ -163,6 +177,8 @@ export default function RegisterPage() {
           </p>
         </form>
       </div>
+      </div>
+      <LegalFooter />
     </div>
   )
 }

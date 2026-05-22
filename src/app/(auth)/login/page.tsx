@@ -7,6 +7,7 @@ import { z } from "zod"
 import { signIn, getSession } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
+import { LegalFooter } from "@/components/LegalFooter"
 
 const schema = z.object({
   email: z.string().email("请输入有效的电子邮件"),
@@ -52,8 +53,7 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
-      <div className="max-w-md w-full space-y-8">
+    <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">登录账号</h1>
           <p className="mt-1 text-sm text-gray-500">Sign In</p>
@@ -125,15 +125,19 @@ function LoginForm() {
             </Link>
           </p>
         </form>
-      </div>
     </div>
   )
 }
 
 export default function LoginPage() {
   return (
-    <Suspense>
-      <LoginForm />
-    </Suspense>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <div className="flex flex-1 items-center justify-center py-12 px-4">
+        <Suspense>
+          <LoginForm />
+        </Suspense>
+      </div>
+      <LegalFooter />
+    </div>
   )
 }
