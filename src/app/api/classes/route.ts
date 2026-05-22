@@ -7,7 +7,20 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
     const type = searchParams.get('type')
-    const academicYear = searchParams.get('academicYear') ?? await getCurrentAcademicYear()
+    let academicYear = searchParams.get('academicYear') ?? await getCurrentAcademicYear()
+
+    console.log('Querying classes for year:', academicYear)
+
+    // Guard: if no classes exist for the configured year, fall back to the most recent year
+    // that has data (prevents blank class browser when config year is ahead of seeded data).
+    const countForYear = await prisma.class.count({ where: { year: academicYear } })
+    if (countForYear === 0) {
+      const fallback = await prisma.class.findFirst({ orderBy: { year: 'desc' }, select: { year: true } })
+      if (fallback) {
+        console.log(`No classes for ${academicYear}, falling back to ${fallback.year}`)
+        academicYear = fallback.year
+      }
+    }
 
     const classes = await prisma.class.findMany({
       where: {

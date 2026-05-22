@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-import { getNextAcademicYear } from '@/lib/academic-year'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { EnrollFlow } from './EnrollFlow'
 import { getReturningStudentData } from '@/lib/re-enrollment-logic'
 import type { ClassData } from '@/components/ClassCard'
@@ -28,7 +28,7 @@ export default async function EnrollPage({
   const session = await auth()
   if (!session) redirect('/login')
 
-  const CURRENT_YEAR = await getNextAcademicYear()
+  const CURRENT_YEAR = await getCurrentAcademicYear()
   const PREVIOUS_YEAR = CURRENT_YEAR.replace(/^(\d{4})-\d{4}$/, (_, a) => `${parseInt(a) - 1}-${a}`)
 
   const { classIds: classIdsParam, studentId: studentIdParam, artsOnly: artsOnlyParam } = await searchParams

@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth'
 import { ClassBrowser } from './ClassBrowser'
 import type { ClassData } from '@/components/ClassCard'
 import { sortClasses } from '@/lib/class-order'
-import { getNextAcademicYear } from '@/lib/academic-year'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 
 async function fetchClasses(year: string): Promise<ClassData[]> {
   const baseUrl = process.env.NEXTAUTH_URL ?? 'http://localhost:3000'
@@ -23,7 +23,7 @@ export default async function ClassesPage() {
   const session = await auth()
   if (!session) redirect('/login')
 
-  const CURRENT_YEAR = await getNextAcademicYear()
+  const CURRENT_YEAR = await getCurrentAcademicYear()
   const classes = sortClasses(await fetchClasses(CURRENT_YEAR))
   const chineseClasses = classes.filter((c) => c.type === 'CHINESE')
   const artsClasses = classes.filter((c) => c.type === 'ARTS')
