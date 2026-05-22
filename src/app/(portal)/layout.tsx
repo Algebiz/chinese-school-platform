@@ -18,83 +18,70 @@ export default async function PortalLayout({ children }: { children: React.React
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Navigation bar */}
       <nav className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-          {/* Left: school name + nav links */}
-          <div className="flex items-center gap-8">
-            <Link href="/dashboard" className="flex items-center gap-2 leading-tight">
-              <img src="/logo.png" alt="CCA Logo" className="h-10 w-10 object-contain" />
-              <div className="flex flex-col">
-                <span className="font-bold text-red-700 text-base">夏洛特中文学校</span>
-                <span className="text-xs text-gray-400">Charlotte Chinese Academy</span>
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2.5">
+          {/* Left: logo + nav links */}
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard" className="flex shrink-0 items-center gap-2 leading-tight">
+              <img src="/logo.png" alt="CCA Logo" className="h-9 w-9 object-contain" />
+              <div className="hidden md:flex flex-col">
+                <span className="font-bold text-red-700 text-sm leading-tight">夏洛特中文学校</span>
+                <span className="text-[10px] text-gray-400 leading-tight">Charlotte Chinese Academy</span>
               </div>
             </Link>
-            <div className="hidden sm:flex items-center gap-6 text-sm font-medium">
-              <Link
-                href="/dashboard"
-                className="text-gray-600 hover:text-red-700 transition-colors"
-              >
-                仪表盘 / Dashboard
-              </Link>
-              <Link
-                href="/classes"
-                className="text-gray-600 hover:text-red-700 transition-colors"
-              >
-                班级 / Classes
-              </Link>
-              <Link
-                href="/enroll"
-                className="text-gray-600 hover:text-red-700 transition-colors"
-              >
-                报名 / Enroll
-              </Link>
-              <Link
-                href="/exams"
-                className="text-gray-600 hover:text-red-700 transition-colors"
-              >
-                考试报名 / Exams
-              </Link>
-              <Link
-                href="/contact"
-                className="text-gray-600 hover:text-red-700 transition-colors"
-              >
-                联系我们 / Contact
-              </Link>
+
+            <div className="hidden sm:flex items-center gap-1">
+              {[
+                { href: '/dashboard', zh: '仪表盘', en: 'Dashboard' },
+                { href: '/classes',   zh: '班级',   en: 'Classes'   },
+                { href: '/enroll',    zh: '报名',   en: 'Enroll'    },
+                { href: '/exams',     zh: '考试报名', en: 'Exams'   },
+                { href: '/contact',   zh: '联系我们', en: 'Contact' },
+              ].map(({ href, zh, en }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="flex flex-col items-center rounded-md px-2.5 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-red-700 transition-colors"
+                >
+                  <span className="text-sm font-medium leading-tight">{zh}</span>
+                  <span className="text-[10px] text-gray-400 leading-tight">{en}</span>
+                </Link>
+              ))}
             </div>
           </div>
 
           {/* Right: user name + logout */}
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:block text-sm text-gray-500 max-w-[160px] truncate">
+          <div className="flex items-center gap-2">
+            <span className="hidden lg:block text-sm text-gray-500 max-w-[140px] truncate">
               {displayName}
             </span>
             <form action={logout}>
               <button
                 type="submit"
-                className="rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
+                className="rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap"
               >
-                退出 / Log out
+                退出
               </button>
             </form>
           </div>
         </div>
 
-        {/* Mobile nav links */}
-        <div className="flex sm:hidden items-center gap-5 px-4 pb-2 text-sm font-medium">
-          <Link href="/dashboard" className="text-gray-600 hover:text-red-700">
-            Dashboard
-          </Link>
-          <Link href="/classes" className="text-gray-600 hover:text-red-700">
-            Classes
-          </Link>
-          <Link href="/enroll" className="text-gray-600 hover:text-red-700">
-            Enroll
-          </Link>
-          <Link href="/exams" className="text-gray-600 hover:text-red-700">
-            Exams
-          </Link>
-          <Link href="/contact" className="text-gray-600 hover:text-red-700">
-            Contact
-          </Link>
+        {/* Mobile nav links — scrollable row */}
+        <div className="flex sm:hidden items-center gap-1 overflow-x-auto px-3 pb-2 scrollbar-none">
+          {[
+            { href: '/dashboard', label: 'Dashboard' },
+            { href: '/classes',   label: 'Classes'   },
+            { href: '/enroll',    label: 'Enroll'    },
+            { href: '/exams',     label: 'Exams'     },
+            { href: '/contact',   label: 'Contact'   },
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="shrink-0 rounded-md px-3 py-1 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-red-700 transition-colors"
+            >
+              {label}
+            </Link>
+          ))}
         </div>
       </nav>
 
