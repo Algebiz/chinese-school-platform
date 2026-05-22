@@ -116,7 +116,8 @@ export async function sendEnrollmentConfirmationByIds(
   classIds: string[],
   textbookIds: string[],
   paymentMethod: 'STRIPE' | 'PAYPAL',
-  transactionId: string
+  transactionId: string,
+  academicYear: string
 ): Promise<void> {
   const [student, classes, textbooks] = await Promise.all([
     prisma.student.findUnique({
@@ -160,5 +161,6 @@ export async function sendEnrollmentConfirmationByIds(
     total: (tuitionTotal + textbookTotal).toFixed(2),
     paymentMethod,
     transactionId,
+    academicYear,
   })
 }

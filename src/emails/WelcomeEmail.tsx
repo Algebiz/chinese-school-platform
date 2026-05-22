@@ -80,13 +80,13 @@ function Step({ n, zh, en }: { n: string; zh: string; en: string }) {
   )
 }
 
-export function Footer() {
+export function Footer({ academicYear = '2026-2027' }: { academicYear?: string } = {}) {
   return (
     <Section style={footer}>
       <Text style={footerText}>夏洛特中文学校 / Charlotte Chinese Academy</Text>
       <Text style={footerText}>info@school.com · (XXX) XXX-XXXX</Text>
       <Text style={{ ...footerText, color: '#9ca3af', fontSize: 11 }}>
-        2025–2026 学年 / Academic Year
+        {academicYear} 学年 / Academic Year
       </Text>
     </Section>
   )

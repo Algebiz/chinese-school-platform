@@ -76,7 +76,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
 
   // Send confirmation email — non-fatal if it fails
   try {
-    await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'STRIPE', paymentIntent.id)
+    await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'STRIPE', paymentIntent.id, academicYear)
   } catch (err) {
     console.error('Failed to send confirmation email:', err)
   }

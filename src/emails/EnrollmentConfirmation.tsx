@@ -31,6 +31,7 @@ export interface EnrollmentConfirmationProps {
   total: string
   paymentMethod: 'STRIPE' | 'PAYPAL'
   transactionId: string
+  academicYear: string
 }
 
 export function EnrollmentConfirmation({
@@ -41,6 +42,7 @@ export function EnrollmentConfirmation({
   total,
   paymentMethod,
   transactionId,
+  academicYear,
 }: EnrollmentConfirmationProps) {
   const methodLabel = paymentMethod === 'STRIPE' ? '信用卡 / Credit Card' : 'PayPal'
 
@@ -147,7 +149,7 @@ export function EnrollmentConfirmation({
           </Section>
 
           <Hr style={hr} />
-          <Footer />
+          <Footer academicYear={academicYear} />
         </Container>
       </Body>
     </Html>

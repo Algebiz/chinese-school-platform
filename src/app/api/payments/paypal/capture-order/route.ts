@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
 
     // Non-fatal email
     try {
-      await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'PAYPAL', orderId)
+      await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'PAYPAL', orderId, academicYear)
     } catch (err) {
       console.error('Failed to send confirmation email:', err)
     }
