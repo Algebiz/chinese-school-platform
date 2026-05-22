@@ -111,10 +111,10 @@ export async function getReturningStudentData(
 }
 
 // Checks whether the enrollment window is open for a given target enrollment year.
-// targetYear: the academic year students are enrolling INTO (e.g. "2025-2026")
+// targetYear: the academic year students are enrolling INTO (e.g. "2026-2027")
 export async function isReEnrollmentOpen(targetYear: string): Promise<EnrollmentWindowStatus> {
   const config = await prisma.academicYearConfig.findFirst({
-    where: { nextYear: targetYear },
+    where: { isActive: true },
     orderBy: { createdAt: 'desc' },
   })
 
@@ -129,9 +129,22 @@ export async function isReEnrollmentOpen(targetYear: string): Promise<Enrollment
   }
 
   const now = new Date()
+  const isReturningOpen = now >= config.reEnrollmentOpenDate
+  const isNewOpen = now >= config.newEnrollmentOpenDate
+
+  console.log('Enrollment check:', {
+    configYear: config.academicYear,
+    isActive: config.isActive,
+    reEnrollmentOpenDate: config.reEnrollmentOpenDate,
+    newEnrollmentOpenDate: config.newEnrollmentOpenDate,
+    now,
+    isReturningOpen,
+    isNewOpen,
+  })
+
   return {
-    returningStudentsCanEnroll: now >= config.reEnrollmentOpenDate,
-    newStudentsCanEnroll: now >= config.newEnrollmentOpenDate,
+    returningStudentsCanEnroll: isReturningOpen,
+    newStudentsCanEnroll: isNewOpen,
     reEnrollmentOpenDate: config.reEnrollmentOpenDate,
     newEnrollmentOpenDate: config.newEnrollmentOpenDate,
   }
