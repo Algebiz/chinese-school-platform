@@ -11,6 +11,8 @@ import { WaitlistNotification } from '@/emails/WaitlistNotification'
 import type { WaitlistNotificationProps } from '@/emails/WaitlistNotification'
 import { WaitlistPromotion } from '@/emails/WaitlistPromotion'
 import type { WaitlistPromotionProps } from '@/emails/WaitlistPromotion'
+import { ContactConfirmation } from '@/emails/ContactConfirmation'
+import { ContactNotification } from '@/emails/ContactNotification'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = process.env.EMAIL_FROM ?? 'noreply@chineseschool.com'
@@ -96,6 +98,39 @@ export async function sendWaitlistPromotion(to: string, data: WaitlistData): Pro
     from: FROM,
     to,
     subject: `恭喜！名额已确认 / Spot Available — ${data.studentName}`,
+    html,
+  })
+}
+
+export async function sendContactConfirmation(
+  to: string,
+  data: { name: string; subject: string; message: string; academicYear?: string }
+): Promise<void> {
+  const html = await render(createElement(ContactConfirmation, data))
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: `感谢您联系夏洛特中文学校 / Thank you for contacting Charlotte Chinese Academy`,
+    html,
+  })
+}
+
+export async function sendContactNotification(data: {
+  name: string
+  email: string
+  phone?: string | null
+  subject: string
+  message: string
+  submittedAt: Date
+}): Promise<void> {
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? process.env.EMAIL_FROM ?? 'info@charlottechineseacademy.org'
+  const html = await render(
+    createElement(ContactNotification, { ...data, submittedAt: data.submittedAt.toISOString() })
+  )
+  await resend.emails.send({
+    from: FROM,
+    to: ADMIN_EMAIL,
+    subject: `[NEW CONTACT] ${data.subject} — ${data.name}`,
     html,
   })
 }

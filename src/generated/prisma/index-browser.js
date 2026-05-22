@@ -184,8 +184,12 @@ exports.Prisma.StudentScalarFieldEnum = {
 exports.Prisma.TeacherScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  nameEn: 'nameEn',
   email: 'email',
   phone: 'phone',
+  bioEn: 'bioEn',
+  bioZh: 'bioZh',
+  photoUrl: 'photoUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -196,6 +200,8 @@ exports.Prisma.ClassScalarFieldEnum = {
   nameEn: 'nameEn',
   type: 'type',
   description: 'description',
+  descriptionZh: 'descriptionZh',
+  isActive: 'isActive',
   teacherId: 'teacherId',
   schedule: 'schedule',
   capacity: 'capacity',
@@ -286,6 +292,19 @@ exports.Prisma.StudentNextClassOverrideScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ContactMessageScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  subject: 'subject',
+  message: 'message',
+  status: 'status',
+  repliedAt: 'repliedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SystemSettingsScalarFieldEnum = {
   id: 'id',
   schoolNameZh: 'schoolNameZh',
@@ -350,6 +369,12 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
   REFUNDED: 'REFUNDED'
 };
 
+exports.ContactStatus = exports.$Enums.ContactStatus = {
+  UNREAD: 'UNREAD',
+  READ: 'READ',
+  REPLIED: 'REPLIED'
+};
+
 exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
@@ -367,6 +392,7 @@ exports.Prisma.ModelName = {
   AdjustmentLog: 'AdjustmentLog',
   AcademicYearConfig: 'AcademicYearConfig',
   StudentNextClassOverride: 'StudentNextClassOverride',
+  ContactMessage: 'ContactMessage',
   SystemSettings: 'SystemSettings'
 };
 

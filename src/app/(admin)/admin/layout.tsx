@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { auth } from '@/lib/auth'
+import { prisma } from '@/lib/db'
 
 const NAV = [
   { href: '/admin', label: '仪表盘', en: 'Dashboard' },
@@ -9,11 +10,19 @@ const NAV = [
   { href: '/admin/waitlist', label: '候补名单', en: 'Waitlist' },
   { href: '/admin/export', label: '数据导出', en: 'Export' },
   { href: '/admin/enrollment-settings', label: '注册设置', en: 'Settings' },
+  { href: '/admin/contact', label: '联系消息', en: 'Messages' },
 ]
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
   const isSuperAdmin = session?.user?.role === 'SUPER_ADMIN'
+
+  let unreadContactCount = 0
+  try {
+    unreadContactCount = await prisma.contactMessage.count({ where: { status: 'UNREAD' } })
+  } catch {
+    // non-fatal
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -28,6 +37,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 className="shrink-0 text-sm text-gray-300 hover:text-white transition-colors"
               >
                 {item.label}
+                {item.href === '/admin/contact' && unreadContactCount > 0 && (
+                  <span className="ml-1 rounded-full bg-red-500 px-1.5 py-0.5 text-xs font-bold text-white">
+                    {unreadContactCount}
+                  </span>
+                )}
               </Link>
             ))}
           </div>

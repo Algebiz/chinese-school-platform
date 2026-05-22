@@ -13,10 +13,12 @@ export default auth((req) => {
 
   console.log('proxy userRole:', userRole, 'pathname:', pathname)
 
-  const isLegalRoute =
-    pathname === '/privacy-policy' || pathname === '/terms-of-use'
+  const isPublicRoute =
+    pathname === '/privacy-policy' ||
+    pathname === '/terms-of-use' ||
+    pathname.startsWith('/contact')
 
-  if (isLegalRoute) return NextResponse.next()
+  if (isPublicRoute) return NextResponse.next()
 
   const isPortalRoute =
     pathname.startsWith('/dashboard') ||

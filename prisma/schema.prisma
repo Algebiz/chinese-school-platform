@@ -39,6 +39,12 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum ContactStatus {
+  UNREAD
+  READ
+  REPLIED
+}
+
 // ─── NextAuth tables ──────────────────────────────────────────────────────────
 
 model Account {
@@ -258,6 +264,19 @@ model StudentNextClassOverride {
   class   Class   @relation(fields: [classId], references: [id])
 
   @@unique([studentId, academicYear])
+}
+
+model ContactMessage {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String        @db.Text
+  status    ContactStatus @default(UNREAD)
+  repliedAt DateTime?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }
 
 model SystemSettings {
