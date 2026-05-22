@@ -6,6 +6,7 @@ import type { ReturningStudentRow, ChineseClassOption } from './StudentsClient'
 import { CLASS_LEVEL_PROGRESSION } from '@/lib/class-levels'
 import { sortClasses } from '@/lib/class-order'
 import { getCurrentAcademicYear } from '@/lib/academic-year'
+import { getStudentStatuses } from '@/lib/student-status'
 
 export default async function AdminStudentsPage() {
   const session = await auth()
@@ -60,6 +61,9 @@ export default async function AdminStudentsPage() {
   }))
   const classNameMap = new Map(chineseClassesNextYear.map((c) => [c.id, c.name]))
 
+  // Batch-fetch new/returning status for all students
+  const statuses = await getStudentStatuses(students.map((s) => s.id), CURRENT_YEAR)
+
   // Build rows
   const rows: ReturningStudentRow[] = students.map((student) => {
     const prevChinese = student.enrollments.find((e) => e.class.type === 'CHINESE')?.class ?? null
@@ -87,6 +91,7 @@ export default async function AdminStudentsPage() {
       adminOverrideClassName: override ? classNameMap.get(override.classId) ?? null : null,
       enrollmentStatus: (curr?.status as ReturningStudentRow['enrollmentStatus']) ?? 'none',
       currentYearClassName: curr?.className ?? null,
+      status: statuses[student.id] ?? 'RETURNING',
     }
   })
 

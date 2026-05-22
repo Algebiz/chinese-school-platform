@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ClassTransferModal } from '@/components/admin/ClassTransferModal'
+import { StudentStatusBadge } from '@/components/StudentStatusBadge'
+import type { StudentStatus } from '@/lib/student-status'
 
 export interface EnrolledStudent {
   enrollmentId: string
@@ -13,6 +15,7 @@ export interface EnrolledStudent {
   email: string
   enrolledAt: string
   textbookNames: string[]
+  status: StudentStatus
 }
 
 export interface AvailableClass {
@@ -44,6 +47,7 @@ export function ClassDetailClient({ enrolledStudents, currentClassName, availabl
             <tr className="border-b border-gray-200 bg-gray-50 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
               <th className="px-4 py-3 text-center">#</th>
               <th className="px-4 py-3">中文姓名</th>
+              <th className="px-4 py-3">状态</th>
               <th className="px-4 py-3">英文姓名</th>
               <th className="px-4 py-3">家长姓名</th>
               <th className="px-4 py-3">电话</th>
@@ -58,6 +62,7 @@ export function ClassDetailClient({ enrolledStudents, currentClassName, availabl
               <tr key={s.enrollmentId} className="hover:bg-gray-50">
                 <td className="px-4 py-3 text-center text-gray-400">{i + 1}</td>
                 <td className="px-4 py-3 font-medium text-gray-900">{s.studentName}</td>
+                <td className="px-4 py-3"><StudentStatusBadge status={s.status} /></td>
                 <td className="px-4 py-3 text-gray-500">{s.studentNameEn ?? '—'}</td>
                 <td className="px-4 py-3 text-gray-600">{s.parentName}</td>
                 <td className="px-4 py-3 text-gray-500">{s.phone ?? '—'}</td>
@@ -88,7 +93,7 @@ export function ClassDetailClient({ enrolledStudents, currentClassName, availabl
             ))}
             {enrolledStudents.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-gray-400">
+                <td colSpan={9} className="px-4 py-8 text-center text-gray-400">
                   暂无已确认学生 / No confirmed students
                 </td>
               </tr>

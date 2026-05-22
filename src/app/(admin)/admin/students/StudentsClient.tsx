@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { StudentStatusBadge } from '@/components/StudentStatusBadge'
+import type { StudentStatus } from '@/lib/student-status'
 
 export interface ChineseClassOption {
   id: string
@@ -18,7 +20,10 @@ export interface ReturningStudentRow {
   adminOverrideClassName: string | null
   enrollmentStatus: 'confirmed' | 'pending' | 'none'
   currentYearClassName: string | null
+  status: StudentStatus
 }
+
+type FilterValue = 'all' | 'new' | 'returning'
 
 interface Props {
   rows: ReturningStudentRow[]
@@ -33,6 +38,15 @@ export function StudentsClient({ rows, chineseClassOptions, currentYear }: Props
   )
   const [saving, setSaving] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [filter, setFilter] = useState<FilterValue>('all')
+
+  const newCount       = rows.filter((r) => r.status === 'NEW').length
+  const returningCount = rows.filter((r) => r.status === 'RETURNING').length
+  const visibleRows    = filter === 'new'
+    ? rows.filter((r) => r.status === 'NEW')
+    : filter === 'returning'
+      ? rows.filter((r) => r.status === 'RETURNING')
+      : rows
 
   async function handleOverride(studentId: string, classId: string) {
     setSaving(studentId)
@@ -69,28 +83,53 @@ export function StudentsClient({ rows, chineseClassOptions, currentYear }: Props
   }
 
   return (
-    <div>
+    <div className="space-y-4">
+      {/* Filter buttons */}
+      <div className="flex items-center gap-2">
+        {(
+          [
+            { value: 'all',       label: `全部 / All (${rows.length})` },
+            { value: 'new',       label: `新生 / New (${newCount})` },
+            { value: 'returning', label: `老生 / Returning (${returningCount})` },
+          ] as { value: FilterValue; label: string }[]
+        ).map(({ value, label }) => (
+          <button
+            key={value}
+            onClick={() => setFilter(value)}
+            className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+              filter === value
+                ? 'border-red-500 bg-red-600 text-white'
+                : 'border-gray-300 bg-white text-gray-600 hover:border-gray-400'
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
       {error && (
-        <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</div>
+        <div className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</div>
       )}
       <div className="overflow-x-auto rounded-xl border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-4 py-3 text-left font-medium text-gray-500">学生 / Student</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-500">状态 / Status</th>
               <th className="px-4 py-3 text-left font-medium text-gray-500">去年中文班 / Last Year</th>
               <th className="px-4 py-3 text-left font-medium text-gray-500">推荐升级班 / Suggested</th>
               <th className="px-4 py-3 text-left font-medium text-gray-500">管理员调整 / Override</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-500">报名状态 / Status</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-500">报名状态 / Enrollment</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 bg-white">
-            {rows.map((row) => {
+            {visibleRows.map((row) => {
               const currentOverride = overrides[row.studentId] ?? ''
               const isSaving = saving === row.studentId
               return (
                 <tr key={row.studentId} className="hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium text-gray-900">{row.studentName}</td>
+                  <td className="px-4 py-3"><StudentStatusBadge status={row.status} /></td>
                   <td className="px-4 py-3 text-gray-600">
                     {row.previousChineseClass ?? (
                       <span className="text-gray-400 italic">无 / None</span>

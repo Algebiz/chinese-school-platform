@@ -30,8 +30,9 @@ export default async function AdminDashboard() {
   if (session?.user?.role !== 'ADMIN' && session?.user?.role !== 'SUPER_ADMIN') redirect('/dashboard')
 
   const YEAR = await getCurrentAcademicYear()
+  const PREVIOUS_YEAR = YEAR.replace(/^(\d{4})-\d{4}$/, (_, a) => `${parseInt(a) - 1}-${a}`)
 
-  const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent] = await Promise.all([
+  const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent, returningStudentCount] = await Promise.all([
     // Students who have at least one CONFIRMED enrollment this year
     prisma.student.count({
       where: { enrollments: { some: { status: 'CONFIRMED', class: { year: YEAR } } } },
@@ -62,9 +63,19 @@ export default async function AdminDashboard() {
       orderBy: { createdAt: 'desc' },
       take: 20,
     }),
+    // Students confirmed in YEAR who also had confirmed enrollment in PREVIOUS_YEAR
+    prisma.student.count({
+      where: {
+        AND: [
+          { enrollments: { some: { status: 'CONFIRMED', class: { year: YEAR } } } },
+          { enrollments: { some: { status: 'CONFIRMED', class: { year: PREVIOUS_YEAR } } } },
+        ],
+      },
+    }),
   ])
 
   const totalRevenue = revenue._sum.amount?.toNumber() ?? 0
+  const newStudentCount = studentCount - returningStudentCount
 
   return (
     <div className="space-y-8">
@@ -79,6 +90,8 @@ export default async function AdminDashboard() {
         <StatCard title="已确认报名" en="Confirmed Enrollments" value={enrollmentCount} />
         <StatCard title="待付款报名" en="Pending Payment" value={pendingCount} />
         <StatCard title="已收学费" en="Revenue Collected" value={`$${totalRevenue.toFixed(2)}`} />
+        <StatCard title="新生" en="New Students" value={newStudentCount} />
+        <StatCard title="老生" en="Returning Students" value={returningStudentCount} />
       </div>
 
       {/* Capacity bars */}

@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { getCurrentAcademicYear } from '@/lib/academic-year'
+import { getStudentStatuses } from '@/lib/student-status'
+import { StudentStatusBadge } from '@/components/StudentStatusBadge'
 import { PendingEnrollmentCard } from './PendingEnrollmentCard'
 
 const CLASS_TYPE_LABEL: Record<string, string> = {
@@ -52,6 +54,11 @@ export default async function DashboardPage() {
   })
 
   const students = user?.family?.students ?? []
+
+  const studentStatuses = await getStudentStatuses(
+    students.map((s) => s.id),
+    CURRENT_YEAR
+  )
 
   const studentsThisYear = students.map((s) => ({
     ...s,
@@ -150,11 +157,12 @@ export default async function DashboardPage() {
                   )
                   return (
                     <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-5 py-3">
-                      <div>
+                      <div className="flex flex-wrap items-baseline gap-2">
                         <span className="font-semibold text-gray-900">{student.name}</span>
                         {student.nameEn && (
-                          <span className="ml-2 text-sm text-gray-500">{student.nameEn}</span>
+                          <span className="text-sm text-gray-500">{student.nameEn}</span>
                         )}
+                        <StudentStatusBadge status={studentStatuses[student.id] ?? 'NEW'} />
                       </div>
                       <div className="flex items-center gap-3">
                         {hasConfirmedLanguage && !hasConfirmedArts && (

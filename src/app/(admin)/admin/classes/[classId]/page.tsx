@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { getCurrentAcademicYear } from '@/lib/academic-year'
+import { getStudentStatuses } from '@/lib/student-status'
 import { ClassDetailClient } from './ClassDetailClient'
 import type { EnrolledStudent, AvailableClass } from './ClassDetailClient'
 import { TextbookManager } from './TextbookManager'
@@ -61,6 +62,11 @@ export default async function ClassDetailPage({
 
   if (!cls) notFound()
 
+  const studentStatuses = await getStudentStatuses(
+    enrollments.map((e) => e.student.id),
+    YEAR
+  )
+
   const enrolledStudents: EnrolledStudent[] = enrollments.map((e) => {
     const parent = e.student.family?.users[0]
     return {
@@ -72,6 +78,7 @@ export default async function ClassDetailPage({
       email: parent?.email ?? '—',
       enrolledAt: e.createdAt.toISOString(),
       textbookNames: e.textbooks.map((et) => et.textbook.name),
+      status: studentStatuses[e.student.id] ?? 'NEW',
     }
   })
 
