@@ -27,25 +27,35 @@ export default async function TeachersPage() {
     classes: t.classes,
   }))
 
-  // Group: CSL teachers (have at least one CSL class), CHL teachers, ARTS-only teachers
-  const cslTeachers = withClasses.filter((t) =>
-    t.classes.some((c) => c.type === 'CHINESE' && c.name.includes('第二语言'))
-  )
-  const cslIds = new Set(cslTeachers.map((t) => t.id))
+  // Priority: CHL → CSL → Arts-only → Unassigned
+  // A teacher lands in the first bucket they qualify for; no teacher appears twice.
 
-  const chlTeachers = withClasses.filter(
-    (t) =>
-      !cslIds.has(t.id) &&
-      t.classes.some((c) => c.type === 'CHINESE')
+  // 1. CHL: has at least one CHINESE class that is NOT a second-language class
+  const chlTeachers = withClasses.filter((t) =>
+    t.classes.some((c) => c.type === 'CHINESE' && !c.name.includes('第二语言'))
   )
   const chlIds = new Set(chlTeachers.map((t) => t.id))
 
-  const artsTeachers = withClasses.filter(
-    (t) => !cslIds.has(t.id) && !chlIds.has(t.id)
+  // 2. CSL: has at least one second-language CHINESE class (and no CHL class)
+  const cslTeachers = withClasses.filter(
+    (t) =>
+      !chlIds.has(t.id) &&
+      t.classes.some((c) => c.type === 'CHINESE' && c.name.includes('第二语言'))
   )
+  const cslIds = new Set(cslTeachers.map((t) => t.id))
 
+  // 3. Arts-only: has at least one ARTS class (and no CHL/CSL class)
+  const artsTeachers = withClasses.filter(
+    (t) =>
+      !chlIds.has(t.id) &&
+      !cslIds.has(t.id) &&
+      t.classes.some((c) => c.type === 'ARTS')
+  )
+  const artsIds = new Set(artsTeachers.map((t) => t.id))
+
+  // 4. Unassigned: no classes in the current year
   const unassigned = withClasses.filter(
-    (t) => !cslIds.has(t.id) && !chlIds.has(t.id) && t.classes.length === 0
+    (t) => !chlIds.has(t.id) && !cslIds.has(t.id) && !artsIds.has(t.id)
   )
 
   const groups = [
