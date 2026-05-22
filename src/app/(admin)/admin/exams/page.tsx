@@ -75,13 +75,16 @@ export default async function AdminExamsPage() {
           level: s.level,
           examDate: s.examDate.toISOString(),
           registrationDeadline: s.registrationDeadline.toISOString(),
-          location: `${s.locationZh} / ${s.location}`,
+          locationEn: s.location,
+          locationZh: s.locationZh,
           fee: s.fee.toString(),
           capacity: s.capacity,
           registeredCount: s._count.registrations,
           spotsRemaining: Math.max(0, s.capacity - s._count.registrations),
           academicYear: s.academicYear,
           isActive: s.isActive,
+          notes: s.notes ?? null,
+          notesZh: s.notesZh ?? null,
         }))}
         registrations={registrations.map((r) => {
           const parent = r.student.family?.users[0]

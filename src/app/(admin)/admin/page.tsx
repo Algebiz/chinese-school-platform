@@ -4,11 +4,21 @@ import { prisma } from '@/lib/db'
 import { sortClasses } from '@/lib/class-order'
 import { getCurrentAcademicYear } from '@/lib/academic-year'
 
-function StatCard({ title, en, value }: { title: string; en: string; value: string | number }) {
+function StatCard({
+  title,
+  en,
+  value,
+  accent,
+}: {
+  title: string
+  en: string
+  value: string | number
+  accent?: 'amber'
+}) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5">
+    <div className={`rounded-lg border p-5 ${accent === 'amber' ? 'border-amber-200 bg-amber-50' : 'border-gray-200 bg-white'}`}>
       <p className="text-xs font-medium uppercase tracking-wide text-gray-400">{en}</p>
-      <p className="mt-1 text-2xl font-bold text-gray-900">{value}</p>
+      <p className={`mt-1 text-2xl font-bold ${accent === 'amber' ? 'text-amber-600' : 'text-gray-900'}`}>{value}</p>
       <p className="mt-0.5 text-sm text-gray-500">{title}</p>
     </div>
   )
@@ -32,7 +42,7 @@ export default async function AdminDashboard() {
   const YEAR = await getCurrentAcademicYear()
   const PREVIOUS_YEAR = YEAR.replace(/^(\d{4})-\d{4}$/, (_, a) => `${parseInt(a) - 1}-${a}`)
 
-  const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent, returningStudentCount] = await Promise.all([
+  const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent, returningStudentCount, pendingExamCount] = await Promise.all([
     // Students who have at least one CONFIRMED enrollment this year
     prisma.student.count({
       where: { enrollments: { some: { status: 'CONFIRMED', class: { year: YEAR } } } },
@@ -72,6 +82,7 @@ export default async function AdminDashboard() {
         ],
       },
     }),
+    prisma.examRegistration.count({ where: { status: 'PAID' } }),
   ])
 
   const totalRevenue = revenue._sum.amount?.toNumber() ?? 0
@@ -92,6 +103,7 @@ export default async function AdminDashboard() {
         <StatCard title="已收学费" en="Revenue Collected" value={`$${totalRevenue.toFixed(2)}`} />
         <StatCard title="新生" en="New Students" value={newStudentCount} />
         <StatCard title="老生" en="Returning Students" value={returningStudentCount} />
+        <StatCard title="待确认考试报名" en="Pending Exam Confirmations" value={pendingExamCount} accent="amber" />
       </div>
 
       {/* Capacity bars */}
