@@ -53,7 +53,7 @@ const createSchema = z.object({
   registrationDeadline: z.string().datetime(),
   location: z.string().min(1),
   locationZh: z.string().min(1),
-  fee: z.number().positive(),
+  fee: z.number().min(0),
   capacity: z.number().int().positive(),
   academicYear: z.string().min(1),
   isActive: z.boolean().optional().default(true),

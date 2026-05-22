@@ -69,6 +69,7 @@ export default async function AdminExamsPage() {
       </div>
 
       <AdminExamsClient
+        academicYear={CURRENT_YEAR}
         sessions={sessions.map((s) => ({
           id: s.id,
           examType: s.examType,
@@ -90,6 +91,7 @@ export default async function AdminExamsPage() {
           const parent = r.student.family?.users[0]
           return {
             id: r.id,
+            examSessionId: r.examSessionId,
             examType: r.examSession.examType,
             level: r.examSession.level,
             examDate: r.examSession.examDate.toISOString(),

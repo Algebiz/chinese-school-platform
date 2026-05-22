@@ -72,16 +72,24 @@ export async function DELETE(
 
   const { examSessionId } = await params
 
-  const regCount = await prisma.examRegistration.count({
-    where: { examSessionId, status: { notIn: ['CANCELLED'] } },
+  const confirmedCount = await prisma.examRegistration.count({
+    where: { examSessionId, status: 'CONFIRMED' },
   })
-  if (regCount > 0) {
+  if (confirmedCount > 0) {
     return NextResponse.json(
-      { success: false, error: 'Cannot delete session with active registrations', code: 'HAS_REGISTRATIONS' },
-      { status: 400 }
+      { success: false, error: 'Cannot delete session with confirmed registrations', code: 'HAS_CONFIRMED' },
+      { status: 409 }
     )
   }
 
-  await prisma.examSession.delete({ where: { id: examSessionId } })
+  // Cancel any pending/paid registrations, then delete the session
+  await prisma.$transaction([
+    prisma.examRegistration.updateMany({
+      where: { examSessionId, status: { in: ['PENDING_PAYMENT', 'PAID'] } },
+      data: { status: 'CANCELLED' },
+    }),
+    prisma.examSession.delete({ where: { id: examSessionId } }),
+  ])
+
   return NextResponse.json({ success: true })
 }
