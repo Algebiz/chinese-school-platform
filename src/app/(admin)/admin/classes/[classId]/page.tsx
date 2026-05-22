@@ -5,6 +5,7 @@ import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { getStudentStatuses } from '@/lib/student-status'
 import { ClassDetailClient } from './ClassDetailClient'
 import type { EnrolledStudent, AvailableClass } from './ClassDetailClient'
+import { sortByLastNamePinyin } from '@/lib/pinyin-sort'
 import { TextbookManager } from './TextbookManager'
 import type { TextbookRow } from './TextbookManager'
 import { EditClassButton } from './EditClassButton'
@@ -67,7 +68,7 @@ export default async function ClassDetailPage({
     YEAR
   )
 
-  const enrolledStudents: EnrolledStudent[] = enrollments.map((e) => {
+  const enrolledStudentsUnsorted: EnrolledStudent[] = enrollments.map((e) => {
     const parent = e.student.family?.users[0]
     return {
       enrollmentId: e.id,
@@ -81,6 +82,12 @@ export default async function ClassDetailPage({
       status: studentStatuses[e.student.id] ?? 'NEW',
     }
   })
+
+  const enrolledStudents = sortByLastNamePinyin(
+    enrolledStudentsUnsorted,
+    (s) => s.studentName,
+    (s) => s.studentNameEn
+  )
 
   // Available classes: same type as current, with spots remaining info
   const availableClasses: AvailableClass[] = allSameTypeClasses

@@ -5,6 +5,7 @@ import { StudentsClient } from './StudentsClient'
 import type { StudentRow } from './StudentsClient'
 import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { getStudentStatuses } from '@/lib/student-status'
+import { sortByLastNamePinyin } from '@/lib/pinyin-sort'
 
 export default async function AdminStudentsPage() {
   const session = await auth()
@@ -27,12 +28,13 @@ export default async function AdminStudentsPage() {
         },
       },
     },
-    orderBy: { name: 'asc' },
   })
 
   const statuses = await getStudentStatuses(students.map((s) => s.id), CURRENT_YEAR)
 
-  const rows: StudentRow[] = students.map((student) => {
+  const sortedStudents = sortByLastNamePinyin(students, (s) => s.name, (s) => s.nameEn)
+
+  const rows: StudentRow[] = sortedStudents.map((student) => {
     const parent = student.family?.users[0] ?? null
     return {
       studentId: student.id,

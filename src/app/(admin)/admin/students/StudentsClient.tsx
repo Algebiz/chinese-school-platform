@@ -27,14 +27,31 @@ const CLASS_TYPE_LABEL: Record<string, string> = {
 
 export function StudentsClient({ rows }: Props) {
   const [filter, setFilter] = useState<FilterValue>('all')
+  const [query, setQuery] = useState('')
+
+  const q = query.trim().toLowerCase()
+
+  // Apply status filter first
+  const statusFiltered =
+    filter === 'new'
+      ? rows.filter((r) => r.status === 'NEW')
+      : filter === 'returning'
+        ? rows.filter((r) => r.status === 'RETURNING')
+        : rows
+
+  // Then apply search query
+  const visibleRows = q
+    ? statusFiltered.filter(
+        (r) =>
+          r.studentName.toLowerCase().includes(q) ||
+          (r.studentNameEn?.toLowerCase().includes(q) ?? false) ||
+          (r.parentName?.toLowerCase().includes(q) ?? false) ||
+          (r.parentEmail?.toLowerCase().includes(q) ?? false)
+      )
+    : statusFiltered
 
   const newCount       = rows.filter((r) => r.status === 'NEW').length
   const returningCount = rows.filter((r) => r.status === 'RETURNING').length
-  const visibleRows    = filter === 'new'
-    ? rows.filter((r) => r.status === 'NEW')
-    : filter === 'returning'
-      ? rows.filter((r) => r.status === 'RETURNING')
-      : rows
 
   if (rows.length === 0) {
     return (
@@ -48,6 +65,7 @@ export function StudentsClient({ rows }: Props) {
 
   return (
     <div className="space-y-4">
+      {/* Status filter */}
       <div className="flex items-center gap-2">
         {(
           [
@@ -70,12 +88,54 @@ export function StudentsClient({ rows }: Props) {
         ))}
       </div>
 
+      {/* Search bar */}
+      <div className="relative">
+        <svg
+          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+        </svg>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="搜索学生姓名或家长邮箱 / Search by student name or parent email"
+          className="w-full rounded-lg border border-gray-300 py-2 pl-9 pr-8 text-sm text-gray-900 placeholder-gray-400 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+        />
+        {query && (
+          <button
+            onClick={() => setQuery('')}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            aria-label="Clear search"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </div>
+
+      {/* Result count */}
+      <p className="text-xs text-gray-500">
+        显示 <strong>{visibleRows.length}</strong> / <strong>{statusFiltered.length}</strong> 名学生
+        {filter !== 'all' && <span className="ml-1 text-gray-400">（{filter === 'new' ? '新生' : '老生'}筛选中）</span>}
+        {q && <span className="ml-1 text-gray-400">· 搜索："{query}"</span>}
+        <span className="ml-2 text-gray-400">· 按姓氏拼音 A→Z 排序</span>
+      </p>
+
       <div className="overflow-x-auto rounded-xl border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-4 py-3 text-center font-medium text-gray-500">#</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-500">学生 / Student</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-500">
+                学生 / Student ↑
+                <span className="ml-1 text-[10px] font-normal text-gray-400">姓氏拼音</span>
+              </th>
               <th className="px-4 py-3 text-left font-medium text-gray-500">状态 / Status</th>
               <th className="px-4 py-3 text-left font-medium text-gray-500">已报班级 / Enrolled Classes</th>
               <th className="px-4 py-3 text-left font-medium text-gray-500">家长 / Parent</th>
@@ -83,39 +143,47 @@ export function StudentsClient({ rows }: Props) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 bg-white">
-            {visibleRows.map((row, i) => (
-              <tr key={row.studentId} className="hover:bg-gray-50">
-                <td className="px-4 py-3 text-center text-gray-400">{i + 1}</td>
-                <td className="px-4 py-3">
-                  <div className="font-medium text-gray-900">{row.studentName}</div>
-                  {row.studentNameEn && (
-                    <div className="text-xs text-gray-400">{row.studentNameEn}</div>
-                  )}
+            {visibleRows.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="px-4 py-8 text-center text-sm text-gray-400">
+                  没有匹配的结果 / No matching results
                 </td>
-                <td className="px-4 py-3">
-                  <StudentStatusBadge status={row.status} />
-                </td>
-                <td className="px-4 py-3">
-                  <div className="flex flex-wrap gap-1">
-                    {row.enrolledClasses.map((cls) => (
-                      <span
-                        key={cls.name}
-                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                          cls.type === 'CHINESE'
-                            ? 'bg-red-50 text-red-700'
-                            : 'bg-purple-50 text-purple-700'
-                        }`}
-                      >
-                        {cls.name}
-                        <span className="ml-1 opacity-60">{CLASS_TYPE_LABEL[cls.type] ?? cls.type}</span>
-                      </span>
-                    ))}
-                  </div>
-                </td>
-                <td className="px-4 py-3 text-gray-600">{row.parentName ?? '—'}</td>
-                <td className="px-4 py-3 text-gray-500">{row.parentEmail ?? '—'}</td>
               </tr>
-            ))}
+            ) : (
+              visibleRows.map((row, i) => (
+                <tr key={row.studentId} className="hover:bg-gray-50">
+                  <td className="px-4 py-3 text-center text-gray-400">{i + 1}</td>
+                  <td className="px-4 py-3">
+                    <div className="font-medium text-gray-900">{row.studentName}</div>
+                    {row.studentNameEn && (
+                      <div className="text-xs text-gray-400">{row.studentNameEn}</div>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    <StudentStatusBadge status={row.status} />
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-wrap gap-1">
+                      {row.enrolledClasses.map((cls) => (
+                        <span
+                          key={cls.name}
+                          className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                            cls.type === 'CHINESE'
+                              ? 'bg-red-50 text-red-700'
+                              : 'bg-purple-50 text-purple-700'
+                          }`}
+                        >
+                          {cls.name}
+                          <span className="ml-1 opacity-60">{CLASS_TYPE_LABEL[cls.type] ?? cls.type}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-gray-600">{row.parentName ?? '—'}</td>
+                  <td className="px-4 py-3 text-gray-500">{row.parentEmail ?? '—'}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
