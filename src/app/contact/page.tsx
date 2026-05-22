@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { ContactFormClient } from './ContactFormClient'
+import { LegalFooter } from '@/components/LegalFooter'
 
 export default async function ContactPage() {
   const session = await auth()
@@ -39,6 +40,7 @@ export default async function ContactPage() {
         </div>
         <ContactFormClient prefill={prefill} />
       </main>
+      <LegalFooter />
     </div>
   )
 }
