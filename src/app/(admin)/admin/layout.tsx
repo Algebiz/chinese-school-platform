@@ -26,7 +26,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="flex min-h-screen flex-col bg-gray-50">
       <nav className="bg-gray-900 text-white">
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4">
           <span className="font-bold text-red-400">管理后台 / Admin</span>
@@ -61,7 +61,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </div>
       </nav>
-      <main className="mx-auto max-w-7xl px-4 py-8">{children}</main>
+      <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-8">{children}</main>
       <LegalFooter />
     </div>
   )
