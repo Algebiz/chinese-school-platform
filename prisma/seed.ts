@@ -579,6 +579,75 @@ async function main() {
 
   console.log('  ✓ Parent 2 (parent2@test.com / Test123!) with 1 student')
 
+  // ── Exam Sessions ─────────────────────────────────────────────────────────────
+  const EXAM_LOCATION_EN = 'Charlotte Chinese Academy — Room 101'
+  const EXAM_LOCATION_ZH = '夏洛特中文学校 — 101教室'
+
+  const examSessions = [
+    {
+      id: 'exam-yct-3',
+      examType: 'YCT' as const,
+      level: 3,
+      examDate: new Date('2027-04-15T09:00:00'),
+      registrationDeadline: new Date('2027-03-31T23:59:59'),
+      location: EXAM_LOCATION_EN,
+      locationZh: EXAM_LOCATION_ZH,
+      fee: 25,
+      capacity: 30,
+      academicYear: CURRENT_YEAR,
+      isActive: true,
+    },
+    {
+      id: 'exam-yct-4',
+      examType: 'YCT' as const,
+      level: 4,
+      examDate: new Date('2027-04-15T11:00:00'),
+      registrationDeadline: new Date('2027-03-31T23:59:59'),
+      location: EXAM_LOCATION_EN,
+      locationZh: EXAM_LOCATION_ZH,
+      fee: 25,
+      capacity: 30,
+      academicYear: CURRENT_YEAR,
+      isActive: true,
+    },
+    {
+      id: 'exam-hsk-2',
+      examType: 'HSK' as const,
+      level: 2,
+      examDate: new Date('2027-04-20T09:00:00'),
+      registrationDeadline: new Date('2027-04-05T23:59:59'),
+      location: EXAM_LOCATION_EN,
+      locationZh: EXAM_LOCATION_ZH,
+      fee: 30,
+      capacity: 20,
+      academicYear: CURRENT_YEAR,
+      isActive: true,
+    },
+    {
+      id: 'exam-hsk-3',
+      examType: 'HSK' as const,
+      level: 3,
+      examDate: new Date('2027-04-20T11:00:00'),
+      registrationDeadline: new Date('2027-04-05T23:59:59'),
+      location: EXAM_LOCATION_EN,
+      locationZh: EXAM_LOCATION_ZH,
+      fee: 35,
+      capacity: 20,
+      academicYear: CURRENT_YEAR,
+      isActive: true,
+    },
+  ]
+
+  for (const es of examSessions) {
+    await prisma.examSession.upsert({
+      where: { id: es.id },
+      update: { fee: es.fee, capacity: es.capacity, isActive: es.isActive },
+      create: es,
+    })
+  }
+
+  console.log('  ✓ Exam sessions created (YCT L3, YCT L4, HSK L2, HSK L3)')
+
   console.log('\n✅ Seeding complete!')
   console.log('\nSummary:')
   console.log('  Teachers:          19 (language) + 4 (arts) + 汪倩 (shared) = 23')

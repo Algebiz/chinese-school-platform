@@ -45,6 +45,19 @@ enum ContactStatus {
   REPLIED
 }
 
+enum ExamType {
+  YCT
+  HSK
+}
+
+enum ExamRegistrationStatus {
+  PENDING_PAYMENT
+  PAID
+  CONFIRMED
+  REJECTED
+  CANCELLED
+}
+
 // ─── NextAuth tables ──────────────────────────────────────────────────────────
 
 model Account {
@@ -121,6 +134,7 @@ model Student {
   enrollments        Enrollment[]
   waitlists          Waitlist[]
   nextClassOverrides StudentNextClassOverride[]
+  examRegistrations  ExamRegistration[]
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
 }
@@ -277,6 +291,52 @@ model ContactMessage {
   repliedAt DateTime?
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
+}
+
+model ExamSession {
+  id                   String             @id @default(cuid())
+  examType             ExamType
+  level                Int
+  examDate             DateTime
+  registrationDeadline DateTime
+  location             String
+  locationZh           String
+  fee                  Decimal            @db.Decimal(10, 2)
+  capacity             Int
+  academicYear         String
+  isActive             Boolean            @default(true)
+  notes                String?
+  notesZh              String?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  registrations        ExamRegistration[]
+}
+
+model ExamRegistration {
+  id                    String                 @id @default(cuid())
+  examSessionId         String
+  examSession           ExamSession            @relation(fields: [examSessionId], references: [id])
+  studentId             String
+  student               Student                @relation(fields: [studentId], references: [id])
+  status                ExamRegistrationStatus @default(PENDING_PAYMENT)
+  paymentMethod         PaymentMethod?
+  stripePaymentIntentId String?
+  paypalOrderId         String?
+  paidAt                DateTime?
+  amount                Decimal?               @db.Decimal(10, 2)
+  confirmedAt           DateTime?
+  confirmedBy           String?
+  rejectedAt            DateTime?
+  rejectedBy            String?
+  rejectionReason       String?
+  studentNameZh         String
+  studentNameEn         String?
+  studentDob            DateTime?
+  notes                 String?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+
+  @@unique([examSessionId, studentId])
 }
 
 model SystemSettings {

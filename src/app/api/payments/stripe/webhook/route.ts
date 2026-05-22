@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { stripe } from '@/lib/stripe'
 import { prisma } from '@/lib/db'
-import { sendEnrollmentConfirmationByIds } from '@/lib/email'
+import { sendEnrollmentConfirmationByIds, sendExamRegistrationReceived } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
   const body = await request.text()
@@ -22,7 +22,12 @@ export async function POST(request: NextRequest) {
 
   try {
     if (event.type === 'payment_intent.succeeded') {
-      await handlePaymentSucceeded(event.data.object as Stripe.PaymentIntent)
+      const pi = event.data.object as Stripe.PaymentIntent
+      if (pi.metadata.examRegistrationId) {
+        await handleExamPaymentSucceeded(pi)
+      } else {
+        await handlePaymentSucceeded(pi)
+      }
     } else if (event.type === 'payment_intent.payment_failed') {
       await handlePaymentFailed(event.data.object as Stripe.PaymentIntent)
     }
@@ -79,6 +84,48 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'STRIPE', paymentIntent.id, academicYear)
   } catch (err) {
     console.error('Failed to send confirmation email:', err)
+  }
+}
+
+async function handleExamPaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
+  const { examRegistrationId } = paymentIntent.metadata
+  if (!examRegistrationId) return
+
+  const registration = await prisma.examRegistration.update({
+    where: { id: examRegistrationId },
+    data: {
+      status: 'PAID',
+      paymentMethod: 'STRIPE',
+      stripePaymentIntentId: paymentIntent.id,
+      paidAt: new Date(),
+    },
+    include: {
+      examSession: true,
+      student: {
+        include: { family: { include: { users: { select: { email: true, name: true } } } } },
+      },
+    },
+  })
+
+  try {
+    const parentUser = registration.student.family?.users[0]
+    if (parentUser?.email) {
+      const s = registration.examSession
+      await sendExamRegistrationReceived(parentUser.email, {
+        parentName: parentUser.name ?? '家长',
+        studentName: registration.studentNameZh,
+        examType: s.examType,
+        level: s.level,
+        examDate: s.examDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        location: s.location,
+        locationZh: s.locationZh,
+        fee: s.fee.toString(),
+        registrationId: examRegistrationId,
+        academicYear: s.academicYear,
+      })
+    }
+  } catch (err) {
+    console.error('Failed to send exam registration email:', err)
   }
 }
 

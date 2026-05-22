@@ -18,6 +18,19 @@ export default async function DashboardPage() {
 
   const CURRENT_YEAR = await getCurrentAcademicYear()
 
+  const myExamRegistrations = await prisma.examRegistration.findMany({
+    where: {
+      student: { family: { users: { some: { id: session.user.id } } } },
+      status: { notIn: ['CANCELLED'] },
+      examSession: { academicYear: CURRENT_YEAR },
+    },
+    include: {
+      examSession: { select: { examType: true, level: true, examDate: true } },
+      student: { select: { name: true } },
+    },
+    orderBy: { createdAt: 'desc' },
+  })
+
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: {
@@ -248,6 +261,54 @@ export default async function DashboardPage() {
         )}
       </div>
 
+      {/* Exam registrations */}
+      {myExamRegistrations.length > 0 && (
+        <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+          <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-5 py-3">
+            <h2 className="font-semibold text-gray-900">考试报名 / Exam Registrations</h2>
+            <Link href="/exams" className="text-xs text-red-600 hover:text-red-800 font-medium">
+              查看全部 / View all →
+            </Link>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {myExamRegistrations.map((r) => {
+              const statusMap: Record<string, { label: string; color: string }> = {
+                PENDING_PAYMENT: { label: '待支付', color: 'bg-amber-100 text-amber-700' },
+                PAID: { label: '待审核', color: 'bg-blue-100 text-blue-700' },
+                CONFIRMED: { label: '已确认', color: 'bg-green-100 text-green-700' },
+                REJECTED: { label: '未通过', color: 'bg-red-100 text-red-700' },
+              }
+              const badge = statusMap[r.status]
+              return (
+                <div key={r.id} className="flex items-center justify-between px-5 py-3">
+                  <div>
+                    <span className="text-sm font-medium text-gray-900">{r.student.name}</span>
+                    <span className="ml-2 text-xs text-gray-500">
+                      {r.examSession.examType} Level {r.examSession.level}
+                    </span>
+                    <span className="ml-2 text-xs text-gray-400">
+                      {new Date(r.examSession.examDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {badge && (
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${badge.color}`}>
+                        {badge.label}
+                      </span>
+                    )}
+                    {r.status === 'PENDING_PAYMENT' && (
+                      <Link href={`/exam-checkout?registrationId=${r.id}`} className="text-xs text-red-600 hover:text-red-800 font-medium">
+                        支付 →
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Quick links */}
       <div className="rounded-lg border border-gray-200 bg-white p-5">
         <h2 className="mb-4 font-semibold text-gray-900">快速操作 / Quick Actions</h2>
@@ -263,6 +324,12 @@ export default async function DashboardPage() {
             className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
           >
             为学生报名 / Enroll a Student
+          </Link>
+          <Link
+            href="/exams"
+            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            报名考试 / Register for Exam
           </Link>
           <Link
             href="/contact"

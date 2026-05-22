@@ -13,6 +13,12 @@ import { WaitlistPromotion } from '@/emails/WaitlistPromotion'
 import type { WaitlistPromotionProps } from '@/emails/WaitlistPromotion'
 import { ContactConfirmation } from '@/emails/ContactConfirmation'
 import { ContactNotification } from '@/emails/ContactNotification'
+import { ExamRegistrationConfirmation } from '@/emails/ExamRegistrationConfirmation'
+import type { ExamRegistrationConfirmationProps } from '@/emails/ExamRegistrationConfirmation'
+import { ExamRegistrationApproved } from '@/emails/ExamRegistrationApproved'
+import type { ExamRegistrationApprovedProps } from '@/emails/ExamRegistrationApproved'
+import { ExamRegistrationRejected } from '@/emails/ExamRegistrationRejected'
+import type { ExamRegistrationRejectedProps } from '@/emails/ExamRegistrationRejected'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = process.env.EMAIL_FROM ?? 'noreply@chineseschool.com'
@@ -131,6 +137,45 @@ export async function sendContactNotification(data: {
     from: FROM,
     to: ADMIN_EMAIL,
     subject: `[NEW CONTACT] ${data.subject} — ${data.name}`,
+    html,
+  })
+}
+
+export async function sendExamRegistrationReceived(
+  to: string,
+  data: ExamRegistrationConfirmationProps
+): Promise<void> {
+  const html = await render(createElement(ExamRegistrationConfirmation, data))
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: `考试报名已收到 / Exam Registration Received — ${data.examType} Level ${data.level}`,
+    html,
+  })
+}
+
+export async function sendExamRegistrationApproved(
+  to: string,
+  data: ExamRegistrationApprovedProps
+): Promise<void> {
+  const html = await render(createElement(ExamRegistrationApproved, data))
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: `考试报名已确认 / Exam Registration Confirmed — ${data.examType} Level ${data.level}`,
+    html,
+  })
+}
+
+export async function sendExamRegistrationRejected(
+  to: string,
+  data: ExamRegistrationRejectedProps
+): Promise<void> {
+  const html = await render(createElement(ExamRegistrationRejected, data))
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: `考试报名通知 / Exam Registration Notice — ${data.examType} Level ${data.level}`,
     html,
   })
 }

@@ -22,6 +22,61 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const type = searchParams.get('type') ?? 'all'
   const classId = searchParams.get('classId')
+  const examSessionId = searchParams.get('examSessionId')
+
+  if (type === 'exam') {
+    if (!examSessionId) {
+      return NextResponse.json(
+        { success: false, error: 'examSessionId required for exam export', code: 'VALIDATION_ERROR' },
+        { status: 400 }
+      )
+    }
+
+    const examSession = await prisma.examSession.findUnique({ where: { id: examSessionId } })
+    if (!examSession) {
+      return NextResponse.json({ success: false, error: 'Exam session not found', code: 'NOT_FOUND' }, { status: 404 })
+    }
+
+    const regs = await prisma.examRegistration.findMany({
+      where: { examSessionId, status: { notIn: ['CANCELLED'] } },
+      include: {
+        student: {
+          include: { family: { include: { users: { select: { name: true, email: true, phone: true } } } } },
+        },
+      },
+      orderBy: [{ status: 'asc' }, { createdAt: 'asc' }],
+    })
+
+    const header = csvRow(['#', '学生中文姓名', '学生英文姓名', '出生日期', '家长姓名', '电话', '邮箱', '状态', '支付方式', '金额', '付款日期', '确认日期', '备注'])
+    const rows = regs.map((r, i) => {
+      const parent = r.student.family?.users[0]
+      return csvRow([
+        i + 1,
+        r.studentNameZh,
+        r.studentNameEn ?? '',
+        r.studentDob ? r.studentDob.toLocaleDateString('zh-CN') : '',
+        parent?.name ?? '',
+        parent?.phone ?? '',
+        parent?.email ?? '',
+        r.status,
+        r.paymentMethod ?? '',
+        r.amount?.toString() ?? '',
+        r.paidAt ? r.paidAt.toLocaleDateString('zh-CN') : '',
+        r.confirmedAt ? r.confirmedAt.toLocaleDateString('zh-CN') : '',
+        r.notes ?? '',
+      ])
+    })
+
+    const csv = BOM + [header, ...rows].join('\n')
+    const filename = `exam-${examSession.examType}-L${examSession.level}-${examSession.examDate.toISOString().slice(0, 10)}.csv`
+
+    return new NextResponse(csv, {
+      headers: {
+        'Content-Type': 'text/csv; charset=utf-8',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+      },
+    })
+  }
 
   if (type === 'roster') {
     if (!classId) {

@@ -48,6 +48,12 @@ export default async function PortalLayout({ children }: { children: React.React
                 报名 / Enroll
               </Link>
               <Link
+                href="/exams"
+                className="text-gray-600 hover:text-red-700 transition-colors"
+              >
+                考试报名 / Exams
+              </Link>
+              <Link
                 href="/contact"
                 className="text-gray-600 hover:text-red-700 transition-colors"
               >
@@ -82,6 +88,9 @@ export default async function PortalLayout({ children }: { children: React.React
           </Link>
           <Link href="/enroll" className="text-gray-600 hover:text-red-700">
             Enroll
+          </Link>
+          <Link href="/exams" className="text-gray-600 hover:text-red-700">
+            Exams
           </Link>
           <Link href="/contact" className="text-gray-600 hover:text-red-700">
             Contact

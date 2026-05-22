@@ -305,6 +305,47 @@ exports.Prisma.ContactMessageScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ExamSessionScalarFieldEnum = {
+  id: 'id',
+  examType: 'examType',
+  level: 'level',
+  examDate: 'examDate',
+  registrationDeadline: 'registrationDeadline',
+  location: 'location',
+  locationZh: 'locationZh',
+  fee: 'fee',
+  capacity: 'capacity',
+  academicYear: 'academicYear',
+  isActive: 'isActive',
+  notes: 'notes',
+  notesZh: 'notesZh',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ExamRegistrationScalarFieldEnum = {
+  id: 'id',
+  examSessionId: 'examSessionId',
+  studentId: 'studentId',
+  status: 'status',
+  paymentMethod: 'paymentMethod',
+  stripePaymentIntentId: 'stripePaymentIntentId',
+  paypalOrderId: 'paypalOrderId',
+  paidAt: 'paidAt',
+  amount: 'amount',
+  confirmedAt: 'confirmedAt',
+  confirmedBy: 'confirmedBy',
+  rejectedAt: 'rejectedAt',
+  rejectedBy: 'rejectedBy',
+  rejectionReason: 'rejectionReason',
+  studentNameZh: 'studentNameZh',
+  studentNameEn: 'studentNameEn',
+  studentDob: 'studentDob',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SystemSettingsScalarFieldEnum = {
   id: 'id',
   schoolNameZh: 'schoolNameZh',
@@ -375,6 +416,19 @@ exports.ContactStatus = exports.$Enums.ContactStatus = {
   REPLIED: 'REPLIED'
 };
 
+exports.ExamType = exports.$Enums.ExamType = {
+  YCT: 'YCT',
+  HSK: 'HSK'
+};
+
+exports.ExamRegistrationStatus = exports.$Enums.ExamRegistrationStatus = {
+  PENDING_PAYMENT: 'PENDING_PAYMENT',
+  PAID: 'PAID',
+  CONFIRMED: 'CONFIRMED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
@@ -393,6 +447,8 @@ exports.Prisma.ModelName = {
   AcademicYearConfig: 'AcademicYearConfig',
   StudentNextClassOverride: 'StudentNextClassOverride',
   ContactMessage: 'ContactMessage',
+  ExamSession: 'ExamSession',
+  ExamRegistration: 'ExamRegistration',
   SystemSettings: 'SystemSettings'
 };
 
