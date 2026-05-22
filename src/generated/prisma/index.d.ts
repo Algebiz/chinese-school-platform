@@ -8582,6 +8582,8 @@ export namespace Prisma {
     nameEn: string | null
     birthDate: Date | null
     grade: string | null
+    gender: string | null
+    notes: string | null
     familyId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8593,6 +8595,8 @@ export namespace Prisma {
     nameEn: string | null
     birthDate: Date | null
     grade: string | null
+    gender: string | null
+    notes: string | null
     familyId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8604,6 +8608,8 @@ export namespace Prisma {
     nameEn: number
     birthDate: number
     grade: number
+    gender: number
+    notes: number
     familyId: number
     createdAt: number
     updatedAt: number
@@ -8617,6 +8623,8 @@ export namespace Prisma {
     nameEn?: true
     birthDate?: true
     grade?: true
+    gender?: true
+    notes?: true
     familyId?: true
     createdAt?: true
     updatedAt?: true
@@ -8628,6 +8636,8 @@ export namespace Prisma {
     nameEn?: true
     birthDate?: true
     grade?: true
+    gender?: true
+    notes?: true
     familyId?: true
     createdAt?: true
     updatedAt?: true
@@ -8639,6 +8649,8 @@ export namespace Prisma {
     nameEn?: true
     birthDate?: true
     grade?: true
+    gender?: true
+    notes?: true
     familyId?: true
     createdAt?: true
     updatedAt?: true
@@ -8723,6 +8735,8 @@ export namespace Prisma {
     nameEn: string | null
     birthDate: Date | null
     grade: string | null
+    gender: string | null
+    notes: string | null
     familyId: string
     createdAt: Date
     updatedAt: Date
@@ -8751,6 +8765,8 @@ export namespace Prisma {
     nameEn?: boolean
     birthDate?: boolean
     grade?: boolean
+    gender?: boolean
+    notes?: boolean
     familyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8768,6 +8784,8 @@ export namespace Prisma {
     nameEn?: boolean
     birthDate?: boolean
     grade?: boolean
+    gender?: boolean
+    notes?: boolean
     familyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8780,6 +8798,8 @@ export namespace Prisma {
     nameEn?: boolean
     birthDate?: boolean
     grade?: boolean
+    gender?: boolean
+    notes?: boolean
     familyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8792,12 +8812,14 @@ export namespace Prisma {
     nameEn?: boolean
     birthDate?: boolean
     grade?: boolean
+    gender?: boolean
+    notes?: boolean
     familyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameEn" | "birthDate" | "grade" | "familyId" | "createdAt" | "updatedAt", ExtArgs["result"]["student"]>
+  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameEn" | "birthDate" | "grade" | "gender" | "notes" | "familyId" | "createdAt" | "updatedAt", ExtArgs["result"]["student"]>
   export type StudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     family?: boolean | FamilyDefaultArgs<ExtArgs>
     enrollments?: boolean | Student$enrollmentsArgs<ExtArgs>
@@ -8828,6 +8850,8 @@ export namespace Prisma {
       nameEn: string | null
       birthDate: Date | null
       grade: string | null
+      gender: string | null
+      notes: string | null
       familyId: string
       createdAt: Date
       updatedAt: Date
@@ -9264,6 +9288,8 @@ export namespace Prisma {
     readonly nameEn: FieldRef<"Student", 'String'>
     readonly birthDate: FieldRef<"Student", 'DateTime'>
     readonly grade: FieldRef<"Student", 'String'>
+    readonly gender: FieldRef<"Student", 'String'>
+    readonly notes: FieldRef<"Student", 'String'>
     readonly familyId: FieldRef<"Student", 'String'>
     readonly createdAt: FieldRef<"Student", 'DateTime'>
     readonly updatedAt: FieldRef<"Student", 'DateTime'>
@@ -25847,6 +25873,8 @@ export namespace Prisma {
     nameEn: 'nameEn',
     birthDate: 'birthDate',
     grade: 'grade',
+    gender: 'gender',
+    notes: 'notes',
     familyId: 'familyId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -26667,6 +26695,8 @@ export namespace Prisma {
     nameEn?: StringNullableFilter<"Student"> | string | null
     birthDate?: DateTimeNullableFilter<"Student"> | Date | string | null
     grade?: StringNullableFilter<"Student"> | string | null
+    gender?: StringNullableFilter<"Student"> | string | null
+    notes?: StringNullableFilter<"Student"> | string | null
     familyId?: StringFilter<"Student"> | string
     createdAt?: DateTimeFilter<"Student"> | Date | string
     updatedAt?: DateTimeFilter<"Student"> | Date | string
@@ -26683,6 +26713,8 @@ export namespace Prisma {
     nameEn?: SortOrderInput | SortOrder
     birthDate?: SortOrderInput | SortOrder
     grade?: SortOrderInput | SortOrder
+    gender?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
     familyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -26702,6 +26734,8 @@ export namespace Prisma {
     nameEn?: StringNullableFilter<"Student"> | string | null
     birthDate?: DateTimeNullableFilter<"Student"> | Date | string | null
     grade?: StringNullableFilter<"Student"> | string | null
+    gender?: StringNullableFilter<"Student"> | string | null
+    notes?: StringNullableFilter<"Student"> | string | null
     familyId?: StringFilter<"Student"> | string
     createdAt?: DateTimeFilter<"Student"> | Date | string
     updatedAt?: DateTimeFilter<"Student"> | Date | string
@@ -26718,6 +26752,8 @@ export namespace Prisma {
     nameEn?: SortOrderInput | SortOrder
     birthDate?: SortOrderInput | SortOrder
     grade?: SortOrderInput | SortOrder
+    gender?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
     familyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -26735,6 +26771,8 @@ export namespace Prisma {
     nameEn?: StringNullableWithAggregatesFilter<"Student"> | string | null
     birthDate?: DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
     grade?: StringNullableWithAggregatesFilter<"Student"> | string | null
+    gender?: StringNullableWithAggregatesFilter<"Student"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"Student"> | string | null
     familyId?: StringWithAggregatesFilter<"Student"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Student"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Student"> | Date | string
@@ -28237,6 +28275,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutStudentsInput
@@ -28252,6 +28292,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     familyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28267,6 +28309,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutStudentsNestedInput
@@ -28282,6 +28326,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     familyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28297,6 +28343,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     familyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28308,6 +28356,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28318,6 +28368,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     familyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30005,6 +30057,8 @@ export namespace Prisma {
     nameEn?: SortOrder
     birthDate?: SortOrder
     grade?: SortOrder
+    gender?: SortOrder
+    notes?: SortOrder
     familyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -30016,6 +30070,8 @@ export namespace Prisma {
     nameEn?: SortOrder
     birthDate?: SortOrder
     grade?: SortOrder
+    gender?: SortOrder
+    notes?: SortOrder
     familyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -30027,6 +30083,8 @@ export namespace Prisma {
     nameEn?: SortOrder
     birthDate?: SortOrder
     grade?: SortOrder
+    gender?: SortOrder
+    notes?: SortOrder
     familyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -32664,6 +32722,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
@@ -32678,6 +32738,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
@@ -32754,6 +32816,8 @@ export namespace Prisma {
     nameEn?: StringNullableFilter<"Student"> | string | null
     birthDate?: DateTimeNullableFilter<"Student"> | Date | string | null
     grade?: StringNullableFilter<"Student"> | string | null
+    gender?: StringNullableFilter<"Student"> | string | null
+    notes?: StringNullableFilter<"Student"> | string | null
     familyId?: StringFilter<"Student"> | string
     createdAt?: DateTimeFilter<"Student"> | Date | string
     updatedAt?: DateTimeFilter<"Student"> | Date | string
@@ -33874,6 +33938,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutStudentsInput
@@ -33888,6 +33954,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     familyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34021,6 +34089,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutStudentsNestedInput
@@ -34035,6 +34105,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     familyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34204,6 +34276,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutStudentsInput
@@ -34218,6 +34292,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     familyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34293,6 +34369,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutStudentsNestedInput
@@ -34307,6 +34385,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     familyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34372,6 +34452,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutStudentsInput
@@ -34386,6 +34468,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     familyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34461,6 +34545,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutStudentsNestedInput
@@ -34475,6 +34561,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     familyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34651,6 +34739,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutStudentsInput
@@ -34665,6 +34755,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     familyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34742,6 +34834,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutStudentsNestedInput
@@ -34756,6 +34850,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     familyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34783,6 +34879,8 @@ export namespace Prisma {
     nameEn?: string | null
     birthDate?: Date | string | null
     grade?: string | null
+    gender?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34836,6 +34934,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
@@ -34850,6 +34950,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
@@ -34864,6 +34966,8 @@ export namespace Prisma {
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -129,6 +129,8 @@ model Student {
   nameEn             String?
   birthDate          DateTime?
   grade              String?
+  gender             String?
+  notes              String?
   familyId           String
   family             Family                     @relation(fields: [familyId], references: [id])
   enrollments        Enrollment[]

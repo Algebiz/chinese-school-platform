@@ -9,7 +9,8 @@ import { sortByLastNamePinyin } from '@/lib/pinyin-sort'
 
 export default async function AdminStudentsPage() {
   const session = await auth()
-  if (!session || session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN') redirect('/dashboard')
+  if (!session || (session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN'))
+    redirect('/dashboard')
 
   const CURRENT_YEAR = await getCurrentAcademicYear()
 
@@ -21,6 +22,10 @@ export default async function AdminStudentsPage() {
       enrollments: {
         where: { class: { year: CURRENT_YEAR }, status: 'CONFIRMED' },
         include: { class: { select: { name: true, type: true } } },
+      },
+      examRegistrations: {
+        where: { status: 'CONFIRMED' },
+        select: { id: true },
       },
       family: {
         include: {
@@ -40,6 +45,11 @@ export default async function AdminStudentsPage() {
       studentId: student.id,
       studentName: student.name,
       studentNameEn: student.nameEn,
+      birthDate: student.birthDate?.toISOString() ?? null,
+      gender: student.gender ?? null,
+      grade: student.grade ?? null,
+      notes: student.notes ?? null,
+      familyId: student.familyId,
       parentName: parent?.name ?? null,
       parentEmail: parent?.email ?? null,
       enrolledClasses: student.enrollments.map((e) => ({
@@ -47,10 +57,11 @@ export default async function AdminStudentsPage() {
         type: e.class.type,
       })),
       status: statuses[student.id] ?? 'NEW',
+      hasConfirmedExamRegs: student.examRegistrations.length > 0,
     }
   })
 
-  const newCount       = rows.filter((r) => r.status === 'NEW').length
+  const newCount = rows.filter((r) => r.status === 'NEW').length
   const returningCount = rows.filter((r) => r.status === 'RETURNING').length
 
   return (
@@ -65,9 +76,15 @@ export default async function AdminStudentsPage() {
         </p>
       </div>
       <div className="mb-4 flex items-center gap-4 text-sm text-gray-600">
-        <span>共 <strong>{rows.length}</strong> 名学生</span>
-        <span>新生 <strong className="text-green-600">{newCount}</strong></span>
-        <span>老生 <strong className="text-blue-600">{returningCount}</strong></span>
+        <span>
+          共 <strong>{rows.length}</strong> 名学生
+        </span>
+        <span>
+          新生 <strong className="text-green-600">{newCount}</strong>
+        </span>
+        <span>
+          老生 <strong className="text-blue-600">{returningCount}</strong>
+        </span>
       </div>
       <StudentsClient rows={rows} />
     </div>

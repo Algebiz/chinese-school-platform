@@ -176,6 +176,8 @@ exports.Prisma.StudentScalarFieldEnum = {
   nameEn: 'nameEn',
   birthDate: 'birthDate',
   grade: 'grade',
+  gender: 'gender',
+  notes: 'notes',
   familyId: 'familyId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
