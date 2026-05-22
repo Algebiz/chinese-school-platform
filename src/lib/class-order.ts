@@ -1,40 +1,30 @@
-export const CLASS_ORDER: string[] = [
-  'CHL Level 1A',
-  'CHL Level 1B',
-  'CHL Level 2',
-  'CHL Level 3A',
-  'CHL Level 3B',
-  'CHL Level 4A',
-  'CHL Level 4B',
-  'CHL Level 4 Intensive',
-  'CHL Level 5',
-  'CHL Level 6',
-  'CHL Level 7',
-  'CHL Level 8',
-  'CHL Level 9',
-  'CHL Level 9 Intensive',
-  'AP Chinese',
-  'CSL Level 1A',
-  'CSL Level 1B',
-  'CSL Level 2',
-  'CSL Level 3',
-]
+export function getClassSortKey(name: string, type: string): string {
+  if (type === 'ARTS') return 'Z_' + name
 
-// Sorts any array of objects that have nameEn and optionally type.
-// Language classes (CHINESE) follow CLASS_ORDER; arts follow alphabetically after.
-export function sortClasses<T extends { nameEn?: string | null; type?: string }>(
+  // AP Chinese → last among CHL
+  if (name === 'AP Chinese') return 'A_99_'
+
+  // CHL before CSL
+  const program = name.startsWith('CSL') ? 'B' : 'A'
+
+  const match = name.match(/Level (\d+)\s*(.*)/)
+  if (match) {
+    const level = match[1].padStart(2, '0')
+    const suffix = match[2].trim()
+    // blank → sorts first; Intensive → sorts last; A/B/C/… sort alphabetically
+    const suffixOrder = suffix === '' ? '0' : suffix === 'Intensive' ? 'Z' : suffix
+    return `${program}_${level}_${suffixOrder}`
+  }
+
+  return `${program}_${name}`
+}
+
+export function sortClasses<T extends { nameEn?: string | null; name?: string; type?: string }>(
   classes: T[]
 ): T[] {
   return [...classes].sort((a, b) => {
-    const aIsArts = a.type === 'ARTS'
-    const bIsArts = b.type === 'ARTS'
-    if (aIsArts !== bIsArts) return aIsArts ? 1 : -1
-    if (aIsArts && bIsArts) return (a.nameEn ?? '').localeCompare(b.nameEn ?? '')
-    const ai = CLASS_ORDER.indexOf(a.nameEn ?? '')
-    const bi = CLASS_ORDER.indexOf(b.nameEn ?? '')
-    if (ai === -1 && bi === -1) return (a.nameEn ?? '').localeCompare(b.nameEn ?? '')
-    if (ai === -1) return 1
-    if (bi === -1) return -1
-    return ai - bi
+    const keyA = getClassSortKey(a.nameEn ?? a.name ?? '', a.type ?? '')
+    const keyB = getClassSortKey(b.nameEn ?? b.name ?? '', b.type ?? '')
+    return keyA.localeCompare(keyB)
   })
 }
