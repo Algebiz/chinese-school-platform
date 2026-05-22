@@ -24,9 +24,10 @@ const TYPE_LABEL: Record<string, string> = {
 interface Props {
   initialClasses: ClassRow[]
   teachers: TeacherOption[]
+  year: string
 }
 
-export function ClassesClient({ initialClasses, teachers }: Props) {
+export function ClassesClient({ initialClasses, teachers, year }: Props) {
   const router = useRouter()
   const [addOpen, setAddOpen] = useState(false)
   const [deleting, setDeleting] = useState<string | null>(null)
@@ -147,6 +148,7 @@ export function ClassesClient({ initialClasses, teachers }: Props) {
       {addOpen && (
         <AddClassModal
           teachers={teachers}
+          defaultYear={year}
           onClose={() => setAddOpen(false)}
           onSuccess={(msg) => showToast(msg)}
         />

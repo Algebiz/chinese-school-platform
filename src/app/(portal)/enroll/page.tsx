@@ -1,17 +1,15 @@
 import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { getNextAcademicYear } from '@/lib/academic-year'
 import { EnrollFlow } from './EnrollFlow'
 import { getReturningStudentData } from '@/lib/re-enrollment-logic'
 import type { ClassData } from '@/components/ClassCard'
 
-const CURRENT_YEAR = '2025-2026'
-const PREVIOUS_YEAR = '2024-2025'
-
-async function fetchClasses(): Promise<ClassData[]> {
+async function fetchClasses(year: string): Promise<ClassData[]> {
   const baseUrl = process.env.NEXTAUTH_URL ?? 'http://localhost:3000'
   try {
-    const res = await fetch(`${baseUrl}/api/classes?academicYear=${CURRENT_YEAR}`, {
+    const res = await fetch(`${baseUrl}/api/classes?academicYear=${year}`, {
       cache: 'no-store',
     })
     if (!res.ok) return []
@@ -29,6 +27,9 @@ export default async function EnrollPage({
 }) {
   const session = await auth()
   if (!session) redirect('/login')
+
+  const CURRENT_YEAR = await getNextAcademicYear()
+  const PREVIOUS_YEAR = CURRENT_YEAR.replace(/^(\d{4})-\d{4}$/, (_, a) => `${parseInt(a) - 1}-${a}`)
 
   const { classIds: classIdsParam, studentId: studentIdParam, artsOnly: artsOnlyParam } = await searchParams
   const preselectedClassIds = classIdsParam ? classIdsParam.split(',').filter(Boolean) : []
@@ -94,7 +95,7 @@ export default async function EnrollPage({
   }
 
   const [allClasses, ...returningInfoList] = await Promise.all([
-    fetchClasses(),
+    fetchClasses(CURRENT_YEAR),
     ...students.map((s) => getReturningStudentData(s.id, PREVIOUS_YEAR)),
   ])
 

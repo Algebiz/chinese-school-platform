@@ -48,10 +48,15 @@ export async function POST(req: NextRequest) {
 
   const { academicYear, nextYear, reEnrollmentOpenDate, newEnrollmentOpenDate } = result.data
 
+  await prisma.academicYearConfig.updateMany({
+    where: { academicYear: { not: academicYear } },
+    data: { isActive: false },
+  })
+
   const config = await prisma.academicYearConfig.upsert({
     where: { academicYear },
     update: { nextYear, reEnrollmentOpenDate: new Date(reEnrollmentOpenDate), newEnrollmentOpenDate: new Date(newEnrollmentOpenDate), isActive: true },
-    create: { academicYear, nextYear, reEnrollmentOpenDate: new Date(reEnrollmentOpenDate), newEnrollmentOpenDate: new Date(newEnrollmentOpenDate) },
+    create: { academicYear, nextYear, reEnrollmentOpenDate: new Date(reEnrollmentOpenDate), newEnrollmentOpenDate: new Date(newEnrollmentOpenDate), isActive: true },
   })
 
   return NextResponse.json({ success: true, data: config })

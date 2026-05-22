@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 
 export async function GET(req: NextRequest) {
   const apiKey = req.headers.get('x-api-key')
@@ -7,8 +8,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
   }
 
+  const year = await getCurrentAcademicYear()
   const classes = await prisma.class.findMany({
-    where: { year: '2025-2026' },
+    where: { year },
     include: {
       teacher: { select: { name: true } },
       _count: {

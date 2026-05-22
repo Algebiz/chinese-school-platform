@@ -39,7 +39,7 @@ export default function ExportPage() {
   const [loadingClasses, setLoadingClasses] = useState(true)
 
   useEffect(() => {
-    fetch('/api/classes?academicYear=2025-2026')
+    fetch('/api/classes')
       .then((r) => r.json())
       .then((json) => {
         if (json.success) setClasses(json.data)

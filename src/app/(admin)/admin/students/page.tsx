@@ -3,21 +3,17 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { StudentsClient } from './StudentsClient'
 import type { ReturningStudentRow, ChineseClassOption } from './StudentsClient'
-import { CLASS_LEVEL_PROGRESSION, deriveNextYear } from '@/lib/class-levels'
+import { CLASS_LEVEL_PROGRESSION } from '@/lib/class-levels'
 import { sortClasses } from '@/lib/class-order'
-
-const PREVIOUS_YEAR = '2024-2025'
-const CURRENT_YEAR = '2025-2026'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 
 export default async function AdminStudentsPage() {
   const session = await auth()
   if (!session || session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN') redirect('/dashboard')
 
-  // Get the next year from config or derive it
-  const config = await prisma.academicYearConfig.findUnique({
-    where: { academicYear: PREVIOUS_YEAR },
-  })
-  const nextYear = config?.nextYear ?? deriveNextYear(PREVIOUS_YEAR)
+  const CURRENT_YEAR = await getCurrentAcademicYear()
+  const PREVIOUS_YEAR = CURRENT_YEAR.replace(/^(\d{4})-\d{4}$/, (_, a) => `${parseInt(a) - 1}-${a}`)
+  const nextYear = CURRENT_YEAR
 
   // All students who had confirmed enrollments in the previous year
   const students = await prisma.student.findMany({

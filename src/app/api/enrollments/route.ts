@@ -4,15 +4,13 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { createEnrollments, checkTimeConflict } from '@/lib/enrollment-logic'
 import { isReEnrollmentOpen } from '@/lib/re-enrollment-logic'
+import { getCurrentAcademicYear, getNextAcademicYear } from '@/lib/academic-year'
 
 const enrollSchema = z.object({
   studentId: z.string().min(1),
   classIds: z.array(z.string().min(1)).min(1),
   textbookIds: z.array(z.string()).optional().default([]),
 })
-
-const CURRENT_YEAR = '2025-2026'
-const PREVIOUS_YEAR = '2024-2025'
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,6 +21,11 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       )
     }
+
+    const [CURRENT_YEAR, PREVIOUS_YEAR] = await Promise.all([
+      getNextAcademicYear(),
+      getCurrentAcademicYear(),
+    ])
 
     const body = await req.json()
     const result = enrollSchema.safeParse(body)

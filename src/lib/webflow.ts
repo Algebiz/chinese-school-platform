@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/db'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 
 const WEBFLOW_BASE = 'https://api.webflow.com/v2'
 
@@ -163,8 +164,9 @@ export async function syncClassToWebflow(classData: ClassWithDetails): Promise<v
 }
 
 export async function syncAllClassesToWebflow(): Promise<{ synced: number; errors: string[] }> {
+  const year = await getCurrentAcademicYear()
   const classes = await prisma.class.findMany({
-    where: { year: '2025-2026' },
+    where: { year },
     include: {
       teacher: { select: { name: true } },
       _count: {

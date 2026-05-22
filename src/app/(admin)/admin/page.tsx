@@ -2,8 +2,7 @@ import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { sortClasses } from '@/lib/class-order'
-
-const YEAR = '2025-2026'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 
 function StatCard({ title, en, value }: { title: string; en: string; value: string | number }) {
   return (
@@ -29,6 +28,8 @@ function EnrollmentStatusBadge({ status }: { status: string }) {
 export default async function AdminDashboard() {
   const session = await auth()
   if (session?.user?.role !== 'ADMIN' && session?.user?.role !== 'SUPER_ADMIN') redirect('/dashboard')
+
+  const YEAR = await getCurrentAcademicYear()
 
   const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent] = await Promise.all([
     // Students who have at least one CONFIRMED enrollment this year

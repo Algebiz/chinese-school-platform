@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { sortClasses } from '@/lib/class-order'
-
-const CURRENT_YEAR = '2025-2026'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
     const type = searchParams.get('type')
-    const academicYear = searchParams.get('academicYear') ?? CURRENT_YEAR
+    const academicYear = searchParams.get('academicYear') ?? await getCurrentAcademicYear()
 
     const classes = await prisma.class.findMany({
       where: {

@@ -13,17 +13,18 @@ export interface TeacherOption {
 
 interface Props {
   teachers: TeacherOption[]
+  defaultYear: string
   onClose: () => void
   onSuccess: (msg: string) => void
 }
 
-export function AddClassModal({ teachers, onClose, onSuccess }: Props) {
+export function AddClassModal({ teachers, defaultYear, onClose, onSuccess }: Props) {
   const router = useRouter()
   const [nameEn, setNameEn] = useState('')
   const [name, setName] = useState('')
   const [type, setType] = useState<'CHINESE' | 'ARTS'>('CHINESE')
   const [teacherId, setTeacherId] = useState(teachers[0]?.id ?? '')
-  const [year, setYear] = useState('2025-2026')
+  const [year, setYear] = useState(defaultYear)
   const [dayOfWeek, setDayOfWeek] = useState('Sunday')
   const [startTime, setStartTime] = useState('09:00')
   const [endTime, setEndTime] = useState('10:50')

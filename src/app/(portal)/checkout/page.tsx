@@ -2,9 +2,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { CheckoutClient } from './CheckoutClient'
-
-const CURRENT_YEAR = '2025-2026'
 
 export default async function CheckoutPage({
   searchParams,
@@ -13,6 +12,8 @@ export default async function CheckoutPage({
 }) {
   const session = await auth()
   if (!session) redirect('/login')
+
+  const CURRENT_YEAR = await getCurrentAcademicYear()
 
   const { enrollmentIds: param } = await searchParams
   const enrollmentIds = param ? param.split(',').filter(Boolean) : []

@@ -1,6 +1,7 @@
 import { notFound, redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { ClassDetailClient } from './ClassDetailClient'
 import type { EnrolledStudent, AvailableClass } from './ClassDetailClient'
 import { TextbookManager } from './TextbookManager'
@@ -23,6 +24,7 @@ export default async function ClassDetailPage({
   if (session?.user?.role !== 'ADMIN' && session?.user?.role !== 'SUPER_ADMIN') redirect('/dashboard')
 
   const { classId } = await params
+  const YEAR = await getCurrentAcademicYear()
 
   const [cls, enrollments, allSameTypeClasses, pendingCount, cancelledCount, allTeachers] = await Promise.all([
     prisma.class.findUnique({
@@ -47,7 +49,7 @@ export default async function ClassDetailPage({
       orderBy: { createdAt: 'asc' },
     }),
     prisma.class.findMany({
-      where: { year: '2025-2026', id: { not: classId } },
+      where: { year: YEAR, id: { not: classId } },
       include: {
         _count: { select: { enrollments: { where: { status: 'CONFIRMED' } } } },
       },

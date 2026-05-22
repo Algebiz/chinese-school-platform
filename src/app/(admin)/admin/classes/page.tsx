@@ -4,12 +4,13 @@ import { prisma } from '@/lib/db'
 import { sortClasses } from '@/lib/class-order'
 import { ClassesClient, type ClassRow } from './ClassesClient'
 import type { TeacherOption } from '@/components/admin/AddClassModal'
-
-const YEAR = '2025-2026'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 
 export default async function AdminClassesPage() {
   const session = await auth()
   if (session?.user?.role !== 'ADMIN' && session?.user?.role !== 'SUPER_ADMIN') redirect('/dashboard')
+
+  const YEAR = await getCurrentAcademicYear()
 
   const [rawClasses, allTeachers] = await Promise.all([
     prisma.class.findMany({
@@ -44,7 +45,7 @@ export default async function AdminClassesPage() {
         <h1 className="text-2xl font-bold text-gray-900">班级管理</h1>
         <p className="mt-1 text-sm text-gray-500">Class Management · {YEAR}</p>
       </div>
-      <ClassesClient initialClasses={classes} teachers={teachers} />
+      <ClassesClient initialClasses={classes} teachers={teachers} year={YEAR} />
     </div>
   )
 }

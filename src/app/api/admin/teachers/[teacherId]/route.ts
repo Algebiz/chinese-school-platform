@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 
 export async function PATCH(
   req: NextRequest,
@@ -43,9 +44,10 @@ export async function DELETE(
   }
 
   const { teacherId } = await params
+  const year = await getCurrentAcademicYear()
 
   const activeClasses = await prisma.class.count({
-    where: { teacherId, year: '2025-2026' },
+    where: { teacherId, year },
   })
   if (activeClasses > 0) {
     return NextResponse.json(

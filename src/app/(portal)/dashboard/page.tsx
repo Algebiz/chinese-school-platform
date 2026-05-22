@@ -2,9 +2,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { PendingEnrollmentCard } from './PendingEnrollmentCard'
-
-const CURRENT_YEAR = '2025-2026'
 
 const CLASS_TYPE_LABEL: Record<string, string> = {
   CHINESE: '中文班',
@@ -14,6 +13,8 @@ const CLASS_TYPE_LABEL: Record<string, string> = {
 export default async function DashboardPage() {
   const session = await auth()
   if (!session) redirect('/login')
+
+  const CURRENT_YEAR = await getCurrentAcademicYear()
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },

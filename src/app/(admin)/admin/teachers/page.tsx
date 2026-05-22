@@ -1,16 +1,19 @@
 import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { TeachersClient, type TeacherWithClasses } from './TeachersClient'
 
 export default async function TeachersPage() {
   const session = await auth()
   if (session?.user?.role !== 'ADMIN' && session?.user?.role !== 'SUPER_ADMIN') redirect('/dashboard')
 
+  const YEAR = await getCurrentAcademicYear()
+
   const teachers = await prisma.teacher.findMany({
     include: {
       classes: {
-        where: { year: '2025-2026' },
+        where: { year: YEAR },
         select: { id: true, name: true, nameEn: true, type: true },
       },
     },
@@ -69,7 +72,7 @@ export default async function TeachersPage() {
     <div className="space-y-4">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">教师管理</h1>
-        <p className="mt-1 text-sm text-gray-500">Teacher Management · 2025-2026</p>
+        <p className="mt-1 text-sm text-gray-500">Teacher Management · {YEAR}</p>
       </div>
       <TeachersClient groups={groups} />
     </div>
