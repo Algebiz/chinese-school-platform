@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { LegalFooter } from '@/components/LegalFooter'
 
 const NAV = [
   { href: '/admin', label: '仪表盘', en: 'Dashboard' },
@@ -61,6 +62,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         </div>
       </nav>
       <main className="mx-auto max-w-7xl px-4 py-8">{children}</main>
+      <LegalFooter />
     </div>
   )
 }
