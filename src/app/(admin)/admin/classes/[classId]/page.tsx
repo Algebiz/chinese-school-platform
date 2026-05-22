@@ -5,6 +5,8 @@ import { ClassDetailClient } from './ClassDetailClient'
 import type { EnrolledStudent, AvailableClass } from './ClassDetailClient'
 import { TextbookManager } from './TextbookManager'
 import type { TextbookRow } from './TextbookManager'
+import { EditClassButton } from './EditClassButton'
+import type { EditableClass } from '@/components/admin/EditClassModal'
 
 function fmtSchedule(s: unknown): string {
   if (!s || typeof s !== 'object') return '—'
@@ -22,7 +24,7 @@ export default async function ClassDetailPage({
 
   const { classId } = await params
 
-  const [cls, enrollments, allSameTypeClasses, pendingCount, cancelledCount] = await Promise.all([
+  const [cls, enrollments, allSameTypeClasses, pendingCount, cancelledCount, allTeachers] = await Promise.all([
     prisma.class.findUnique({
       where: { id: classId },
       include: {
@@ -52,6 +54,7 @@ export default async function ClassDetailPage({
     }),
     prisma.enrollment.count({ where: { classId, status: 'PENDING' } }),
     prisma.enrollment.count({ where: { classId, status: 'CANCELLED' } }),
+    prisma.teacher.findMany({ orderBy: { name: 'asc' }, select: { id: true, name: true, nameEn: true } }),
   ])
 
   if (!cls) notFound()
@@ -82,14 +85,33 @@ export default async function ClassDetailPage({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <p className="text-sm text-gray-500">
-          <a href="/admin/classes" className="hover:text-gray-700">班级管理</a>
-          {' / '}
-          {cls.name}
-        </p>
-        <h1 className="mt-1 text-2xl font-bold text-gray-900">{cls.name}</h1>
-        {cls.nameEn && <p className="text-sm text-gray-500">{cls.nameEn}</p>}
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-sm text-gray-500">
+            <a href="/admin/classes" className="hover:text-gray-700">班级管理</a>
+            {' / '}
+            {cls.name}
+          </p>
+          <h1 className="mt-1 text-2xl font-bold text-gray-900">{cls.name}</h1>
+          {cls.nameEn && <p className="text-sm text-gray-500">{cls.nameEn}</p>}
+        </div>
+        <EditClassButton
+          cls={{
+            id: cls.id,
+            name: cls.name,
+            nameEn: cls.nameEn,
+            type: cls.type,
+            teacherId: cls.teacherId,
+            capacity: cls.capacity,
+            fee: cls.fee.toString(),
+            schedule: cls.schedule,
+            description: cls.description,
+            descriptionZh: cls.descriptionZh,
+            isActive: cls.isActive,
+            enrolledCount: enrollments.length,
+          } satisfies EditableClass}
+          teachers={allTeachers.map((t) => ({ id: t.id, name: t.name, nameEn: t.nameEn }))}
+        />
       </div>
 
       {/* Class info card */}

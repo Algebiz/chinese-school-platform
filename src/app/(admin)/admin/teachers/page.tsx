@@ -44,19 +44,22 @@ export default async function TeachersPage() {
     (t) => !cslIds.has(t.id) && !chlIds.has(t.id)
   )
 
+  const unassigned = withClasses.filter(
+    (t) => !cslIds.has(t.id) && !chlIds.has(t.id) && t.classes.length === 0
+  )
+
   const groups = [
     { label: '中文母语班教师', labelEn: 'CHL Teachers', teachers: chlTeachers },
     { label: '中文第二语言班教师', labelEn: 'CSL Teachers', teachers: cslTeachers },
     { label: '才艺班教师', labelEn: 'Arts Teachers', teachers: artsTeachers },
+    { label: '未分配教师', labelEn: 'Unassigned', teachers: unassigned },
   ].filter((g) => g.teachers.length > 0)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">教师管理</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Teacher Management · {withClasses.length} teachers total
-        </p>
+        <p className="mt-1 text-sm text-gray-500">Teacher Management · 2025-2026</p>
       </div>
       <TeachersClient groups={groups} />
     </div>

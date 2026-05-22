@@ -134,12 +134,14 @@ model Teacher {
 }
 
 model Class {
-  id          String       @id @default(cuid())
-  name        String
-  nameEn      String?
-  type        ClassType
-  description String?
-  teacherId   String?
+  id            String       @id @default(cuid())
+  name          String
+  nameEn        String?
+  type          ClassType
+  description   String?
+  descriptionZh String?
+  isActive      Boolean      @default(true)
+  teacherId     String?
   teacher     Teacher?     @relation(fields: [teacherId], references: [id])
   schedule    Json
   capacity    Int
