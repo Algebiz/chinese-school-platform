@@ -5,7 +5,7 @@ export async function getCurrentAcademicYear(): Promise<string> {
     where: { isActive: true },
     orderBy: { createdAt: 'desc' },
   })
-  return config?.academicYear ?? '2025-2026'
+  return config?.academicYear ?? '2026-2027'
 }
 
 export async function getNextAcademicYear(): Promise<string> {
@@ -13,5 +13,5 @@ export async function getNextAcademicYear(): Promise<string> {
     where: { isActive: true },
     orderBy: { createdAt: 'desc' },
   })
-  return config?.nextYear ?? '2025-2026'
+  return config?.nextYear ?? '2027-2028'
 }

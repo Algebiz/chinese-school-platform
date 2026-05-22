@@ -9,12 +9,12 @@ const prisma = new PrismaClient({ adapter })
 
 const LANGUAGE_SCHEDULE = { dayOfWeek: 'Sunday', startTime: '09:00', endTime: '10:50' }
 const ARTS_SCHEDULE = { dayOfWeek: 'Sunday', startTime: '11:00', endTime: '12:00' }
-const CURRENT_YEAR = '2025-2026'
+const CURRENT_YEAR = '2026-2027'
 
 async function main() {
   console.log('🌱 Seeding database...')
 
-  // ── Delete old 2025-2026 classes (cascade-safe) ──────────────────────────────
+  // ── Delete old classes for the current year (cascade-safe) ──────────────────
   console.log('  🗑️  Removing old placeholder classes...')
   const oldClasses = await prisma.class.findMany({
     where: { year: CURRENT_YEAR },
@@ -428,6 +428,21 @@ async function main() {
   }
 
   console.log('  ✓ Arts classes created (5)')
+
+  // ── AcademicYearConfig ───────────────────────────────────────────────────────
+  await prisma.academicYearConfig.updateMany({ data: { isActive: false } })
+  await prisma.academicYearConfig.upsert({
+    where: { academicYear: CURRENT_YEAR },
+    update: { isActive: true, nextYear: '2027-2028' },
+    create: {
+      academicYear: CURRENT_YEAR,
+      nextYear: '2027-2028',
+      isActive: true,
+      reEnrollmentOpenDate: new Date('2026-03-01'),
+      newEnrollmentOpenDate: new Date('2026-04-01'),
+    },
+  })
+  console.log('  ✓ AcademicYearConfig set to', CURRENT_YEAR)
 
   // ── Sample textbooks ──────────────────────────────────────────────────────────
   const sampleTextbooks = [
