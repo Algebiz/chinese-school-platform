@@ -397,10 +397,18 @@ export function AdminVolunteerClient({ deposits, services: initialServices, isSu
                           {claim.service.nameZh} / {claim.service.name}
                         </p>
                         <p className="mt-1 text-sm text-gray-600 bg-gray-50 rounded p-2">{claim.description}</p>
-                        {claim.photoUrl && (
-                          <a href={claim.photoUrl} target="_blank" rel="noopener noreferrer" className="mt-1 text-xs text-blue-600 hover:underline">
-                            查看照片 / View photo →
+                        {claim.photoUrl ? (
+                          <a href={claim.photoUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={claim.photoUrl}
+                              alt="Proof"
+                              className="rounded border border-gray-200 object-cover"
+                              style={{ width: 80, height: 60 }}
+                            />
                           </a>
+                        ) : (
+                          <span className="mt-1 block text-xs text-gray-400">无照片 / No photo</span>
                         )}
                         <p className="mt-1 text-xs text-gray-400">
                           {new Date(claim.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}

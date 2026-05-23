@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { PhotoUpload } from '@/components/PhotoUpload'
 
 type DepositStatus = 'PENDING' | 'PAID' | 'CLAIM_PENDING' | 'CLAIM_APPROVED' | 'REFUNDED' | 'FORFEITED' | 'REFUND_FAILED'
 type ClaimStatus = 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED'
@@ -246,14 +247,12 @@ export function VolunteerClient({ deposit, services, academicYear }: Props) {
 
             <div>
               <label className="mb-1 block text-sm font-medium text-gray-700">
-                照片链接（可选）/ Photo URL (optional)
+                服务照片（可选）/ Photo Proof (optional)
               </label>
-              <input
-                type="url"
-                value={photoUrl}
-                onChange={(e) => setPhotoUrl(e.target.value)}
-                placeholder="https://..."
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+              <p className="mb-2 text-xs text-gray-400">上传志愿服务照片作为证明 / Upload a photo as proof of your service</p>
+              <PhotoUpload
+                onUploadComplete={(url) => setPhotoUrl(url)}
+                onUploadError={(err) => setError(err)}
               />
             </div>
 
