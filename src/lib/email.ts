@@ -29,6 +29,8 @@ import { VolunteerRefundProcessed } from '@/emails/VolunteerRefundProcessed'
 import type { VolunteerRefundProcessedProps } from '@/emails/VolunteerRefundProcessed'
 import { VolunteerDepositForfeited } from '@/emails/VolunteerDepositForfeited'
 import type { VolunteerDepositForfeitedProps } from '@/emails/VolunteerDepositForfeited'
+import { UnenrollmentNotification } from '@/emails/UnenrollmentNotification'
+import type { UnenrollmentNotificationProps } from '@/emails/UnenrollmentNotification'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = process.env.EMAIL_FROM ?? 'noreply@chineseschool.com'
@@ -236,6 +238,16 @@ export async function sendVolunteerDepositForfeited(to: string, data: VolunteerD
     from: FROM,
     to,
     subject: '志愿服务押金通知 / Volunteer Deposit Notice',
+    html,
+  })
+}
+
+export async function sendUnenrollmentNotification(to: string, data: UnenrollmentNotificationProps): Promise<void> {
+  const html = await render(createElement(UnenrollmentNotification, data))
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: `注册取消通知 / Enrollment Cancelled — ${data.studentName}`,
     html,
   })
 }

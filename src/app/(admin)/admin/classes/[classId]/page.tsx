@@ -4,7 +4,7 @@ import { prisma } from '@/lib/db'
 import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { getStudentStatuses } from '@/lib/student-status'
 import { ClassDetailClient } from './ClassDetailClient'
-import type { EnrolledStudent, AvailableClass } from './ClassDetailClient'
+import type { EnrolledStudent, AvailableClass, CancelledRow } from './ClassDetailClient'
 import { sortByLastNamePinyin } from '@/lib/pinyin-sort'
 import { TextbookManager } from './TextbookManager'
 import type { TextbookRow } from './TextbookManager'
@@ -28,7 +28,7 @@ export default async function ClassDetailPage({
   const { classId } = await params
   const YEAR = await getCurrentAcademicYear()
 
-  const [cls, enrollments, allSameTypeClasses, pendingCount, cancelledCount, allTeachers] = await Promise.all([
+  const [cls, enrollments, allSameTypeClasses, pendingCount, cancelledCount, allTeachers, waitlistCount, cancelledLogs] = await Promise.all([
     prisma.class.findUnique({
       where: { id: classId },
       include: {
@@ -59,9 +59,45 @@ export default async function ClassDetailPage({
     prisma.enrollment.count({ where: { classId, status: 'PENDING' } }),
     prisma.enrollment.count({ where: { classId, status: 'CANCELLED' } }),
     prisma.teacher.findMany({ orderBy: { name: 'asc' }, select: { id: true, name: true, nameEn: true } }),
+    prisma.waitlist.count({ where: { classId } }),
+    prisma.adjustmentLog.findMany({
+      where: { fromClassId: classId, toClassId: null },
+      orderBy: { createdAt: 'desc' },
+    }),
   ])
 
   if (!cls) notFound()
+
+  // Build cancelled rows from adjustment logs
+  const cancelledRows: CancelledRow[] = []
+  if (cancelledLogs.length > 0) {
+    const studentIds = [...new Set(cancelledLogs.map((l) => l.studentId))]
+    const adminIds = [...new Set(cancelledLogs.map((l) => l.adminId))]
+    const [cancelStudents, adminUsers] = await Promise.all([
+      prisma.student.findMany({
+        where: { id: { in: studentIds } },
+        select: { id: true, name: true, nameEn: true },
+      }),
+      prisma.user.findMany({
+        where: { id: { in: adminIds } },
+        select: { id: true, name: true },
+      }),
+    ])
+    const studentMap = Object.fromEntries(cancelStudents.map((s) => [s.id, s]))
+    const adminMap = Object.fromEntries(adminUsers.map((u) => [u.id, u]))
+    for (const log of cancelledLogs) {
+      const student = studentMap[log.studentId]
+      if (student) {
+        cancelledRows.push({
+          studentName: student.name,
+          studentNameEn: student.nameEn,
+          cancelledAt: log.createdAt.toISOString(),
+          reason: log.reason,
+          cancelledBy: adminMap[log.adminId]?.name ?? null,
+        })
+      }
+    }
+  }
 
   const studentStatuses = await getStudentStatuses(
     enrollments.map((e) => e.student.id),
@@ -169,6 +205,8 @@ export default async function ClassDetailPage({
           enrolledStudents={enrolledStudents}
           currentClassName={cls.name}
           availableClasses={availableClasses}
+          waitlistCount={waitlistCount}
+          cancelledRows={cancelledRows}
         />
       </div>
 

@@ -53,8 +53,10 @@ export default async function AdminStudentsPage() {
       parentName: parent?.name ?? null,
       parentEmail: parent?.email ?? null,
       enrolledClasses: student.enrollments.map((e) => ({
+        enrollmentId: e.id,
         name: e.class.name,
         type: e.class.type,
+        enrolledAt: e.createdAt.toISOString(),
       })),
       status: statuses[student.id] ?? 'NEW',
       hasConfirmedExamRegs: student.examRegistrations.length > 0,

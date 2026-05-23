@@ -6,6 +6,7 @@ import { StudentStatusBadge } from '@/components/StudentStatusBadge'
 import type { StudentStatus } from '@/lib/student-status'
 import { AddStudentModal } from '@/components/admin/AddStudentModal'
 import { EditStudentModal } from '@/components/admin/EditStudentModal'
+import { UnenrollModal } from '@/components/admin/UnenrollModal'
 
 export interface StudentRow {
   studentId: string
@@ -18,7 +19,7 @@ export interface StudentRow {
   familyId: string
   parentName: string | null
   parentEmail: string | null
-  enrolledClasses: Array<{ name: string; type: string }>
+  enrolledClasses: Array<{ enrollmentId: string; name: string; type: string; enrolledAt: string }>
   status: StudentStatus
   hasConfirmedExamRegs: boolean
 }
@@ -50,6 +51,13 @@ export function StudentsClient({ rows }: Props) {
   const [deleteTarget, setDeleteTarget] = useState<StudentRow | null>(null)
   const [deleting, setDeleting] = useState(false)
   const [message, setMessage] = useState<{ text: string; type: MsgType } | null>(null)
+  const [unenrollTarget, setUnenrollTarget] = useState<{
+    enrollmentId: string
+    studentName: string
+    studentNameEn: string | null
+    className: string
+    enrolledAt: string
+  } | null>(null)
 
   const q = query.trim().toLowerCase()
 
@@ -300,17 +308,28 @@ export function StudentsClient({ rows }: Props) {
                     <div className="flex flex-wrap gap-1">
                       {row.enrolledClasses.map((cls) => (
                         <span
-                          key={cls.name}
-                          className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                          key={cls.enrollmentId}
+                          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${
                             cls.type === 'CHINESE'
                               ? 'bg-red-50 text-red-700'
                               : 'bg-purple-50 text-purple-700'
                           }`}
                         >
                           {cls.name}
-                          <span className="ml-1 opacity-60">
-                            {CLASS_TYPE_LABEL[cls.type] ?? cls.type}
-                          </span>
+                          <span className="opacity-60">{CLASS_TYPE_LABEL[cls.type] ?? cls.type}</span>
+                          <button
+                            onClick={() => setUnenrollTarget({
+                              enrollmentId: cls.enrollmentId,
+                              studentName: row.studentName,
+                              studentNameEn: row.studentNameEn,
+                              className: cls.name,
+                              enrolledAt: cls.enrolledAt,
+                            })}
+                            className="opacity-50 hover:opacity-100 leading-none"
+                            title="取消注册 / Unenroll"
+                          >
+                            ✕
+                          </button>
                         </span>
                       ))}
                     </div>
@@ -354,6 +373,24 @@ export function StudentsClient({ rows }: Props) {
           student={editTarget}
           onClose={() => setEditTarget(null)}
           onSuccess={(msg) => { setEditTarget(null); showMsg(msg) }}
+        />
+      )}
+
+      {/* Unenroll modal */}
+      {unenrollTarget && (
+        <UnenrollModal
+          enrollmentId={unenrollTarget.enrollmentId}
+          studentName={unenrollTarget.studentName}
+          studentNameEn={unenrollTarget.studentNameEn}
+          className={unenrollTarget.className}
+          enrolledAt={unenrollTarget.enrolledAt}
+          waitlistCount={0}
+          onClose={() => setUnenrollTarget(null)}
+          onSuccess={(msg) => {
+            setUnenrollTarget(null)
+            showMsg(msg)
+            router.refresh()
+          }}
         />
       )}
 
