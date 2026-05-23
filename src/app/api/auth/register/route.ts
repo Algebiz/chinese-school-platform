@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
+import { sendWelcomeEmail } from "@/lib/email"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
 
@@ -48,6 +49,15 @@ export async function POST(req: NextRequest) {
         },
       })
     })
+
+    // Send welcome email (non-fatal — registration already succeeded)
+    try {
+      console.log('Sending welcome email to:', email)
+      await sendWelcomeEmail(email, name)
+      console.log('Welcome email sent successfully to:', email)
+    } catch (emailErr) {
+      console.error('Failed to send welcome email:', emailErr)
+    }
 
     return NextResponse.json({ success: true, data: { message: "Registration successful" } })
   } catch (error) {

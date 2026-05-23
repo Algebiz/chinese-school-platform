@@ -58,13 +58,16 @@ export interface WaitlistData {
 // ── Exported functions ────────────────────────────────────────────────────────
 
 export async function sendWelcomeEmail(to: string, parentName: string): Promise<void> {
+  console.log('Resend API Key exists:', !!process.env.RESEND_API_KEY)
+  console.log('Email FROM:', FROM)
   const html = await render(createElement(WelcomeEmail, { parentName }))
-  await resend.emails.send({
+  const result = await resend.emails.send({
     from: FROM,
     to,
     subject: `欢迎加入夏洛特中文学校 / Welcome to Charlotte Chinese Academy`,
     html,
   })
+  console.log('Welcome email result:', result)
 }
 
 export async function sendEnrollmentConfirmation(to: string, data: EnrollmentData): Promise<void> {
