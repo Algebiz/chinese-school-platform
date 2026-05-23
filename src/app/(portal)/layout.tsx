@@ -34,8 +34,9 @@ export default async function PortalLayout({ children }: { children: React.React
                 { href: '/dashboard', zh: '仪表盘', en: 'Dashboard' },
                 { href: '/classes',   zh: '班级',   en: 'Classes'   },
                 { href: '/enroll',    zh: '报名',   en: 'Enroll'    },
-                { href: '/exams',     zh: '考试报名', en: 'Exams'   },
-                { href: '/contact',   zh: '联系我们', en: 'Contact' },
+                { href: '/exams',     zh: '考试报名', en: 'Exams'      },
+                { href: '/volunteer', zh: '志愿服务', en: 'Volunteer' },
+                { href: '/contact',   zh: '联系我们', en: 'Contact'   },
               ].map(({ href, zh, en }) => (
                 <Link
                   key={href}
@@ -72,6 +73,7 @@ export default async function PortalLayout({ children }: { children: React.React
             { href: '/classes',   label: 'Classes'   },
             { href: '/enroll',    label: 'Enroll'    },
             { href: '/exams',     label: 'Exams'     },
+            { href: '/volunteer', label: 'Volunteer' },
             { href: '/contact',   label: 'Contact'   },
           ].map(({ href, label }) => (
             <Link

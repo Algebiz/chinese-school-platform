@@ -8,10 +8,12 @@ interface PayPalButtonProps {
   classIds: string[]
   textbookIds?: string[]
   academicYear: string
+  familyId?: string
+  includesDeposit?: boolean
   onSuccess: () => void
 }
 
-export function PayPalButton({ studentId, classIds, textbookIds = [], academicYear, onSuccess }: PayPalButtonProps) {
+export function PayPalButton({ studentId, classIds, textbookIds = [], academicYear, familyId, includesDeposit = false, onSuccess }: PayPalButtonProps) {
   const [error, setError] = useState<string | null>(null)
 
   return (
@@ -33,7 +35,7 @@ export function PayPalButton({ studentId, classIds, textbookIds = [], academicYe
             const res = await fetch('/api/payments/paypal/create-order', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ studentId, classIds, textbookIds, academicYear }),
+              body: JSON.stringify({ studentId, classIds, textbookIds, academicYear, familyId, includesDeposit }),
             })
             const json = await res.json()
             if (!json.success) {
@@ -51,6 +53,8 @@ export function PayPalButton({ studentId, classIds, textbookIds = [], academicYe
                 classIds,
                 textbookIds,
                 academicYear,
+                familyId,
+                includesDeposit,
               }),
             })
             const json = await res.json()

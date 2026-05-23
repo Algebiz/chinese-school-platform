@@ -8,6 +8,9 @@ interface Config {
   nextYear: string
   reEnrollmentOpenDate: string
   newEnrollmentOpenDate: string
+  volunteerDepositAmount?: string | number | null
+  volunteerClaimDeadline?: string | null
+  volunteerDepositRequired?: boolean
 }
 
 function toDatetimeLocal(iso: string | null | undefined): string {
@@ -21,6 +24,9 @@ export default function EnrollmentSettingsPage() {
     nextYear: '2026-2027',
     reEnrollmentOpenDate: '',
     newEnrollmentOpenDate: '',
+    volunteerDepositAmount: '100',
+    volunteerClaimDeadline: '',
+    volunteerDepositRequired: true,
   })
   const [loading, setLoading] = useState(false)
   const [fetching, setFetching] = useState(true)
@@ -38,6 +44,9 @@ export default function EnrollmentSettingsPage() {
             nextYear: d.nextYear,
             reEnrollmentOpenDate: toDatetimeLocal(d.reEnrollmentOpenDate),
             newEnrollmentOpenDate: toDatetimeLocal(d.newEnrollmentOpenDate),
+            volunteerDepositAmount: d.volunteerDepositAmount != null ? String(d.volunteerDepositAmount) : '100',
+            volunteerClaimDeadline: toDatetimeLocal(d.volunteerClaimDeadline),
+            volunteerDepositRequired: d.volunteerDepositRequired ?? true,
           })
         }
       })
@@ -59,6 +68,9 @@ export default function EnrollmentSettingsPage() {
           nextYear: form.nextYear,
           reEnrollmentOpenDate: new Date(form.reEnrollmentOpenDate).toISOString(),
           newEnrollmentOpenDate: new Date(form.newEnrollmentOpenDate).toISOString(),
+          volunteerDepositAmount: form.volunteerDepositAmount ? parseFloat(form.volunteerDepositAmount) : undefined,
+          volunteerClaimDeadline: form.volunteerClaimDeadline ? new Date(form.volunteerClaimDeadline).toISOString() : undefined,
+          volunteerDepositRequired: form.volunteerDepositRequired,
         }),
       })
       const json = await res.json()
@@ -141,6 +153,43 @@ export default function EnrollmentSettingsPage() {
             className="input"
           />
         </Field>
+
+        <div className="border-t border-gray-100 pt-6">
+          <h2 className="text-base font-semibold mb-4 text-gray-900">志愿服务设置 / Volunteer Settings</h2>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <Field label="押金金额 / Deposit Amount" hint="Default: $100. Leave blank to use default.">
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={form.volunteerDepositAmount}
+                onChange={(e) => setForm((f) => ({ ...f, volunteerDepositAmount: e.target.value }))}
+                placeholder="100"
+                className="input"
+              />
+            </Field>
+            <Field label="申请截止日期 / Claim Deadline" hint="Optional. Families cannot submit claims after this date.">
+              <input
+                type="datetime-local"
+                value={form.volunteerClaimDeadline}
+                onChange={(e) => setForm((f) => ({ ...f, volunteerClaimDeadline: e.target.value }))}
+                className="input"
+              />
+            </Field>
+          </div>
+          <div className="mt-4 flex items-center gap-3">
+            <input
+              id="depositRequired"
+              type="checkbox"
+              checked={form.volunteerDepositRequired}
+              onChange={(e) => setForm((f) => ({ ...f, volunteerDepositRequired: e.target.checked }))}
+              className="h-4 w-4 rounded border-gray-300 text-red-600"
+            />
+            <label htmlFor="depositRequired" className="text-sm text-gray-700">
+              启用志愿押金 / Enable volunteer deposit requirement
+            </label>
+          </div>
+        </div>
 
         <div className="pt-2 border-t border-gray-100">
           <button

@@ -282,6 +282,9 @@ exports.Prisma.AcademicYearConfigScalarFieldEnum = {
   reEnrollmentOpenDate: 'reEnrollmentOpenDate',
   newEnrollmentOpenDate: 'newEnrollmentOpenDate',
   isActive: 'isActive',
+  volunteerDepositAmount: 'volunteerDepositAmount',
+  volunteerClaimDeadline: 'volunteerClaimDeadline',
+  volunteerDepositRequired: 'volunteerDepositRequired',
   createdAt: 'createdAt'
 };
 
@@ -358,6 +361,53 @@ exports.Prisma.SystemSettingsScalarFieldEnum = {
   updatedBy: 'updatedBy'
 };
 
+exports.Prisma.VolunteerServiceScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  nameZh: 'nameZh',
+  description: 'description',
+  descriptionZh: 'descriptionZh',
+  academicYear: 'academicYear',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VolunteerDepositScalarFieldEnum = {
+  id: 'id',
+  familyId: 'familyId',
+  academicYear: 'academicYear',
+  amount: 'amount',
+  status: 'status',
+  paidAt: 'paidAt',
+  paymentMethod: 'paymentMethod',
+  stripePaymentIntentId: 'stripePaymentIntentId',
+  paypalOrderId: 'paypalOrderId',
+  forfeitedAt: 'forfeitedAt',
+  refundedAt: 'refundedAt',
+  refundedBy: 'refundedBy',
+  refundNotes: 'refundNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VolunteerClaimScalarFieldEnum = {
+  id: 'id',
+  depositId: 'depositId',
+  familyId: 'familyId',
+  serviceId: 'serviceId',
+  academicYear: 'academicYear',
+  description: 'description',
+  photoUrl: 'photoUrl',
+  submittedAt: 'submittedAt',
+  status: 'status',
+  reviewedAt: 'reviewedAt',
+  reviewedBy: 'reviewedBy',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -431,6 +481,21 @@ exports.ExamRegistrationStatus = exports.$Enums.ExamRegistrationStatus = {
   CANCELLED: 'CANCELLED'
 };
 
+exports.DepositStatus = exports.$Enums.DepositStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  CLAIM_PENDING: 'CLAIM_PENDING',
+  CLAIM_APPROVED: 'CLAIM_APPROVED',
+  REFUNDED: 'REFUNDED',
+  FORFEITED: 'FORFEITED'
+};
+
+exports.ClaimStatus = exports.$Enums.ClaimStatus = {
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
 exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
@@ -451,7 +516,10 @@ exports.Prisma.ModelName = {
   ContactMessage: 'ContactMessage',
   ExamSession: 'ExamSession',
   ExamRegistration: 'ExamRegistration',
-  SystemSettings: 'SystemSettings'
+  SystemSettings: 'SystemSettings',
+  VolunteerService: 'VolunteerService',
+  VolunteerDeposit: 'VolunteerDeposit',
+  VolunteerClaim: 'VolunteerClaim'
 };
 
 /**

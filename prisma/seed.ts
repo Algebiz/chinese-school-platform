@@ -648,6 +648,27 @@ async function main() {
 
   console.log('  ✓ Exam sessions created (YCT L3, YCT L4, HSK L2, HSK L3)')
 
+  // ── Volunteer Services ──────────────────────────────────────────────────────
+  const volunteerServices = [
+    { name: 'Spring Festival Setup', nameZh: '春节晚会布置', description: 'Help set up decorations and arrange seating for the Spring Festival Gala', descriptionZh: '协助布置春节联欢晚会会场，摆放装饰和座椅' },
+    { name: 'Spring Festival Cleanup', nameZh: '春节晚会清理', description: 'Help clean up after the Spring Festival Gala event', descriptionZh: '协助清理春节联欢晚会结束后的会场' },
+    { name: 'Class Supervision', nameZh: '课堂监督', description: 'Assist teachers by supervising students during class', descriptionZh: '协助教师在课堂期间监督学生' },
+    { name: 'Registration Day Helper', nameZh: '注册日志愿者', description: 'Help families with the registration process on registration day', descriptionZh: '在注册日协助家庭完成注册流程' },
+    { name: 'Event Photography', nameZh: '活动摄影', description: "Take photos at school events for the school's records and social media", descriptionZh: '在学校活动中拍摄照片，用于学校记录和社交媒体' },
+    { name: 'Mid-Autumn Festival Helper', nameZh: '中秋节活动志愿者', description: 'Help organize and run the Mid-Autumn Festival celebration', descriptionZh: '协助组织和举办中秋节庆典活动' },
+    { name: 'On-Duty Sunday Volunteer', nameZh: '周日值日志愿者', description: 'Help with Sunday operations — greeting families and directing traffic', descriptionZh: '协助周日校园运营——迎接家庭、引导交通' },
+    { name: 'Other Service', nameZh: '其他服务', description: 'Any other volunteer service approved by the school administration', descriptionZh: '经学校管理层批准的其他志愿服务' },
+  ]
+
+  for (const svc of volunteerServices) {
+    await prisma.volunteerService.upsert({
+      where: { id: (await prisma.volunteerService.findFirst({ where: { name: svc.name, academicYear: CURRENT_YEAR } }))?.id ?? 'nonexistent' },
+      update: {},
+      create: { ...svc, academicYear: CURRENT_YEAR, isActive: true },
+    })
+  }
+  console.log('  ✓ Volunteer services seeded')
+
   console.log('\n✅ Seeding complete!')
   console.log('\nSummary:')
   console.log('  Teachers:          19 (language) + 4 (arts) + 汪倩 (shared) = 23')

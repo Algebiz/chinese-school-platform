@@ -42,7 +42,7 @@ export default async function AdminDashboard() {
   const YEAR = await getCurrentAcademicYear()
   const PREVIOUS_YEAR = YEAR.replace(/^(\d{4})-\d{4}$/, (_, a) => `${parseInt(a) - 1}-${a}`)
 
-  const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent, returningStudentCount, pendingExamCount] = await Promise.all([
+  const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent, returningStudentCount, pendingExamCount, pendingVolunteerClaimsCount] = await Promise.all([
     // Students who have at least one CONFIRMED enrollment this year
     prisma.student.count({
       where: { enrollments: { some: { status: 'CONFIRMED', class: { year: YEAR } } } },
@@ -83,6 +83,7 @@ export default async function AdminDashboard() {
       },
     }),
     prisma.examRegistration.count({ where: { status: 'PAID' } }),
+    prisma.volunteerClaim.count({ where: { status: 'PENDING_REVIEW' } }),
   ])
 
   const totalRevenue = revenue._sum.amount?.toNumber() ?? 0
@@ -104,6 +105,7 @@ export default async function AdminDashboard() {
         <StatCard title="新生" en="New Students" value={newStudentCount} />
         <StatCard title="老生" en="Returning Students" value={returningStudentCount} />
         <StatCard title="待确认考试报名" en="Pending Exam Confirmations" value={pendingExamCount} accent="amber" />
+        <StatCard title="待审核志愿申请" en="Pending Volunteer Claims" value={pendingVolunteerClaimsCount} accent="amber" />
       </div>
 
       {/* Capacity bars */}

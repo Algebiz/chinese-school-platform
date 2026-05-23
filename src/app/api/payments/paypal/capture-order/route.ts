@@ -12,6 +12,8 @@ const schema = z.object({
   classIds: z.array(z.string().min(1)).min(1),
   textbookIds: z.array(z.string()).optional().default([]),
   academicYear: z.string().min(1),
+  familyId: z.string().optional(),
+  includesDeposit: z.boolean().optional().default(false),
 })
 
 export async function POST(req: NextRequest) {
@@ -33,7 +35,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { orderId, studentId, classIds, textbookIds, academicYear } = result.data
+    const { orderId, studentId, classIds, textbookIds, academicYear, familyId, includesDeposit } = result.data
 
     // Capture the PayPal order
     const captureResult = await captureOrder(orderId)
@@ -81,6 +83,32 @@ export async function POST(req: NextRequest) {
         }
       }
     })
+
+    // Handle volunteer deposit — non-fatal
+    if (includesDeposit && familyId) {
+      try {
+        await prisma.volunteerDeposit.upsert({
+          where: { familyId_academicYear: { familyId, academicYear } },
+          create: {
+            familyId,
+            academicYear,
+            amount: 100,
+            status: 'PAID',
+            paidAt: new Date(),
+            paymentMethod: 'PAYPAL',
+            paypalOrderId: orderId,
+          },
+          update: {
+            status: 'PAID',
+            paidAt: new Date(),
+            paymentMethod: 'PAYPAL',
+            paypalOrderId: orderId,
+          },
+        })
+      } catch (err) {
+        console.error('Failed to create/update volunteer deposit (PayPal):', err)
+      }
+    }
 
     // Non-fatal email
     try {

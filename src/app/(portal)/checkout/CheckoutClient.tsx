@@ -23,10 +23,13 @@ export interface BreakdownItem {
 export interface CheckoutData {
   studentId: string
   studentName: string
+  familyId: string
   academicYear: string
   classIds: string[]
   textbookIds: string[]
   breakdown: BreakdownItem[]
+  includesDeposit: boolean
+  depositAmount: number
 }
 
 interface Props {
@@ -38,11 +41,11 @@ export function CheckoutClient({ data }: Props) {
   const [tab, setTab] = useState<PaymentTab>('stripe')
   const [paid, setPaid] = useState(false)
 
-  const { studentId, studentName, academicYear, classIds, textbookIds, breakdown } = data
+  const { studentId, studentName, familyId, academicYear, classIds, textbookIds, breakdown, includesDeposit, depositAmount } = data
 
   const tuition = breakdown.filter((b) => b.type === 'tuition')
   const textbooks = breakdown.filter((b) => b.type === 'textbook')
-  const total = breakdown.reduce((sum, b) => sum + parseFloat(b.fee), 0)
+  const total = breakdown.reduce((sum, b) => sum + parseFloat(b.fee), 0) + (includesDeposit ? depositAmount : 0)
 
   if (paid) {
     return (
@@ -111,6 +114,24 @@ export function CheckoutClient({ data }: Props) {
           </>
         )}
 
+        {/* Volunteer Deposit */}
+        {includesDeposit && (
+          <>
+            <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-gray-400">
+              志愿服务押金 / Volunteer Deposit
+            </p>
+            <div className="mb-3 text-sm">
+              <div className="flex justify-between">
+                <div>
+                  <span className="text-gray-600">押金（可退）/ Refundable Deposit</span>
+                  <p className="text-xs text-gray-400">完成1次志愿服务后可申请退款 / Refundable after 1 volunteer service</p>
+                </div>
+                <span className="font-medium">${depositAmount.toFixed(2)}</span>
+              </div>
+            </div>
+          </>
+        )}
+
         <div className="flex justify-between border-t border-gray-200 pt-3 font-bold">
           <span>合计 / Total</span>
           <span className="text-red-600">${total.toFixed(2)}</span>
@@ -145,6 +166,9 @@ export function CheckoutClient({ data }: Props) {
             textbookIds={textbookIds}
             academicYear={academicYear}
             breakdown={breakdown}
+            familyId={familyId}
+            includesDeposit={includesDeposit}
+            depositAmount={depositAmount}
             onSuccess={() => setPaid(true)}
           />
         )}
@@ -154,6 +178,8 @@ export function CheckoutClient({ data }: Props) {
             classIds={classIds}
             textbookIds={textbookIds}
             academicYear={academicYear}
+            familyId={familyId}
+            includesDeposit={includesDeposit}
             onSuccess={() => setPaid(true)}
           />
         )}

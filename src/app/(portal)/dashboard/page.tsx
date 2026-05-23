@@ -18,6 +18,17 @@ export default async function DashboardPage() {
 
   const CURRENT_YEAR = await getCurrentAcademicYear()
 
+  const familyIdForDeposit = (await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { familyId: true },
+  }))?.familyId
+
+  const volunteerDeposit = familyIdForDeposit
+    ? await prisma.volunteerDeposit.findUnique({
+        where: { familyId_academicYear: { familyId: familyIdForDeposit, academicYear: CURRENT_YEAR } },
+      })
+    : null
+
   const myExamRegistrations = await prisma.examRegistration.findMany({
     where: {
       student: { family: { users: { some: { id: session.user.id } } } },
@@ -308,6 +319,54 @@ export default async function DashboardPage() {
           </div>
         </div>
       )}
+
+      {/* Volunteer Deposit */}
+      <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+        <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-5 py-3">
+          <h2 className="font-semibold text-gray-900">志愿服务押金 / Volunteer Deposit</h2>
+          <Link href="/volunteer" className="text-xs text-red-600 hover:text-red-800 font-medium">
+            查看详情 / View details →
+          </Link>
+        </div>
+        <div className="px-5 py-4">
+          {!volunteerDeposit ? (
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-700">押金将在首次报名时收取（$100，可退）</p>
+                <p className="text-xs text-gray-400">Deposit collected at first enrollment — refundable after volunteer service</p>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <div>
+                <span className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${
+                  volunteerDeposit.status === 'PAID' ? 'bg-blue-100 text-blue-700' :
+                  volunteerDeposit.status === 'CLAIM_PENDING' ? 'bg-purple-100 text-purple-700' :
+                  volunteerDeposit.status === 'CLAIM_APPROVED' ? 'bg-green-100 text-green-700' :
+                  volunteerDeposit.status === 'REFUNDED' ? 'bg-green-100 text-green-700' :
+                  volunteerDeposit.status === 'FORFEITED' ? 'bg-gray-100 text-gray-500' :
+                  'bg-amber-100 text-amber-700'
+                }`}>
+                  {volunteerDeposit.status === 'PENDING' ? '待支付 / Pending' :
+                   volunteerDeposit.status === 'PAID' ? '已支付 / Paid' :
+                   volunteerDeposit.status === 'CLAIM_PENDING' ? '申请审核中 / Claim Under Review' :
+                   volunteerDeposit.status === 'CLAIM_APPROVED' ? '已批准 / Approved' :
+                   volunteerDeposit.status === 'REFUNDED' ? '已退款 / Refunded' :
+                   '已没收 / Forfeited'}
+                </span>
+                <p className="mt-1 text-xs text-gray-400">
+                  金额 / Amount: ${parseFloat(volunteerDeposit.amount.toString()).toFixed(2)}
+                </p>
+              </div>
+              {volunteerDeposit.status === 'PAID' && (
+                <Link href="/volunteer" className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700 transition-colors">
+                  申请退款 / Claim Refund
+                </Link>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Quick links */}
       <div className="rounded-lg border border-gray-200 bg-white p-5">

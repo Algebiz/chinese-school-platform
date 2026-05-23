@@ -25,6 +25,21 @@ export default async function CheckoutPage({
     select: { familyId: true },
   })
 
+  // ── Volunteer deposit check ──────────────────────────────────────────────────
+  const familyId = user?.familyId
+  const yearConfig = await prisma.academicYearConfig.findFirst({ where: { isActive: true } })
+  const depositRequired = yearConfig?.volunteerDepositRequired ?? true
+  const depositAmount = yearConfig?.volunteerDepositAmount?.toNumber() ?? 100
+
+  let includesDeposit = false
+  if (depositRequired && familyId) {
+    const existingDeposit = await prisma.volunteerDeposit.findUnique({
+      where: { familyId_academicYear: { familyId, academicYear: CURRENT_YEAR } },
+    })
+    // Only add deposit if family has no deposit yet OR deposit is still PENDING (not paid)
+    includesDeposit = !existingDeposit || existingDeposit.status === 'PENDING'
+  }
+
   // Fetch without status filter to detect cancelled enrollments
   const rawEnrollments = await prisma.enrollment.findMany({
     where: { id: { in: enrollmentIds } },
@@ -109,10 +124,13 @@ export default async function CheckoutPage({
           data={{
             studentId: student.id,
             studentName: student.name,
+            familyId: student.familyId,
             academicYear: CURRENT_YEAR,
             classIds,
             textbookIds,
             breakdown,
+            includesDeposit,
+            depositAmount,
           }}
         />
       </div>

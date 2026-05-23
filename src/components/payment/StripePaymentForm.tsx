@@ -100,6 +100,9 @@ interface StripePaymentFormProps {
   textbookIds?: string[]
   academicYear: string
   breakdown: PaymentBreakdownItem[]
+  familyId?: string
+  includesDeposit?: boolean
+  depositAmount?: number
   onSuccess: () => void
 }
 
@@ -109,19 +112,23 @@ export function StripePaymentForm({
   textbookIds = [],
   academicYear,
   breakdown,
+  familyId,
+  includesDeposit = false,
+  depositAmount = 0,
   onSuccess,
 }: StripePaymentFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const total = breakdown.reduce((sum, b) => sum + parseFloat(b.fee), 0)
+  const tuitionTotal = breakdown.reduce((sum, b) => sum + parseFloat(b.fee), 0)
+  const total = tuitionTotal + (includesDeposit ? depositAmount : 0)
 
   useEffect(() => {
     fetch('/api/payments/stripe/create-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ studentId, classIds, textbookIds, academicYear }),
+      body: JSON.stringify({ studentId, classIds, textbookIds, academicYear, familyId, includesDeposit, depositAmount }),
     })
       .then((r) => r.json())
       .then((json) => {
@@ -134,7 +141,7 @@ export function StripePaymentForm({
       .catch(() => setLoadError('网络错误，请刷新重试'))
       .finally(() => setLoading(false))
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [studentId, academicYear, classIds.join(','), textbookIds.join(',')])
+  }, [studentId, academicYear, classIds.join(','), textbookIds.join(','), includesDeposit, depositAmount])
 
   if (loading) {
     return (

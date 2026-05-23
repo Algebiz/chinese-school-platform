@@ -19,6 +19,16 @@ import { ExamRegistrationApproved } from '@/emails/ExamRegistrationApproved'
 import type { ExamRegistrationApprovedProps } from '@/emails/ExamRegistrationApproved'
 import { ExamRegistrationRejected } from '@/emails/ExamRegistrationRejected'
 import type { ExamRegistrationRejectedProps } from '@/emails/ExamRegistrationRejected'
+import { VolunteerClaimSubmitted } from '@/emails/VolunteerClaimSubmitted'
+import type { VolunteerClaimSubmittedProps } from '@/emails/VolunteerClaimSubmitted'
+import { VolunteerClaimApproved } from '@/emails/VolunteerClaimApproved'
+import type { VolunteerClaimApprovedProps } from '@/emails/VolunteerClaimApproved'
+import { VolunteerClaimRejected } from '@/emails/VolunteerClaimRejected'
+import type { VolunteerClaimRejectedProps } from '@/emails/VolunteerClaimRejected'
+import { VolunteerRefundProcessed } from '@/emails/VolunteerRefundProcessed'
+import type { VolunteerRefundProcessedProps } from '@/emails/VolunteerRefundProcessed'
+import { VolunteerDepositForfeited } from '@/emails/VolunteerDepositForfeited'
+import type { VolunteerDepositForfeitedProps } from '@/emails/VolunteerDepositForfeited'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = process.env.EMAIL_FROM ?? 'noreply@chineseschool.com'
@@ -176,6 +186,56 @@ export async function sendExamRegistrationRejected(
     from: FROM,
     to,
     subject: `考试报名通知 / Exam Registration Notice — ${data.examType} Level ${data.level}`,
+    html,
+  })
+}
+
+export async function sendVolunteerClaimSubmitted(to: string, data: VolunteerClaimSubmittedProps): Promise<void> {
+  const html = await render(createElement(VolunteerClaimSubmitted, data))
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: '志愿服务申请已收到 / Volunteer Claim Received',
+    html,
+  })
+}
+
+export async function sendVolunteerClaimApproved(to: string, data: VolunteerClaimApprovedProps): Promise<void> {
+  const html = await render(createElement(VolunteerClaimApproved, data))
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: '志愿服务已确认！/ Volunteer Service Confirmed',
+    html,
+  })
+}
+
+export async function sendVolunteerClaimRejected(to: string, data: VolunteerClaimRejectedProps): Promise<void> {
+  const html = await render(createElement(VolunteerClaimRejected, data))
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: '志愿服务申请通知 / Volunteer Claim Notice',
+    html,
+  })
+}
+
+export async function sendVolunteerRefundProcessed(to: string, data: VolunteerRefundProcessedProps): Promise<void> {
+  const html = await render(createElement(VolunteerRefundProcessed, data))
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: '押金退款已处理 / Volunteer Deposit Refund Processed',
+    html,
+  })
+}
+
+export async function sendVolunteerDepositForfeited(to: string, data: VolunteerDepositForfeitedProps): Promise<void> {
+  const html = await render(createElement(VolunteerDepositForfeited, data))
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: '志愿服务押金通知 / Volunteer Deposit Notice',
     html,
   })
 }

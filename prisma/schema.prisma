@@ -102,6 +102,8 @@ model Family {
   address   String?
   users     User[]
   students  Student[]
+  volunteerDeposits VolunteerDeposit[]
+  volunteerClaims   VolunteerClaim[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -259,13 +261,16 @@ model AdjustmentLog {
 }
 
 model AcademicYearConfig {
-  id                    String   @id @default(cuid())
-  academicYear          String   @unique  // e.g. "2025-2026" (the year that is ending)
-  nextYear              String           // e.g. "2026-2027" (the year being enrolled into)
+  id                    String    @id @default(cuid())
+  academicYear          String    @unique  // e.g. "2025-2026" (the year that is ending)
+  nextYear              String            // e.g. "2026-2027" (the year being enrolled into)
   reEnrollmentOpenDate  DateTime
   newEnrollmentOpenDate DateTime
-  isActive              Boolean  @default(true)
-  createdAt             DateTime @default(now())
+  isActive              Boolean   @default(true)
+  volunteerDepositAmount   Decimal?  @db.Decimal(10,2)
+  volunteerClaimDeadline   DateTime?
+  volunteerDepositRequired Boolean   @default(true)
+  createdAt             DateTime  @default(now())
 }
 
 model StudentNextClassOverride {
@@ -349,4 +354,77 @@ model SystemSettings {
   contactPhone  String   @default("")
   updatedAt     DateTime @updatedAt
   updatedBy     String?
+}
+
+enum DepositStatus {
+  PENDING
+  PAID
+  CLAIM_PENDING
+  CLAIM_APPROVED
+  REFUNDED
+  FORFEITED
+}
+
+enum ClaimStatus {
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
+model VolunteerService {
+  id            String   @id @default(cuid())
+  name          String
+  nameZh        String
+  description   String?
+  descriptionZh String?
+  academicYear  String
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  claims VolunteerClaim[]
+}
+
+model VolunteerDeposit {
+  id                    String         @id @default(cuid())
+  familyId              String
+  academicYear          String
+  amount                Decimal        @db.Decimal(10, 2) @default(100)
+  status                DepositStatus  @default(PENDING)
+  paidAt                DateTime?
+  paymentMethod         PaymentMethod?
+  stripePaymentIntentId String?
+  paypalOrderId         String?
+  forfeitedAt           DateTime?
+  refundedAt            DateTime?
+  refundedBy            String?
+  refundNotes           String?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+
+  family Family           @relation(fields: [familyId], references: [id])
+  claims VolunteerClaim[]
+
+  @@unique([familyId, academicYear])
+}
+
+model VolunteerClaim {
+  id              String      @id @default(cuid())
+  depositId       String
+  familyId        String
+  serviceId       String
+  academicYear    String
+  description     String      @db.Text
+  photoUrl        String?
+  submittedAt     DateTime    @default(now())
+  status          ClaimStatus @default(PENDING_REVIEW)
+  reviewedAt      DateTime?
+  reviewedBy      String?
+  rejectionReason String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  deposit VolunteerDeposit @relation(fields: [depositId], references: [id])
+  family  Family           @relation(fields: [familyId], references: [id])
+  service VolunteerService @relation(fields: [serviceId], references: [id])
 }

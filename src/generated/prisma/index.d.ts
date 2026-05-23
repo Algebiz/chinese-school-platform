@@ -113,6 +113,21 @@ export type ExamRegistration = $Result.DefaultSelection<Prisma.$ExamRegistration
  * 
  */
 export type SystemSettings = $Result.DefaultSelection<Prisma.$SystemSettingsPayload>
+/**
+ * Model VolunteerService
+ * 
+ */
+export type VolunteerService = $Result.DefaultSelection<Prisma.$VolunteerServicePayload>
+/**
+ * Model VolunteerDeposit
+ * 
+ */
+export type VolunteerDeposit = $Result.DefaultSelection<Prisma.$VolunteerDepositPayload>
+/**
+ * Model VolunteerClaim
+ * 
+ */
+export type VolunteerClaim = $Result.DefaultSelection<Prisma.$VolunteerClaimPayload>
 
 /**
  * Enums
@@ -190,6 +205,27 @@ export const ExamRegistrationStatus: {
 
 export type ExamRegistrationStatus = (typeof ExamRegistrationStatus)[keyof typeof ExamRegistrationStatus]
 
+
+export const DepositStatus: {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  CLAIM_PENDING: 'CLAIM_PENDING',
+  CLAIM_APPROVED: 'CLAIM_APPROVED',
+  REFUNDED: 'REFUNDED',
+  FORFEITED: 'FORFEITED'
+};
+
+export type DepositStatus = (typeof DepositStatus)[keyof typeof DepositStatus]
+
+
+export const ClaimStatus: {
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+export type ClaimStatus = (typeof ClaimStatus)[keyof typeof ClaimStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -223,6 +259,14 @@ export const ExamType: typeof $Enums.ExamType
 export type ExamRegistrationStatus = $Enums.ExamRegistrationStatus
 
 export const ExamRegistrationStatus: typeof $Enums.ExamRegistrationStatus
+
+export type DepositStatus = $Enums.DepositStatus
+
+export const DepositStatus: typeof $Enums.DepositStatus
+
+export type ClaimStatus = $Enums.ClaimStatus
+
+export const ClaimStatus: typeof $Enums.ClaimStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -544,6 +588,36 @@ export class PrismaClient<
     * ```
     */
   get systemSettings(): Prisma.SystemSettingsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.volunteerService`: Exposes CRUD operations for the **VolunteerService** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VolunteerServices
+    * const volunteerServices = await prisma.volunteerService.findMany()
+    * ```
+    */
+  get volunteerService(): Prisma.VolunteerServiceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.volunteerDeposit`: Exposes CRUD operations for the **VolunteerDeposit** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VolunteerDeposits
+    * const volunteerDeposits = await prisma.volunteerDeposit.findMany()
+    * ```
+    */
+  get volunteerDeposit(): Prisma.VolunteerDepositDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.volunteerClaim`: Exposes CRUD operations for the **VolunteerClaim** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VolunteerClaims
+    * const volunteerClaims = await prisma.volunteerClaim.findMany()
+    * ```
+    */
+  get volunteerClaim(): Prisma.VolunteerClaimDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -997,7 +1071,10 @@ export namespace Prisma {
     ContactMessage: 'ContactMessage',
     ExamSession: 'ExamSession',
     ExamRegistration: 'ExamRegistration',
-    SystemSettings: 'SystemSettings'
+    SystemSettings: 'SystemSettings',
+    VolunteerService: 'VolunteerService',
+    VolunteerDeposit: 'VolunteerDeposit',
+    VolunteerClaim: 'VolunteerClaim'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1013,7 +1090,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "verificationToken" | "family" | "user" | "student" | "teacher" | "class" | "textbook" | "enrollmentTextbook" | "enrollment" | "payment" | "waitlist" | "adjustmentLog" | "academicYearConfig" | "studentNextClassOverride" | "contactMessage" | "examSession" | "examRegistration" | "systemSettings"
+      modelProps: "account" | "session" | "verificationToken" | "family" | "user" | "student" | "teacher" | "class" | "textbook" | "enrollmentTextbook" | "enrollment" | "payment" | "waitlist" | "adjustmentLog" | "academicYearConfig" | "studentNextClassOverride" | "contactMessage" | "examSession" | "examRegistration" | "systemSettings" | "volunteerService" | "volunteerDeposit" | "volunteerClaim"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2497,6 +2574,228 @@ export namespace Prisma {
           }
         }
       }
+      VolunteerService: {
+        payload: Prisma.$VolunteerServicePayload<ExtArgs>
+        fields: Prisma.VolunteerServiceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VolunteerServiceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerServicePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VolunteerServiceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerServicePayload>
+          }
+          findFirst: {
+            args: Prisma.VolunteerServiceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerServicePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VolunteerServiceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerServicePayload>
+          }
+          findMany: {
+            args: Prisma.VolunteerServiceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerServicePayload>[]
+          }
+          create: {
+            args: Prisma.VolunteerServiceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerServicePayload>
+          }
+          createMany: {
+            args: Prisma.VolunteerServiceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VolunteerServiceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerServicePayload>[]
+          }
+          delete: {
+            args: Prisma.VolunteerServiceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerServicePayload>
+          }
+          update: {
+            args: Prisma.VolunteerServiceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerServicePayload>
+          }
+          deleteMany: {
+            args: Prisma.VolunteerServiceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VolunteerServiceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VolunteerServiceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerServicePayload>[]
+          }
+          upsert: {
+            args: Prisma.VolunteerServiceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerServicePayload>
+          }
+          aggregate: {
+            args: Prisma.VolunteerServiceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVolunteerService>
+          }
+          groupBy: {
+            args: Prisma.VolunteerServiceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VolunteerServiceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VolunteerServiceCountArgs<ExtArgs>
+            result: $Utils.Optional<VolunteerServiceCountAggregateOutputType> | number
+          }
+        }
+      }
+      VolunteerDeposit: {
+        payload: Prisma.$VolunteerDepositPayload<ExtArgs>
+        fields: Prisma.VolunteerDepositFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VolunteerDepositFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerDepositPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VolunteerDepositFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerDepositPayload>
+          }
+          findFirst: {
+            args: Prisma.VolunteerDepositFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerDepositPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VolunteerDepositFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerDepositPayload>
+          }
+          findMany: {
+            args: Prisma.VolunteerDepositFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerDepositPayload>[]
+          }
+          create: {
+            args: Prisma.VolunteerDepositCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerDepositPayload>
+          }
+          createMany: {
+            args: Prisma.VolunteerDepositCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VolunteerDepositCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerDepositPayload>[]
+          }
+          delete: {
+            args: Prisma.VolunteerDepositDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerDepositPayload>
+          }
+          update: {
+            args: Prisma.VolunteerDepositUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerDepositPayload>
+          }
+          deleteMany: {
+            args: Prisma.VolunteerDepositDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VolunteerDepositUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VolunteerDepositUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerDepositPayload>[]
+          }
+          upsert: {
+            args: Prisma.VolunteerDepositUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerDepositPayload>
+          }
+          aggregate: {
+            args: Prisma.VolunteerDepositAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVolunteerDeposit>
+          }
+          groupBy: {
+            args: Prisma.VolunteerDepositGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VolunteerDepositGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VolunteerDepositCountArgs<ExtArgs>
+            result: $Utils.Optional<VolunteerDepositCountAggregateOutputType> | number
+          }
+        }
+      }
+      VolunteerClaim: {
+        payload: Prisma.$VolunteerClaimPayload<ExtArgs>
+        fields: Prisma.VolunteerClaimFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VolunteerClaimFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerClaimPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VolunteerClaimFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerClaimPayload>
+          }
+          findFirst: {
+            args: Prisma.VolunteerClaimFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerClaimPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VolunteerClaimFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerClaimPayload>
+          }
+          findMany: {
+            args: Prisma.VolunteerClaimFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerClaimPayload>[]
+          }
+          create: {
+            args: Prisma.VolunteerClaimCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerClaimPayload>
+          }
+          createMany: {
+            args: Prisma.VolunteerClaimCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VolunteerClaimCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerClaimPayload>[]
+          }
+          delete: {
+            args: Prisma.VolunteerClaimDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerClaimPayload>
+          }
+          update: {
+            args: Prisma.VolunteerClaimUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerClaimPayload>
+          }
+          deleteMany: {
+            args: Prisma.VolunteerClaimDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VolunteerClaimUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VolunteerClaimUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerClaimPayload>[]
+          }
+          upsert: {
+            args: Prisma.VolunteerClaimUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VolunteerClaimPayload>
+          }
+          aggregate: {
+            args: Prisma.VolunteerClaimAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVolunteerClaim>
+          }
+          groupBy: {
+            args: Prisma.VolunteerClaimGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VolunteerClaimGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VolunteerClaimCountArgs<ExtArgs>
+            result: $Utils.Optional<VolunteerClaimCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2625,6 +2924,9 @@ export namespace Prisma {
     examSession?: ExamSessionOmit
     examRegistration?: ExamRegistrationOmit
     systemSettings?: SystemSettingsOmit
+    volunteerService?: VolunteerServiceOmit
+    volunteerDeposit?: VolunteerDepositOmit
+    volunteerClaim?: VolunteerClaimOmit
   }
 
   /* Types for Logging */
@@ -2707,11 +3009,15 @@ export namespace Prisma {
   export type FamilyCountOutputType = {
     users: number
     students: number
+    volunteerDeposits: number
+    volunteerClaims: number
   }
 
   export type FamilyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | FamilyCountOutputTypeCountUsersArgs
     students?: boolean | FamilyCountOutputTypeCountStudentsArgs
+    volunteerDeposits?: boolean | FamilyCountOutputTypeCountVolunteerDepositsArgs
+    volunteerClaims?: boolean | FamilyCountOutputTypeCountVolunteerClaimsArgs
   }
 
   // Custom InputTypes
@@ -2737,6 +3043,20 @@ export namespace Prisma {
    */
   export type FamilyCountOutputTypeCountStudentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: StudentWhereInput
+  }
+
+  /**
+   * FamilyCountOutputType without action
+   */
+  export type FamilyCountOutputTypeCountVolunteerDepositsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VolunteerDepositWhereInput
+  }
+
+  /**
+   * FamilyCountOutputType without action
+   */
+  export type FamilyCountOutputTypeCountVolunteerClaimsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VolunteerClaimWhereInput
   }
 
 
@@ -3026,6 +3346,68 @@ export namespace Prisma {
    */
   export type ExamSessionCountOutputTypeCountRegistrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ExamRegistrationWhereInput
+  }
+
+
+  /**
+   * Count Type VolunteerServiceCountOutputType
+   */
+
+  export type VolunteerServiceCountOutputType = {
+    claims: number
+  }
+
+  export type VolunteerServiceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    claims?: boolean | VolunteerServiceCountOutputTypeCountClaimsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * VolunteerServiceCountOutputType without action
+   */
+  export type VolunteerServiceCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerServiceCountOutputType
+     */
+    select?: VolunteerServiceCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * VolunteerServiceCountOutputType without action
+   */
+  export type VolunteerServiceCountOutputTypeCountClaimsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VolunteerClaimWhereInput
+  }
+
+
+  /**
+   * Count Type VolunteerDepositCountOutputType
+   */
+
+  export type VolunteerDepositCountOutputType = {
+    claims: number
+  }
+
+  export type VolunteerDepositCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    claims?: boolean | VolunteerDepositCountOutputTypeCountClaimsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * VolunteerDepositCountOutputType without action
+   */
+  export type VolunteerDepositCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDepositCountOutputType
+     */
+    select?: VolunteerDepositCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * VolunteerDepositCountOutputType without action
+   */
+  export type VolunteerDepositCountOutputTypeCountClaimsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VolunteerClaimWhereInput
   }
 
 
@@ -6411,6 +6793,8 @@ export namespace Prisma {
     updatedAt?: boolean
     users?: boolean | Family$usersArgs<ExtArgs>
     students?: boolean | Family$studentsArgs<ExtArgs>
+    volunteerDeposits?: boolean | Family$volunteerDepositsArgs<ExtArgs>
+    volunteerClaims?: boolean | Family$volunteerClaimsArgs<ExtArgs>
     _count?: boolean | FamilyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["family"]>
 
@@ -6442,6 +6826,8 @@ export namespace Prisma {
   export type FamilyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Family$usersArgs<ExtArgs>
     students?: boolean | Family$studentsArgs<ExtArgs>
+    volunteerDeposits?: boolean | Family$volunteerDepositsArgs<ExtArgs>
+    volunteerClaims?: boolean | Family$volunteerClaimsArgs<ExtArgs>
     _count?: boolean | FamilyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type FamilyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -6452,6 +6838,8 @@ export namespace Prisma {
     objects: {
       users: Prisma.$UserPayload<ExtArgs>[]
       students: Prisma.$StudentPayload<ExtArgs>[]
+      volunteerDeposits: Prisma.$VolunteerDepositPayload<ExtArgs>[]
+      volunteerClaims: Prisma.$VolunteerClaimPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6855,6 +7243,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     users<T extends Family$usersArgs<ExtArgs> = {}>(args?: Subset<T, Family$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     students<T extends Family$studentsArgs<ExtArgs> = {}>(args?: Subset<T, Family$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    volunteerDeposits<T extends Family$volunteerDepositsArgs<ExtArgs> = {}>(args?: Subset<T, Family$volunteerDepositsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    volunteerClaims<T extends Family$volunteerClaimsArgs<ExtArgs> = {}>(args?: Subset<T, Family$volunteerClaimsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7327,6 +7717,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StudentScalarFieldEnum | StudentScalarFieldEnum[]
+  }
+
+  /**
+   * Family.volunteerDeposits
+   */
+  export type Family$volunteerDepositsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositInclude<ExtArgs> | null
+    where?: VolunteerDepositWhereInput
+    orderBy?: VolunteerDepositOrderByWithRelationInput | VolunteerDepositOrderByWithRelationInput[]
+    cursor?: VolunteerDepositWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VolunteerDepositScalarFieldEnum | VolunteerDepositScalarFieldEnum[]
+  }
+
+  /**
+   * Family.volunteerClaims
+   */
+  export type Family$volunteerClaimsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    where?: VolunteerClaimWhereInput
+    orderBy?: VolunteerClaimOrderByWithRelationInput | VolunteerClaimOrderByWithRelationInput[]
+    cursor?: VolunteerClaimWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VolunteerClaimScalarFieldEnum | VolunteerClaimScalarFieldEnum[]
   }
 
   /**
@@ -19046,8 +19484,18 @@ export namespace Prisma {
 
   export type AggregateAcademicYearConfig = {
     _count: AcademicYearConfigCountAggregateOutputType | null
+    _avg: AcademicYearConfigAvgAggregateOutputType | null
+    _sum: AcademicYearConfigSumAggregateOutputType | null
     _min: AcademicYearConfigMinAggregateOutputType | null
     _max: AcademicYearConfigMaxAggregateOutputType | null
+  }
+
+  export type AcademicYearConfigAvgAggregateOutputType = {
+    volunteerDepositAmount: Decimal | null
+  }
+
+  export type AcademicYearConfigSumAggregateOutputType = {
+    volunteerDepositAmount: Decimal | null
   }
 
   export type AcademicYearConfigMinAggregateOutputType = {
@@ -19057,6 +19505,9 @@ export namespace Prisma {
     reEnrollmentOpenDate: Date | null
     newEnrollmentOpenDate: Date | null
     isActive: boolean | null
+    volunteerDepositAmount: Decimal | null
+    volunteerClaimDeadline: Date | null
+    volunteerDepositRequired: boolean | null
     createdAt: Date | null
   }
 
@@ -19067,6 +19518,9 @@ export namespace Prisma {
     reEnrollmentOpenDate: Date | null
     newEnrollmentOpenDate: Date | null
     isActive: boolean | null
+    volunteerDepositAmount: Decimal | null
+    volunteerClaimDeadline: Date | null
+    volunteerDepositRequired: boolean | null
     createdAt: Date | null
   }
 
@@ -19077,10 +19531,21 @@ export namespace Prisma {
     reEnrollmentOpenDate: number
     newEnrollmentOpenDate: number
     isActive: number
+    volunteerDepositAmount: number
+    volunteerClaimDeadline: number
+    volunteerDepositRequired: number
     createdAt: number
     _all: number
   }
 
+
+  export type AcademicYearConfigAvgAggregateInputType = {
+    volunteerDepositAmount?: true
+  }
+
+  export type AcademicYearConfigSumAggregateInputType = {
+    volunteerDepositAmount?: true
+  }
 
   export type AcademicYearConfigMinAggregateInputType = {
     id?: true
@@ -19089,6 +19554,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: true
     newEnrollmentOpenDate?: true
     isActive?: true
+    volunteerDepositAmount?: true
+    volunteerClaimDeadline?: true
+    volunteerDepositRequired?: true
     createdAt?: true
   }
 
@@ -19099,6 +19567,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: true
     newEnrollmentOpenDate?: true
     isActive?: true
+    volunteerDepositAmount?: true
+    volunteerClaimDeadline?: true
+    volunteerDepositRequired?: true
     createdAt?: true
   }
 
@@ -19109,6 +19580,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: true
     newEnrollmentOpenDate?: true
     isActive?: true
+    volunteerDepositAmount?: true
+    volunteerClaimDeadline?: true
+    volunteerDepositRequired?: true
     createdAt?: true
     _all?: true
   }
@@ -19151,6 +19625,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: AcademicYearConfigAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AcademicYearConfigSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AcademicYearConfigMinAggregateInputType
@@ -19181,6 +19667,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: AcademicYearConfigCountAggregateInputType | true
+    _avg?: AcademicYearConfigAvgAggregateInputType
+    _sum?: AcademicYearConfigSumAggregateInputType
     _min?: AcademicYearConfigMinAggregateInputType
     _max?: AcademicYearConfigMaxAggregateInputType
   }
@@ -19192,8 +19680,13 @@ export namespace Prisma {
     reEnrollmentOpenDate: Date
     newEnrollmentOpenDate: Date
     isActive: boolean
+    volunteerDepositAmount: Decimal | null
+    volunteerClaimDeadline: Date | null
+    volunteerDepositRequired: boolean
     createdAt: Date
     _count: AcademicYearConfigCountAggregateOutputType | null
+    _avg: AcademicYearConfigAvgAggregateOutputType | null
+    _sum: AcademicYearConfigSumAggregateOutputType | null
     _min: AcademicYearConfigMinAggregateOutputType | null
     _max: AcademicYearConfigMaxAggregateOutputType | null
   }
@@ -19219,6 +19712,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: boolean
     newEnrollmentOpenDate?: boolean
     isActive?: boolean
+    volunteerDepositAmount?: boolean
+    volunteerClaimDeadline?: boolean
+    volunteerDepositRequired?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["academicYearConfig"]>
 
@@ -19229,6 +19725,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: boolean
     newEnrollmentOpenDate?: boolean
     isActive?: boolean
+    volunteerDepositAmount?: boolean
+    volunteerClaimDeadline?: boolean
+    volunteerDepositRequired?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["academicYearConfig"]>
 
@@ -19239,6 +19738,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: boolean
     newEnrollmentOpenDate?: boolean
     isActive?: boolean
+    volunteerDepositAmount?: boolean
+    volunteerClaimDeadline?: boolean
+    volunteerDepositRequired?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["academicYearConfig"]>
 
@@ -19249,10 +19751,13 @@ export namespace Prisma {
     reEnrollmentOpenDate?: boolean
     newEnrollmentOpenDate?: boolean
     isActive?: boolean
+    volunteerDepositAmount?: boolean
+    volunteerClaimDeadline?: boolean
+    volunteerDepositRequired?: boolean
     createdAt?: boolean
   }
 
-  export type AcademicYearConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicYear" | "nextYear" | "reEnrollmentOpenDate" | "newEnrollmentOpenDate" | "isActive" | "createdAt", ExtArgs["result"]["academicYearConfig"]>
+  export type AcademicYearConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicYear" | "nextYear" | "reEnrollmentOpenDate" | "newEnrollmentOpenDate" | "isActive" | "volunteerDepositAmount" | "volunteerClaimDeadline" | "volunteerDepositRequired" | "createdAt", ExtArgs["result"]["academicYearConfig"]>
 
   export type $AcademicYearConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AcademicYearConfig"
@@ -19264,6 +19769,9 @@ export namespace Prisma {
       reEnrollmentOpenDate: Date
       newEnrollmentOpenDate: Date
       isActive: boolean
+      volunteerDepositAmount: Prisma.Decimal | null
+      volunteerClaimDeadline: Date | null
+      volunteerDepositRequired: boolean
       createdAt: Date
     }, ExtArgs["result"]["academicYearConfig"]>
     composites: {}
@@ -19694,6 +20202,9 @@ export namespace Prisma {
     readonly reEnrollmentOpenDate: FieldRef<"AcademicYearConfig", 'DateTime'>
     readonly newEnrollmentOpenDate: FieldRef<"AcademicYearConfig", 'DateTime'>
     readonly isActive: FieldRef<"AcademicYearConfig", 'Boolean'>
+    readonly volunteerDepositAmount: FieldRef<"AcademicYearConfig", 'Decimal'>
+    readonly volunteerClaimDeadline: FieldRef<"AcademicYearConfig", 'DateTime'>
+    readonly volunteerDepositRequired: FieldRef<"AcademicYearConfig", 'Boolean'>
     readonly createdAt: FieldRef<"AcademicYearConfig", 'DateTime'>
   }
     
@@ -25789,6 +26300,3586 @@ export namespace Prisma {
 
 
   /**
+   * Model VolunteerService
+   */
+
+  export type AggregateVolunteerService = {
+    _count: VolunteerServiceCountAggregateOutputType | null
+    _min: VolunteerServiceMinAggregateOutputType | null
+    _max: VolunteerServiceMaxAggregateOutputType | null
+  }
+
+  export type VolunteerServiceMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    nameZh: string | null
+    description: string | null
+    descriptionZh: string | null
+    academicYear: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VolunteerServiceMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    nameZh: string | null
+    description: string | null
+    descriptionZh: string | null
+    academicYear: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VolunteerServiceCountAggregateOutputType = {
+    id: number
+    name: number
+    nameZh: number
+    description: number
+    descriptionZh: number
+    academicYear: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type VolunteerServiceMinAggregateInputType = {
+    id?: true
+    name?: true
+    nameZh?: true
+    description?: true
+    descriptionZh?: true
+    academicYear?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VolunteerServiceMaxAggregateInputType = {
+    id?: true
+    name?: true
+    nameZh?: true
+    description?: true
+    descriptionZh?: true
+    academicYear?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VolunteerServiceCountAggregateInputType = {
+    id?: true
+    name?: true
+    nameZh?: true
+    description?: true
+    descriptionZh?: true
+    academicYear?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type VolunteerServiceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VolunteerService to aggregate.
+     */
+    where?: VolunteerServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerServices to fetch.
+     */
+    orderBy?: VolunteerServiceOrderByWithRelationInput | VolunteerServiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VolunteerServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerServices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerServices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VolunteerServices
+    **/
+    _count?: true | VolunteerServiceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VolunteerServiceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VolunteerServiceMaxAggregateInputType
+  }
+
+  export type GetVolunteerServiceAggregateType<T extends VolunteerServiceAggregateArgs> = {
+        [P in keyof T & keyof AggregateVolunteerService]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVolunteerService[P]>
+      : GetScalarType<T[P], AggregateVolunteerService[P]>
+  }
+
+
+
+
+  export type VolunteerServiceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VolunteerServiceWhereInput
+    orderBy?: VolunteerServiceOrderByWithAggregationInput | VolunteerServiceOrderByWithAggregationInput[]
+    by: VolunteerServiceScalarFieldEnum[] | VolunteerServiceScalarFieldEnum
+    having?: VolunteerServiceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VolunteerServiceCountAggregateInputType | true
+    _min?: VolunteerServiceMinAggregateInputType
+    _max?: VolunteerServiceMaxAggregateInputType
+  }
+
+  export type VolunteerServiceGroupByOutputType = {
+    id: string
+    name: string
+    nameZh: string
+    description: string | null
+    descriptionZh: string | null
+    academicYear: string
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: VolunteerServiceCountAggregateOutputType | null
+    _min: VolunteerServiceMinAggregateOutputType | null
+    _max: VolunteerServiceMaxAggregateOutputType | null
+  }
+
+  type GetVolunteerServiceGroupByPayload<T extends VolunteerServiceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VolunteerServiceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VolunteerServiceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VolunteerServiceGroupByOutputType[P]>
+            : GetScalarType<T[P], VolunteerServiceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VolunteerServiceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    nameZh?: boolean
+    description?: boolean
+    descriptionZh?: boolean
+    academicYear?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    claims?: boolean | VolunteerService$claimsArgs<ExtArgs>
+    _count?: boolean | VolunteerServiceCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["volunteerService"]>
+
+  export type VolunteerServiceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    nameZh?: boolean
+    description?: boolean
+    descriptionZh?: boolean
+    academicYear?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["volunteerService"]>
+
+  export type VolunteerServiceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    nameZh?: boolean
+    description?: boolean
+    descriptionZh?: boolean
+    academicYear?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["volunteerService"]>
+
+  export type VolunteerServiceSelectScalar = {
+    id?: boolean
+    name?: boolean
+    nameZh?: boolean
+    description?: boolean
+    descriptionZh?: boolean
+    academicYear?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type VolunteerServiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameZh" | "description" | "descriptionZh" | "academicYear" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["volunteerService"]>
+  export type VolunteerServiceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    claims?: boolean | VolunteerService$claimsArgs<ExtArgs>
+    _count?: boolean | VolunteerServiceCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type VolunteerServiceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type VolunteerServiceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $VolunteerServicePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VolunteerService"
+    objects: {
+      claims: Prisma.$VolunteerClaimPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      nameZh: string
+      description: string | null
+      descriptionZh: string | null
+      academicYear: string
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["volunteerService"]>
+    composites: {}
+  }
+
+  type VolunteerServiceGetPayload<S extends boolean | null | undefined | VolunteerServiceDefaultArgs> = $Result.GetResult<Prisma.$VolunteerServicePayload, S>
+
+  type VolunteerServiceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VolunteerServiceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VolunteerServiceCountAggregateInputType | true
+    }
+
+  export interface VolunteerServiceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VolunteerService'], meta: { name: 'VolunteerService' } }
+    /**
+     * Find zero or one VolunteerService that matches the filter.
+     * @param {VolunteerServiceFindUniqueArgs} args - Arguments to find a VolunteerService
+     * @example
+     * // Get one VolunteerService
+     * const volunteerService = await prisma.volunteerService.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VolunteerServiceFindUniqueArgs>(args: SelectSubset<T, VolunteerServiceFindUniqueArgs<ExtArgs>>): Prisma__VolunteerServiceClient<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one VolunteerService that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VolunteerServiceFindUniqueOrThrowArgs} args - Arguments to find a VolunteerService
+     * @example
+     * // Get one VolunteerService
+     * const volunteerService = await prisma.volunteerService.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VolunteerServiceFindUniqueOrThrowArgs>(args: SelectSubset<T, VolunteerServiceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VolunteerServiceClient<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VolunteerService that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerServiceFindFirstArgs} args - Arguments to find a VolunteerService
+     * @example
+     * // Get one VolunteerService
+     * const volunteerService = await prisma.volunteerService.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VolunteerServiceFindFirstArgs>(args?: SelectSubset<T, VolunteerServiceFindFirstArgs<ExtArgs>>): Prisma__VolunteerServiceClient<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VolunteerService that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerServiceFindFirstOrThrowArgs} args - Arguments to find a VolunteerService
+     * @example
+     * // Get one VolunteerService
+     * const volunteerService = await prisma.volunteerService.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VolunteerServiceFindFirstOrThrowArgs>(args?: SelectSubset<T, VolunteerServiceFindFirstOrThrowArgs<ExtArgs>>): Prisma__VolunteerServiceClient<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more VolunteerServices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerServiceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VolunteerServices
+     * const volunteerServices = await prisma.volunteerService.findMany()
+     * 
+     * // Get first 10 VolunteerServices
+     * const volunteerServices = await prisma.volunteerService.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const volunteerServiceWithIdOnly = await prisma.volunteerService.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VolunteerServiceFindManyArgs>(args?: SelectSubset<T, VolunteerServiceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a VolunteerService.
+     * @param {VolunteerServiceCreateArgs} args - Arguments to create a VolunteerService.
+     * @example
+     * // Create one VolunteerService
+     * const VolunteerService = await prisma.volunteerService.create({
+     *   data: {
+     *     // ... data to create a VolunteerService
+     *   }
+     * })
+     * 
+     */
+    create<T extends VolunteerServiceCreateArgs>(args: SelectSubset<T, VolunteerServiceCreateArgs<ExtArgs>>): Prisma__VolunteerServiceClient<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many VolunteerServices.
+     * @param {VolunteerServiceCreateManyArgs} args - Arguments to create many VolunteerServices.
+     * @example
+     * // Create many VolunteerServices
+     * const volunteerService = await prisma.volunteerService.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VolunteerServiceCreateManyArgs>(args?: SelectSubset<T, VolunteerServiceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VolunteerServices and returns the data saved in the database.
+     * @param {VolunteerServiceCreateManyAndReturnArgs} args - Arguments to create many VolunteerServices.
+     * @example
+     * // Create many VolunteerServices
+     * const volunteerService = await prisma.volunteerService.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VolunteerServices and only return the `id`
+     * const volunteerServiceWithIdOnly = await prisma.volunteerService.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VolunteerServiceCreateManyAndReturnArgs>(args?: SelectSubset<T, VolunteerServiceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a VolunteerService.
+     * @param {VolunteerServiceDeleteArgs} args - Arguments to delete one VolunteerService.
+     * @example
+     * // Delete one VolunteerService
+     * const VolunteerService = await prisma.volunteerService.delete({
+     *   where: {
+     *     // ... filter to delete one VolunteerService
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VolunteerServiceDeleteArgs>(args: SelectSubset<T, VolunteerServiceDeleteArgs<ExtArgs>>): Prisma__VolunteerServiceClient<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one VolunteerService.
+     * @param {VolunteerServiceUpdateArgs} args - Arguments to update one VolunteerService.
+     * @example
+     * // Update one VolunteerService
+     * const volunteerService = await prisma.volunteerService.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VolunteerServiceUpdateArgs>(args: SelectSubset<T, VolunteerServiceUpdateArgs<ExtArgs>>): Prisma__VolunteerServiceClient<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more VolunteerServices.
+     * @param {VolunteerServiceDeleteManyArgs} args - Arguments to filter VolunteerServices to delete.
+     * @example
+     * // Delete a few VolunteerServices
+     * const { count } = await prisma.volunteerService.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VolunteerServiceDeleteManyArgs>(args?: SelectSubset<T, VolunteerServiceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VolunteerServices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerServiceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VolunteerServices
+     * const volunteerService = await prisma.volunteerService.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VolunteerServiceUpdateManyArgs>(args: SelectSubset<T, VolunteerServiceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VolunteerServices and returns the data updated in the database.
+     * @param {VolunteerServiceUpdateManyAndReturnArgs} args - Arguments to update many VolunteerServices.
+     * @example
+     * // Update many VolunteerServices
+     * const volunteerService = await prisma.volunteerService.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more VolunteerServices and only return the `id`
+     * const volunteerServiceWithIdOnly = await prisma.volunteerService.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VolunteerServiceUpdateManyAndReturnArgs>(args: SelectSubset<T, VolunteerServiceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one VolunteerService.
+     * @param {VolunteerServiceUpsertArgs} args - Arguments to update or create a VolunteerService.
+     * @example
+     * // Update or create a VolunteerService
+     * const volunteerService = await prisma.volunteerService.upsert({
+     *   create: {
+     *     // ... data to create a VolunteerService
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VolunteerService we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VolunteerServiceUpsertArgs>(args: SelectSubset<T, VolunteerServiceUpsertArgs<ExtArgs>>): Prisma__VolunteerServiceClient<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of VolunteerServices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerServiceCountArgs} args - Arguments to filter VolunteerServices to count.
+     * @example
+     * // Count the number of VolunteerServices
+     * const count = await prisma.volunteerService.count({
+     *   where: {
+     *     // ... the filter for the VolunteerServices we want to count
+     *   }
+     * })
+    **/
+    count<T extends VolunteerServiceCountArgs>(
+      args?: Subset<T, VolunteerServiceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VolunteerServiceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VolunteerService.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerServiceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VolunteerServiceAggregateArgs>(args: Subset<T, VolunteerServiceAggregateArgs>): Prisma.PrismaPromise<GetVolunteerServiceAggregateType<T>>
+
+    /**
+     * Group by VolunteerService.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerServiceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VolunteerServiceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VolunteerServiceGroupByArgs['orderBy'] }
+        : { orderBy?: VolunteerServiceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VolunteerServiceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVolunteerServiceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VolunteerService model
+   */
+  readonly fields: VolunteerServiceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VolunteerService.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VolunteerServiceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    claims<T extends VolunteerService$claimsArgs<ExtArgs> = {}>(args?: Subset<T, VolunteerService$claimsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VolunteerService model
+   */
+  interface VolunteerServiceFieldRefs {
+    readonly id: FieldRef<"VolunteerService", 'String'>
+    readonly name: FieldRef<"VolunteerService", 'String'>
+    readonly nameZh: FieldRef<"VolunteerService", 'String'>
+    readonly description: FieldRef<"VolunteerService", 'String'>
+    readonly descriptionZh: FieldRef<"VolunteerService", 'String'>
+    readonly academicYear: FieldRef<"VolunteerService", 'String'>
+    readonly isActive: FieldRef<"VolunteerService", 'Boolean'>
+    readonly createdAt: FieldRef<"VolunteerService", 'DateTime'>
+    readonly updatedAt: FieldRef<"VolunteerService", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VolunteerService findUnique
+   */
+  export type VolunteerServiceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerServiceInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerService to fetch.
+     */
+    where: VolunteerServiceWhereUniqueInput
+  }
+
+  /**
+   * VolunteerService findUniqueOrThrow
+   */
+  export type VolunteerServiceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerServiceInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerService to fetch.
+     */
+    where: VolunteerServiceWhereUniqueInput
+  }
+
+  /**
+   * VolunteerService findFirst
+   */
+  export type VolunteerServiceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerServiceInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerService to fetch.
+     */
+    where?: VolunteerServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerServices to fetch.
+     */
+    orderBy?: VolunteerServiceOrderByWithRelationInput | VolunteerServiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VolunteerServices.
+     */
+    cursor?: VolunteerServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerServices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerServices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VolunteerServices.
+     */
+    distinct?: VolunteerServiceScalarFieldEnum | VolunteerServiceScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerService findFirstOrThrow
+   */
+  export type VolunteerServiceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerServiceInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerService to fetch.
+     */
+    where?: VolunteerServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerServices to fetch.
+     */
+    orderBy?: VolunteerServiceOrderByWithRelationInput | VolunteerServiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VolunteerServices.
+     */
+    cursor?: VolunteerServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerServices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerServices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VolunteerServices.
+     */
+    distinct?: VolunteerServiceScalarFieldEnum | VolunteerServiceScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerService findMany
+   */
+  export type VolunteerServiceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerServiceInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerServices to fetch.
+     */
+    where?: VolunteerServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerServices to fetch.
+     */
+    orderBy?: VolunteerServiceOrderByWithRelationInput | VolunteerServiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VolunteerServices.
+     */
+    cursor?: VolunteerServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerServices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerServices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VolunteerServices.
+     */
+    distinct?: VolunteerServiceScalarFieldEnum | VolunteerServiceScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerService create
+   */
+  export type VolunteerServiceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerServiceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a VolunteerService.
+     */
+    data: XOR<VolunteerServiceCreateInput, VolunteerServiceUncheckedCreateInput>
+  }
+
+  /**
+   * VolunteerService createMany
+   */
+  export type VolunteerServiceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VolunteerServices.
+     */
+    data: VolunteerServiceCreateManyInput | VolunteerServiceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VolunteerService createManyAndReturn
+   */
+  export type VolunteerServiceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * The data used to create many VolunteerServices.
+     */
+    data: VolunteerServiceCreateManyInput | VolunteerServiceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VolunteerService update
+   */
+  export type VolunteerServiceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerServiceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a VolunteerService.
+     */
+    data: XOR<VolunteerServiceUpdateInput, VolunteerServiceUncheckedUpdateInput>
+    /**
+     * Choose, which VolunteerService to update.
+     */
+    where: VolunteerServiceWhereUniqueInput
+  }
+
+  /**
+   * VolunteerService updateMany
+   */
+  export type VolunteerServiceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VolunteerServices.
+     */
+    data: XOR<VolunteerServiceUpdateManyMutationInput, VolunteerServiceUncheckedUpdateManyInput>
+    /**
+     * Filter which VolunteerServices to update
+     */
+    where?: VolunteerServiceWhereInput
+    /**
+     * Limit how many VolunteerServices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VolunteerService updateManyAndReturn
+   */
+  export type VolunteerServiceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * The data used to update VolunteerServices.
+     */
+    data: XOR<VolunteerServiceUpdateManyMutationInput, VolunteerServiceUncheckedUpdateManyInput>
+    /**
+     * Filter which VolunteerServices to update
+     */
+    where?: VolunteerServiceWhereInput
+    /**
+     * Limit how many VolunteerServices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VolunteerService upsert
+   */
+  export type VolunteerServiceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerServiceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the VolunteerService to update in case it exists.
+     */
+    where: VolunteerServiceWhereUniqueInput
+    /**
+     * In case the VolunteerService found by the `where` argument doesn't exist, create a new VolunteerService with this data.
+     */
+    create: XOR<VolunteerServiceCreateInput, VolunteerServiceUncheckedCreateInput>
+    /**
+     * In case the VolunteerService was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VolunteerServiceUpdateInput, VolunteerServiceUncheckedUpdateInput>
+  }
+
+  /**
+   * VolunteerService delete
+   */
+  export type VolunteerServiceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerServiceInclude<ExtArgs> | null
+    /**
+     * Filter which VolunteerService to delete.
+     */
+    where: VolunteerServiceWhereUniqueInput
+  }
+
+  /**
+   * VolunteerService deleteMany
+   */
+  export type VolunteerServiceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VolunteerServices to delete
+     */
+    where?: VolunteerServiceWhereInput
+    /**
+     * Limit how many VolunteerServices to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * VolunteerService.claims
+   */
+  export type VolunteerService$claimsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    where?: VolunteerClaimWhereInput
+    orderBy?: VolunteerClaimOrderByWithRelationInput | VolunteerClaimOrderByWithRelationInput[]
+    cursor?: VolunteerClaimWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VolunteerClaimScalarFieldEnum | VolunteerClaimScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerService without action
+   */
+  export type VolunteerServiceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerService
+     */
+    select?: VolunteerServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerService
+     */
+    omit?: VolunteerServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerServiceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model VolunteerDeposit
+   */
+
+  export type AggregateVolunteerDeposit = {
+    _count: VolunteerDepositCountAggregateOutputType | null
+    _avg: VolunteerDepositAvgAggregateOutputType | null
+    _sum: VolunteerDepositSumAggregateOutputType | null
+    _min: VolunteerDepositMinAggregateOutputType | null
+    _max: VolunteerDepositMaxAggregateOutputType | null
+  }
+
+  export type VolunteerDepositAvgAggregateOutputType = {
+    amount: Decimal | null
+  }
+
+  export type VolunteerDepositSumAggregateOutputType = {
+    amount: Decimal | null
+  }
+
+  export type VolunteerDepositMinAggregateOutputType = {
+    id: string | null
+    familyId: string | null
+    academicYear: string | null
+    amount: Decimal | null
+    status: $Enums.DepositStatus | null
+    paidAt: Date | null
+    paymentMethod: $Enums.PaymentMethod | null
+    stripePaymentIntentId: string | null
+    paypalOrderId: string | null
+    forfeitedAt: Date | null
+    refundedAt: Date | null
+    refundedBy: string | null
+    refundNotes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VolunteerDepositMaxAggregateOutputType = {
+    id: string | null
+    familyId: string | null
+    academicYear: string | null
+    amount: Decimal | null
+    status: $Enums.DepositStatus | null
+    paidAt: Date | null
+    paymentMethod: $Enums.PaymentMethod | null
+    stripePaymentIntentId: string | null
+    paypalOrderId: string | null
+    forfeitedAt: Date | null
+    refundedAt: Date | null
+    refundedBy: string | null
+    refundNotes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VolunteerDepositCountAggregateOutputType = {
+    id: number
+    familyId: number
+    academicYear: number
+    amount: number
+    status: number
+    paidAt: number
+    paymentMethod: number
+    stripePaymentIntentId: number
+    paypalOrderId: number
+    forfeitedAt: number
+    refundedAt: number
+    refundedBy: number
+    refundNotes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type VolunteerDepositAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type VolunteerDepositSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type VolunteerDepositMinAggregateInputType = {
+    id?: true
+    familyId?: true
+    academicYear?: true
+    amount?: true
+    status?: true
+    paidAt?: true
+    paymentMethod?: true
+    stripePaymentIntentId?: true
+    paypalOrderId?: true
+    forfeitedAt?: true
+    refundedAt?: true
+    refundedBy?: true
+    refundNotes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VolunteerDepositMaxAggregateInputType = {
+    id?: true
+    familyId?: true
+    academicYear?: true
+    amount?: true
+    status?: true
+    paidAt?: true
+    paymentMethod?: true
+    stripePaymentIntentId?: true
+    paypalOrderId?: true
+    forfeitedAt?: true
+    refundedAt?: true
+    refundedBy?: true
+    refundNotes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VolunteerDepositCountAggregateInputType = {
+    id?: true
+    familyId?: true
+    academicYear?: true
+    amount?: true
+    status?: true
+    paidAt?: true
+    paymentMethod?: true
+    stripePaymentIntentId?: true
+    paypalOrderId?: true
+    forfeitedAt?: true
+    refundedAt?: true
+    refundedBy?: true
+    refundNotes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type VolunteerDepositAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VolunteerDeposit to aggregate.
+     */
+    where?: VolunteerDepositWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerDeposits to fetch.
+     */
+    orderBy?: VolunteerDepositOrderByWithRelationInput | VolunteerDepositOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VolunteerDepositWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerDeposits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerDeposits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VolunteerDeposits
+    **/
+    _count?: true | VolunteerDepositCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: VolunteerDepositAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: VolunteerDepositSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VolunteerDepositMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VolunteerDepositMaxAggregateInputType
+  }
+
+  export type GetVolunteerDepositAggregateType<T extends VolunteerDepositAggregateArgs> = {
+        [P in keyof T & keyof AggregateVolunteerDeposit]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVolunteerDeposit[P]>
+      : GetScalarType<T[P], AggregateVolunteerDeposit[P]>
+  }
+
+
+
+
+  export type VolunteerDepositGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VolunteerDepositWhereInput
+    orderBy?: VolunteerDepositOrderByWithAggregationInput | VolunteerDepositOrderByWithAggregationInput[]
+    by: VolunteerDepositScalarFieldEnum[] | VolunteerDepositScalarFieldEnum
+    having?: VolunteerDepositScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VolunteerDepositCountAggregateInputType | true
+    _avg?: VolunteerDepositAvgAggregateInputType
+    _sum?: VolunteerDepositSumAggregateInputType
+    _min?: VolunteerDepositMinAggregateInputType
+    _max?: VolunteerDepositMaxAggregateInputType
+  }
+
+  export type VolunteerDepositGroupByOutputType = {
+    id: string
+    familyId: string
+    academicYear: string
+    amount: Decimal
+    status: $Enums.DepositStatus
+    paidAt: Date | null
+    paymentMethod: $Enums.PaymentMethod | null
+    stripePaymentIntentId: string | null
+    paypalOrderId: string | null
+    forfeitedAt: Date | null
+    refundedAt: Date | null
+    refundedBy: string | null
+    refundNotes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: VolunteerDepositCountAggregateOutputType | null
+    _avg: VolunteerDepositAvgAggregateOutputType | null
+    _sum: VolunteerDepositSumAggregateOutputType | null
+    _min: VolunteerDepositMinAggregateOutputType | null
+    _max: VolunteerDepositMaxAggregateOutputType | null
+  }
+
+  type GetVolunteerDepositGroupByPayload<T extends VolunteerDepositGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VolunteerDepositGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VolunteerDepositGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VolunteerDepositGroupByOutputType[P]>
+            : GetScalarType<T[P], VolunteerDepositGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VolunteerDepositSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    familyId?: boolean
+    academicYear?: boolean
+    amount?: boolean
+    status?: boolean
+    paidAt?: boolean
+    paymentMethod?: boolean
+    stripePaymentIntentId?: boolean
+    paypalOrderId?: boolean
+    forfeitedAt?: boolean
+    refundedAt?: boolean
+    refundedBy?: boolean
+    refundNotes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    claims?: boolean | VolunteerDeposit$claimsArgs<ExtArgs>
+    _count?: boolean | VolunteerDepositCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["volunteerDeposit"]>
+
+  export type VolunteerDepositSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    familyId?: boolean
+    academicYear?: boolean
+    amount?: boolean
+    status?: boolean
+    paidAt?: boolean
+    paymentMethod?: boolean
+    stripePaymentIntentId?: boolean
+    paypalOrderId?: boolean
+    forfeitedAt?: boolean
+    refundedAt?: boolean
+    refundedBy?: boolean
+    refundNotes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["volunteerDeposit"]>
+
+  export type VolunteerDepositSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    familyId?: boolean
+    academicYear?: boolean
+    amount?: boolean
+    status?: boolean
+    paidAt?: boolean
+    paymentMethod?: boolean
+    stripePaymentIntentId?: boolean
+    paypalOrderId?: boolean
+    forfeitedAt?: boolean
+    refundedAt?: boolean
+    refundedBy?: boolean
+    refundNotes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["volunteerDeposit"]>
+
+  export type VolunteerDepositSelectScalar = {
+    id?: boolean
+    familyId?: boolean
+    academicYear?: boolean
+    amount?: boolean
+    status?: boolean
+    paidAt?: boolean
+    paymentMethod?: boolean
+    stripePaymentIntentId?: boolean
+    paypalOrderId?: boolean
+    forfeitedAt?: boolean
+    refundedAt?: boolean
+    refundedBy?: boolean
+    refundNotes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type VolunteerDepositOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "familyId" | "academicYear" | "amount" | "status" | "paidAt" | "paymentMethod" | "stripePaymentIntentId" | "paypalOrderId" | "forfeitedAt" | "refundedAt" | "refundedBy" | "refundNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["volunteerDeposit"]>
+  export type VolunteerDepositInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    claims?: boolean | VolunteerDeposit$claimsArgs<ExtArgs>
+    _count?: boolean | VolunteerDepositCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type VolunteerDepositIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+  }
+  export type VolunteerDepositIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+  }
+
+  export type $VolunteerDepositPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VolunteerDeposit"
+    objects: {
+      family: Prisma.$FamilyPayload<ExtArgs>
+      claims: Prisma.$VolunteerClaimPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      familyId: string
+      academicYear: string
+      amount: Prisma.Decimal
+      status: $Enums.DepositStatus
+      paidAt: Date | null
+      paymentMethod: $Enums.PaymentMethod | null
+      stripePaymentIntentId: string | null
+      paypalOrderId: string | null
+      forfeitedAt: Date | null
+      refundedAt: Date | null
+      refundedBy: string | null
+      refundNotes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["volunteerDeposit"]>
+    composites: {}
+  }
+
+  type VolunteerDepositGetPayload<S extends boolean | null | undefined | VolunteerDepositDefaultArgs> = $Result.GetResult<Prisma.$VolunteerDepositPayload, S>
+
+  type VolunteerDepositCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VolunteerDepositFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VolunteerDepositCountAggregateInputType | true
+    }
+
+  export interface VolunteerDepositDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VolunteerDeposit'], meta: { name: 'VolunteerDeposit' } }
+    /**
+     * Find zero or one VolunteerDeposit that matches the filter.
+     * @param {VolunteerDepositFindUniqueArgs} args - Arguments to find a VolunteerDeposit
+     * @example
+     * // Get one VolunteerDeposit
+     * const volunteerDeposit = await prisma.volunteerDeposit.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VolunteerDepositFindUniqueArgs>(args: SelectSubset<T, VolunteerDepositFindUniqueArgs<ExtArgs>>): Prisma__VolunteerDepositClient<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one VolunteerDeposit that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VolunteerDepositFindUniqueOrThrowArgs} args - Arguments to find a VolunteerDeposit
+     * @example
+     * // Get one VolunteerDeposit
+     * const volunteerDeposit = await prisma.volunteerDeposit.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VolunteerDepositFindUniqueOrThrowArgs>(args: SelectSubset<T, VolunteerDepositFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VolunteerDepositClient<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VolunteerDeposit that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerDepositFindFirstArgs} args - Arguments to find a VolunteerDeposit
+     * @example
+     * // Get one VolunteerDeposit
+     * const volunteerDeposit = await prisma.volunteerDeposit.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VolunteerDepositFindFirstArgs>(args?: SelectSubset<T, VolunteerDepositFindFirstArgs<ExtArgs>>): Prisma__VolunteerDepositClient<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VolunteerDeposit that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerDepositFindFirstOrThrowArgs} args - Arguments to find a VolunteerDeposit
+     * @example
+     * // Get one VolunteerDeposit
+     * const volunteerDeposit = await prisma.volunteerDeposit.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VolunteerDepositFindFirstOrThrowArgs>(args?: SelectSubset<T, VolunteerDepositFindFirstOrThrowArgs<ExtArgs>>): Prisma__VolunteerDepositClient<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more VolunteerDeposits that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerDepositFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VolunteerDeposits
+     * const volunteerDeposits = await prisma.volunteerDeposit.findMany()
+     * 
+     * // Get first 10 VolunteerDeposits
+     * const volunteerDeposits = await prisma.volunteerDeposit.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const volunteerDepositWithIdOnly = await prisma.volunteerDeposit.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VolunteerDepositFindManyArgs>(args?: SelectSubset<T, VolunteerDepositFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a VolunteerDeposit.
+     * @param {VolunteerDepositCreateArgs} args - Arguments to create a VolunteerDeposit.
+     * @example
+     * // Create one VolunteerDeposit
+     * const VolunteerDeposit = await prisma.volunteerDeposit.create({
+     *   data: {
+     *     // ... data to create a VolunteerDeposit
+     *   }
+     * })
+     * 
+     */
+    create<T extends VolunteerDepositCreateArgs>(args: SelectSubset<T, VolunteerDepositCreateArgs<ExtArgs>>): Prisma__VolunteerDepositClient<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many VolunteerDeposits.
+     * @param {VolunteerDepositCreateManyArgs} args - Arguments to create many VolunteerDeposits.
+     * @example
+     * // Create many VolunteerDeposits
+     * const volunteerDeposit = await prisma.volunteerDeposit.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VolunteerDepositCreateManyArgs>(args?: SelectSubset<T, VolunteerDepositCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VolunteerDeposits and returns the data saved in the database.
+     * @param {VolunteerDepositCreateManyAndReturnArgs} args - Arguments to create many VolunteerDeposits.
+     * @example
+     * // Create many VolunteerDeposits
+     * const volunteerDeposit = await prisma.volunteerDeposit.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VolunteerDeposits and only return the `id`
+     * const volunteerDepositWithIdOnly = await prisma.volunteerDeposit.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VolunteerDepositCreateManyAndReturnArgs>(args?: SelectSubset<T, VolunteerDepositCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a VolunteerDeposit.
+     * @param {VolunteerDepositDeleteArgs} args - Arguments to delete one VolunteerDeposit.
+     * @example
+     * // Delete one VolunteerDeposit
+     * const VolunteerDeposit = await prisma.volunteerDeposit.delete({
+     *   where: {
+     *     // ... filter to delete one VolunteerDeposit
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VolunteerDepositDeleteArgs>(args: SelectSubset<T, VolunteerDepositDeleteArgs<ExtArgs>>): Prisma__VolunteerDepositClient<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one VolunteerDeposit.
+     * @param {VolunteerDepositUpdateArgs} args - Arguments to update one VolunteerDeposit.
+     * @example
+     * // Update one VolunteerDeposit
+     * const volunteerDeposit = await prisma.volunteerDeposit.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VolunteerDepositUpdateArgs>(args: SelectSubset<T, VolunteerDepositUpdateArgs<ExtArgs>>): Prisma__VolunteerDepositClient<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more VolunteerDeposits.
+     * @param {VolunteerDepositDeleteManyArgs} args - Arguments to filter VolunteerDeposits to delete.
+     * @example
+     * // Delete a few VolunteerDeposits
+     * const { count } = await prisma.volunteerDeposit.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VolunteerDepositDeleteManyArgs>(args?: SelectSubset<T, VolunteerDepositDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VolunteerDeposits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerDepositUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VolunteerDeposits
+     * const volunteerDeposit = await prisma.volunteerDeposit.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VolunteerDepositUpdateManyArgs>(args: SelectSubset<T, VolunteerDepositUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VolunteerDeposits and returns the data updated in the database.
+     * @param {VolunteerDepositUpdateManyAndReturnArgs} args - Arguments to update many VolunteerDeposits.
+     * @example
+     * // Update many VolunteerDeposits
+     * const volunteerDeposit = await prisma.volunteerDeposit.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more VolunteerDeposits and only return the `id`
+     * const volunteerDepositWithIdOnly = await prisma.volunteerDeposit.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VolunteerDepositUpdateManyAndReturnArgs>(args: SelectSubset<T, VolunteerDepositUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one VolunteerDeposit.
+     * @param {VolunteerDepositUpsertArgs} args - Arguments to update or create a VolunteerDeposit.
+     * @example
+     * // Update or create a VolunteerDeposit
+     * const volunteerDeposit = await prisma.volunteerDeposit.upsert({
+     *   create: {
+     *     // ... data to create a VolunteerDeposit
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VolunteerDeposit we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VolunteerDepositUpsertArgs>(args: SelectSubset<T, VolunteerDepositUpsertArgs<ExtArgs>>): Prisma__VolunteerDepositClient<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of VolunteerDeposits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerDepositCountArgs} args - Arguments to filter VolunteerDeposits to count.
+     * @example
+     * // Count the number of VolunteerDeposits
+     * const count = await prisma.volunteerDeposit.count({
+     *   where: {
+     *     // ... the filter for the VolunteerDeposits we want to count
+     *   }
+     * })
+    **/
+    count<T extends VolunteerDepositCountArgs>(
+      args?: Subset<T, VolunteerDepositCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VolunteerDepositCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VolunteerDeposit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerDepositAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VolunteerDepositAggregateArgs>(args: Subset<T, VolunteerDepositAggregateArgs>): Prisma.PrismaPromise<GetVolunteerDepositAggregateType<T>>
+
+    /**
+     * Group by VolunteerDeposit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerDepositGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VolunteerDepositGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VolunteerDepositGroupByArgs['orderBy'] }
+        : { orderBy?: VolunteerDepositGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VolunteerDepositGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVolunteerDepositGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VolunteerDeposit model
+   */
+  readonly fields: VolunteerDepositFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VolunteerDeposit.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VolunteerDepositClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    family<T extends FamilyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FamilyDefaultArgs<ExtArgs>>): Prisma__FamilyClient<$Result.GetResult<Prisma.$FamilyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    claims<T extends VolunteerDeposit$claimsArgs<ExtArgs> = {}>(args?: Subset<T, VolunteerDeposit$claimsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VolunteerDeposit model
+   */
+  interface VolunteerDepositFieldRefs {
+    readonly id: FieldRef<"VolunteerDeposit", 'String'>
+    readonly familyId: FieldRef<"VolunteerDeposit", 'String'>
+    readonly academicYear: FieldRef<"VolunteerDeposit", 'String'>
+    readonly amount: FieldRef<"VolunteerDeposit", 'Decimal'>
+    readonly status: FieldRef<"VolunteerDeposit", 'DepositStatus'>
+    readonly paidAt: FieldRef<"VolunteerDeposit", 'DateTime'>
+    readonly paymentMethod: FieldRef<"VolunteerDeposit", 'PaymentMethod'>
+    readonly stripePaymentIntentId: FieldRef<"VolunteerDeposit", 'String'>
+    readonly paypalOrderId: FieldRef<"VolunteerDeposit", 'String'>
+    readonly forfeitedAt: FieldRef<"VolunteerDeposit", 'DateTime'>
+    readonly refundedAt: FieldRef<"VolunteerDeposit", 'DateTime'>
+    readonly refundedBy: FieldRef<"VolunteerDeposit", 'String'>
+    readonly refundNotes: FieldRef<"VolunteerDeposit", 'String'>
+    readonly createdAt: FieldRef<"VolunteerDeposit", 'DateTime'>
+    readonly updatedAt: FieldRef<"VolunteerDeposit", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VolunteerDeposit findUnique
+   */
+  export type VolunteerDepositFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerDeposit to fetch.
+     */
+    where: VolunteerDepositWhereUniqueInput
+  }
+
+  /**
+   * VolunteerDeposit findUniqueOrThrow
+   */
+  export type VolunteerDepositFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerDeposit to fetch.
+     */
+    where: VolunteerDepositWhereUniqueInput
+  }
+
+  /**
+   * VolunteerDeposit findFirst
+   */
+  export type VolunteerDepositFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerDeposit to fetch.
+     */
+    where?: VolunteerDepositWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerDeposits to fetch.
+     */
+    orderBy?: VolunteerDepositOrderByWithRelationInput | VolunteerDepositOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VolunteerDeposits.
+     */
+    cursor?: VolunteerDepositWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerDeposits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerDeposits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VolunteerDeposits.
+     */
+    distinct?: VolunteerDepositScalarFieldEnum | VolunteerDepositScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerDeposit findFirstOrThrow
+   */
+  export type VolunteerDepositFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerDeposit to fetch.
+     */
+    where?: VolunteerDepositWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerDeposits to fetch.
+     */
+    orderBy?: VolunteerDepositOrderByWithRelationInput | VolunteerDepositOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VolunteerDeposits.
+     */
+    cursor?: VolunteerDepositWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerDeposits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerDeposits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VolunteerDeposits.
+     */
+    distinct?: VolunteerDepositScalarFieldEnum | VolunteerDepositScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerDeposit findMany
+   */
+  export type VolunteerDepositFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerDeposits to fetch.
+     */
+    where?: VolunteerDepositWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerDeposits to fetch.
+     */
+    orderBy?: VolunteerDepositOrderByWithRelationInput | VolunteerDepositOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VolunteerDeposits.
+     */
+    cursor?: VolunteerDepositWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerDeposits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerDeposits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VolunteerDeposits.
+     */
+    distinct?: VolunteerDepositScalarFieldEnum | VolunteerDepositScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerDeposit create
+   */
+  export type VolunteerDepositCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositInclude<ExtArgs> | null
+    /**
+     * The data needed to create a VolunteerDeposit.
+     */
+    data: XOR<VolunteerDepositCreateInput, VolunteerDepositUncheckedCreateInput>
+  }
+
+  /**
+   * VolunteerDeposit createMany
+   */
+  export type VolunteerDepositCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VolunteerDeposits.
+     */
+    data: VolunteerDepositCreateManyInput | VolunteerDepositCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VolunteerDeposit createManyAndReturn
+   */
+  export type VolunteerDepositCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * The data used to create many VolunteerDeposits.
+     */
+    data: VolunteerDepositCreateManyInput | VolunteerDepositCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VolunteerDeposit update
+   */
+  export type VolunteerDepositUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositInclude<ExtArgs> | null
+    /**
+     * The data needed to update a VolunteerDeposit.
+     */
+    data: XOR<VolunteerDepositUpdateInput, VolunteerDepositUncheckedUpdateInput>
+    /**
+     * Choose, which VolunteerDeposit to update.
+     */
+    where: VolunteerDepositWhereUniqueInput
+  }
+
+  /**
+   * VolunteerDeposit updateMany
+   */
+  export type VolunteerDepositUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VolunteerDeposits.
+     */
+    data: XOR<VolunteerDepositUpdateManyMutationInput, VolunteerDepositUncheckedUpdateManyInput>
+    /**
+     * Filter which VolunteerDeposits to update
+     */
+    where?: VolunteerDepositWhereInput
+    /**
+     * Limit how many VolunteerDeposits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VolunteerDeposit updateManyAndReturn
+   */
+  export type VolunteerDepositUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * The data used to update VolunteerDeposits.
+     */
+    data: XOR<VolunteerDepositUpdateManyMutationInput, VolunteerDepositUncheckedUpdateManyInput>
+    /**
+     * Filter which VolunteerDeposits to update
+     */
+    where?: VolunteerDepositWhereInput
+    /**
+     * Limit how many VolunteerDeposits to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VolunteerDeposit upsert
+   */
+  export type VolunteerDepositUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositInclude<ExtArgs> | null
+    /**
+     * The filter to search for the VolunteerDeposit to update in case it exists.
+     */
+    where: VolunteerDepositWhereUniqueInput
+    /**
+     * In case the VolunteerDeposit found by the `where` argument doesn't exist, create a new VolunteerDeposit with this data.
+     */
+    create: XOR<VolunteerDepositCreateInput, VolunteerDepositUncheckedCreateInput>
+    /**
+     * In case the VolunteerDeposit was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VolunteerDepositUpdateInput, VolunteerDepositUncheckedUpdateInput>
+  }
+
+  /**
+   * VolunteerDeposit delete
+   */
+  export type VolunteerDepositDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositInclude<ExtArgs> | null
+    /**
+     * Filter which VolunteerDeposit to delete.
+     */
+    where: VolunteerDepositWhereUniqueInput
+  }
+
+  /**
+   * VolunteerDeposit deleteMany
+   */
+  export type VolunteerDepositDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VolunteerDeposits to delete
+     */
+    where?: VolunteerDepositWhereInput
+    /**
+     * Limit how many VolunteerDeposits to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * VolunteerDeposit.claims
+   */
+  export type VolunteerDeposit$claimsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    where?: VolunteerClaimWhereInput
+    orderBy?: VolunteerClaimOrderByWithRelationInput | VolunteerClaimOrderByWithRelationInput[]
+    cursor?: VolunteerClaimWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VolunteerClaimScalarFieldEnum | VolunteerClaimScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerDeposit without action
+   */
+  export type VolunteerDepositDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerDeposit
+     */
+    select?: VolunteerDepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerDeposit
+     */
+    omit?: VolunteerDepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerDepositInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model VolunteerClaim
+   */
+
+  export type AggregateVolunteerClaim = {
+    _count: VolunteerClaimCountAggregateOutputType | null
+    _min: VolunteerClaimMinAggregateOutputType | null
+    _max: VolunteerClaimMaxAggregateOutputType | null
+  }
+
+  export type VolunteerClaimMinAggregateOutputType = {
+    id: string | null
+    depositId: string | null
+    familyId: string | null
+    serviceId: string | null
+    academicYear: string | null
+    description: string | null
+    photoUrl: string | null
+    submittedAt: Date | null
+    status: $Enums.ClaimStatus | null
+    reviewedAt: Date | null
+    reviewedBy: string | null
+    rejectionReason: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VolunteerClaimMaxAggregateOutputType = {
+    id: string | null
+    depositId: string | null
+    familyId: string | null
+    serviceId: string | null
+    academicYear: string | null
+    description: string | null
+    photoUrl: string | null
+    submittedAt: Date | null
+    status: $Enums.ClaimStatus | null
+    reviewedAt: Date | null
+    reviewedBy: string | null
+    rejectionReason: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VolunteerClaimCountAggregateOutputType = {
+    id: number
+    depositId: number
+    familyId: number
+    serviceId: number
+    academicYear: number
+    description: number
+    photoUrl: number
+    submittedAt: number
+    status: number
+    reviewedAt: number
+    reviewedBy: number
+    rejectionReason: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type VolunteerClaimMinAggregateInputType = {
+    id?: true
+    depositId?: true
+    familyId?: true
+    serviceId?: true
+    academicYear?: true
+    description?: true
+    photoUrl?: true
+    submittedAt?: true
+    status?: true
+    reviewedAt?: true
+    reviewedBy?: true
+    rejectionReason?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VolunteerClaimMaxAggregateInputType = {
+    id?: true
+    depositId?: true
+    familyId?: true
+    serviceId?: true
+    academicYear?: true
+    description?: true
+    photoUrl?: true
+    submittedAt?: true
+    status?: true
+    reviewedAt?: true
+    reviewedBy?: true
+    rejectionReason?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VolunteerClaimCountAggregateInputType = {
+    id?: true
+    depositId?: true
+    familyId?: true
+    serviceId?: true
+    academicYear?: true
+    description?: true
+    photoUrl?: true
+    submittedAt?: true
+    status?: true
+    reviewedAt?: true
+    reviewedBy?: true
+    rejectionReason?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type VolunteerClaimAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VolunteerClaim to aggregate.
+     */
+    where?: VolunteerClaimWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerClaims to fetch.
+     */
+    orderBy?: VolunteerClaimOrderByWithRelationInput | VolunteerClaimOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VolunteerClaimWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerClaims from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerClaims.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VolunteerClaims
+    **/
+    _count?: true | VolunteerClaimCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VolunteerClaimMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VolunteerClaimMaxAggregateInputType
+  }
+
+  export type GetVolunteerClaimAggregateType<T extends VolunteerClaimAggregateArgs> = {
+        [P in keyof T & keyof AggregateVolunteerClaim]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVolunteerClaim[P]>
+      : GetScalarType<T[P], AggregateVolunteerClaim[P]>
+  }
+
+
+
+
+  export type VolunteerClaimGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VolunteerClaimWhereInput
+    orderBy?: VolunteerClaimOrderByWithAggregationInput | VolunteerClaimOrderByWithAggregationInput[]
+    by: VolunteerClaimScalarFieldEnum[] | VolunteerClaimScalarFieldEnum
+    having?: VolunteerClaimScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VolunteerClaimCountAggregateInputType | true
+    _min?: VolunteerClaimMinAggregateInputType
+    _max?: VolunteerClaimMaxAggregateInputType
+  }
+
+  export type VolunteerClaimGroupByOutputType = {
+    id: string
+    depositId: string
+    familyId: string
+    serviceId: string
+    academicYear: string
+    description: string
+    photoUrl: string | null
+    submittedAt: Date
+    status: $Enums.ClaimStatus
+    reviewedAt: Date | null
+    reviewedBy: string | null
+    rejectionReason: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: VolunteerClaimCountAggregateOutputType | null
+    _min: VolunteerClaimMinAggregateOutputType | null
+    _max: VolunteerClaimMaxAggregateOutputType | null
+  }
+
+  type GetVolunteerClaimGroupByPayload<T extends VolunteerClaimGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VolunteerClaimGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VolunteerClaimGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VolunteerClaimGroupByOutputType[P]>
+            : GetScalarType<T[P], VolunteerClaimGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VolunteerClaimSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    depositId?: boolean
+    familyId?: boolean
+    serviceId?: boolean
+    academicYear?: boolean
+    description?: boolean
+    photoUrl?: boolean
+    submittedAt?: boolean
+    status?: boolean
+    reviewedAt?: boolean
+    reviewedBy?: boolean
+    rejectionReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deposit?: boolean | VolunteerDepositDefaultArgs<ExtArgs>
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    service?: boolean | VolunteerServiceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["volunteerClaim"]>
+
+  export type VolunteerClaimSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    depositId?: boolean
+    familyId?: boolean
+    serviceId?: boolean
+    academicYear?: boolean
+    description?: boolean
+    photoUrl?: boolean
+    submittedAt?: boolean
+    status?: boolean
+    reviewedAt?: boolean
+    reviewedBy?: boolean
+    rejectionReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deposit?: boolean | VolunteerDepositDefaultArgs<ExtArgs>
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    service?: boolean | VolunteerServiceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["volunteerClaim"]>
+
+  export type VolunteerClaimSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    depositId?: boolean
+    familyId?: boolean
+    serviceId?: boolean
+    academicYear?: boolean
+    description?: boolean
+    photoUrl?: boolean
+    submittedAt?: boolean
+    status?: boolean
+    reviewedAt?: boolean
+    reviewedBy?: boolean
+    rejectionReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deposit?: boolean | VolunteerDepositDefaultArgs<ExtArgs>
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    service?: boolean | VolunteerServiceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["volunteerClaim"]>
+
+  export type VolunteerClaimSelectScalar = {
+    id?: boolean
+    depositId?: boolean
+    familyId?: boolean
+    serviceId?: boolean
+    academicYear?: boolean
+    description?: boolean
+    photoUrl?: boolean
+    submittedAt?: boolean
+    status?: boolean
+    reviewedAt?: boolean
+    reviewedBy?: boolean
+    rejectionReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type VolunteerClaimOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "depositId" | "familyId" | "serviceId" | "academicYear" | "description" | "photoUrl" | "submittedAt" | "status" | "reviewedAt" | "reviewedBy" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["volunteerClaim"]>
+  export type VolunteerClaimInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deposit?: boolean | VolunteerDepositDefaultArgs<ExtArgs>
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    service?: boolean | VolunteerServiceDefaultArgs<ExtArgs>
+  }
+  export type VolunteerClaimIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deposit?: boolean | VolunteerDepositDefaultArgs<ExtArgs>
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    service?: boolean | VolunteerServiceDefaultArgs<ExtArgs>
+  }
+  export type VolunteerClaimIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deposit?: boolean | VolunteerDepositDefaultArgs<ExtArgs>
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    service?: boolean | VolunteerServiceDefaultArgs<ExtArgs>
+  }
+
+  export type $VolunteerClaimPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VolunteerClaim"
+    objects: {
+      deposit: Prisma.$VolunteerDepositPayload<ExtArgs>
+      family: Prisma.$FamilyPayload<ExtArgs>
+      service: Prisma.$VolunteerServicePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      depositId: string
+      familyId: string
+      serviceId: string
+      academicYear: string
+      description: string
+      photoUrl: string | null
+      submittedAt: Date
+      status: $Enums.ClaimStatus
+      reviewedAt: Date | null
+      reviewedBy: string | null
+      rejectionReason: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["volunteerClaim"]>
+    composites: {}
+  }
+
+  type VolunteerClaimGetPayload<S extends boolean | null | undefined | VolunteerClaimDefaultArgs> = $Result.GetResult<Prisma.$VolunteerClaimPayload, S>
+
+  type VolunteerClaimCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VolunteerClaimFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VolunteerClaimCountAggregateInputType | true
+    }
+
+  export interface VolunteerClaimDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VolunteerClaim'], meta: { name: 'VolunteerClaim' } }
+    /**
+     * Find zero or one VolunteerClaim that matches the filter.
+     * @param {VolunteerClaimFindUniqueArgs} args - Arguments to find a VolunteerClaim
+     * @example
+     * // Get one VolunteerClaim
+     * const volunteerClaim = await prisma.volunteerClaim.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VolunteerClaimFindUniqueArgs>(args: SelectSubset<T, VolunteerClaimFindUniqueArgs<ExtArgs>>): Prisma__VolunteerClaimClient<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one VolunteerClaim that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VolunteerClaimFindUniqueOrThrowArgs} args - Arguments to find a VolunteerClaim
+     * @example
+     * // Get one VolunteerClaim
+     * const volunteerClaim = await prisma.volunteerClaim.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VolunteerClaimFindUniqueOrThrowArgs>(args: SelectSubset<T, VolunteerClaimFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VolunteerClaimClient<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VolunteerClaim that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerClaimFindFirstArgs} args - Arguments to find a VolunteerClaim
+     * @example
+     * // Get one VolunteerClaim
+     * const volunteerClaim = await prisma.volunteerClaim.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VolunteerClaimFindFirstArgs>(args?: SelectSubset<T, VolunteerClaimFindFirstArgs<ExtArgs>>): Prisma__VolunteerClaimClient<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VolunteerClaim that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerClaimFindFirstOrThrowArgs} args - Arguments to find a VolunteerClaim
+     * @example
+     * // Get one VolunteerClaim
+     * const volunteerClaim = await prisma.volunteerClaim.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VolunteerClaimFindFirstOrThrowArgs>(args?: SelectSubset<T, VolunteerClaimFindFirstOrThrowArgs<ExtArgs>>): Prisma__VolunteerClaimClient<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more VolunteerClaims that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerClaimFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VolunteerClaims
+     * const volunteerClaims = await prisma.volunteerClaim.findMany()
+     * 
+     * // Get first 10 VolunteerClaims
+     * const volunteerClaims = await prisma.volunteerClaim.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const volunteerClaimWithIdOnly = await prisma.volunteerClaim.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VolunteerClaimFindManyArgs>(args?: SelectSubset<T, VolunteerClaimFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a VolunteerClaim.
+     * @param {VolunteerClaimCreateArgs} args - Arguments to create a VolunteerClaim.
+     * @example
+     * // Create one VolunteerClaim
+     * const VolunteerClaim = await prisma.volunteerClaim.create({
+     *   data: {
+     *     // ... data to create a VolunteerClaim
+     *   }
+     * })
+     * 
+     */
+    create<T extends VolunteerClaimCreateArgs>(args: SelectSubset<T, VolunteerClaimCreateArgs<ExtArgs>>): Prisma__VolunteerClaimClient<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many VolunteerClaims.
+     * @param {VolunteerClaimCreateManyArgs} args - Arguments to create many VolunteerClaims.
+     * @example
+     * // Create many VolunteerClaims
+     * const volunteerClaim = await prisma.volunteerClaim.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VolunteerClaimCreateManyArgs>(args?: SelectSubset<T, VolunteerClaimCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VolunteerClaims and returns the data saved in the database.
+     * @param {VolunteerClaimCreateManyAndReturnArgs} args - Arguments to create many VolunteerClaims.
+     * @example
+     * // Create many VolunteerClaims
+     * const volunteerClaim = await prisma.volunteerClaim.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VolunteerClaims and only return the `id`
+     * const volunteerClaimWithIdOnly = await prisma.volunteerClaim.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VolunteerClaimCreateManyAndReturnArgs>(args?: SelectSubset<T, VolunteerClaimCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a VolunteerClaim.
+     * @param {VolunteerClaimDeleteArgs} args - Arguments to delete one VolunteerClaim.
+     * @example
+     * // Delete one VolunteerClaim
+     * const VolunteerClaim = await prisma.volunteerClaim.delete({
+     *   where: {
+     *     // ... filter to delete one VolunteerClaim
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VolunteerClaimDeleteArgs>(args: SelectSubset<T, VolunteerClaimDeleteArgs<ExtArgs>>): Prisma__VolunteerClaimClient<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one VolunteerClaim.
+     * @param {VolunteerClaimUpdateArgs} args - Arguments to update one VolunteerClaim.
+     * @example
+     * // Update one VolunteerClaim
+     * const volunteerClaim = await prisma.volunteerClaim.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VolunteerClaimUpdateArgs>(args: SelectSubset<T, VolunteerClaimUpdateArgs<ExtArgs>>): Prisma__VolunteerClaimClient<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more VolunteerClaims.
+     * @param {VolunteerClaimDeleteManyArgs} args - Arguments to filter VolunteerClaims to delete.
+     * @example
+     * // Delete a few VolunteerClaims
+     * const { count } = await prisma.volunteerClaim.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VolunteerClaimDeleteManyArgs>(args?: SelectSubset<T, VolunteerClaimDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VolunteerClaims.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerClaimUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VolunteerClaims
+     * const volunteerClaim = await prisma.volunteerClaim.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VolunteerClaimUpdateManyArgs>(args: SelectSubset<T, VolunteerClaimUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VolunteerClaims and returns the data updated in the database.
+     * @param {VolunteerClaimUpdateManyAndReturnArgs} args - Arguments to update many VolunteerClaims.
+     * @example
+     * // Update many VolunteerClaims
+     * const volunteerClaim = await prisma.volunteerClaim.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more VolunteerClaims and only return the `id`
+     * const volunteerClaimWithIdOnly = await prisma.volunteerClaim.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VolunteerClaimUpdateManyAndReturnArgs>(args: SelectSubset<T, VolunteerClaimUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one VolunteerClaim.
+     * @param {VolunteerClaimUpsertArgs} args - Arguments to update or create a VolunteerClaim.
+     * @example
+     * // Update or create a VolunteerClaim
+     * const volunteerClaim = await prisma.volunteerClaim.upsert({
+     *   create: {
+     *     // ... data to create a VolunteerClaim
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VolunteerClaim we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VolunteerClaimUpsertArgs>(args: SelectSubset<T, VolunteerClaimUpsertArgs<ExtArgs>>): Prisma__VolunteerClaimClient<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of VolunteerClaims.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerClaimCountArgs} args - Arguments to filter VolunteerClaims to count.
+     * @example
+     * // Count the number of VolunteerClaims
+     * const count = await prisma.volunteerClaim.count({
+     *   where: {
+     *     // ... the filter for the VolunteerClaims we want to count
+     *   }
+     * })
+    **/
+    count<T extends VolunteerClaimCountArgs>(
+      args?: Subset<T, VolunteerClaimCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VolunteerClaimCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VolunteerClaim.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerClaimAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VolunteerClaimAggregateArgs>(args: Subset<T, VolunteerClaimAggregateArgs>): Prisma.PrismaPromise<GetVolunteerClaimAggregateType<T>>
+
+    /**
+     * Group by VolunteerClaim.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VolunteerClaimGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VolunteerClaimGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VolunteerClaimGroupByArgs['orderBy'] }
+        : { orderBy?: VolunteerClaimGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VolunteerClaimGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVolunteerClaimGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VolunteerClaim model
+   */
+  readonly fields: VolunteerClaimFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VolunteerClaim.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VolunteerClaimClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    deposit<T extends VolunteerDepositDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VolunteerDepositDefaultArgs<ExtArgs>>): Prisma__VolunteerDepositClient<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    family<T extends FamilyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FamilyDefaultArgs<ExtArgs>>): Prisma__FamilyClient<$Result.GetResult<Prisma.$FamilyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    service<T extends VolunteerServiceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VolunteerServiceDefaultArgs<ExtArgs>>): Prisma__VolunteerServiceClient<$Result.GetResult<Prisma.$VolunteerServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VolunteerClaim model
+   */
+  interface VolunteerClaimFieldRefs {
+    readonly id: FieldRef<"VolunteerClaim", 'String'>
+    readonly depositId: FieldRef<"VolunteerClaim", 'String'>
+    readonly familyId: FieldRef<"VolunteerClaim", 'String'>
+    readonly serviceId: FieldRef<"VolunteerClaim", 'String'>
+    readonly academicYear: FieldRef<"VolunteerClaim", 'String'>
+    readonly description: FieldRef<"VolunteerClaim", 'String'>
+    readonly photoUrl: FieldRef<"VolunteerClaim", 'String'>
+    readonly submittedAt: FieldRef<"VolunteerClaim", 'DateTime'>
+    readonly status: FieldRef<"VolunteerClaim", 'ClaimStatus'>
+    readonly reviewedAt: FieldRef<"VolunteerClaim", 'DateTime'>
+    readonly reviewedBy: FieldRef<"VolunteerClaim", 'String'>
+    readonly rejectionReason: FieldRef<"VolunteerClaim", 'String'>
+    readonly createdAt: FieldRef<"VolunteerClaim", 'DateTime'>
+    readonly updatedAt: FieldRef<"VolunteerClaim", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VolunteerClaim findUnique
+   */
+  export type VolunteerClaimFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerClaim to fetch.
+     */
+    where: VolunteerClaimWhereUniqueInput
+  }
+
+  /**
+   * VolunteerClaim findUniqueOrThrow
+   */
+  export type VolunteerClaimFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerClaim to fetch.
+     */
+    where: VolunteerClaimWhereUniqueInput
+  }
+
+  /**
+   * VolunteerClaim findFirst
+   */
+  export type VolunteerClaimFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerClaim to fetch.
+     */
+    where?: VolunteerClaimWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerClaims to fetch.
+     */
+    orderBy?: VolunteerClaimOrderByWithRelationInput | VolunteerClaimOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VolunteerClaims.
+     */
+    cursor?: VolunteerClaimWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerClaims from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerClaims.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VolunteerClaims.
+     */
+    distinct?: VolunteerClaimScalarFieldEnum | VolunteerClaimScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerClaim findFirstOrThrow
+   */
+  export type VolunteerClaimFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerClaim to fetch.
+     */
+    where?: VolunteerClaimWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerClaims to fetch.
+     */
+    orderBy?: VolunteerClaimOrderByWithRelationInput | VolunteerClaimOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VolunteerClaims.
+     */
+    cursor?: VolunteerClaimWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerClaims from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerClaims.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VolunteerClaims.
+     */
+    distinct?: VolunteerClaimScalarFieldEnum | VolunteerClaimScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerClaim findMany
+   */
+  export type VolunteerClaimFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    /**
+     * Filter, which VolunteerClaims to fetch.
+     */
+    where?: VolunteerClaimWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VolunteerClaims to fetch.
+     */
+    orderBy?: VolunteerClaimOrderByWithRelationInput | VolunteerClaimOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VolunteerClaims.
+     */
+    cursor?: VolunteerClaimWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VolunteerClaims from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VolunteerClaims.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VolunteerClaims.
+     */
+    distinct?: VolunteerClaimScalarFieldEnum | VolunteerClaimScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerClaim create
+   */
+  export type VolunteerClaimCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    /**
+     * The data needed to create a VolunteerClaim.
+     */
+    data: XOR<VolunteerClaimCreateInput, VolunteerClaimUncheckedCreateInput>
+  }
+
+  /**
+   * VolunteerClaim createMany
+   */
+  export type VolunteerClaimCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VolunteerClaims.
+     */
+    data: VolunteerClaimCreateManyInput | VolunteerClaimCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VolunteerClaim createManyAndReturn
+   */
+  export type VolunteerClaimCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * The data used to create many VolunteerClaims.
+     */
+    data: VolunteerClaimCreateManyInput | VolunteerClaimCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VolunteerClaim update
+   */
+  export type VolunteerClaimUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    /**
+     * The data needed to update a VolunteerClaim.
+     */
+    data: XOR<VolunteerClaimUpdateInput, VolunteerClaimUncheckedUpdateInput>
+    /**
+     * Choose, which VolunteerClaim to update.
+     */
+    where: VolunteerClaimWhereUniqueInput
+  }
+
+  /**
+   * VolunteerClaim updateMany
+   */
+  export type VolunteerClaimUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VolunteerClaims.
+     */
+    data: XOR<VolunteerClaimUpdateManyMutationInput, VolunteerClaimUncheckedUpdateManyInput>
+    /**
+     * Filter which VolunteerClaims to update
+     */
+    where?: VolunteerClaimWhereInput
+    /**
+     * Limit how many VolunteerClaims to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VolunteerClaim updateManyAndReturn
+   */
+  export type VolunteerClaimUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * The data used to update VolunteerClaims.
+     */
+    data: XOR<VolunteerClaimUpdateManyMutationInput, VolunteerClaimUncheckedUpdateManyInput>
+    /**
+     * Filter which VolunteerClaims to update
+     */
+    where?: VolunteerClaimWhereInput
+    /**
+     * Limit how many VolunteerClaims to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VolunteerClaim upsert
+   */
+  export type VolunteerClaimUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    /**
+     * The filter to search for the VolunteerClaim to update in case it exists.
+     */
+    where: VolunteerClaimWhereUniqueInput
+    /**
+     * In case the VolunteerClaim found by the `where` argument doesn't exist, create a new VolunteerClaim with this data.
+     */
+    create: XOR<VolunteerClaimCreateInput, VolunteerClaimUncheckedCreateInput>
+    /**
+     * In case the VolunteerClaim was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VolunteerClaimUpdateInput, VolunteerClaimUncheckedUpdateInput>
+  }
+
+  /**
+   * VolunteerClaim delete
+   */
+  export type VolunteerClaimDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+    /**
+     * Filter which VolunteerClaim to delete.
+     */
+    where: VolunteerClaimWhereUniqueInput
+  }
+
+  /**
+   * VolunteerClaim deleteMany
+   */
+  export type VolunteerClaimDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VolunteerClaims to delete
+     */
+    where?: VolunteerClaimWhereInput
+    /**
+     * Limit how many VolunteerClaims to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * VolunteerClaim without action
+   */
+  export type VolunteerClaimDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerClaim
+     */
+    select?: VolunteerClaimSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerClaim
+     */
+    omit?: VolunteerClaimOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerClaimInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -26006,6 +30097,9 @@ export namespace Prisma {
     reEnrollmentOpenDate: 'reEnrollmentOpenDate',
     newEnrollmentOpenDate: 'newEnrollmentOpenDate',
     isActive: 'isActive',
+    volunteerDepositAmount: 'volunteerDepositAmount',
+    volunteerClaimDeadline: 'volunteerClaimDeadline',
+    volunteerDepositRequired: 'volunteerDepositRequired',
     createdAt: 'createdAt'
   };
 
@@ -26098,6 +30192,62 @@ export namespace Prisma {
   };
 
   export type SystemSettingsScalarFieldEnum = (typeof SystemSettingsScalarFieldEnum)[keyof typeof SystemSettingsScalarFieldEnum]
+
+
+  export const VolunteerServiceScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    nameZh: 'nameZh',
+    description: 'description',
+    descriptionZh: 'descriptionZh',
+    academicYear: 'academicYear',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type VolunteerServiceScalarFieldEnum = (typeof VolunteerServiceScalarFieldEnum)[keyof typeof VolunteerServiceScalarFieldEnum]
+
+
+  export const VolunteerDepositScalarFieldEnum: {
+    id: 'id',
+    familyId: 'familyId',
+    academicYear: 'academicYear',
+    amount: 'amount',
+    status: 'status',
+    paidAt: 'paidAt',
+    paymentMethod: 'paymentMethod',
+    stripePaymentIntentId: 'stripePaymentIntentId',
+    paypalOrderId: 'paypalOrderId',
+    forfeitedAt: 'forfeitedAt',
+    refundedAt: 'refundedAt',
+    refundedBy: 'refundedBy',
+    refundNotes: 'refundNotes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type VolunteerDepositScalarFieldEnum = (typeof VolunteerDepositScalarFieldEnum)[keyof typeof VolunteerDepositScalarFieldEnum]
+
+
+  export const VolunteerClaimScalarFieldEnum: {
+    id: 'id',
+    depositId: 'depositId',
+    familyId: 'familyId',
+    serviceId: 'serviceId',
+    academicYear: 'academicYear',
+    description: 'description',
+    photoUrl: 'photoUrl',
+    submittedAt: 'submittedAt',
+    status: 'status',
+    reviewedAt: 'reviewedAt',
+    reviewedBy: 'reviewedBy',
+    rejectionReason: 'rejectionReason',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type VolunteerClaimScalarFieldEnum = (typeof VolunteerClaimScalarFieldEnum)[keyof typeof VolunteerClaimScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -26335,6 +30485,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DepositStatus'
+   */
+  export type EnumDepositStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DepositStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DepositStatus[]'
+   */
+  export type ListEnumDepositStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DepositStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ClaimStatus'
+   */
+  export type EnumClaimStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ClaimStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ClaimStatus[]'
+   */
+  export type ListEnumClaimStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ClaimStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -26548,6 +30726,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Family"> | Date | string
     users?: UserListRelationFilter
     students?: StudentListRelationFilter
+    volunteerDeposits?: VolunteerDepositListRelationFilter
+    volunteerClaims?: VolunteerClaimListRelationFilter
   }
 
   export type FamilyOrderByWithRelationInput = {
@@ -26558,6 +30738,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     users?: UserOrderByRelationAggregateInput
     students?: StudentOrderByRelationAggregateInput
+    volunteerDeposits?: VolunteerDepositOrderByRelationAggregateInput
+    volunteerClaims?: VolunteerClaimOrderByRelationAggregateInput
   }
 
   export type FamilyWhereUniqueInput = Prisma.AtLeast<{
@@ -26571,6 +30753,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Family"> | Date | string
     users?: UserListRelationFilter
     students?: StudentListRelationFilter
+    volunteerDeposits?: VolunteerDepositListRelationFilter
+    volunteerClaims?: VolunteerClaimListRelationFilter
   }, "id">
 
   export type FamilyOrderByWithAggregationInput = {
@@ -27408,6 +31592,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: DateTimeFilter<"AcademicYearConfig"> | Date | string
     newEnrollmentOpenDate?: DateTimeFilter<"AcademicYearConfig"> | Date | string
     isActive?: BoolFilter<"AcademicYearConfig"> | boolean
+    volunteerDepositAmount?: DecimalNullableFilter<"AcademicYearConfig"> | Decimal | DecimalJsLike | number | string | null
+    volunteerClaimDeadline?: DateTimeNullableFilter<"AcademicYearConfig"> | Date | string | null
+    volunteerDepositRequired?: BoolFilter<"AcademicYearConfig"> | boolean
     createdAt?: DateTimeFilter<"AcademicYearConfig"> | Date | string
   }
 
@@ -27418,6 +31605,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: SortOrder
     newEnrollmentOpenDate?: SortOrder
     isActive?: SortOrder
+    volunteerDepositAmount?: SortOrderInput | SortOrder
+    volunteerClaimDeadline?: SortOrderInput | SortOrder
+    volunteerDepositRequired?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -27431,6 +31621,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: DateTimeFilter<"AcademicYearConfig"> | Date | string
     newEnrollmentOpenDate?: DateTimeFilter<"AcademicYearConfig"> | Date | string
     isActive?: BoolFilter<"AcademicYearConfig"> | boolean
+    volunteerDepositAmount?: DecimalNullableFilter<"AcademicYearConfig"> | Decimal | DecimalJsLike | number | string | null
+    volunteerClaimDeadline?: DateTimeNullableFilter<"AcademicYearConfig"> | Date | string | null
+    volunteerDepositRequired?: BoolFilter<"AcademicYearConfig"> | boolean
     createdAt?: DateTimeFilter<"AcademicYearConfig"> | Date | string
   }, "id" | "academicYear">
 
@@ -27441,10 +31634,15 @@ export namespace Prisma {
     reEnrollmentOpenDate?: SortOrder
     newEnrollmentOpenDate?: SortOrder
     isActive?: SortOrder
+    volunteerDepositAmount?: SortOrderInput | SortOrder
+    volunteerClaimDeadline?: SortOrderInput | SortOrder
+    volunteerDepositRequired?: SortOrder
     createdAt?: SortOrder
     _count?: AcademicYearConfigCountOrderByAggregateInput
+    _avg?: AcademicYearConfigAvgOrderByAggregateInput
     _max?: AcademicYearConfigMaxOrderByAggregateInput
     _min?: AcademicYearConfigMinOrderByAggregateInput
+    _sum?: AcademicYearConfigSumOrderByAggregateInput
   }
 
   export type AcademicYearConfigScalarWhereWithAggregatesInput = {
@@ -27457,6 +31655,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: DateTimeWithAggregatesFilter<"AcademicYearConfig"> | Date | string
     newEnrollmentOpenDate?: DateTimeWithAggregatesFilter<"AcademicYearConfig"> | Date | string
     isActive?: BoolWithAggregatesFilter<"AcademicYearConfig"> | boolean
+    volunteerDepositAmount?: DecimalNullableWithAggregatesFilter<"AcademicYearConfig"> | Decimal | DecimalJsLike | number | string | null
+    volunteerClaimDeadline?: DateTimeNullableWithAggregatesFilter<"AcademicYearConfig"> | Date | string | null
+    volunteerDepositRequired?: BoolWithAggregatesFilter<"AcademicYearConfig"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"AcademicYearConfig"> | Date | string
   }
 
@@ -27906,6 +32107,298 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"SystemSettings"> | string | null
   }
 
+  export type VolunteerServiceWhereInput = {
+    AND?: VolunteerServiceWhereInput | VolunteerServiceWhereInput[]
+    OR?: VolunteerServiceWhereInput[]
+    NOT?: VolunteerServiceWhereInput | VolunteerServiceWhereInput[]
+    id?: StringFilter<"VolunteerService"> | string
+    name?: StringFilter<"VolunteerService"> | string
+    nameZh?: StringFilter<"VolunteerService"> | string
+    description?: StringNullableFilter<"VolunteerService"> | string | null
+    descriptionZh?: StringNullableFilter<"VolunteerService"> | string | null
+    academicYear?: StringFilter<"VolunteerService"> | string
+    isActive?: BoolFilter<"VolunteerService"> | boolean
+    createdAt?: DateTimeFilter<"VolunteerService"> | Date | string
+    updatedAt?: DateTimeFilter<"VolunteerService"> | Date | string
+    claims?: VolunteerClaimListRelationFilter
+  }
+
+  export type VolunteerServiceOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    nameZh?: SortOrder
+    description?: SortOrderInput | SortOrder
+    descriptionZh?: SortOrderInput | SortOrder
+    academicYear?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    claims?: VolunteerClaimOrderByRelationAggregateInput
+  }
+
+  export type VolunteerServiceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: VolunteerServiceWhereInput | VolunteerServiceWhereInput[]
+    OR?: VolunteerServiceWhereInput[]
+    NOT?: VolunteerServiceWhereInput | VolunteerServiceWhereInput[]
+    name?: StringFilter<"VolunteerService"> | string
+    nameZh?: StringFilter<"VolunteerService"> | string
+    description?: StringNullableFilter<"VolunteerService"> | string | null
+    descriptionZh?: StringNullableFilter<"VolunteerService"> | string | null
+    academicYear?: StringFilter<"VolunteerService"> | string
+    isActive?: BoolFilter<"VolunteerService"> | boolean
+    createdAt?: DateTimeFilter<"VolunteerService"> | Date | string
+    updatedAt?: DateTimeFilter<"VolunteerService"> | Date | string
+    claims?: VolunteerClaimListRelationFilter
+  }, "id">
+
+  export type VolunteerServiceOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    nameZh?: SortOrder
+    description?: SortOrderInput | SortOrder
+    descriptionZh?: SortOrderInput | SortOrder
+    academicYear?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: VolunteerServiceCountOrderByAggregateInput
+    _max?: VolunteerServiceMaxOrderByAggregateInput
+    _min?: VolunteerServiceMinOrderByAggregateInput
+  }
+
+  export type VolunteerServiceScalarWhereWithAggregatesInput = {
+    AND?: VolunteerServiceScalarWhereWithAggregatesInput | VolunteerServiceScalarWhereWithAggregatesInput[]
+    OR?: VolunteerServiceScalarWhereWithAggregatesInput[]
+    NOT?: VolunteerServiceScalarWhereWithAggregatesInput | VolunteerServiceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"VolunteerService"> | string
+    name?: StringWithAggregatesFilter<"VolunteerService"> | string
+    nameZh?: StringWithAggregatesFilter<"VolunteerService"> | string
+    description?: StringNullableWithAggregatesFilter<"VolunteerService"> | string | null
+    descriptionZh?: StringNullableWithAggregatesFilter<"VolunteerService"> | string | null
+    academicYear?: StringWithAggregatesFilter<"VolunteerService"> | string
+    isActive?: BoolWithAggregatesFilter<"VolunteerService"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"VolunteerService"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"VolunteerService"> | Date | string
+  }
+
+  export type VolunteerDepositWhereInput = {
+    AND?: VolunteerDepositWhereInput | VolunteerDepositWhereInput[]
+    OR?: VolunteerDepositWhereInput[]
+    NOT?: VolunteerDepositWhereInput | VolunteerDepositWhereInput[]
+    id?: StringFilter<"VolunteerDeposit"> | string
+    familyId?: StringFilter<"VolunteerDeposit"> | string
+    academicYear?: StringFilter<"VolunteerDeposit"> | string
+    amount?: DecimalFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFilter<"VolunteerDeposit"> | $Enums.DepositStatus
+    paidAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
+    paymentMethod?: EnumPaymentMethodNullableFilter<"VolunteerDeposit"> | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    paypalOrderId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    forfeitedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
+    refundedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
+    refundedBy?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    refundNotes?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    createdAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
+    updatedAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
+    family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
+    claims?: VolunteerClaimListRelationFilter
+  }
+
+  export type VolunteerDepositOrderByWithRelationInput = {
+    id?: SortOrder
+    familyId?: SortOrder
+    academicYear?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
+    stripePaymentIntentId?: SortOrderInput | SortOrder
+    paypalOrderId?: SortOrderInput | SortOrder
+    forfeitedAt?: SortOrderInput | SortOrder
+    refundedAt?: SortOrderInput | SortOrder
+    refundedBy?: SortOrderInput | SortOrder
+    refundNotes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    family?: FamilyOrderByWithRelationInput
+    claims?: VolunteerClaimOrderByRelationAggregateInput
+  }
+
+  export type VolunteerDepositWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    familyId_academicYear?: VolunteerDepositFamilyIdAcademicYearCompoundUniqueInput
+    AND?: VolunteerDepositWhereInput | VolunteerDepositWhereInput[]
+    OR?: VolunteerDepositWhereInput[]
+    NOT?: VolunteerDepositWhereInput | VolunteerDepositWhereInput[]
+    familyId?: StringFilter<"VolunteerDeposit"> | string
+    academicYear?: StringFilter<"VolunteerDeposit"> | string
+    amount?: DecimalFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFilter<"VolunteerDeposit"> | $Enums.DepositStatus
+    paidAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
+    paymentMethod?: EnumPaymentMethodNullableFilter<"VolunteerDeposit"> | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    paypalOrderId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    forfeitedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
+    refundedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
+    refundedBy?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    refundNotes?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    createdAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
+    updatedAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
+    family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
+    claims?: VolunteerClaimListRelationFilter
+  }, "id" | "familyId_academicYear">
+
+  export type VolunteerDepositOrderByWithAggregationInput = {
+    id?: SortOrder
+    familyId?: SortOrder
+    academicYear?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
+    stripePaymentIntentId?: SortOrderInput | SortOrder
+    paypalOrderId?: SortOrderInput | SortOrder
+    forfeitedAt?: SortOrderInput | SortOrder
+    refundedAt?: SortOrderInput | SortOrder
+    refundedBy?: SortOrderInput | SortOrder
+    refundNotes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: VolunteerDepositCountOrderByAggregateInput
+    _avg?: VolunteerDepositAvgOrderByAggregateInput
+    _max?: VolunteerDepositMaxOrderByAggregateInput
+    _min?: VolunteerDepositMinOrderByAggregateInput
+    _sum?: VolunteerDepositSumOrderByAggregateInput
+  }
+
+  export type VolunteerDepositScalarWhereWithAggregatesInput = {
+    AND?: VolunteerDepositScalarWhereWithAggregatesInput | VolunteerDepositScalarWhereWithAggregatesInput[]
+    OR?: VolunteerDepositScalarWhereWithAggregatesInput[]
+    NOT?: VolunteerDepositScalarWhereWithAggregatesInput | VolunteerDepositScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"VolunteerDeposit"> | string
+    familyId?: StringWithAggregatesFilter<"VolunteerDeposit"> | string
+    academicYear?: StringWithAggregatesFilter<"VolunteerDeposit"> | string
+    amount?: DecimalWithAggregatesFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusWithAggregatesFilter<"VolunteerDeposit"> | $Enums.DepositStatus
+    paidAt?: DateTimeNullableWithAggregatesFilter<"VolunteerDeposit"> | Date | string | null
+    paymentMethod?: EnumPaymentMethodNullableWithAggregatesFilter<"VolunteerDeposit"> | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
+    paypalOrderId?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
+    forfeitedAt?: DateTimeNullableWithAggregatesFilter<"VolunteerDeposit"> | Date | string | null
+    refundedAt?: DateTimeNullableWithAggregatesFilter<"VolunteerDeposit"> | Date | string | null
+    refundedBy?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
+    refundNotes?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"VolunteerDeposit"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"VolunteerDeposit"> | Date | string
+  }
+
+  export type VolunteerClaimWhereInput = {
+    AND?: VolunteerClaimWhereInput | VolunteerClaimWhereInput[]
+    OR?: VolunteerClaimWhereInput[]
+    NOT?: VolunteerClaimWhereInput | VolunteerClaimWhereInput[]
+    id?: StringFilter<"VolunteerClaim"> | string
+    depositId?: StringFilter<"VolunteerClaim"> | string
+    familyId?: StringFilter<"VolunteerClaim"> | string
+    serviceId?: StringFilter<"VolunteerClaim"> | string
+    academicYear?: StringFilter<"VolunteerClaim"> | string
+    description?: StringFilter<"VolunteerClaim"> | string
+    photoUrl?: StringNullableFilter<"VolunteerClaim"> | string | null
+    submittedAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
+    status?: EnumClaimStatusFilter<"VolunteerClaim"> | $Enums.ClaimStatus
+    reviewedAt?: DateTimeNullableFilter<"VolunteerClaim"> | Date | string | null
+    reviewedBy?: StringNullableFilter<"VolunteerClaim"> | string | null
+    rejectionReason?: StringNullableFilter<"VolunteerClaim"> | string | null
+    createdAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
+    updatedAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
+    deposit?: XOR<VolunteerDepositScalarRelationFilter, VolunteerDepositWhereInput>
+    family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
+    service?: XOR<VolunteerServiceScalarRelationFilter, VolunteerServiceWhereInput>
+  }
+
+  export type VolunteerClaimOrderByWithRelationInput = {
+    id?: SortOrder
+    depositId?: SortOrder
+    familyId?: SortOrder
+    serviceId?: SortOrder
+    academicYear?: SortOrder
+    description?: SortOrder
+    photoUrl?: SortOrderInput | SortOrder
+    submittedAt?: SortOrder
+    status?: SortOrder
+    reviewedAt?: SortOrderInput | SortOrder
+    reviewedBy?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deposit?: VolunteerDepositOrderByWithRelationInput
+    family?: FamilyOrderByWithRelationInput
+    service?: VolunteerServiceOrderByWithRelationInput
+  }
+
+  export type VolunteerClaimWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: VolunteerClaimWhereInput | VolunteerClaimWhereInput[]
+    OR?: VolunteerClaimWhereInput[]
+    NOT?: VolunteerClaimWhereInput | VolunteerClaimWhereInput[]
+    depositId?: StringFilter<"VolunteerClaim"> | string
+    familyId?: StringFilter<"VolunteerClaim"> | string
+    serviceId?: StringFilter<"VolunteerClaim"> | string
+    academicYear?: StringFilter<"VolunteerClaim"> | string
+    description?: StringFilter<"VolunteerClaim"> | string
+    photoUrl?: StringNullableFilter<"VolunteerClaim"> | string | null
+    submittedAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
+    status?: EnumClaimStatusFilter<"VolunteerClaim"> | $Enums.ClaimStatus
+    reviewedAt?: DateTimeNullableFilter<"VolunteerClaim"> | Date | string | null
+    reviewedBy?: StringNullableFilter<"VolunteerClaim"> | string | null
+    rejectionReason?: StringNullableFilter<"VolunteerClaim"> | string | null
+    createdAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
+    updatedAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
+    deposit?: XOR<VolunteerDepositScalarRelationFilter, VolunteerDepositWhereInput>
+    family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
+    service?: XOR<VolunteerServiceScalarRelationFilter, VolunteerServiceWhereInput>
+  }, "id">
+
+  export type VolunteerClaimOrderByWithAggregationInput = {
+    id?: SortOrder
+    depositId?: SortOrder
+    familyId?: SortOrder
+    serviceId?: SortOrder
+    academicYear?: SortOrder
+    description?: SortOrder
+    photoUrl?: SortOrderInput | SortOrder
+    submittedAt?: SortOrder
+    status?: SortOrder
+    reviewedAt?: SortOrderInput | SortOrder
+    reviewedBy?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: VolunteerClaimCountOrderByAggregateInput
+    _max?: VolunteerClaimMaxOrderByAggregateInput
+    _min?: VolunteerClaimMinOrderByAggregateInput
+  }
+
+  export type VolunteerClaimScalarWhereWithAggregatesInput = {
+    AND?: VolunteerClaimScalarWhereWithAggregatesInput | VolunteerClaimScalarWhereWithAggregatesInput[]
+    OR?: VolunteerClaimScalarWhereWithAggregatesInput[]
+    NOT?: VolunteerClaimScalarWhereWithAggregatesInput | VolunteerClaimScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"VolunteerClaim"> | string
+    depositId?: StringWithAggregatesFilter<"VolunteerClaim"> | string
+    familyId?: StringWithAggregatesFilter<"VolunteerClaim"> | string
+    serviceId?: StringWithAggregatesFilter<"VolunteerClaim"> | string
+    academicYear?: StringWithAggregatesFilter<"VolunteerClaim"> | string
+    description?: StringWithAggregatesFilter<"VolunteerClaim"> | string
+    photoUrl?: StringNullableWithAggregatesFilter<"VolunteerClaim"> | string | null
+    submittedAt?: DateTimeWithAggregatesFilter<"VolunteerClaim"> | Date | string
+    status?: EnumClaimStatusWithAggregatesFilter<"VolunteerClaim"> | $Enums.ClaimStatus
+    reviewedAt?: DateTimeNullableWithAggregatesFilter<"VolunteerClaim"> | Date | string | null
+    reviewedBy?: StringNullableWithAggregatesFilter<"VolunteerClaim"> | string | null
+    rejectionReason?: StringNullableWithAggregatesFilter<"VolunteerClaim"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"VolunteerClaim"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"VolunteerClaim"> | Date | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -28108,6 +32601,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutFamilyInput
     students?: StudentCreateNestedManyWithoutFamilyInput
+    volunteerDeposits?: VolunteerDepositCreateNestedManyWithoutFamilyInput
+    volunteerClaims?: VolunteerClaimCreateNestedManyWithoutFamilyInput
   }
 
   export type FamilyUncheckedCreateInput = {
@@ -28118,6 +32613,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutFamilyInput
     students?: StudentUncheckedCreateNestedManyWithoutFamilyInput
+    volunteerDeposits?: VolunteerDepositUncheckedCreateNestedManyWithoutFamilyInput
+    volunteerClaims?: VolunteerClaimUncheckedCreateNestedManyWithoutFamilyInput
   }
 
   export type FamilyUpdateInput = {
@@ -28128,6 +32625,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutFamilyNestedInput
     students?: StudentUpdateManyWithoutFamilyNestedInput
+    volunteerDeposits?: VolunteerDepositUpdateManyWithoutFamilyNestedInput
+    volunteerClaims?: VolunteerClaimUpdateManyWithoutFamilyNestedInput
   }
 
   export type FamilyUncheckedUpdateInput = {
@@ -28138,6 +32637,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
     students?: StudentUncheckedUpdateManyWithoutFamilyNestedInput
+    volunteerDeposits?: VolunteerDepositUncheckedUpdateManyWithoutFamilyNestedInput
+    volunteerClaims?: VolunteerClaimUncheckedUpdateManyWithoutFamilyNestedInput
   }
 
   export type FamilyCreateManyInput = {
@@ -29049,6 +33550,9 @@ export namespace Prisma {
     reEnrollmentOpenDate: Date | string
     newEnrollmentOpenDate: Date | string
     isActive?: boolean
+    volunteerDepositAmount?: Decimal | DecimalJsLike | number | string | null
+    volunteerClaimDeadline?: Date | string | null
+    volunteerDepositRequired?: boolean
     createdAt?: Date | string
   }
 
@@ -29059,6 +33563,9 @@ export namespace Prisma {
     reEnrollmentOpenDate: Date | string
     newEnrollmentOpenDate: Date | string
     isActive?: boolean
+    volunteerDepositAmount?: Decimal | DecimalJsLike | number | string | null
+    volunteerClaimDeadline?: Date | string | null
+    volunteerDepositRequired?: boolean
     createdAt?: Date | string
   }
 
@@ -29069,6 +33576,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
     newEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    volunteerDepositAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    volunteerClaimDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    volunteerDepositRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -29079,6 +33589,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
     newEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    volunteerDepositAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    volunteerClaimDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    volunteerDepositRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -29089,6 +33602,9 @@ export namespace Prisma {
     reEnrollmentOpenDate: Date | string
     newEnrollmentOpenDate: Date | string
     isActive?: boolean
+    volunteerDepositAmount?: Decimal | DecimalJsLike | number | string | null
+    volunteerClaimDeadline?: Date | string | null
+    volunteerDepositRequired?: boolean
     createdAt?: Date | string
   }
 
@@ -29099,6 +33615,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
     newEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    volunteerDepositAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    volunteerClaimDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    volunteerDepositRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -29109,6 +33628,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
     newEnrollmentOpenDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    volunteerDepositAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    volunteerClaimDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    volunteerDepositRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -29623,6 +34145,339 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type VolunteerServiceCreateInput = {
+    id?: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    academicYear: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    claims?: VolunteerClaimCreateNestedManyWithoutServiceInput
+  }
+
+  export type VolunteerServiceUncheckedCreateInput = {
+    id?: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    academicYear: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    claims?: VolunteerClaimUncheckedCreateNestedManyWithoutServiceInput
+  }
+
+  export type VolunteerServiceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    academicYear?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    claims?: VolunteerClaimUpdateManyWithoutServiceNestedInput
+  }
+
+  export type VolunteerServiceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    academicYear?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    claims?: VolunteerClaimUncheckedUpdateManyWithoutServiceNestedInput
+  }
+
+  export type VolunteerServiceCreateManyInput = {
+    id?: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    academicYear: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerServiceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    academicYear?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerServiceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    academicYear?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerDepositCreateInput = {
+    id?: string
+    academicYear: string
+    amount?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.DepositStatus
+    paidAt?: Date | string | null
+    paymentMethod?: $Enums.PaymentMethod | null
+    stripePaymentIntentId?: string | null
+    paypalOrderId?: string | null
+    forfeitedAt?: Date | string | null
+    refundedAt?: Date | string | null
+    refundedBy?: string | null
+    refundNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    family: FamilyCreateNestedOneWithoutVolunteerDepositsInput
+    claims?: VolunteerClaimCreateNestedManyWithoutDepositInput
+  }
+
+  export type VolunteerDepositUncheckedCreateInput = {
+    id?: string
+    familyId: string
+    academicYear: string
+    amount?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.DepositStatus
+    paidAt?: Date | string | null
+    paymentMethod?: $Enums.PaymentMethod | null
+    stripePaymentIntentId?: string | null
+    paypalOrderId?: string | null
+    forfeitedAt?: Date | string | null
+    refundedAt?: Date | string | null
+    refundedBy?: string | null
+    refundNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    claims?: VolunteerClaimUncheckedCreateNestedManyWithoutDepositInput
+  }
+
+  export type VolunteerDepositUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    family?: FamilyUpdateOneRequiredWithoutVolunteerDepositsNestedInput
+    claims?: VolunteerClaimUpdateManyWithoutDepositNestedInput
+  }
+
+  export type VolunteerDepositUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    claims?: VolunteerClaimUncheckedUpdateManyWithoutDepositNestedInput
+  }
+
+  export type VolunteerDepositCreateManyInput = {
+    id?: string
+    familyId: string
+    academicYear: string
+    amount?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.DepositStatus
+    paidAt?: Date | string | null
+    paymentMethod?: $Enums.PaymentMethod | null
+    stripePaymentIntentId?: string | null
+    paypalOrderId?: string | null
+    forfeitedAt?: Date | string | null
+    refundedAt?: Date | string | null
+    refundedBy?: string | null
+    refundNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerDepositUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerDepositUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerClaimCreateInput = {
+    id?: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposit: VolunteerDepositCreateNestedOneWithoutClaimsInput
+    family: FamilyCreateNestedOneWithoutVolunteerClaimsInput
+    service: VolunteerServiceCreateNestedOneWithoutClaimsInput
+  }
+
+  export type VolunteerClaimUncheckedCreateInput = {
+    id?: string
+    depositId: string
+    familyId: string
+    serviceId: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerClaimUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposit?: VolunteerDepositUpdateOneRequiredWithoutClaimsNestedInput
+    family?: FamilyUpdateOneRequiredWithoutVolunteerClaimsNestedInput
+    service?: VolunteerServiceUpdateOneRequiredWithoutClaimsNestedInput
+  }
+
+  export type VolunteerClaimUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    depositId?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerClaimCreateManyInput = {
+    id?: string
+    depositId: string
+    familyId: string
+    serviceId: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerClaimUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerClaimUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    depositId?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -29865,11 +34720,31 @@ export namespace Prisma {
     none?: StudentWhereInput
   }
 
+  export type VolunteerDepositListRelationFilter = {
+    every?: VolunteerDepositWhereInput
+    some?: VolunteerDepositWhereInput
+    none?: VolunteerDepositWhereInput
+  }
+
+  export type VolunteerClaimListRelationFilter = {
+    every?: VolunteerClaimWhereInput
+    some?: VolunteerClaimWhereInput
+    none?: VolunteerClaimWhereInput
+  }
+
   export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type StudentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VolunteerDepositOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VolunteerClaimOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -30670,6 +35545,17 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
   export type AcademicYearConfigCountOrderByAggregateInput = {
     id?: SortOrder
     academicYear?: SortOrder
@@ -30677,7 +35563,14 @@ export namespace Prisma {
     reEnrollmentOpenDate?: SortOrder
     newEnrollmentOpenDate?: SortOrder
     isActive?: SortOrder
+    volunteerDepositAmount?: SortOrder
+    volunteerClaimDeadline?: SortOrder
+    volunteerDepositRequired?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type AcademicYearConfigAvgOrderByAggregateInput = {
+    volunteerDepositAmount?: SortOrder
   }
 
   export type AcademicYearConfigMaxOrderByAggregateInput = {
@@ -30687,6 +35580,9 @@ export namespace Prisma {
     reEnrollmentOpenDate?: SortOrder
     newEnrollmentOpenDate?: SortOrder
     isActive?: SortOrder
+    volunteerDepositAmount?: SortOrder
+    volunteerClaimDeadline?: SortOrder
+    volunteerDepositRequired?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -30697,7 +35593,30 @@ export namespace Prisma {
     reEnrollmentOpenDate?: SortOrder
     newEnrollmentOpenDate?: SortOrder
     isActive?: SortOrder
+    volunteerDepositAmount?: SortOrder
+    volunteerClaimDeadline?: SortOrder
+    volunteerDepositRequired?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type AcademicYearConfigSumOrderByAggregateInput = {
+    volunteerDepositAmount?: SortOrder
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type StudentNextClassOverrideStudentIdAcademicYearCompoundUniqueInput = {
@@ -30885,17 +35804,6 @@ export namespace Prisma {
     not?: NestedEnumPaymentMethodNullableFilter<$PrismaModel> | $Enums.PaymentMethod | null
   }
 
-  export type DecimalNullableFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
   export type ExamSessionScalarRelationFilter = {
     is?: ExamSessionWhereInput
     isNot?: ExamSessionWhereInput
@@ -31003,22 +35911,6 @@ export namespace Prisma {
     _max?: NestedEnumPaymentMethodNullableFilter<$PrismaModel>
   }
 
-  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedDecimalNullableFilter<$PrismaModel>
-    _sum?: NestedDecimalNullableFilter<$PrismaModel>
-    _min?: NestedDecimalNullableFilter<$PrismaModel>
-    _max?: NestedDecimalNullableFilter<$PrismaModel>
-  }
-
   export type SystemSettingsCountOrderByAggregateInput = {
     id?: SortOrder
     schoolNameZh?: SortOrder
@@ -31047,6 +35939,204 @@ export namespace Prisma {
     contactPhone?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
+  }
+
+  export type VolunteerServiceCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    nameZh?: SortOrder
+    description?: SortOrder
+    descriptionZh?: SortOrder
+    academicYear?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VolunteerServiceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    nameZh?: SortOrder
+    description?: SortOrder
+    descriptionZh?: SortOrder
+    academicYear?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VolunteerServiceMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    nameZh?: SortOrder
+    description?: SortOrder
+    descriptionZh?: SortOrder
+    academicYear?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumDepositStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositStatus | EnumDepositStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositStatusFilter<$PrismaModel> | $Enums.DepositStatus
+  }
+
+  export type VolunteerDepositFamilyIdAcademicYearCompoundUniqueInput = {
+    familyId: string
+    academicYear: string
+  }
+
+  export type VolunteerDepositCountOrderByAggregateInput = {
+    id?: SortOrder
+    familyId?: SortOrder
+    academicYear?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrder
+    paymentMethod?: SortOrder
+    stripePaymentIntentId?: SortOrder
+    paypalOrderId?: SortOrder
+    forfeitedAt?: SortOrder
+    refundedAt?: SortOrder
+    refundedBy?: SortOrder
+    refundNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VolunteerDepositAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type VolunteerDepositMaxOrderByAggregateInput = {
+    id?: SortOrder
+    familyId?: SortOrder
+    academicYear?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrder
+    paymentMethod?: SortOrder
+    stripePaymentIntentId?: SortOrder
+    paypalOrderId?: SortOrder
+    forfeitedAt?: SortOrder
+    refundedAt?: SortOrder
+    refundedBy?: SortOrder
+    refundNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VolunteerDepositMinOrderByAggregateInput = {
+    id?: SortOrder
+    familyId?: SortOrder
+    academicYear?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrder
+    paymentMethod?: SortOrder
+    stripePaymentIntentId?: SortOrder
+    paypalOrderId?: SortOrder
+    forfeitedAt?: SortOrder
+    refundedAt?: SortOrder
+    refundedBy?: SortOrder
+    refundNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VolunteerDepositSumOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type EnumDepositStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositStatus | EnumDepositStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositStatusWithAggregatesFilter<$PrismaModel> | $Enums.DepositStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDepositStatusFilter<$PrismaModel>
+    _max?: NestedEnumDepositStatusFilter<$PrismaModel>
+  }
+
+  export type EnumClaimStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ClaimStatus | EnumClaimStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ClaimStatus[] | ListEnumClaimStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ClaimStatus[] | ListEnumClaimStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumClaimStatusFilter<$PrismaModel> | $Enums.ClaimStatus
+  }
+
+  export type VolunteerDepositScalarRelationFilter = {
+    is?: VolunteerDepositWhereInput
+    isNot?: VolunteerDepositWhereInput
+  }
+
+  export type VolunteerServiceScalarRelationFilter = {
+    is?: VolunteerServiceWhereInput
+    isNot?: VolunteerServiceWhereInput
+  }
+
+  export type VolunteerClaimCountOrderByAggregateInput = {
+    id?: SortOrder
+    depositId?: SortOrder
+    familyId?: SortOrder
+    serviceId?: SortOrder
+    academicYear?: SortOrder
+    description?: SortOrder
+    photoUrl?: SortOrder
+    submittedAt?: SortOrder
+    status?: SortOrder
+    reviewedAt?: SortOrder
+    reviewedBy?: SortOrder
+    rejectionReason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VolunteerClaimMaxOrderByAggregateInput = {
+    id?: SortOrder
+    depositId?: SortOrder
+    familyId?: SortOrder
+    serviceId?: SortOrder
+    academicYear?: SortOrder
+    description?: SortOrder
+    photoUrl?: SortOrder
+    submittedAt?: SortOrder
+    status?: SortOrder
+    reviewedAt?: SortOrder
+    reviewedBy?: SortOrder
+    rejectionReason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VolunteerClaimMinOrderByAggregateInput = {
+    id?: SortOrder
+    depositId?: SortOrder
+    familyId?: SortOrder
+    serviceId?: SortOrder
+    academicYear?: SortOrder
+    description?: SortOrder
+    photoUrl?: SortOrder
+    submittedAt?: SortOrder
+    status?: SortOrder
+    reviewedAt?: SortOrder
+    reviewedBy?: SortOrder
+    rejectionReason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumClaimStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ClaimStatus | EnumClaimStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ClaimStatus[] | ListEnumClaimStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ClaimStatus[] | ListEnumClaimStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumClaimStatusWithAggregatesFilter<$PrismaModel> | $Enums.ClaimStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumClaimStatusFilter<$PrismaModel>
+    _max?: NestedEnumClaimStatusFilter<$PrismaModel>
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {
@@ -31111,6 +36201,20 @@ export namespace Prisma {
     connect?: StudentWhereUniqueInput | StudentWhereUniqueInput[]
   }
 
+  export type VolunteerDepositCreateNestedManyWithoutFamilyInput = {
+    create?: XOR<VolunteerDepositCreateWithoutFamilyInput, VolunteerDepositUncheckedCreateWithoutFamilyInput> | VolunteerDepositCreateWithoutFamilyInput[] | VolunteerDepositUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: VolunteerDepositCreateOrConnectWithoutFamilyInput | VolunteerDepositCreateOrConnectWithoutFamilyInput[]
+    createMany?: VolunteerDepositCreateManyFamilyInputEnvelope
+    connect?: VolunteerDepositWhereUniqueInput | VolunteerDepositWhereUniqueInput[]
+  }
+
+  export type VolunteerClaimCreateNestedManyWithoutFamilyInput = {
+    create?: XOR<VolunteerClaimCreateWithoutFamilyInput, VolunteerClaimUncheckedCreateWithoutFamilyInput> | VolunteerClaimCreateWithoutFamilyInput[] | VolunteerClaimUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutFamilyInput | VolunteerClaimCreateOrConnectWithoutFamilyInput[]
+    createMany?: VolunteerClaimCreateManyFamilyInputEnvelope
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutFamilyInput = {
     create?: XOR<UserCreateWithoutFamilyInput, UserUncheckedCreateWithoutFamilyInput> | UserCreateWithoutFamilyInput[] | UserUncheckedCreateWithoutFamilyInput[]
     connectOrCreate?: UserCreateOrConnectWithoutFamilyInput | UserCreateOrConnectWithoutFamilyInput[]
@@ -31123,6 +36227,20 @@ export namespace Prisma {
     connectOrCreate?: StudentCreateOrConnectWithoutFamilyInput | StudentCreateOrConnectWithoutFamilyInput[]
     createMany?: StudentCreateManyFamilyInputEnvelope
     connect?: StudentWhereUniqueInput | StudentWhereUniqueInput[]
+  }
+
+  export type VolunteerDepositUncheckedCreateNestedManyWithoutFamilyInput = {
+    create?: XOR<VolunteerDepositCreateWithoutFamilyInput, VolunteerDepositUncheckedCreateWithoutFamilyInput> | VolunteerDepositCreateWithoutFamilyInput[] | VolunteerDepositUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: VolunteerDepositCreateOrConnectWithoutFamilyInput | VolunteerDepositCreateOrConnectWithoutFamilyInput[]
+    createMany?: VolunteerDepositCreateManyFamilyInputEnvelope
+    connect?: VolunteerDepositWhereUniqueInput | VolunteerDepositWhereUniqueInput[]
+  }
+
+  export type VolunteerClaimUncheckedCreateNestedManyWithoutFamilyInput = {
+    create?: XOR<VolunteerClaimCreateWithoutFamilyInput, VolunteerClaimUncheckedCreateWithoutFamilyInput> | VolunteerClaimCreateWithoutFamilyInput[] | VolunteerClaimUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutFamilyInput | VolunteerClaimCreateOrConnectWithoutFamilyInput[]
+    createMany?: VolunteerClaimCreateManyFamilyInputEnvelope
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
   }
 
   export type UserUpdateManyWithoutFamilyNestedInput = {
@@ -31153,6 +36271,34 @@ export namespace Prisma {
     deleteMany?: StudentScalarWhereInput | StudentScalarWhereInput[]
   }
 
+  export type VolunteerDepositUpdateManyWithoutFamilyNestedInput = {
+    create?: XOR<VolunteerDepositCreateWithoutFamilyInput, VolunteerDepositUncheckedCreateWithoutFamilyInput> | VolunteerDepositCreateWithoutFamilyInput[] | VolunteerDepositUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: VolunteerDepositCreateOrConnectWithoutFamilyInput | VolunteerDepositCreateOrConnectWithoutFamilyInput[]
+    upsert?: VolunteerDepositUpsertWithWhereUniqueWithoutFamilyInput | VolunteerDepositUpsertWithWhereUniqueWithoutFamilyInput[]
+    createMany?: VolunteerDepositCreateManyFamilyInputEnvelope
+    set?: VolunteerDepositWhereUniqueInput | VolunteerDepositWhereUniqueInput[]
+    disconnect?: VolunteerDepositWhereUniqueInput | VolunteerDepositWhereUniqueInput[]
+    delete?: VolunteerDepositWhereUniqueInput | VolunteerDepositWhereUniqueInput[]
+    connect?: VolunteerDepositWhereUniqueInput | VolunteerDepositWhereUniqueInput[]
+    update?: VolunteerDepositUpdateWithWhereUniqueWithoutFamilyInput | VolunteerDepositUpdateWithWhereUniqueWithoutFamilyInput[]
+    updateMany?: VolunteerDepositUpdateManyWithWhereWithoutFamilyInput | VolunteerDepositUpdateManyWithWhereWithoutFamilyInput[]
+    deleteMany?: VolunteerDepositScalarWhereInput | VolunteerDepositScalarWhereInput[]
+  }
+
+  export type VolunteerClaimUpdateManyWithoutFamilyNestedInput = {
+    create?: XOR<VolunteerClaimCreateWithoutFamilyInput, VolunteerClaimUncheckedCreateWithoutFamilyInput> | VolunteerClaimCreateWithoutFamilyInput[] | VolunteerClaimUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutFamilyInput | VolunteerClaimCreateOrConnectWithoutFamilyInput[]
+    upsert?: VolunteerClaimUpsertWithWhereUniqueWithoutFamilyInput | VolunteerClaimUpsertWithWhereUniqueWithoutFamilyInput[]
+    createMany?: VolunteerClaimCreateManyFamilyInputEnvelope
+    set?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    disconnect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    delete?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    update?: VolunteerClaimUpdateWithWhereUniqueWithoutFamilyInput | VolunteerClaimUpdateWithWhereUniqueWithoutFamilyInput[]
+    updateMany?: VolunteerClaimUpdateManyWithWhereWithoutFamilyInput | VolunteerClaimUpdateManyWithWhereWithoutFamilyInput[]
+    deleteMany?: VolunteerClaimScalarWhereInput | VolunteerClaimScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutFamilyNestedInput = {
     create?: XOR<UserCreateWithoutFamilyInput, UserUncheckedCreateWithoutFamilyInput> | UserCreateWithoutFamilyInput[] | UserUncheckedCreateWithoutFamilyInput[]
     connectOrCreate?: UserCreateOrConnectWithoutFamilyInput | UserCreateOrConnectWithoutFamilyInput[]
@@ -31179,6 +36325,34 @@ export namespace Prisma {
     update?: StudentUpdateWithWhereUniqueWithoutFamilyInput | StudentUpdateWithWhereUniqueWithoutFamilyInput[]
     updateMany?: StudentUpdateManyWithWhereWithoutFamilyInput | StudentUpdateManyWithWhereWithoutFamilyInput[]
     deleteMany?: StudentScalarWhereInput | StudentScalarWhereInput[]
+  }
+
+  export type VolunteerDepositUncheckedUpdateManyWithoutFamilyNestedInput = {
+    create?: XOR<VolunteerDepositCreateWithoutFamilyInput, VolunteerDepositUncheckedCreateWithoutFamilyInput> | VolunteerDepositCreateWithoutFamilyInput[] | VolunteerDepositUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: VolunteerDepositCreateOrConnectWithoutFamilyInput | VolunteerDepositCreateOrConnectWithoutFamilyInput[]
+    upsert?: VolunteerDepositUpsertWithWhereUniqueWithoutFamilyInput | VolunteerDepositUpsertWithWhereUniqueWithoutFamilyInput[]
+    createMany?: VolunteerDepositCreateManyFamilyInputEnvelope
+    set?: VolunteerDepositWhereUniqueInput | VolunteerDepositWhereUniqueInput[]
+    disconnect?: VolunteerDepositWhereUniqueInput | VolunteerDepositWhereUniqueInput[]
+    delete?: VolunteerDepositWhereUniqueInput | VolunteerDepositWhereUniqueInput[]
+    connect?: VolunteerDepositWhereUniqueInput | VolunteerDepositWhereUniqueInput[]
+    update?: VolunteerDepositUpdateWithWhereUniqueWithoutFamilyInput | VolunteerDepositUpdateWithWhereUniqueWithoutFamilyInput[]
+    updateMany?: VolunteerDepositUpdateManyWithWhereWithoutFamilyInput | VolunteerDepositUpdateManyWithWhereWithoutFamilyInput[]
+    deleteMany?: VolunteerDepositScalarWhereInput | VolunteerDepositScalarWhereInput[]
+  }
+
+  export type VolunteerClaimUncheckedUpdateManyWithoutFamilyNestedInput = {
+    create?: XOR<VolunteerClaimCreateWithoutFamilyInput, VolunteerClaimUncheckedCreateWithoutFamilyInput> | VolunteerClaimCreateWithoutFamilyInput[] | VolunteerClaimUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutFamilyInput | VolunteerClaimCreateOrConnectWithoutFamilyInput[]
+    upsert?: VolunteerClaimUpsertWithWhereUniqueWithoutFamilyInput | VolunteerClaimUpsertWithWhereUniqueWithoutFamilyInput[]
+    createMany?: VolunteerClaimCreateManyFamilyInputEnvelope
+    set?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    disconnect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    delete?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    update?: VolunteerClaimUpdateWithWhereUniqueWithoutFamilyInput | VolunteerClaimUpdateWithWhereUniqueWithoutFamilyInput[]
+    updateMany?: VolunteerClaimUpdateManyWithWhereWithoutFamilyInput | VolunteerClaimUpdateManyWithWhereWithoutFamilyInput[]
+    deleteMany?: VolunteerClaimScalarWhereInput | VolunteerClaimScalarWhereInput[]
   }
 
   export type FamilyCreateNestedOneWithoutUsersInput = {
@@ -31971,6 +37145,14 @@ export namespace Prisma {
     update?: XOR<XOR<ClassUpdateToOneWithWhereWithoutWaitlistsInput, ClassUpdateWithoutWaitlistsInput>, ClassUncheckedUpdateWithoutWaitlistsInput>
   }
 
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
   export type StudentCreateNestedOneWithoutNextClassOverridesInput = {
     create?: XOR<StudentCreateWithoutNextClassOverridesInput, StudentUncheckedCreateWithoutNextClassOverridesInput>
     connectOrCreate?: StudentCreateOrConnectWithoutNextClassOverridesInput
@@ -32069,14 +37251,6 @@ export namespace Prisma {
     set?: $Enums.PaymentMethod | null
   }
 
-  export type NullableDecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string | null
-    increment?: Decimal | DecimalJsLike | number | string
-    decrement?: Decimal | DecimalJsLike | number | string
-    multiply?: Decimal | DecimalJsLike | number | string
-    divide?: Decimal | DecimalJsLike | number | string
-  }
-
   export type ExamSessionUpdateOneRequiredWithoutRegistrationsNestedInput = {
     create?: XOR<ExamSessionCreateWithoutRegistrationsInput, ExamSessionUncheckedCreateWithoutRegistrationsInput>
     connectOrCreate?: ExamSessionCreateOrConnectWithoutRegistrationsInput
@@ -32091,6 +37265,154 @@ export namespace Prisma {
     upsert?: StudentUpsertWithoutExamRegistrationsInput
     connect?: StudentWhereUniqueInput
     update?: XOR<XOR<StudentUpdateToOneWithWhereWithoutExamRegistrationsInput, StudentUpdateWithoutExamRegistrationsInput>, StudentUncheckedUpdateWithoutExamRegistrationsInput>
+  }
+
+  export type VolunteerClaimCreateNestedManyWithoutServiceInput = {
+    create?: XOR<VolunteerClaimCreateWithoutServiceInput, VolunteerClaimUncheckedCreateWithoutServiceInput> | VolunteerClaimCreateWithoutServiceInput[] | VolunteerClaimUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutServiceInput | VolunteerClaimCreateOrConnectWithoutServiceInput[]
+    createMany?: VolunteerClaimCreateManyServiceInputEnvelope
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+  }
+
+  export type VolunteerClaimUncheckedCreateNestedManyWithoutServiceInput = {
+    create?: XOR<VolunteerClaimCreateWithoutServiceInput, VolunteerClaimUncheckedCreateWithoutServiceInput> | VolunteerClaimCreateWithoutServiceInput[] | VolunteerClaimUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutServiceInput | VolunteerClaimCreateOrConnectWithoutServiceInput[]
+    createMany?: VolunteerClaimCreateManyServiceInputEnvelope
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+  }
+
+  export type VolunteerClaimUpdateManyWithoutServiceNestedInput = {
+    create?: XOR<VolunteerClaimCreateWithoutServiceInput, VolunteerClaimUncheckedCreateWithoutServiceInput> | VolunteerClaimCreateWithoutServiceInput[] | VolunteerClaimUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutServiceInput | VolunteerClaimCreateOrConnectWithoutServiceInput[]
+    upsert?: VolunteerClaimUpsertWithWhereUniqueWithoutServiceInput | VolunteerClaimUpsertWithWhereUniqueWithoutServiceInput[]
+    createMany?: VolunteerClaimCreateManyServiceInputEnvelope
+    set?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    disconnect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    delete?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    update?: VolunteerClaimUpdateWithWhereUniqueWithoutServiceInput | VolunteerClaimUpdateWithWhereUniqueWithoutServiceInput[]
+    updateMany?: VolunteerClaimUpdateManyWithWhereWithoutServiceInput | VolunteerClaimUpdateManyWithWhereWithoutServiceInput[]
+    deleteMany?: VolunteerClaimScalarWhereInput | VolunteerClaimScalarWhereInput[]
+  }
+
+  export type VolunteerClaimUncheckedUpdateManyWithoutServiceNestedInput = {
+    create?: XOR<VolunteerClaimCreateWithoutServiceInput, VolunteerClaimUncheckedCreateWithoutServiceInput> | VolunteerClaimCreateWithoutServiceInput[] | VolunteerClaimUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutServiceInput | VolunteerClaimCreateOrConnectWithoutServiceInput[]
+    upsert?: VolunteerClaimUpsertWithWhereUniqueWithoutServiceInput | VolunteerClaimUpsertWithWhereUniqueWithoutServiceInput[]
+    createMany?: VolunteerClaimCreateManyServiceInputEnvelope
+    set?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    disconnect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    delete?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    update?: VolunteerClaimUpdateWithWhereUniqueWithoutServiceInput | VolunteerClaimUpdateWithWhereUniqueWithoutServiceInput[]
+    updateMany?: VolunteerClaimUpdateManyWithWhereWithoutServiceInput | VolunteerClaimUpdateManyWithWhereWithoutServiceInput[]
+    deleteMany?: VolunteerClaimScalarWhereInput | VolunteerClaimScalarWhereInput[]
+  }
+
+  export type FamilyCreateNestedOneWithoutVolunteerDepositsInput = {
+    create?: XOR<FamilyCreateWithoutVolunteerDepositsInput, FamilyUncheckedCreateWithoutVolunteerDepositsInput>
+    connectOrCreate?: FamilyCreateOrConnectWithoutVolunteerDepositsInput
+    connect?: FamilyWhereUniqueInput
+  }
+
+  export type VolunteerClaimCreateNestedManyWithoutDepositInput = {
+    create?: XOR<VolunteerClaimCreateWithoutDepositInput, VolunteerClaimUncheckedCreateWithoutDepositInput> | VolunteerClaimCreateWithoutDepositInput[] | VolunteerClaimUncheckedCreateWithoutDepositInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutDepositInput | VolunteerClaimCreateOrConnectWithoutDepositInput[]
+    createMany?: VolunteerClaimCreateManyDepositInputEnvelope
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+  }
+
+  export type VolunteerClaimUncheckedCreateNestedManyWithoutDepositInput = {
+    create?: XOR<VolunteerClaimCreateWithoutDepositInput, VolunteerClaimUncheckedCreateWithoutDepositInput> | VolunteerClaimCreateWithoutDepositInput[] | VolunteerClaimUncheckedCreateWithoutDepositInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutDepositInput | VolunteerClaimCreateOrConnectWithoutDepositInput[]
+    createMany?: VolunteerClaimCreateManyDepositInputEnvelope
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+  }
+
+  export type EnumDepositStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DepositStatus
+  }
+
+  export type FamilyUpdateOneRequiredWithoutVolunteerDepositsNestedInput = {
+    create?: XOR<FamilyCreateWithoutVolunteerDepositsInput, FamilyUncheckedCreateWithoutVolunteerDepositsInput>
+    connectOrCreate?: FamilyCreateOrConnectWithoutVolunteerDepositsInput
+    upsert?: FamilyUpsertWithoutVolunteerDepositsInput
+    connect?: FamilyWhereUniqueInput
+    update?: XOR<XOR<FamilyUpdateToOneWithWhereWithoutVolunteerDepositsInput, FamilyUpdateWithoutVolunteerDepositsInput>, FamilyUncheckedUpdateWithoutVolunteerDepositsInput>
+  }
+
+  export type VolunteerClaimUpdateManyWithoutDepositNestedInput = {
+    create?: XOR<VolunteerClaimCreateWithoutDepositInput, VolunteerClaimUncheckedCreateWithoutDepositInput> | VolunteerClaimCreateWithoutDepositInput[] | VolunteerClaimUncheckedCreateWithoutDepositInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutDepositInput | VolunteerClaimCreateOrConnectWithoutDepositInput[]
+    upsert?: VolunteerClaimUpsertWithWhereUniqueWithoutDepositInput | VolunteerClaimUpsertWithWhereUniqueWithoutDepositInput[]
+    createMany?: VolunteerClaimCreateManyDepositInputEnvelope
+    set?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    disconnect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    delete?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    update?: VolunteerClaimUpdateWithWhereUniqueWithoutDepositInput | VolunteerClaimUpdateWithWhereUniqueWithoutDepositInput[]
+    updateMany?: VolunteerClaimUpdateManyWithWhereWithoutDepositInput | VolunteerClaimUpdateManyWithWhereWithoutDepositInput[]
+    deleteMany?: VolunteerClaimScalarWhereInput | VolunteerClaimScalarWhereInput[]
+  }
+
+  export type VolunteerClaimUncheckedUpdateManyWithoutDepositNestedInput = {
+    create?: XOR<VolunteerClaimCreateWithoutDepositInput, VolunteerClaimUncheckedCreateWithoutDepositInput> | VolunteerClaimCreateWithoutDepositInput[] | VolunteerClaimUncheckedCreateWithoutDepositInput[]
+    connectOrCreate?: VolunteerClaimCreateOrConnectWithoutDepositInput | VolunteerClaimCreateOrConnectWithoutDepositInput[]
+    upsert?: VolunteerClaimUpsertWithWhereUniqueWithoutDepositInput | VolunteerClaimUpsertWithWhereUniqueWithoutDepositInput[]
+    createMany?: VolunteerClaimCreateManyDepositInputEnvelope
+    set?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    disconnect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    delete?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    connect?: VolunteerClaimWhereUniqueInput | VolunteerClaimWhereUniqueInput[]
+    update?: VolunteerClaimUpdateWithWhereUniqueWithoutDepositInput | VolunteerClaimUpdateWithWhereUniqueWithoutDepositInput[]
+    updateMany?: VolunteerClaimUpdateManyWithWhereWithoutDepositInput | VolunteerClaimUpdateManyWithWhereWithoutDepositInput[]
+    deleteMany?: VolunteerClaimScalarWhereInput | VolunteerClaimScalarWhereInput[]
+  }
+
+  export type VolunteerDepositCreateNestedOneWithoutClaimsInput = {
+    create?: XOR<VolunteerDepositCreateWithoutClaimsInput, VolunteerDepositUncheckedCreateWithoutClaimsInput>
+    connectOrCreate?: VolunteerDepositCreateOrConnectWithoutClaimsInput
+    connect?: VolunteerDepositWhereUniqueInput
+  }
+
+  export type FamilyCreateNestedOneWithoutVolunteerClaimsInput = {
+    create?: XOR<FamilyCreateWithoutVolunteerClaimsInput, FamilyUncheckedCreateWithoutVolunteerClaimsInput>
+    connectOrCreate?: FamilyCreateOrConnectWithoutVolunteerClaimsInput
+    connect?: FamilyWhereUniqueInput
+  }
+
+  export type VolunteerServiceCreateNestedOneWithoutClaimsInput = {
+    create?: XOR<VolunteerServiceCreateWithoutClaimsInput, VolunteerServiceUncheckedCreateWithoutClaimsInput>
+    connectOrCreate?: VolunteerServiceCreateOrConnectWithoutClaimsInput
+    connect?: VolunteerServiceWhereUniqueInput
+  }
+
+  export type EnumClaimStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ClaimStatus
+  }
+
+  export type VolunteerDepositUpdateOneRequiredWithoutClaimsNestedInput = {
+    create?: XOR<VolunteerDepositCreateWithoutClaimsInput, VolunteerDepositUncheckedCreateWithoutClaimsInput>
+    connectOrCreate?: VolunteerDepositCreateOrConnectWithoutClaimsInput
+    upsert?: VolunteerDepositUpsertWithoutClaimsInput
+    connect?: VolunteerDepositWhereUniqueInput
+    update?: XOR<XOR<VolunteerDepositUpdateToOneWithWhereWithoutClaimsInput, VolunteerDepositUpdateWithoutClaimsInput>, VolunteerDepositUncheckedUpdateWithoutClaimsInput>
+  }
+
+  export type FamilyUpdateOneRequiredWithoutVolunteerClaimsNestedInput = {
+    create?: XOR<FamilyCreateWithoutVolunteerClaimsInput, FamilyUncheckedCreateWithoutVolunteerClaimsInput>
+    connectOrCreate?: FamilyCreateOrConnectWithoutVolunteerClaimsInput
+    upsert?: FamilyUpsertWithoutVolunteerClaimsInput
+    connect?: FamilyWhereUniqueInput
+    update?: XOR<XOR<FamilyUpdateToOneWithWhereWithoutVolunteerClaimsInput, FamilyUpdateWithoutVolunteerClaimsInput>, FamilyUncheckedUpdateWithoutVolunteerClaimsInput>
+  }
+
+  export type VolunteerServiceUpdateOneRequiredWithoutClaimsNestedInput = {
+    create?: XOR<VolunteerServiceCreateWithoutClaimsInput, VolunteerServiceUncheckedCreateWithoutClaimsInput>
+    connectOrCreate?: VolunteerServiceCreateOrConnectWithoutClaimsInput
+    upsert?: VolunteerServiceUpsertWithoutClaimsInput
+    connect?: VolunteerServiceWhereUniqueInput
+    update?: XOR<XOR<VolunteerServiceUpdateToOneWithWhereWithoutClaimsInput, VolunteerServiceUpdateWithoutClaimsInput>, VolunteerServiceUncheckedUpdateWithoutClaimsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -32429,6 +37751,33 @@ export namespace Prisma {
     _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
   }
 
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumContactStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ContactStatus | EnumContactStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ContactStatus[] | ListEnumContactStatusFieldRefInput<$PrismaModel>
@@ -32477,17 +37826,6 @@ export namespace Prisma {
     not?: NestedEnumPaymentMethodNullableFilter<$PrismaModel> | $Enums.PaymentMethod | null
   }
 
-  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
   export type NestedEnumExamRegistrationStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ExamRegistrationStatus | EnumExamRegistrationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ExamRegistrationStatus[] | ListEnumExamRegistrationStatusFieldRefInput<$PrismaModel>
@@ -32508,20 +37846,38 @@ export namespace Prisma {
     _max?: NestedEnumPaymentMethodNullableFilter<$PrismaModel>
   }
 
-  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedDecimalNullableFilter<$PrismaModel>
-    _sum?: NestedDecimalNullableFilter<$PrismaModel>
-    _min?: NestedDecimalNullableFilter<$PrismaModel>
-    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  export type NestedEnumDepositStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositStatus | EnumDepositStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositStatusFilter<$PrismaModel> | $Enums.DepositStatus
+  }
+
+  export type NestedEnumDepositStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositStatus | EnumDepositStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositStatusWithAggregatesFilter<$PrismaModel> | $Enums.DepositStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDepositStatusFilter<$PrismaModel>
+    _max?: NestedEnumDepositStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumClaimStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ClaimStatus | EnumClaimStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ClaimStatus[] | ListEnumClaimStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ClaimStatus[] | ListEnumClaimStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumClaimStatusFilter<$PrismaModel> | $Enums.ClaimStatus
+  }
+
+  export type NestedEnumClaimStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ClaimStatus | EnumClaimStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ClaimStatus[] | ListEnumClaimStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ClaimStatus[] | ListEnumClaimStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumClaimStatusWithAggregatesFilter<$PrismaModel> | $Enums.ClaimStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumClaimStatusFilter<$PrismaModel>
+    _max?: NestedEnumClaimStatusFilter<$PrismaModel>
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -32758,6 +38114,94 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type VolunteerDepositCreateWithoutFamilyInput = {
+    id?: string
+    academicYear: string
+    amount?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.DepositStatus
+    paidAt?: Date | string | null
+    paymentMethod?: $Enums.PaymentMethod | null
+    stripePaymentIntentId?: string | null
+    paypalOrderId?: string | null
+    forfeitedAt?: Date | string | null
+    refundedAt?: Date | string | null
+    refundedBy?: string | null
+    refundNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    claims?: VolunteerClaimCreateNestedManyWithoutDepositInput
+  }
+
+  export type VolunteerDepositUncheckedCreateWithoutFamilyInput = {
+    id?: string
+    academicYear: string
+    amount?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.DepositStatus
+    paidAt?: Date | string | null
+    paymentMethod?: $Enums.PaymentMethod | null
+    stripePaymentIntentId?: string | null
+    paypalOrderId?: string | null
+    forfeitedAt?: Date | string | null
+    refundedAt?: Date | string | null
+    refundedBy?: string | null
+    refundNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    claims?: VolunteerClaimUncheckedCreateNestedManyWithoutDepositInput
+  }
+
+  export type VolunteerDepositCreateOrConnectWithoutFamilyInput = {
+    where: VolunteerDepositWhereUniqueInput
+    create: XOR<VolunteerDepositCreateWithoutFamilyInput, VolunteerDepositUncheckedCreateWithoutFamilyInput>
+  }
+
+  export type VolunteerDepositCreateManyFamilyInputEnvelope = {
+    data: VolunteerDepositCreateManyFamilyInput | VolunteerDepositCreateManyFamilyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VolunteerClaimCreateWithoutFamilyInput = {
+    id?: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposit: VolunteerDepositCreateNestedOneWithoutClaimsInput
+    service: VolunteerServiceCreateNestedOneWithoutClaimsInput
+  }
+
+  export type VolunteerClaimUncheckedCreateWithoutFamilyInput = {
+    id?: string
+    depositId: string
+    serviceId: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerClaimCreateOrConnectWithoutFamilyInput = {
+    where: VolunteerClaimWhereUniqueInput
+    create: XOR<VolunteerClaimCreateWithoutFamilyInput, VolunteerClaimUncheckedCreateWithoutFamilyInput>
+  }
+
+  export type VolunteerClaimCreateManyFamilyInputEnvelope = {
+    data: VolunteerClaimCreateManyFamilyInput | VolunteerClaimCreateManyFamilyInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithWhereUniqueWithoutFamilyInput = {
     where: UserWhereUniqueInput
     update: XOR<UserUpdateWithoutFamilyInput, UserUncheckedUpdateWithoutFamilyInput>
@@ -32823,6 +38267,79 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Student"> | Date | string
   }
 
+  export type VolunteerDepositUpsertWithWhereUniqueWithoutFamilyInput = {
+    where: VolunteerDepositWhereUniqueInput
+    update: XOR<VolunteerDepositUpdateWithoutFamilyInput, VolunteerDepositUncheckedUpdateWithoutFamilyInput>
+    create: XOR<VolunteerDepositCreateWithoutFamilyInput, VolunteerDepositUncheckedCreateWithoutFamilyInput>
+  }
+
+  export type VolunteerDepositUpdateWithWhereUniqueWithoutFamilyInput = {
+    where: VolunteerDepositWhereUniqueInput
+    data: XOR<VolunteerDepositUpdateWithoutFamilyInput, VolunteerDepositUncheckedUpdateWithoutFamilyInput>
+  }
+
+  export type VolunteerDepositUpdateManyWithWhereWithoutFamilyInput = {
+    where: VolunteerDepositScalarWhereInput
+    data: XOR<VolunteerDepositUpdateManyMutationInput, VolunteerDepositUncheckedUpdateManyWithoutFamilyInput>
+  }
+
+  export type VolunteerDepositScalarWhereInput = {
+    AND?: VolunteerDepositScalarWhereInput | VolunteerDepositScalarWhereInput[]
+    OR?: VolunteerDepositScalarWhereInput[]
+    NOT?: VolunteerDepositScalarWhereInput | VolunteerDepositScalarWhereInput[]
+    id?: StringFilter<"VolunteerDeposit"> | string
+    familyId?: StringFilter<"VolunteerDeposit"> | string
+    academicYear?: StringFilter<"VolunteerDeposit"> | string
+    amount?: DecimalFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFilter<"VolunteerDeposit"> | $Enums.DepositStatus
+    paidAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
+    paymentMethod?: EnumPaymentMethodNullableFilter<"VolunteerDeposit"> | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    paypalOrderId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    forfeitedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
+    refundedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
+    refundedBy?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    refundNotes?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    createdAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
+    updatedAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
+  }
+
+  export type VolunteerClaimUpsertWithWhereUniqueWithoutFamilyInput = {
+    where: VolunteerClaimWhereUniqueInput
+    update: XOR<VolunteerClaimUpdateWithoutFamilyInput, VolunteerClaimUncheckedUpdateWithoutFamilyInput>
+    create: XOR<VolunteerClaimCreateWithoutFamilyInput, VolunteerClaimUncheckedCreateWithoutFamilyInput>
+  }
+
+  export type VolunteerClaimUpdateWithWhereUniqueWithoutFamilyInput = {
+    where: VolunteerClaimWhereUniqueInput
+    data: XOR<VolunteerClaimUpdateWithoutFamilyInput, VolunteerClaimUncheckedUpdateWithoutFamilyInput>
+  }
+
+  export type VolunteerClaimUpdateManyWithWhereWithoutFamilyInput = {
+    where: VolunteerClaimScalarWhereInput
+    data: XOR<VolunteerClaimUpdateManyMutationInput, VolunteerClaimUncheckedUpdateManyWithoutFamilyInput>
+  }
+
+  export type VolunteerClaimScalarWhereInput = {
+    AND?: VolunteerClaimScalarWhereInput | VolunteerClaimScalarWhereInput[]
+    OR?: VolunteerClaimScalarWhereInput[]
+    NOT?: VolunteerClaimScalarWhereInput | VolunteerClaimScalarWhereInput[]
+    id?: StringFilter<"VolunteerClaim"> | string
+    depositId?: StringFilter<"VolunteerClaim"> | string
+    familyId?: StringFilter<"VolunteerClaim"> | string
+    serviceId?: StringFilter<"VolunteerClaim"> | string
+    academicYear?: StringFilter<"VolunteerClaim"> | string
+    description?: StringFilter<"VolunteerClaim"> | string
+    photoUrl?: StringNullableFilter<"VolunteerClaim"> | string | null
+    submittedAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
+    status?: EnumClaimStatusFilter<"VolunteerClaim"> | $Enums.ClaimStatus
+    reviewedAt?: DateTimeNullableFilter<"VolunteerClaim"> | Date | string | null
+    reviewedBy?: StringNullableFilter<"VolunteerClaim"> | string | null
+    rejectionReason?: StringNullableFilter<"VolunteerClaim"> | string | null
+    createdAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
+    updatedAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
+  }
+
   export type FamilyCreateWithoutUsersInput = {
     id?: string
     phone?: string | null
@@ -32830,6 +38347,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     students?: StudentCreateNestedManyWithoutFamilyInput
+    volunteerDeposits?: VolunteerDepositCreateNestedManyWithoutFamilyInput
+    volunteerClaims?: VolunteerClaimCreateNestedManyWithoutFamilyInput
   }
 
   export type FamilyUncheckedCreateWithoutUsersInput = {
@@ -32839,6 +38358,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutFamilyInput
+    volunteerDeposits?: VolunteerDepositUncheckedCreateNestedManyWithoutFamilyInput
+    volunteerClaims?: VolunteerClaimUncheckedCreateNestedManyWithoutFamilyInput
   }
 
   export type FamilyCreateOrConnectWithoutUsersInput = {
@@ -32924,6 +38445,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutFamilyNestedInput
+    volunteerDeposits?: VolunteerDepositUpdateManyWithoutFamilyNestedInput
+    volunteerClaims?: VolunteerClaimUpdateManyWithoutFamilyNestedInput
   }
 
   export type FamilyUncheckedUpdateWithoutUsersInput = {
@@ -32933,6 +38456,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutFamilyNestedInput
+    volunteerDeposits?: VolunteerDepositUncheckedUpdateManyWithoutFamilyNestedInput
+    volunteerClaims?: VolunteerClaimUncheckedUpdateManyWithoutFamilyNestedInput
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -33002,6 +38527,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutFamilyInput
+    volunteerDeposits?: VolunteerDepositCreateNestedManyWithoutFamilyInput
+    volunteerClaims?: VolunteerClaimCreateNestedManyWithoutFamilyInput
   }
 
   export type FamilyUncheckedCreateWithoutStudentsInput = {
@@ -33011,6 +38538,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutFamilyInput
+    volunteerDeposits?: VolunteerDepositUncheckedCreateNestedManyWithoutFamilyInput
+    volunteerClaims?: VolunteerClaimUncheckedCreateNestedManyWithoutFamilyInput
   }
 
   export type FamilyCreateOrConnectWithoutStudentsInput = {
@@ -33172,6 +38701,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutFamilyNestedInput
+    volunteerDeposits?: VolunteerDepositUpdateManyWithoutFamilyNestedInput
+    volunteerClaims?: VolunteerClaimUpdateManyWithoutFamilyNestedInput
   }
 
   export type FamilyUncheckedUpdateWithoutStudentsInput = {
@@ -33181,6 +38712,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
+    volunteerDeposits?: VolunteerDepositUncheckedUpdateManyWithoutFamilyNestedInput
+    volunteerClaims?: VolunteerClaimUncheckedUpdateManyWithoutFamilyNestedInput
   }
 
   export type EnrollmentUpsertWithWhereUniqueWithoutStudentInput = {
@@ -34860,6 +40393,394 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
   }
 
+  export type VolunteerClaimCreateWithoutServiceInput = {
+    id?: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposit: VolunteerDepositCreateNestedOneWithoutClaimsInput
+    family: FamilyCreateNestedOneWithoutVolunteerClaimsInput
+  }
+
+  export type VolunteerClaimUncheckedCreateWithoutServiceInput = {
+    id?: string
+    depositId: string
+    familyId: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerClaimCreateOrConnectWithoutServiceInput = {
+    where: VolunteerClaimWhereUniqueInput
+    create: XOR<VolunteerClaimCreateWithoutServiceInput, VolunteerClaimUncheckedCreateWithoutServiceInput>
+  }
+
+  export type VolunteerClaimCreateManyServiceInputEnvelope = {
+    data: VolunteerClaimCreateManyServiceInput | VolunteerClaimCreateManyServiceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VolunteerClaimUpsertWithWhereUniqueWithoutServiceInput = {
+    where: VolunteerClaimWhereUniqueInput
+    update: XOR<VolunteerClaimUpdateWithoutServiceInput, VolunteerClaimUncheckedUpdateWithoutServiceInput>
+    create: XOR<VolunteerClaimCreateWithoutServiceInput, VolunteerClaimUncheckedCreateWithoutServiceInput>
+  }
+
+  export type VolunteerClaimUpdateWithWhereUniqueWithoutServiceInput = {
+    where: VolunteerClaimWhereUniqueInput
+    data: XOR<VolunteerClaimUpdateWithoutServiceInput, VolunteerClaimUncheckedUpdateWithoutServiceInput>
+  }
+
+  export type VolunteerClaimUpdateManyWithWhereWithoutServiceInput = {
+    where: VolunteerClaimScalarWhereInput
+    data: XOR<VolunteerClaimUpdateManyMutationInput, VolunteerClaimUncheckedUpdateManyWithoutServiceInput>
+  }
+
+  export type FamilyCreateWithoutVolunteerDepositsInput = {
+    id?: string
+    phone?: string | null
+    address?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutFamilyInput
+    students?: StudentCreateNestedManyWithoutFamilyInput
+    volunteerClaims?: VolunteerClaimCreateNestedManyWithoutFamilyInput
+  }
+
+  export type FamilyUncheckedCreateWithoutVolunteerDepositsInput = {
+    id?: string
+    phone?: string | null
+    address?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutFamilyInput
+    students?: StudentUncheckedCreateNestedManyWithoutFamilyInput
+    volunteerClaims?: VolunteerClaimUncheckedCreateNestedManyWithoutFamilyInput
+  }
+
+  export type FamilyCreateOrConnectWithoutVolunteerDepositsInput = {
+    where: FamilyWhereUniqueInput
+    create: XOR<FamilyCreateWithoutVolunteerDepositsInput, FamilyUncheckedCreateWithoutVolunteerDepositsInput>
+  }
+
+  export type VolunteerClaimCreateWithoutDepositInput = {
+    id?: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    family: FamilyCreateNestedOneWithoutVolunteerClaimsInput
+    service: VolunteerServiceCreateNestedOneWithoutClaimsInput
+  }
+
+  export type VolunteerClaimUncheckedCreateWithoutDepositInput = {
+    id?: string
+    familyId: string
+    serviceId: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerClaimCreateOrConnectWithoutDepositInput = {
+    where: VolunteerClaimWhereUniqueInput
+    create: XOR<VolunteerClaimCreateWithoutDepositInput, VolunteerClaimUncheckedCreateWithoutDepositInput>
+  }
+
+  export type VolunteerClaimCreateManyDepositInputEnvelope = {
+    data: VolunteerClaimCreateManyDepositInput | VolunteerClaimCreateManyDepositInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FamilyUpsertWithoutVolunteerDepositsInput = {
+    update: XOR<FamilyUpdateWithoutVolunteerDepositsInput, FamilyUncheckedUpdateWithoutVolunteerDepositsInput>
+    create: XOR<FamilyCreateWithoutVolunteerDepositsInput, FamilyUncheckedCreateWithoutVolunteerDepositsInput>
+    where?: FamilyWhereInput
+  }
+
+  export type FamilyUpdateToOneWithWhereWithoutVolunteerDepositsInput = {
+    where?: FamilyWhereInput
+    data: XOR<FamilyUpdateWithoutVolunteerDepositsInput, FamilyUncheckedUpdateWithoutVolunteerDepositsInput>
+  }
+
+  export type FamilyUpdateWithoutVolunteerDepositsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutFamilyNestedInput
+    students?: StudentUpdateManyWithoutFamilyNestedInput
+    volunteerClaims?: VolunteerClaimUpdateManyWithoutFamilyNestedInput
+  }
+
+  export type FamilyUncheckedUpdateWithoutVolunteerDepositsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
+    students?: StudentUncheckedUpdateManyWithoutFamilyNestedInput
+    volunteerClaims?: VolunteerClaimUncheckedUpdateManyWithoutFamilyNestedInput
+  }
+
+  export type VolunteerClaimUpsertWithWhereUniqueWithoutDepositInput = {
+    where: VolunteerClaimWhereUniqueInput
+    update: XOR<VolunteerClaimUpdateWithoutDepositInput, VolunteerClaimUncheckedUpdateWithoutDepositInput>
+    create: XOR<VolunteerClaimCreateWithoutDepositInput, VolunteerClaimUncheckedCreateWithoutDepositInput>
+  }
+
+  export type VolunteerClaimUpdateWithWhereUniqueWithoutDepositInput = {
+    where: VolunteerClaimWhereUniqueInput
+    data: XOR<VolunteerClaimUpdateWithoutDepositInput, VolunteerClaimUncheckedUpdateWithoutDepositInput>
+  }
+
+  export type VolunteerClaimUpdateManyWithWhereWithoutDepositInput = {
+    where: VolunteerClaimScalarWhereInput
+    data: XOR<VolunteerClaimUpdateManyMutationInput, VolunteerClaimUncheckedUpdateManyWithoutDepositInput>
+  }
+
+  export type VolunteerDepositCreateWithoutClaimsInput = {
+    id?: string
+    academicYear: string
+    amount?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.DepositStatus
+    paidAt?: Date | string | null
+    paymentMethod?: $Enums.PaymentMethod | null
+    stripePaymentIntentId?: string | null
+    paypalOrderId?: string | null
+    forfeitedAt?: Date | string | null
+    refundedAt?: Date | string | null
+    refundedBy?: string | null
+    refundNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    family: FamilyCreateNestedOneWithoutVolunteerDepositsInput
+  }
+
+  export type VolunteerDepositUncheckedCreateWithoutClaimsInput = {
+    id?: string
+    familyId: string
+    academicYear: string
+    amount?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.DepositStatus
+    paidAt?: Date | string | null
+    paymentMethod?: $Enums.PaymentMethod | null
+    stripePaymentIntentId?: string | null
+    paypalOrderId?: string | null
+    forfeitedAt?: Date | string | null
+    refundedAt?: Date | string | null
+    refundedBy?: string | null
+    refundNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerDepositCreateOrConnectWithoutClaimsInput = {
+    where: VolunteerDepositWhereUniqueInput
+    create: XOR<VolunteerDepositCreateWithoutClaimsInput, VolunteerDepositUncheckedCreateWithoutClaimsInput>
+  }
+
+  export type FamilyCreateWithoutVolunteerClaimsInput = {
+    id?: string
+    phone?: string | null
+    address?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutFamilyInput
+    students?: StudentCreateNestedManyWithoutFamilyInput
+    volunteerDeposits?: VolunteerDepositCreateNestedManyWithoutFamilyInput
+  }
+
+  export type FamilyUncheckedCreateWithoutVolunteerClaimsInput = {
+    id?: string
+    phone?: string | null
+    address?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutFamilyInput
+    students?: StudentUncheckedCreateNestedManyWithoutFamilyInput
+    volunteerDeposits?: VolunteerDepositUncheckedCreateNestedManyWithoutFamilyInput
+  }
+
+  export type FamilyCreateOrConnectWithoutVolunteerClaimsInput = {
+    where: FamilyWhereUniqueInput
+    create: XOR<FamilyCreateWithoutVolunteerClaimsInput, FamilyUncheckedCreateWithoutVolunteerClaimsInput>
+  }
+
+  export type VolunteerServiceCreateWithoutClaimsInput = {
+    id?: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    academicYear: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerServiceUncheckedCreateWithoutClaimsInput = {
+    id?: string
+    name: string
+    nameZh: string
+    description?: string | null
+    descriptionZh?: string | null
+    academicYear: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerServiceCreateOrConnectWithoutClaimsInput = {
+    where: VolunteerServiceWhereUniqueInput
+    create: XOR<VolunteerServiceCreateWithoutClaimsInput, VolunteerServiceUncheckedCreateWithoutClaimsInput>
+  }
+
+  export type VolunteerDepositUpsertWithoutClaimsInput = {
+    update: XOR<VolunteerDepositUpdateWithoutClaimsInput, VolunteerDepositUncheckedUpdateWithoutClaimsInput>
+    create: XOR<VolunteerDepositCreateWithoutClaimsInput, VolunteerDepositUncheckedCreateWithoutClaimsInput>
+    where?: VolunteerDepositWhereInput
+  }
+
+  export type VolunteerDepositUpdateToOneWithWhereWithoutClaimsInput = {
+    where?: VolunteerDepositWhereInput
+    data: XOR<VolunteerDepositUpdateWithoutClaimsInput, VolunteerDepositUncheckedUpdateWithoutClaimsInput>
+  }
+
+  export type VolunteerDepositUpdateWithoutClaimsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    family?: FamilyUpdateOneRequiredWithoutVolunteerDepositsNestedInput
+  }
+
+  export type VolunteerDepositUncheckedUpdateWithoutClaimsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FamilyUpsertWithoutVolunteerClaimsInput = {
+    update: XOR<FamilyUpdateWithoutVolunteerClaimsInput, FamilyUncheckedUpdateWithoutVolunteerClaimsInput>
+    create: XOR<FamilyCreateWithoutVolunteerClaimsInput, FamilyUncheckedCreateWithoutVolunteerClaimsInput>
+    where?: FamilyWhereInput
+  }
+
+  export type FamilyUpdateToOneWithWhereWithoutVolunteerClaimsInput = {
+    where?: FamilyWhereInput
+    data: XOR<FamilyUpdateWithoutVolunteerClaimsInput, FamilyUncheckedUpdateWithoutVolunteerClaimsInput>
+  }
+
+  export type FamilyUpdateWithoutVolunteerClaimsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutFamilyNestedInput
+    students?: StudentUpdateManyWithoutFamilyNestedInput
+    volunteerDeposits?: VolunteerDepositUpdateManyWithoutFamilyNestedInput
+  }
+
+  export type FamilyUncheckedUpdateWithoutVolunteerClaimsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
+    students?: StudentUncheckedUpdateManyWithoutFamilyNestedInput
+    volunteerDeposits?: VolunteerDepositUncheckedUpdateManyWithoutFamilyNestedInput
+  }
+
+  export type VolunteerServiceUpsertWithoutClaimsInput = {
+    update: XOR<VolunteerServiceUpdateWithoutClaimsInput, VolunteerServiceUncheckedUpdateWithoutClaimsInput>
+    create: XOR<VolunteerServiceCreateWithoutClaimsInput, VolunteerServiceUncheckedCreateWithoutClaimsInput>
+    where?: VolunteerServiceWhereInput
+  }
+
+  export type VolunteerServiceUpdateToOneWithWhereWithoutClaimsInput = {
+    where?: VolunteerServiceWhereInput
+    data: XOR<VolunteerServiceUpdateWithoutClaimsInput, VolunteerServiceUncheckedUpdateWithoutClaimsInput>
+  }
+
+  export type VolunteerServiceUpdateWithoutClaimsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    academicYear?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerServiceUncheckedUpdateWithoutClaimsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameZh?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    descriptionZh?: NullableStringFieldUpdateOperationsInput | string | null
+    academicYear?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateManyFamilyInput = {
     id?: string
     name?: string | null
@@ -34881,6 +40802,39 @@ export namespace Prisma {
     grade?: string | null
     gender?: string | null
     notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerDepositCreateManyFamilyInput = {
+    id?: string
+    academicYear: string
+    amount?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.DepositStatus
+    paidAt?: Date | string | null
+    paymentMethod?: $Enums.PaymentMethod | null
+    stripePaymentIntentId?: string | null
+    paypalOrderId?: string | null
+    forfeitedAt?: Date | string | null
+    refundedAt?: Date | string | null
+    refundedBy?: string | null
+    refundNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerClaimCreateManyFamilyInput = {
+    id?: string
+    depositId: string
+    serviceId: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34968,6 +40922,107 @@ export namespace Prisma {
     grade?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerDepositUpdateWithoutFamilyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    claims?: VolunteerClaimUpdateManyWithoutDepositNestedInput
+  }
+
+  export type VolunteerDepositUncheckedUpdateWithoutFamilyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    claims?: VolunteerClaimUncheckedUpdateManyWithoutDepositNestedInput
+  }
+
+  export type VolunteerDepositUncheckedUpdateManyWithoutFamilyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+    stripePaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerClaimUpdateWithoutFamilyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposit?: VolunteerDepositUpdateOneRequiredWithoutClaimsNestedInput
+    service?: VolunteerServiceUpdateOneRequiredWithoutClaimsNestedInput
+  }
+
+  export type VolunteerClaimUncheckedUpdateWithoutFamilyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    depositId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerClaimUncheckedUpdateManyWithoutFamilyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    depositId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35650,6 +41705,134 @@ export namespace Prisma {
     studentNameEn?: NullableStringFieldUpdateOperationsInput | string | null
     studentDob?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerClaimCreateManyServiceInput = {
+    id?: string
+    depositId: string
+    familyId: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerClaimUpdateWithoutServiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposit?: VolunteerDepositUpdateOneRequiredWithoutClaimsNestedInput
+    family?: FamilyUpdateOneRequiredWithoutVolunteerClaimsNestedInput
+  }
+
+  export type VolunteerClaimUncheckedUpdateWithoutServiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    depositId?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerClaimUncheckedUpdateManyWithoutServiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    depositId?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerClaimCreateManyDepositInput = {
+    id?: string
+    familyId: string
+    serviceId: string
+    academicYear: string
+    description: string
+    photoUrl?: string | null
+    submittedAt?: Date | string
+    status?: $Enums.ClaimStatus
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
+    rejectionReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VolunteerClaimUpdateWithoutDepositInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    family?: FamilyUpdateOneRequiredWithoutVolunteerClaimsNestedInput
+    service?: VolunteerServiceUpdateOneRequiredWithoutClaimsNestedInput
+  }
+
+  export type VolunteerClaimUncheckedUpdateWithoutDepositInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerClaimUncheckedUpdateManyWithoutDepositInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    academicYear?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

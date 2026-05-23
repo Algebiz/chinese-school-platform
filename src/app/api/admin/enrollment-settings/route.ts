@@ -8,6 +8,9 @@ const schema = z.object({
   nextYear: z.string().min(1),
   reEnrollmentOpenDate: z.string().datetime(),
   newEnrollmentOpenDate: z.string().datetime(),
+  volunteerDepositAmount: z.number().positive().optional(),
+  volunteerClaimDeadline: z.string().datetime().optional(),
+  volunteerDepositRequired: z.boolean().optional(),
 })
 
 async function verifyAdmin() {
@@ -46,17 +49,23 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const { academicYear, nextYear, reEnrollmentOpenDate, newEnrollmentOpenDate } = result.data
+  const { academicYear, nextYear, reEnrollmentOpenDate, newEnrollmentOpenDate, volunteerDepositAmount, volunteerClaimDeadline, volunteerDepositRequired } = result.data
 
   await prisma.academicYearConfig.updateMany({
     where: { academicYear: { not: academicYear } },
     data: { isActive: false },
   })
 
+  const volunteerFields = {
+    ...(volunteerDepositAmount !== undefined ? { volunteerDepositAmount } : {}),
+    ...(volunteerClaimDeadline !== undefined ? { volunteerClaimDeadline: new Date(volunteerClaimDeadline) } : {}),
+    ...(volunteerDepositRequired !== undefined ? { volunteerDepositRequired } : {}),
+  }
+
   const config = await prisma.academicYearConfig.upsert({
     where: { academicYear },
-    update: { nextYear, reEnrollmentOpenDate: new Date(reEnrollmentOpenDate), newEnrollmentOpenDate: new Date(newEnrollmentOpenDate), isActive: true },
-    create: { academicYear, nextYear, reEnrollmentOpenDate: new Date(reEnrollmentOpenDate), newEnrollmentOpenDate: new Date(newEnrollmentOpenDate), isActive: true },
+    update: { nextYear, reEnrollmentOpenDate: new Date(reEnrollmentOpenDate), newEnrollmentOpenDate: new Date(newEnrollmentOpenDate), isActive: true, ...volunteerFields },
+    create: { academicYear, nextYear, reEnrollmentOpenDate: new Date(reEnrollmentOpenDate), newEnrollmentOpenDate: new Date(newEnrollmentOpenDate), isActive: true, ...volunteerFields },
   })
 
   return NextResponse.json({ success: true, data: config })

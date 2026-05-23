@@ -9,6 +9,8 @@ const schema = z.object({
   classIds: z.array(z.string().min(1)).min(1),
   textbookIds: z.array(z.string()).optional().default([]),
   academicYear: z.string().min(1),
+  familyId: z.string().optional(),
+  includesDeposit: z.boolean().optional().default(false),
 })
 
 export async function POST(req: NextRequest) {
@@ -30,9 +32,12 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { studentId, classIds, textbookIds, academicYear } = result.data
+    const { studentId, classIds, textbookIds, academicYear, familyId, includesDeposit } = result.data
     const { grandTotal } = await calculateTotalFee(classIds, textbookIds)
-    const amount = grandTotal.toNumber()
+
+    // Read deposit amount from config or default 100
+    const depositAmt = includesDeposit ? 100 : 0
+    const amount = grandTotal.toNumber() + depositAmt
 
     if (amount <= 0) {
       return NextResponse.json(
@@ -47,6 +52,8 @@ export async function POST(req: NextRequest) {
       textbookIds,
       academicYear,
       userId: session.user.id,
+      familyId: familyId ?? '',
+      includesDeposit: includesDeposit ? 'true' : 'false',
     })
 
     return NextResponse.json({ success: true, data: { orderId } })

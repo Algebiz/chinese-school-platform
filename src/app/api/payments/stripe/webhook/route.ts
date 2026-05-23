@@ -79,6 +79,34 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     }
   })
 
+  // Handle volunteer deposit — non-fatal
+  if (paymentIntent.metadata.includesDeposit === 'true' && paymentIntent.metadata.familyId) {
+    try {
+      const { familyId, academicYear: depositYear, depositAmount: depositAmtStr } = paymentIntent.metadata
+      const depositAmt = depositAmtStr ? parseFloat(depositAmtStr) : 100
+      await prisma.volunteerDeposit.upsert({
+        where: { familyId_academicYear: { familyId, academicYear: depositYear } },
+        create: {
+          familyId,
+          academicYear: depositYear,
+          amount: depositAmt,
+          status: 'PAID',
+          paidAt: new Date(),
+          paymentMethod: 'STRIPE',
+          stripePaymentIntentId: paymentIntent.id,
+        },
+        update: {
+          status: 'PAID',
+          paidAt: new Date(),
+          paymentMethod: 'STRIPE',
+          stripePaymentIntentId: paymentIntent.id,
+        },
+      })
+    } catch (err) {
+      console.error('Failed to create/update volunteer deposit:', err)
+    }
+  }
+
   // Send confirmation email — non-fatal if it fails
   try {
     await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'STRIPE', paymentIntent.id, academicYear)

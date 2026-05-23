@@ -10,6 +10,7 @@ const NAV = [
   { href: '/admin/students', label: '学生管理', en: 'Students' },
   { href: '/admin/waitlist', label: '候补名单', en: 'Waitlist' },
   { href: '/admin/exams', label: '考试管理', en: 'Exams' },
+  { href: '/admin/volunteer', label: '志愿服务', en: 'Volunteer' },
   { href: '/admin/export', label: '数据导出', en: 'Export' },
   { href: '/admin/enrollment-settings', label: '注册设置', en: 'Settings' },
   { href: '/admin/contact', label: '联系消息', en: 'Messages' },
@@ -21,9 +22,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   let unreadContactCount = 0
   let pendingExamCount = 0
+  let pendingClaimsCount = 0
   try {
     unreadContactCount = await prisma.contactMessage.count({ where: { status: 'UNREAD' } })
     pendingExamCount = await prisma.examRegistration.count({ where: { status: 'PAID' } })
+    pendingClaimsCount = await prisma.volunteerClaim.count({ where: { status: 'PENDING_REVIEW' } })
   } catch {
     // non-fatal
   }
@@ -49,6 +52,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 {item.href === '/admin/exams' && pendingExamCount > 0 && (
                   <span className="ml-1 rounded-full bg-amber-500 px-1.5 py-0.5 text-xs font-bold text-white">
                     {pendingExamCount}
+                  </span>
+                )}
+                {item.href === '/admin/volunteer' && pendingClaimsCount > 0 && (
+                  <span className="ml-1 rounded-full bg-amber-500 px-1.5 py-0.5 text-xs font-bold text-white">
+                    {pendingClaimsCount}
                   </span>
                 )}
               </Link>
