@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-type DepositStatus = 'PENDING' | 'PAID' | 'CLAIM_PENDING' | 'CLAIM_APPROVED' | 'REFUNDED' | 'FORFEITED'
+type DepositStatus = 'PENDING' | 'PAID' | 'CLAIM_PENDING' | 'CLAIM_APPROVED' | 'REFUNDED' | 'FORFEITED' | 'REFUND_FAILED'
 type ClaimStatus = 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED'
 
 interface Service {
@@ -59,6 +59,7 @@ const DEPOSIT_STATUS_LABEL: Record<DepositStatus, string> = {
   CLAIM_APPROVED: '已批准',
   REFUNDED: '已退款',
   FORFEITED: '已没收',
+  REFUND_FAILED: '退款失败',
 }
 
 const DEPOSIT_STATUS_COLOR: Record<DepositStatus, string> = {
@@ -68,6 +69,7 @@ const DEPOSIT_STATUS_COLOR: Record<DepositStatus, string> = {
   CLAIM_APPROVED: 'bg-green-100 text-green-700',
   REFUNDED: 'bg-green-100 text-green-700',
   FORFEITED: 'bg-gray-100 text-gray-500',
+  REFUND_FAILED: 'bg-red-100 text-red-700',
 }
 
 type Tab = 'deposits' | 'claims' | 'refunds' | 'services'
@@ -91,7 +93,8 @@ export function AdminVolunteerClient({ deposits, services: initialServices, isSu
 
   // Refund state
   const [refundDepositId, setRefundDepositId] = useState<string | null>(null)
-  const [refundNotes, setRefundNotes] = useState('')
+  const [refundProcessing, setRefundProcessing] = useState(false)
+  const [refundMessage, setRefundMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null)
 
   // Services state
   const [services, setServices] = useState<Service[]>(initialServices)
@@ -101,7 +104,7 @@ export function AdminVolunteerClient({ deposits, services: initialServices, isSu
   const pendingClaims = deposits.flatMap((d) =>
     d.claims.filter((c) => c.status === 'PENDING_REVIEW').map((c) => ({ ...c, family: d.family, depositId: d.id }))
   )
-  const pendingRefunds = deposits.filter((d) => d.status === 'CLAIM_APPROVED')
+  const pendingRefunds = deposits.filter((d) => d.status === 'CLAIM_APPROVED' || d.status === 'REFUND_FAILED')
 
   const filteredDeposits =
     statusFilter === 'ALL' ? deposits : deposits.filter((d) => d.status === statusFilter)
@@ -147,26 +150,32 @@ export function AdminVolunteerClient({ deposits, services: initialServices, isSu
     }
   }
 
-  async function markRefunded() {
+  async function processRefund() {
     if (!refundDepositId) return
-    setActionLoading(true)
+    setRefundProcessing(true)
     try {
       const res = await fetch(`/api/admin/volunteer/deposits/${refundDepositId}/refund`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refundNotes: refundNotes || undefined }),
+        method: 'POST',
       })
       const json = await res.json()
-      if (!json.success) alert(json.error)
-      else {
-        setRefundDepositId(null)
-        setRefundNotes('')
+      setRefundDepositId(null)
+      if (!json.success) {
+        setRefundMessage({
+          text: `退款失败：${json.error} 请重试或联系技术支持。/ Refund failed: ${json.error} Please retry or contact support.`,
+          type: 'error',
+        })
+      } else {
+        setRefundMessage({
+          text: `退款已成功处理！退款ID: ${json.refundId} / Refund processed successfully! Refund ID: ${json.refundId}`,
+          type: 'success',
+        })
         router.refresh()
       }
     } catch {
-      alert('网络错误 / Network error')
+      setRefundDepositId(null)
+      setRefundMessage({ text: '网络错误，请重试 / Network error, please retry', type: 'error' })
     } finally {
-      setActionLoading(false)
+      setRefundProcessing(false)
     }
   }
 
@@ -284,7 +293,7 @@ export function AdminVolunteerClient({ deposits, services: initialServices, isSu
                 className="rounded-md border border-gray-300 px-3 py-1.5 text-sm"
               >
                 <option value="ALL">全部 / All</option>
-                {(['PENDING', 'PAID', 'CLAIM_PENDING', 'CLAIM_APPROVED', 'REFUNDED', 'FORFEITED'] as DepositStatus[]).map((s) => (
+                {(['PENDING', 'PAID', 'CLAIM_PENDING', 'CLAIM_APPROVED', 'REFUNDED', 'FORFEITED', 'REFUND_FAILED'] as DepositStatus[]).map((s) => (
                   <option key={s} value={s}>{DEPOSIT_STATUS_LABEL[s]}</option>
                 ))}
               </select>
@@ -424,36 +433,63 @@ export function AdminVolunteerClient({ deposits, services: initialServices, isSu
 
       {/* Tab 3: Pending Refunds */}
       {tab === 'refunds' && (
-        <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
-          <div className="border-b border-gray-200 px-6 py-4">
-            <h2 className="font-semibold text-gray-900">待退款 / Pending Refunds ({pendingRefunds.length})</h2>
-          </div>
-          {pendingRefunds.length === 0 ? (
-            <div className="px-6 py-8 text-center text-gray-400">暂无待退款记录 / No pending refunds</div>
-          ) : (
-            <div className="divide-y divide-gray-100">
-              {pendingRefunds.map((d) => {
-                const user = d.family.users[0]
-                return (
-                  <div key={d.id} className="flex items-center justify-between px-6 py-4 gap-4">
-                    <div>
-                      <p className="font-medium text-gray-900">{user?.name ?? '—'}</p>
-                      <p className="text-xs text-gray-400">{user?.email}</p>
-                      <p className="mt-1 text-sm text-gray-600">
-                        金额 / Amount: <strong>${parseFloat(String(d.amount)).toFixed(2)}</strong>
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => setRefundDepositId(d.id)}
-                      className="shrink-0 rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
-                    >
-                      ✓ 标记已退款 / Mark Refunded
-                    </button>
-                  </div>
-                )
-              })}
+        <div className="space-y-3">
+          {refundMessage && (
+            <div
+              className={`rounded-md p-3 text-sm ${
+                refundMessage.type === 'error'
+                  ? 'bg-red-50 text-red-700'
+                  : 'bg-green-50 text-green-700'
+              }`}
+            >
+              {refundMessage.text}
+              <button
+                onClick={() => setRefundMessage(null)}
+                className="ml-3 text-xs underline opacity-70 hover:opacity-100"
+              >
+                关闭 / Dismiss
+              </button>
             </div>
           )}
+          <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+            <div className="border-b border-gray-200 px-6 py-4">
+              <h2 className="font-semibold text-gray-900">待退款 / Pending Refunds ({pendingRefunds.length})</h2>
+            </div>
+            {pendingRefunds.length === 0 ? (
+              <div className="px-6 py-8 text-center text-gray-400">暂无待退款记录 / No pending refunds</div>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {pendingRefunds.map((d) => {
+                  const user = d.family.users[0]
+                  const isFailed = d.status === 'REFUND_FAILED'
+                  return (
+                    <div key={d.id} className="flex items-center justify-between px-6 py-4 gap-4">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium text-gray-900">{user?.name ?? '—'}</p>
+                          {isFailed && (
+                            <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+                              退款失败 / Refund Failed
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-400">{user?.email}</p>
+                        <p className="mt-1 text-sm text-gray-600">
+                          金额 / Amount: <strong>${parseFloat(String(d.amount)).toFixed(2)}</strong>
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setRefundDepositId(d.id)}
+                        className="shrink-0 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                      >
+                        💳 {isFailed ? '重试退款 / Retry Refund' : '处理退款 / Process Refund'}
+                      </button>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -579,31 +615,48 @@ export function AdminVolunteerClient({ deposits, services: initialServices, isSu
         </div>
       )}
 
-      {/* Refund Modal */}
+      {/* Refund Confirmation Modal */}
       {refundDepositId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
-            <h3 className="mb-3 text-base font-semibold text-gray-900">标记已退款 / Mark as Refunded</h3>
-            <label className="mb-1 block text-sm font-medium text-gray-700">备注（可选）/ Notes (optional)</label>
-            <input
-              value={refundNotes}
-              onChange={(e) => setRefundNotes(e.target.value)}
-              placeholder="例如：支票 #1234 / e.g. Check #1234"
-              className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
-            <div className="mt-4 flex gap-3 justify-end">
+            <h3 className="mb-3 text-base font-semibold text-gray-900">确认退款 / Confirm Refund</h3>
+            <p className="mb-1 text-sm text-gray-700">
+              确认向此家庭退还 $100 押金？退款将自动退回至原支付方式（信用卡或 PayPal）。
+            </p>
+            <p className="mb-1 text-xs text-gray-500">
+              Confirm refund of $100 deposit to this family? The refund will be automatically returned
+              to the original payment method (credit card or PayPal).
+            </p>
+            <p className="mb-1 text-sm text-gray-700">
+              预计到账时间：信用卡 5-10 个工作日，PayPal 3-5 个工作日。
+            </p>
+            <p className="mb-4 text-xs text-gray-500">
+              Expected timeline: 5-10 business days for credit card, 3-5 business days for PayPal.
+            </p>
+            <div className="flex gap-3 justify-end">
               <button
-                onClick={() => { setRefundDepositId(null); setRefundNotes('') }}
-                className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700"
+                onClick={() => setRefundDepositId(null)}
+                disabled={refundProcessing}
+                className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 disabled:opacity-50"
               >
                 取消 / Cancel
               </button>
               <button
-                onClick={markRefunded}
-                disabled={actionLoading}
-                className="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+                onClick={processRefund}
+                disabled={refundProcessing}
+                className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
-                确认退款 / Confirm Refund
+                {refundProcessing ? (
+                  <>
+                    <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                    </svg>
+                    处理中… / Processing…
+                  </>
+                ) : (
+                  '💳 确认退款 / Confirm Refund'
+                )}
               </button>
             </div>
           </div>

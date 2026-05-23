@@ -15,20 +15,30 @@ import { Footer } from './WelcomeEmail'
 export interface VolunteerRefundProcessedProps {
   parentName: string
   amount: number
-  refundNotes?: string | null
+  refundMethod: 'stripe' | 'paypal'
+  refundId: string
   academicYear: string
 }
 
 export function VolunteerRefundProcessed({
   parentName,
   amount,
-  refundNotes,
+  refundMethod,
+  refundId,
   academicYear,
 }: VolunteerRefundProcessedProps) {
+  const isStripe = refundMethod === 'stripe'
+  const timelineZh = isStripe
+    ? '退款将在 5-10 个工作日内退回您的信用卡'
+    : '退款将在 3-5 个工作日内退回您的 PayPal 账户'
+  const timelineEn = isStripe
+    ? 'Refund will appear on your credit card within 5-10 business days'
+    : 'Refund will appear in your PayPal account within 3-5 business days'
+
   return (
     <Html lang="zh">
       <Head />
-      <Preview>押金退款已处理 / Volunteer deposit refund processed</Preview>
+      <Preview>押金退款已自动处理 / Volunteer deposit refund processed automatically</Preview>
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
@@ -50,7 +60,10 @@ export function VolunteerRefundProcessed({
 
             <Heading as="h2" style={h2}>尊敬的 {parentName}，</Heading>
             <Text style={p}>
-              您的志愿服务押金退款已由财务处理完成，款项已发出。
+              您的 $100 押金退款已自动处理完成。
+            </Text>
+            <Text style={pEn}>
+              Your $100 deposit refund has been automatically processed.
             </Text>
 
             <Section style={infoBox}>
@@ -61,19 +74,27 @@ export function VolunteerRefundProcessed({
               <Text style={pInfo}>
                 <strong>学年：</strong>{academicYear}
               </Text>
-              {refundNotes && (
-                <Text style={pInfo}>
-                  <strong>备注：</strong>{refundNotes}
-                </Text>
-              )}
+              <Text style={pInfo}>
+                <strong>到账时间：</strong>{timelineZh}
+              </Text>
+              <Text style={{ ...pInfo, color: '#6b7280', fontSize: 12 }}>
+                {timelineEn}
+              </Text>
+              <Text style={pInfo}>
+                <strong>退款参考编号：</strong>{refundId}
+              </Text>
             </Section>
 
             <Text style={p}>
               感谢您在 {academicYear} 学年对夏洛特中文学校的志愿服务贡献！
             </Text>
             <Text style={pEn}>
-              Your volunteer deposit refund of ${amount.toFixed(2)} has been sent. Thank you for
-              your volunteer service during the {academicYear} academic year!
+              Thank you for your volunteer service during the {academicYear} academic year!
+            </Text>
+            <Text style={pNote}>
+              如有疑问请联系 info@charlottechineseacademy.org
+              <br />
+              Questions? Contact info@charlottechineseacademy.org
             </Text>
           </Section>
 
@@ -138,9 +159,11 @@ const h2: React.CSSProperties = { color: '#111827', fontSize: 18, fontWeight: 'b
 
 const p: React.CSSProperties = { color: '#374151', fontSize: 14, lineHeight: 1.6, margin: '0 0 6px' }
 
-const pEn: React.CSSProperties = { color: '#6b7280', fontSize: 12, lineHeight: 1.5, margin: '0 0 4px' }
+const pEn: React.CSSProperties = { color: '#6b7280', fontSize: 12, lineHeight: 1.5, margin: '0 0 12px' }
 
 const pInfo: React.CSSProperties = { color: '#374151', fontSize: 13, margin: '0 0 4px' }
+
+const pNote: React.CSSProperties = { color: '#9ca3af', fontSize: 12, lineHeight: 1.5, margin: '12px 0 0' }
 
 const infoBox: React.CSSProperties = {
   backgroundColor: '#f0fdf4',

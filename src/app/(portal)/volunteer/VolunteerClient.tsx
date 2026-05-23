@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-type DepositStatus = 'PENDING' | 'PAID' | 'CLAIM_PENDING' | 'CLAIM_APPROVED' | 'REFUNDED' | 'FORFEITED'
+type DepositStatus = 'PENDING' | 'PAID' | 'CLAIM_PENDING' | 'CLAIM_APPROVED' | 'REFUNDED' | 'FORFEITED' | 'REFUND_FAILED'
 type ClaimStatus = 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED'
 
 interface Service {
@@ -52,6 +52,7 @@ const DEPOSIT_STATUS_MAP: Record<DepositStatus, { label: string; color: string }
   CLAIM_APPROVED: { label: '申请已批准 / Claim Approved', color: 'bg-green-100 text-green-700' },
   REFUNDED: { label: '已退款 / Refunded', color: 'bg-green-100 text-green-700' },
   FORFEITED: { label: '已没收 / Forfeited', color: 'bg-gray-100 text-gray-500' },
+  REFUND_FAILED: { label: '退款处理中 / Refund Processing', color: 'bg-amber-100 text-amber-700' },
 }
 
 const CLAIM_STATUS_MAP: Record<ClaimStatus, { label: string; color: string }> = {

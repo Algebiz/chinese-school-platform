@@ -386,7 +386,11 @@ exports.Prisma.VolunteerDepositScalarFieldEnum = {
   forfeitedAt: 'forfeitedAt',
   refundedAt: 'refundedAt',
   refundedBy: 'refundedBy',
-  refundNotes: 'refundNotes',
+  stripeRefundId: 'stripeRefundId',
+  paypalRefundId: 'paypalRefundId',
+  refundMethod: 'refundMethod',
+  refundAmount: 'refundAmount',
+  refundFailReason: 'refundFailReason',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -487,7 +491,8 @@ exports.DepositStatus = exports.$Enums.DepositStatus = {
   CLAIM_PENDING: 'CLAIM_PENDING',
   CLAIM_APPROVED: 'CLAIM_APPROVED',
   REFUNDED: 'REFUNDED',
-  FORFEITED: 'FORFEITED'
+  FORFEITED: 'FORFEITED',
+  REFUND_FAILED: 'REFUND_FAILED'
 };
 
 exports.ClaimStatus = exports.$Enums.ClaimStatus = {

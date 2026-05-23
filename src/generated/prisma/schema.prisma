@@ -363,6 +363,7 @@ enum DepositStatus {
   CLAIM_APPROVED
   REFUNDED
   FORFEITED
+  REFUND_FAILED
 }
 
 enum ClaimStatus {
@@ -398,7 +399,11 @@ model VolunteerDeposit {
   forfeitedAt           DateTime?
   refundedAt            DateTime?
   refundedBy            String?
-  refundNotes           String?
+  stripeRefundId        String?
+  paypalRefundId        String?
+  refundMethod          String?
+  refundAmount          Decimal?       @db.Decimal(10, 2)
+  refundFailReason      String?
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
 

@@ -212,7 +212,8 @@ export const DepositStatus: {
   CLAIM_PENDING: 'CLAIM_PENDING',
   CLAIM_APPROVED: 'CLAIM_APPROVED',
   REFUNDED: 'REFUNDED',
-  FORFEITED: 'FORFEITED'
+  FORFEITED: 'FORFEITED',
+  REFUND_FAILED: 'REFUND_FAILED'
 };
 
 export type DepositStatus = (typeof DepositStatus)[keyof typeof DepositStatus]
@@ -27440,10 +27441,12 @@ export namespace Prisma {
 
   export type VolunteerDepositAvgAggregateOutputType = {
     amount: Decimal | null
+    refundAmount: Decimal | null
   }
 
   export type VolunteerDepositSumAggregateOutputType = {
     amount: Decimal | null
+    refundAmount: Decimal | null
   }
 
   export type VolunteerDepositMinAggregateOutputType = {
@@ -27459,7 +27462,11 @@ export namespace Prisma {
     forfeitedAt: Date | null
     refundedAt: Date | null
     refundedBy: string | null
-    refundNotes: string | null
+    stripeRefundId: string | null
+    paypalRefundId: string | null
+    refundMethod: string | null
+    refundAmount: Decimal | null
+    refundFailReason: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -27477,7 +27484,11 @@ export namespace Prisma {
     forfeitedAt: Date | null
     refundedAt: Date | null
     refundedBy: string | null
-    refundNotes: string | null
+    stripeRefundId: string | null
+    paypalRefundId: string | null
+    refundMethod: string | null
+    refundAmount: Decimal | null
+    refundFailReason: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -27495,7 +27506,11 @@ export namespace Prisma {
     forfeitedAt: number
     refundedAt: number
     refundedBy: number
-    refundNotes: number
+    stripeRefundId: number
+    paypalRefundId: number
+    refundMethod: number
+    refundAmount: number
+    refundFailReason: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -27504,10 +27519,12 @@ export namespace Prisma {
 
   export type VolunteerDepositAvgAggregateInputType = {
     amount?: true
+    refundAmount?: true
   }
 
   export type VolunteerDepositSumAggregateInputType = {
     amount?: true
+    refundAmount?: true
   }
 
   export type VolunteerDepositMinAggregateInputType = {
@@ -27523,7 +27540,11 @@ export namespace Prisma {
     forfeitedAt?: true
     refundedAt?: true
     refundedBy?: true
-    refundNotes?: true
+    stripeRefundId?: true
+    paypalRefundId?: true
+    refundMethod?: true
+    refundAmount?: true
+    refundFailReason?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -27541,7 +27562,11 @@ export namespace Prisma {
     forfeitedAt?: true
     refundedAt?: true
     refundedBy?: true
-    refundNotes?: true
+    stripeRefundId?: true
+    paypalRefundId?: true
+    refundMethod?: true
+    refundAmount?: true
+    refundFailReason?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -27559,7 +27584,11 @@ export namespace Prisma {
     forfeitedAt?: true
     refundedAt?: true
     refundedBy?: true
-    refundNotes?: true
+    stripeRefundId?: true
+    paypalRefundId?: true
+    refundMethod?: true
+    refundAmount?: true
+    refundFailReason?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -27664,7 +27693,11 @@ export namespace Prisma {
     forfeitedAt: Date | null
     refundedAt: Date | null
     refundedBy: string | null
-    refundNotes: string | null
+    stripeRefundId: string | null
+    paypalRefundId: string | null
+    refundMethod: string | null
+    refundAmount: Decimal | null
+    refundFailReason: string | null
     createdAt: Date
     updatedAt: Date
     _count: VolunteerDepositCountAggregateOutputType | null
@@ -27701,7 +27734,11 @@ export namespace Prisma {
     forfeitedAt?: boolean
     refundedAt?: boolean
     refundedBy?: boolean
-    refundNotes?: boolean
+    stripeRefundId?: boolean
+    paypalRefundId?: boolean
+    refundMethod?: boolean
+    refundAmount?: boolean
+    refundFailReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     family?: boolean | FamilyDefaultArgs<ExtArgs>
@@ -27722,7 +27759,11 @@ export namespace Prisma {
     forfeitedAt?: boolean
     refundedAt?: boolean
     refundedBy?: boolean
-    refundNotes?: boolean
+    stripeRefundId?: boolean
+    paypalRefundId?: boolean
+    refundMethod?: boolean
+    refundAmount?: boolean
+    refundFailReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     family?: boolean | FamilyDefaultArgs<ExtArgs>
@@ -27741,7 +27782,11 @@ export namespace Prisma {
     forfeitedAt?: boolean
     refundedAt?: boolean
     refundedBy?: boolean
-    refundNotes?: boolean
+    stripeRefundId?: boolean
+    paypalRefundId?: boolean
+    refundMethod?: boolean
+    refundAmount?: boolean
+    refundFailReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     family?: boolean | FamilyDefaultArgs<ExtArgs>
@@ -27760,12 +27805,16 @@ export namespace Prisma {
     forfeitedAt?: boolean
     refundedAt?: boolean
     refundedBy?: boolean
-    refundNotes?: boolean
+    stripeRefundId?: boolean
+    paypalRefundId?: boolean
+    refundMethod?: boolean
+    refundAmount?: boolean
+    refundFailReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type VolunteerDepositOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "familyId" | "academicYear" | "amount" | "status" | "paidAt" | "paymentMethod" | "stripePaymentIntentId" | "paypalOrderId" | "forfeitedAt" | "refundedAt" | "refundedBy" | "refundNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["volunteerDeposit"]>
+  export type VolunteerDepositOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "familyId" | "academicYear" | "amount" | "status" | "paidAt" | "paymentMethod" | "stripePaymentIntentId" | "paypalOrderId" | "forfeitedAt" | "refundedAt" | "refundedBy" | "stripeRefundId" | "paypalRefundId" | "refundMethod" | "refundAmount" | "refundFailReason" | "createdAt" | "updatedAt", ExtArgs["result"]["volunteerDeposit"]>
   export type VolunteerDepositInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     family?: boolean | FamilyDefaultArgs<ExtArgs>
     claims?: boolean | VolunteerDeposit$claimsArgs<ExtArgs>
@@ -27797,7 +27846,11 @@ export namespace Prisma {
       forfeitedAt: Date | null
       refundedAt: Date | null
       refundedBy: string | null
-      refundNotes: string | null
+      stripeRefundId: string | null
+      paypalRefundId: string | null
+      refundMethod: string | null
+      refundAmount: Prisma.Decimal | null
+      refundFailReason: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["volunteerDeposit"]>
@@ -28237,7 +28290,11 @@ export namespace Prisma {
     readonly forfeitedAt: FieldRef<"VolunteerDeposit", 'DateTime'>
     readonly refundedAt: FieldRef<"VolunteerDeposit", 'DateTime'>
     readonly refundedBy: FieldRef<"VolunteerDeposit", 'String'>
-    readonly refundNotes: FieldRef<"VolunteerDeposit", 'String'>
+    readonly stripeRefundId: FieldRef<"VolunteerDeposit", 'String'>
+    readonly paypalRefundId: FieldRef<"VolunteerDeposit", 'String'>
+    readonly refundMethod: FieldRef<"VolunteerDeposit", 'String'>
+    readonly refundAmount: FieldRef<"VolunteerDeposit", 'Decimal'>
+    readonly refundFailReason: FieldRef<"VolunteerDeposit", 'String'>
     readonly createdAt: FieldRef<"VolunteerDeposit", 'DateTime'>
     readonly updatedAt: FieldRef<"VolunteerDeposit", 'DateTime'>
   }
@@ -30222,7 +30279,11 @@ export namespace Prisma {
     forfeitedAt: 'forfeitedAt',
     refundedAt: 'refundedAt',
     refundedBy: 'refundedBy',
-    refundNotes: 'refundNotes',
+    stripeRefundId: 'stripeRefundId',
+    paypalRefundId: 'paypalRefundId',
+    refundMethod: 'refundMethod',
+    refundAmount: 'refundAmount',
+    refundFailReason: 'refundFailReason',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -32198,7 +32259,11 @@ export namespace Prisma {
     forfeitedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
     refundedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
     refundedBy?: StringNullableFilter<"VolunteerDeposit"> | string | null
-    refundNotes?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    stripeRefundId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    paypalRefundId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    refundMethod?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    refundAmount?: DecimalNullableFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: StringNullableFilter<"VolunteerDeposit"> | string | null
     createdAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
     updatedAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
     family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
@@ -32218,7 +32283,11 @@ export namespace Prisma {
     forfeitedAt?: SortOrderInput | SortOrder
     refundedAt?: SortOrderInput | SortOrder
     refundedBy?: SortOrderInput | SortOrder
-    refundNotes?: SortOrderInput | SortOrder
+    stripeRefundId?: SortOrderInput | SortOrder
+    paypalRefundId?: SortOrderInput | SortOrder
+    refundMethod?: SortOrderInput | SortOrder
+    refundAmount?: SortOrderInput | SortOrder
+    refundFailReason?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     family?: FamilyOrderByWithRelationInput
@@ -32242,7 +32311,11 @@ export namespace Prisma {
     forfeitedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
     refundedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
     refundedBy?: StringNullableFilter<"VolunteerDeposit"> | string | null
-    refundNotes?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    stripeRefundId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    paypalRefundId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    refundMethod?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    refundAmount?: DecimalNullableFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: StringNullableFilter<"VolunteerDeposit"> | string | null
     createdAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
     updatedAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
     family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
@@ -32262,7 +32335,11 @@ export namespace Prisma {
     forfeitedAt?: SortOrderInput | SortOrder
     refundedAt?: SortOrderInput | SortOrder
     refundedBy?: SortOrderInput | SortOrder
-    refundNotes?: SortOrderInput | SortOrder
+    stripeRefundId?: SortOrderInput | SortOrder
+    paypalRefundId?: SortOrderInput | SortOrder
+    refundMethod?: SortOrderInput | SortOrder
+    refundAmount?: SortOrderInput | SortOrder
+    refundFailReason?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: VolunteerDepositCountOrderByAggregateInput
@@ -32288,7 +32365,11 @@ export namespace Prisma {
     forfeitedAt?: DateTimeNullableWithAggregatesFilter<"VolunteerDeposit"> | Date | string | null
     refundedAt?: DateTimeNullableWithAggregatesFilter<"VolunteerDeposit"> | Date | string | null
     refundedBy?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
-    refundNotes?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
+    stripeRefundId?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
+    paypalRefundId?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
+    refundMethod?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
+    refundAmount?: DecimalNullableWithAggregatesFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"VolunteerDeposit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"VolunteerDeposit"> | Date | string
   }
@@ -34245,7 +34326,11 @@ export namespace Prisma {
     forfeitedAt?: Date | string | null
     refundedAt?: Date | string | null
     refundedBy?: string | null
-    refundNotes?: string | null
+    stripeRefundId?: string | null
+    paypalRefundId?: string | null
+    refundMethod?: string | null
+    refundAmount?: Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutVolunteerDepositsInput
@@ -34265,7 +34350,11 @@ export namespace Prisma {
     forfeitedAt?: Date | string | null
     refundedAt?: Date | string | null
     refundedBy?: string | null
-    refundNotes?: string | null
+    stripeRefundId?: string | null
+    paypalRefundId?: string | null
+    refundMethod?: string | null
+    refundAmount?: Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     claims?: VolunteerClaimUncheckedCreateNestedManyWithoutDepositInput
@@ -34283,7 +34372,11 @@ export namespace Prisma {
     forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutVolunteerDepositsNestedInput
@@ -34303,7 +34396,11 @@ export namespace Prisma {
     forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     claims?: VolunteerClaimUncheckedUpdateManyWithoutDepositNestedInput
@@ -34322,7 +34419,11 @@ export namespace Prisma {
     forfeitedAt?: Date | string | null
     refundedAt?: Date | string | null
     refundedBy?: string | null
-    refundNotes?: string | null
+    stripeRefundId?: string | null
+    paypalRefundId?: string | null
+    refundMethod?: string | null
+    refundAmount?: Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34339,7 +34440,11 @@ export namespace Prisma {
     forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34357,7 +34462,11 @@ export namespace Prisma {
     forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -36002,13 +36111,18 @@ export namespace Prisma {
     forfeitedAt?: SortOrder
     refundedAt?: SortOrder
     refundedBy?: SortOrder
-    refundNotes?: SortOrder
+    stripeRefundId?: SortOrder
+    paypalRefundId?: SortOrder
+    refundMethod?: SortOrder
+    refundAmount?: SortOrder
+    refundFailReason?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type VolunteerDepositAvgOrderByAggregateInput = {
     amount?: SortOrder
+    refundAmount?: SortOrder
   }
 
   export type VolunteerDepositMaxOrderByAggregateInput = {
@@ -36024,7 +36138,11 @@ export namespace Prisma {
     forfeitedAt?: SortOrder
     refundedAt?: SortOrder
     refundedBy?: SortOrder
-    refundNotes?: SortOrder
+    stripeRefundId?: SortOrder
+    paypalRefundId?: SortOrder
+    refundMethod?: SortOrder
+    refundAmount?: SortOrder
+    refundFailReason?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36042,13 +36160,18 @@ export namespace Prisma {
     forfeitedAt?: SortOrder
     refundedAt?: SortOrder
     refundedBy?: SortOrder
-    refundNotes?: SortOrder
+    stripeRefundId?: SortOrder
+    paypalRefundId?: SortOrder
+    refundMethod?: SortOrder
+    refundAmount?: SortOrder
+    refundFailReason?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type VolunteerDepositSumOrderByAggregateInput = {
     amount?: SortOrder
+    refundAmount?: SortOrder
   }
 
   export type EnumDepositStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -38126,7 +38249,11 @@ export namespace Prisma {
     forfeitedAt?: Date | string | null
     refundedAt?: Date | string | null
     refundedBy?: string | null
-    refundNotes?: string | null
+    stripeRefundId?: string | null
+    paypalRefundId?: string | null
+    refundMethod?: string | null
+    refundAmount?: Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     claims?: VolunteerClaimCreateNestedManyWithoutDepositInput
@@ -38144,7 +38271,11 @@ export namespace Prisma {
     forfeitedAt?: Date | string | null
     refundedAt?: Date | string | null
     refundedBy?: string | null
-    refundNotes?: string | null
+    stripeRefundId?: string | null
+    paypalRefundId?: string | null
+    refundMethod?: string | null
+    refundAmount?: Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     claims?: VolunteerClaimUncheckedCreateNestedManyWithoutDepositInput
@@ -38299,7 +38430,11 @@ export namespace Prisma {
     forfeitedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
     refundedAt?: DateTimeNullableFilter<"VolunteerDeposit"> | Date | string | null
     refundedBy?: StringNullableFilter<"VolunteerDeposit"> | string | null
-    refundNotes?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    stripeRefundId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    paypalRefundId?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    refundMethod?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    refundAmount?: DecimalNullableFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: StringNullableFilter<"VolunteerDeposit"> | string | null
     createdAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
     updatedAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
   }
@@ -40581,7 +40716,11 @@ export namespace Prisma {
     forfeitedAt?: Date | string | null
     refundedAt?: Date | string | null
     refundedBy?: string | null
-    refundNotes?: string | null
+    stripeRefundId?: string | null
+    paypalRefundId?: string | null
+    refundMethod?: string | null
+    refundAmount?: Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutVolunteerDepositsInput
@@ -40600,7 +40739,11 @@ export namespace Prisma {
     forfeitedAt?: Date | string | null
     refundedAt?: Date | string | null
     refundedBy?: string | null
-    refundNotes?: string | null
+    stripeRefundId?: string | null
+    paypalRefundId?: string | null
+    refundMethod?: string | null
+    refundAmount?: Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40689,7 +40832,11 @@ export namespace Prisma {
     forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutVolunteerDepositsNestedInput
@@ -40708,7 +40855,11 @@ export namespace Prisma {
     forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40818,7 +40969,11 @@ export namespace Prisma {
     forfeitedAt?: Date | string | null
     refundedAt?: Date | string | null
     refundedBy?: string | null
-    refundNotes?: string | null
+    stripeRefundId?: string | null
+    paypalRefundId?: string | null
+    refundMethod?: string | null
+    refundAmount?: Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40938,7 +41093,11 @@ export namespace Prisma {
     forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     claims?: VolunteerClaimUpdateManyWithoutDepositNestedInput
@@ -40956,7 +41115,11 @@ export namespace Prisma {
     forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     claims?: VolunteerClaimUncheckedUpdateManyWithoutDepositNestedInput
@@ -40974,7 +41137,11 @@ export namespace Prisma {
     forfeitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    refundNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    paypalRefundId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

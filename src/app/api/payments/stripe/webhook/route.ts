@@ -30,6 +30,8 @@ export async function POST(request: NextRequest) {
       }
     } else if (event.type === 'payment_intent.payment_failed') {
       await handlePaymentFailed(event.data.object as Stripe.PaymentIntent)
+    } else if (event.type === 'charge.refunded') {
+      await handleChargeRefunded(event.data.object as Stripe.Charge)
     }
   } catch (err) {
     console.error(`Webhook handler error [${event.type}]:`, err)
@@ -154,6 +156,34 @@ async function handleExamPaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     }
   } catch (err) {
     console.error('Failed to send exam registration email:', err)
+  }
+}
+
+async function handleChargeRefunded(charge: Stripe.Charge) {
+  const refunds = charge.refunds?.data ?? []
+  for (const refund of refunds) {
+    const deposit = await prisma.volunteerDeposit.findFirst({
+      where: {
+        OR: [
+          { stripeRefundId: refund.id },
+          { stripePaymentIntentId: typeof charge.payment_intent === 'string' ? charge.payment_intent : undefined },
+        ],
+      },
+    })
+    if (!deposit) continue
+    if (deposit.status === 'REFUNDED') continue
+    if (deposit.status === 'REFUND_FAILED') {
+      await prisma.volunteerDeposit.update({
+        where: { id: deposit.id },
+        data: {
+          status: 'REFUNDED',
+          refundedAt: new Date(),
+          stripeRefundId: refund.id,
+          refundMethod: 'stripe',
+          refundAmount: deposit.amount,
+        },
+      })
+    }
   }
 }
 

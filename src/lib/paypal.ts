@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api-m.sandbox.paypal.com'
+export const PAYPAL_BASE = 'https://api-m.sandbox.paypal.com'
 
 export interface PayPalCaptureResult {
   id: string
@@ -19,7 +19,7 @@ export async function getAccessToken(): Promise<string> {
     `${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`
   ).toString('base64')
 
-  const res = await fetch(`${BASE_URL}/v1/oauth2/token`, {
+  const res = await fetch(`${PAYPAL_BASE}/v1/oauth2/token`, {
     method: 'POST',
     headers: {
       Authorization: `Basic ${credentials}`,
@@ -44,7 +44,7 @@ export async function createOrder(
 ): Promise<string> {
   const accessToken = await getAccessToken()
 
-  const res = await fetch(`${BASE_URL}/v2/checkout/orders`, {
+  const res = await fetch(`${PAYPAL_BASE}/v2/checkout/orders`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -78,7 +78,7 @@ export async function createOrder(
 export async function captureOrder(orderId: string): Promise<PayPalCaptureResult> {
   const accessToken = await getAccessToken()
 
-  const res = await fetch(`${BASE_URL}/v2/checkout/orders/${orderId}/capture`, {
+  const res = await fetch(`${PAYPAL_BASE}/v2/checkout/orders/${orderId}/capture`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
