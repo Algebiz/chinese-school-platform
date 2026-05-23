@@ -10,7 +10,7 @@ export default async function AdminVolunteerPage() {
 
   const academicYear = await getCurrentAcademicYear()
 
-  const [deposits, pendingClaims, services] = await Promise.all([
+  const [deposits, pendingClaimCount, services, allClaims, families] = await Promise.all([
     prisma.volunteerDeposit.findMany({
       include: {
         family: {
@@ -27,6 +27,22 @@ export default async function AdminVolunteerPage() {
     prisma.volunteerService.findMany({
       where: { academicYear },
       orderBy: { createdAt: 'asc' },
+      include: { _count: { select: { claims: true } } },
+    }),
+    prisma.volunteerClaim.findMany({
+      include: {
+        service: { select: { id: true, name: true, nameZh: true } },
+        family: { include: { users: { select: { id: true, name: true, email: true } } } },
+        deposit: { select: { id: true, status: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+    }),
+    prisma.family.findMany({
+      include: {
+        users: { select: { id: true, name: true, email: true }, take: 1 },
+        students: { select: { id: true } },
+      },
+      orderBy: { createdAt: 'desc' },
     }),
   ])
 
@@ -41,12 +57,19 @@ export default async function AdminVolunteerPage() {
 
   const isSuperAdmin = session?.user?.role === 'SUPER_ADMIN'
 
+  const familyOptions = families.map((f) => ({
+    id: f.id,
+    parentName: f.users[0]?.name ?? null,
+    parentEmail: f.users[0]?.email ?? '',
+    studentCount: f.students.length,
+  }))
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">志愿服务管理 / Volunteer Management</h1>
         <p className="mt-1 text-sm text-gray-500">
-          {academicYear} 学年 · {pendingClaims} 待审核申请 / {pendingClaims} pending claims
+          {academicYear} 学年 · {pendingClaimCount} 待审核申请 / {pendingClaimCount} pending claims
         </p>
       </div>
 
@@ -70,7 +93,9 @@ export default async function AdminVolunteerPage() {
 
       <AdminVolunteerClient
         deposits={deposits as never}
-        services={services}
+        allClaims={allClaims as never}
+        services={services as never}
+        families={familyOptions}
         isSuperAdmin={isSuperAdmin}
         academicYear={academicYear}
       />

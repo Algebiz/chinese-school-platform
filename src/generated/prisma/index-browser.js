@@ -391,6 +391,7 @@ exports.Prisma.VolunteerDepositScalarFieldEnum = {
   refundMethod: 'refundMethod',
   refundAmount: 'refundAmount',
   refundFailReason: 'refundFailReason',
+  notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -408,6 +409,7 @@ exports.Prisma.VolunteerClaimScalarFieldEnum = {
   reviewedAt: 'reviewedAt',
   reviewedBy: 'reviewedBy',
   rejectionReason: 'rejectionReason',
+  adminNotes: 'adminNotes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -456,7 +458,8 @@ exports.EnrollmentStatus = exports.$Enums.EnrollmentStatus = {
 
 exports.PaymentMethod = exports.$Enums.PaymentMethod = {
   STRIPE: 'STRIPE',
-  PAYPAL: 'PAYPAL'
+  PAYPAL: 'PAYPAL',
+  OTHER: 'OTHER'
 };
 
 exports.PaymentStatus = exports.$Enums.PaymentStatus = {

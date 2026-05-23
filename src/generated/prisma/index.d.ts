@@ -162,7 +162,8 @@ export type EnrollmentStatus = (typeof EnrollmentStatus)[keyof typeof Enrollment
 
 export const PaymentMethod: {
   STRIPE: 'STRIPE',
-  PAYPAL: 'PAYPAL'
+  PAYPAL: 'PAYPAL',
+  OTHER: 'OTHER'
 };
 
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
@@ -27467,6 +27468,7 @@ export namespace Prisma {
     refundMethod: string | null
     refundAmount: Decimal | null
     refundFailReason: string | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -27489,6 +27491,7 @@ export namespace Prisma {
     refundMethod: string | null
     refundAmount: Decimal | null
     refundFailReason: string | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -27511,6 +27514,7 @@ export namespace Prisma {
     refundMethod: number
     refundAmount: number
     refundFailReason: number
+    notes: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -27545,6 +27549,7 @@ export namespace Prisma {
     refundMethod?: true
     refundAmount?: true
     refundFailReason?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -27567,6 +27572,7 @@ export namespace Prisma {
     refundMethod?: true
     refundAmount?: true
     refundFailReason?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -27589,6 +27595,7 @@ export namespace Prisma {
     refundMethod?: true
     refundAmount?: true
     refundFailReason?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -27698,6 +27705,7 @@ export namespace Prisma {
     refundMethod: string | null
     refundAmount: Decimal | null
     refundFailReason: string | null
+    notes: string | null
     createdAt: Date
     updatedAt: Date
     _count: VolunteerDepositCountAggregateOutputType | null
@@ -27739,6 +27747,7 @@ export namespace Prisma {
     refundMethod?: boolean
     refundAmount?: boolean
     refundFailReason?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     family?: boolean | FamilyDefaultArgs<ExtArgs>
@@ -27764,6 +27773,7 @@ export namespace Prisma {
     refundMethod?: boolean
     refundAmount?: boolean
     refundFailReason?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     family?: boolean | FamilyDefaultArgs<ExtArgs>
@@ -27787,6 +27797,7 @@ export namespace Prisma {
     refundMethod?: boolean
     refundAmount?: boolean
     refundFailReason?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     family?: boolean | FamilyDefaultArgs<ExtArgs>
@@ -27810,11 +27821,12 @@ export namespace Prisma {
     refundMethod?: boolean
     refundAmount?: boolean
     refundFailReason?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type VolunteerDepositOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "familyId" | "academicYear" | "amount" | "status" | "paidAt" | "paymentMethod" | "stripePaymentIntentId" | "paypalOrderId" | "forfeitedAt" | "refundedAt" | "refundedBy" | "stripeRefundId" | "paypalRefundId" | "refundMethod" | "refundAmount" | "refundFailReason" | "createdAt" | "updatedAt", ExtArgs["result"]["volunteerDeposit"]>
+  export type VolunteerDepositOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "familyId" | "academicYear" | "amount" | "status" | "paidAt" | "paymentMethod" | "stripePaymentIntentId" | "paypalOrderId" | "forfeitedAt" | "refundedAt" | "refundedBy" | "stripeRefundId" | "paypalRefundId" | "refundMethod" | "refundAmount" | "refundFailReason" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["volunteerDeposit"]>
   export type VolunteerDepositInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     family?: boolean | FamilyDefaultArgs<ExtArgs>
     claims?: boolean | VolunteerDeposit$claimsArgs<ExtArgs>
@@ -27851,6 +27863,7 @@ export namespace Prisma {
       refundMethod: string | null
       refundAmount: Prisma.Decimal | null
       refundFailReason: string | null
+      notes: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["volunteerDeposit"]>
@@ -28295,6 +28308,7 @@ export namespace Prisma {
     readonly refundMethod: FieldRef<"VolunteerDeposit", 'String'>
     readonly refundAmount: FieldRef<"VolunteerDeposit", 'Decimal'>
     readonly refundFailReason: FieldRef<"VolunteerDeposit", 'String'>
+    readonly notes: FieldRef<"VolunteerDeposit", 'String'>
     readonly createdAt: FieldRef<"VolunteerDeposit", 'DateTime'>
     readonly updatedAt: FieldRef<"VolunteerDeposit", 'DateTime'>
   }
@@ -28763,6 +28777,7 @@ export namespace Prisma {
     reviewedAt: Date | null
     reviewedBy: string | null
     rejectionReason: string | null
+    adminNotes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -28780,6 +28795,7 @@ export namespace Prisma {
     reviewedAt: Date | null
     reviewedBy: string | null
     rejectionReason: string | null
+    adminNotes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -28797,6 +28813,7 @@ export namespace Prisma {
     reviewedAt: number
     reviewedBy: number
     rejectionReason: number
+    adminNotes: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -28816,6 +28833,7 @@ export namespace Prisma {
     reviewedAt?: true
     reviewedBy?: true
     rejectionReason?: true
+    adminNotes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -28833,6 +28851,7 @@ export namespace Prisma {
     reviewedAt?: true
     reviewedBy?: true
     rejectionReason?: true
+    adminNotes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -28850,6 +28869,7 @@ export namespace Prisma {
     reviewedAt?: true
     reviewedBy?: true
     rejectionReason?: true
+    adminNotes?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -28940,6 +28960,7 @@ export namespace Prisma {
     reviewedAt: Date | null
     reviewedBy: string | null
     rejectionReason: string | null
+    adminNotes: string | null
     createdAt: Date
     updatedAt: Date
     _count: VolunteerClaimCountAggregateOutputType | null
@@ -28974,6 +28995,7 @@ export namespace Prisma {
     reviewedAt?: boolean
     reviewedBy?: boolean
     rejectionReason?: boolean
+    adminNotes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deposit?: boolean | VolunteerDepositDefaultArgs<ExtArgs>
@@ -28994,6 +29016,7 @@ export namespace Prisma {
     reviewedAt?: boolean
     reviewedBy?: boolean
     rejectionReason?: boolean
+    adminNotes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deposit?: boolean | VolunteerDepositDefaultArgs<ExtArgs>
@@ -29014,6 +29037,7 @@ export namespace Prisma {
     reviewedAt?: boolean
     reviewedBy?: boolean
     rejectionReason?: boolean
+    adminNotes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deposit?: boolean | VolunteerDepositDefaultArgs<ExtArgs>
@@ -29034,11 +29058,12 @@ export namespace Prisma {
     reviewedAt?: boolean
     reviewedBy?: boolean
     rejectionReason?: boolean
+    adminNotes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type VolunteerClaimOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "depositId" | "familyId" | "serviceId" | "academicYear" | "description" | "photoUrl" | "submittedAt" | "status" | "reviewedAt" | "reviewedBy" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["volunteerClaim"]>
+  export type VolunteerClaimOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "depositId" | "familyId" | "serviceId" | "academicYear" | "description" | "photoUrl" | "submittedAt" | "status" | "reviewedAt" | "reviewedBy" | "rejectionReason" | "adminNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["volunteerClaim"]>
   export type VolunteerClaimInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     deposit?: boolean | VolunteerDepositDefaultArgs<ExtArgs>
     family?: boolean | FamilyDefaultArgs<ExtArgs>
@@ -29075,6 +29100,7 @@ export namespace Prisma {
       reviewedAt: Date | null
       reviewedBy: string | null
       rejectionReason: string | null
+      adminNotes: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["volunteerClaim"]>
@@ -29515,6 +29541,7 @@ export namespace Prisma {
     readonly reviewedAt: FieldRef<"VolunteerClaim", 'DateTime'>
     readonly reviewedBy: FieldRef<"VolunteerClaim", 'String'>
     readonly rejectionReason: FieldRef<"VolunteerClaim", 'String'>
+    readonly adminNotes: FieldRef<"VolunteerClaim", 'String'>
     readonly createdAt: FieldRef<"VolunteerClaim", 'DateTime'>
     readonly updatedAt: FieldRef<"VolunteerClaim", 'DateTime'>
   }
@@ -30284,6 +30311,7 @@ export namespace Prisma {
     refundMethod: 'refundMethod',
     refundAmount: 'refundAmount',
     refundFailReason: 'refundFailReason',
+    notes: 'notes',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -30304,6 +30332,7 @@ export namespace Prisma {
     reviewedAt: 'reviewedAt',
     reviewedBy: 'reviewedBy',
     rejectionReason: 'rejectionReason',
+    adminNotes: 'adminNotes',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -32264,6 +32293,7 @@ export namespace Prisma {
     refundMethod?: StringNullableFilter<"VolunteerDeposit"> | string | null
     refundAmount?: DecimalNullableFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    notes?: StringNullableFilter<"VolunteerDeposit"> | string | null
     createdAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
     updatedAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
     family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
@@ -32288,6 +32318,7 @@ export namespace Prisma {
     refundMethod?: SortOrderInput | SortOrder
     refundAmount?: SortOrderInput | SortOrder
     refundFailReason?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     family?: FamilyOrderByWithRelationInput
@@ -32316,6 +32347,7 @@ export namespace Prisma {
     refundMethod?: StringNullableFilter<"VolunteerDeposit"> | string | null
     refundAmount?: DecimalNullableFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    notes?: StringNullableFilter<"VolunteerDeposit"> | string | null
     createdAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
     updatedAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
     family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
@@ -32340,6 +32372,7 @@ export namespace Prisma {
     refundMethod?: SortOrderInput | SortOrder
     refundAmount?: SortOrderInput | SortOrder
     refundFailReason?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: VolunteerDepositCountOrderByAggregateInput
@@ -32370,6 +32403,7 @@ export namespace Prisma {
     refundMethod?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
     refundAmount?: DecimalNullableWithAggregatesFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"VolunteerDeposit"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"VolunteerDeposit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"VolunteerDeposit"> | Date | string
   }
@@ -32390,6 +32424,7 @@ export namespace Prisma {
     reviewedAt?: DateTimeNullableFilter<"VolunteerClaim"> | Date | string | null
     reviewedBy?: StringNullableFilter<"VolunteerClaim"> | string | null
     rejectionReason?: StringNullableFilter<"VolunteerClaim"> | string | null
+    adminNotes?: StringNullableFilter<"VolunteerClaim"> | string | null
     createdAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
     updatedAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
     deposit?: XOR<VolunteerDepositScalarRelationFilter, VolunteerDepositWhereInput>
@@ -32410,6 +32445,7 @@ export namespace Prisma {
     reviewedAt?: SortOrderInput | SortOrder
     reviewedBy?: SortOrderInput | SortOrder
     rejectionReason?: SortOrderInput | SortOrder
+    adminNotes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deposit?: VolunteerDepositOrderByWithRelationInput
@@ -32433,6 +32469,7 @@ export namespace Prisma {
     reviewedAt?: DateTimeNullableFilter<"VolunteerClaim"> | Date | string | null
     reviewedBy?: StringNullableFilter<"VolunteerClaim"> | string | null
     rejectionReason?: StringNullableFilter<"VolunteerClaim"> | string | null
+    adminNotes?: StringNullableFilter<"VolunteerClaim"> | string | null
     createdAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
     updatedAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
     deposit?: XOR<VolunteerDepositScalarRelationFilter, VolunteerDepositWhereInput>
@@ -32453,6 +32490,7 @@ export namespace Prisma {
     reviewedAt?: SortOrderInput | SortOrder
     reviewedBy?: SortOrderInput | SortOrder
     rejectionReason?: SortOrderInput | SortOrder
+    adminNotes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: VolunteerClaimCountOrderByAggregateInput
@@ -32476,6 +32514,7 @@ export namespace Prisma {
     reviewedAt?: DateTimeNullableWithAggregatesFilter<"VolunteerClaim"> | Date | string | null
     reviewedBy?: StringNullableWithAggregatesFilter<"VolunteerClaim"> | string | null
     rejectionReason?: StringNullableWithAggregatesFilter<"VolunteerClaim"> | string | null
+    adminNotes?: StringNullableWithAggregatesFilter<"VolunteerClaim"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"VolunteerClaim"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"VolunteerClaim"> | Date | string
   }
@@ -34331,6 +34370,7 @@ export namespace Prisma {
     refundMethod?: string | null
     refundAmount?: Decimal | DecimalJsLike | number | string | null
     refundFailReason?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutVolunteerDepositsInput
@@ -34355,6 +34395,7 @@ export namespace Prisma {
     refundMethod?: string | null
     refundAmount?: Decimal | DecimalJsLike | number | string | null
     refundFailReason?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     claims?: VolunteerClaimUncheckedCreateNestedManyWithoutDepositInput
@@ -34377,6 +34418,7 @@ export namespace Prisma {
     refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
     refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutVolunteerDepositsNestedInput
@@ -34401,6 +34443,7 @@ export namespace Prisma {
     refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
     refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     claims?: VolunteerClaimUncheckedUpdateManyWithoutDepositNestedInput
@@ -34424,6 +34467,7 @@ export namespace Prisma {
     refundMethod?: string | null
     refundAmount?: Decimal | DecimalJsLike | number | string | null
     refundFailReason?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34445,6 +34489,7 @@ export namespace Prisma {
     refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
     refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34467,6 +34512,7 @@ export namespace Prisma {
     refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
     refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34481,6 +34527,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deposit: VolunteerDepositCreateNestedOneWithoutClaimsInput
@@ -34501,6 +34548,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34515,6 +34563,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deposit?: VolunteerDepositUpdateOneRequiredWithoutClaimsNestedInput
@@ -34535,6 +34584,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34552,6 +34602,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34566,6 +34617,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34583,6 +34635,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -36116,6 +36169,7 @@ export namespace Prisma {
     refundMethod?: SortOrder
     refundAmount?: SortOrder
     refundFailReason?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36143,6 +36197,7 @@ export namespace Prisma {
     refundMethod?: SortOrder
     refundAmount?: SortOrder
     refundFailReason?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36165,6 +36220,7 @@ export namespace Prisma {
     refundMethod?: SortOrder
     refundAmount?: SortOrder
     refundFailReason?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36214,6 +36270,7 @@ export namespace Prisma {
     reviewedAt?: SortOrder
     reviewedBy?: SortOrder
     rejectionReason?: SortOrder
+    adminNotes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36231,6 +36288,7 @@ export namespace Prisma {
     reviewedAt?: SortOrder
     reviewedBy?: SortOrder
     rejectionReason?: SortOrder
+    adminNotes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36248,6 +36306,7 @@ export namespace Prisma {
     reviewedAt?: SortOrder
     reviewedBy?: SortOrder
     rejectionReason?: SortOrder
+    adminNotes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -38254,6 +38313,7 @@ export namespace Prisma {
     refundMethod?: string | null
     refundAmount?: Decimal | DecimalJsLike | number | string | null
     refundFailReason?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     claims?: VolunteerClaimCreateNestedManyWithoutDepositInput
@@ -38276,6 +38336,7 @@ export namespace Prisma {
     refundMethod?: string | null
     refundAmount?: Decimal | DecimalJsLike | number | string | null
     refundFailReason?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     claims?: VolunteerClaimUncheckedCreateNestedManyWithoutDepositInput
@@ -38301,6 +38362,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deposit: VolunteerDepositCreateNestedOneWithoutClaimsInput
@@ -38319,6 +38381,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -38435,6 +38498,7 @@ export namespace Prisma {
     refundMethod?: StringNullableFilter<"VolunteerDeposit"> | string | null
     refundAmount?: DecimalNullableFilter<"VolunteerDeposit"> | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: StringNullableFilter<"VolunteerDeposit"> | string | null
+    notes?: StringNullableFilter<"VolunteerDeposit"> | string | null
     createdAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
     updatedAt?: DateTimeFilter<"VolunteerDeposit"> | Date | string
   }
@@ -38471,6 +38535,7 @@ export namespace Prisma {
     reviewedAt?: DateTimeNullableFilter<"VolunteerClaim"> | Date | string | null
     reviewedBy?: StringNullableFilter<"VolunteerClaim"> | string | null
     rejectionReason?: StringNullableFilter<"VolunteerClaim"> | string | null
+    adminNotes?: StringNullableFilter<"VolunteerClaim"> | string | null
     createdAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
     updatedAt?: DateTimeFilter<"VolunteerClaim"> | Date | string
   }
@@ -40538,6 +40603,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deposit: VolunteerDepositCreateNestedOneWithoutClaimsInput
@@ -40556,6 +40622,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40623,6 +40690,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutVolunteerClaimsInput
@@ -40641,6 +40709,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40721,6 +40790,7 @@ export namespace Prisma {
     refundMethod?: string | null
     refundAmount?: Decimal | DecimalJsLike | number | string | null
     refundFailReason?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     family: FamilyCreateNestedOneWithoutVolunteerDepositsInput
@@ -40744,6 +40814,7 @@ export namespace Prisma {
     refundMethod?: string | null
     refundAmount?: Decimal | DecimalJsLike | number | string | null
     refundFailReason?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40837,6 +40908,7 @@ export namespace Prisma {
     refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
     refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutVolunteerDepositsNestedInput
@@ -40860,6 +40932,7 @@ export namespace Prisma {
     refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
     refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40974,6 +41047,7 @@ export namespace Prisma {
     refundMethod?: string | null
     refundAmount?: Decimal | DecimalJsLike | number | string | null
     refundFailReason?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40990,6 +41064,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -41098,6 +41173,7 @@ export namespace Prisma {
     refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
     refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     claims?: VolunteerClaimUpdateManyWithoutDepositNestedInput
@@ -41120,6 +41196,7 @@ export namespace Prisma {
     refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
     refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     claims?: VolunteerClaimUncheckedUpdateManyWithoutDepositNestedInput
@@ -41142,6 +41219,7 @@ export namespace Prisma {
     refundMethod?: NullableStringFieldUpdateOperationsInput | string | null
     refundAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     refundFailReason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41156,6 +41234,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deposit?: VolunteerDepositUpdateOneRequiredWithoutClaimsNestedInput
@@ -41174,6 +41253,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41190,6 +41270,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41888,6 +41969,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -41902,6 +41984,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deposit?: VolunteerDepositUpdateOneRequiredWithoutClaimsNestedInput
@@ -41920,6 +42003,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41936,6 +42020,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41952,6 +42037,7 @@ export namespace Prisma {
     reviewedAt?: Date | string | null
     reviewedBy?: string | null
     rejectionReason?: string | null
+    adminNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -41966,6 +42052,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneRequiredWithoutVolunteerClaimsNestedInput
@@ -41984,6 +42071,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -42000,6 +42088,7 @@ export namespace Prisma {
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

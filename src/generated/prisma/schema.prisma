@@ -30,6 +30,7 @@ enum EnrollmentStatus {
 enum PaymentMethod {
   STRIPE
   PAYPAL
+  OTHER
 }
 
 enum PaymentStatus {
@@ -404,6 +405,7 @@ model VolunteerDeposit {
   refundMethod          String?
   refundAmount          Decimal?       @db.Decimal(10, 2)
   refundFailReason      String?
+  notes                 String?
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
 
@@ -426,6 +428,7 @@ model VolunteerClaim {
   reviewedAt      DateTime?
   reviewedBy      String?
   rejectionReason String?
+  adminNotes      String?
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
