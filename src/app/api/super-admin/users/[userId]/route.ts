@@ -31,38 +31,83 @@ export async function DELETE(
     }
   }
 
-  await prisma.$transaction(async (tx) => {
-    // Collect student IDs for this family
-    const studentIds = user.familyId
-      ? (await tx.student.findMany({ where: { familyId: user.familyId }, select: { id: true } })).map((s) => s.id)
-      : []
+  let step = 'init'
+  try {
+    await prisma.$transaction(async (tx) => {
+      // ── 1. Student-level records ────────────────────────────────────────────
+      step = 'collect-student-ids'
+      const studentIds = user.familyId
+        ? (await tx.student.findMany({ where: { familyId: user.familyId }, select: { id: true } })).map((s) => s.id)
+        : []
 
-    if (studentIds.length > 0) {
-      const enrollmentIds = (
-        await tx.enrollment.findMany({ where: { studentId: { in: studentIds } }, select: { id: true } })
-      ).map((e) => e.id)
+      if (studentIds.length > 0) {
+        step = 'collect-enrollment-ids'
+        const enrollmentIds = (
+          await tx.enrollment.findMany({ where: { studentId: { in: studentIds } }, select: { id: true } })
+        ).map((e) => e.id)
 
-      await tx.payment.deleteMany({ where: { enrollmentId: { in: enrollmentIds } } })
-      await tx.enrollment.deleteMany({ where: { studentId: { in: studentIds } } })
-      await tx.waitlist.deleteMany({ where: { studentId: { in: studentIds } } })
-      await tx.studentNextClassOverride.deleteMany({ where: { studentId: { in: studentIds } } })
-      await tx.student.deleteMany({ where: { id: { in: studentIds } } })
-    }
+        // ExamRegistration — no cascade from Student
+        step = 'delete-exam-registrations'
+        await tx.examRegistration.deleteMany({ where: { studentId: { in: studentIds } } })
 
-    // Delete family only if this user is the sole member
-    if (user.familyId) {
-      const siblingCount = await tx.user.count({ where: { familyId: user.familyId, id: { not: userId } } })
-      if (siblingCount === 0) {
-        await tx.family.delete({ where: { id: user.familyId } })
+        // AdjustmentLog (student side) — no @relation cascade
+        step = 'delete-adjustment-logs-student'
+        await tx.adjustmentLog.deleteMany({ where: { studentId: { in: studentIds } } })
+
+        // Payment — EnrollmentTextbook cascades automatically from Enrollment
+        step = 'delete-payments'
+        await tx.payment.deleteMany({ where: { enrollmentId: { in: enrollmentIds } } })
+
+        step = 'delete-enrollments'
+        await tx.enrollment.deleteMany({ where: { studentId: { in: studentIds } } })
+
+        step = 'delete-waitlists'
+        await tx.waitlist.deleteMany({ where: { studentId: { in: studentIds } } })
+
+        step = 'delete-next-class-overrides'
+        await tx.studentNextClassOverride.deleteMany({ where: { studentId: { in: studentIds } } })
+
+        step = 'delete-students'
+        await tx.student.deleteMany({ where: { id: { in: studentIds } } })
       }
-    }
 
-    // Delete verification tokens
-    await tx.verificationToken.deleteMany({ where: { identifier: user.email } })
+      // ── 2. Family-level records ─────────────────────────────────────────────
+      if (user.familyId) {
+        // VolunteerClaim must be deleted before VolunteerDeposit (FK: claim.depositId)
+        step = 'delete-volunteer-claims'
+        await tx.volunteerClaim.deleteMany({ where: { familyId: user.familyId } })
 
-    // Delete the user (Account + Session cascade automatically)
-    await tx.user.delete({ where: { id: userId } })
-  })
+        step = 'delete-volunteer-deposits'
+        await tx.volunteerDeposit.deleteMany({ where: { familyId: user.familyId } })
+
+        // Delete family only if this user is the sole member
+        step = 'check-family-siblings'
+        const siblingCount = await tx.user.count({ where: { familyId: user.familyId, id: { not: userId } } })
+        if (siblingCount === 0) {
+          step = 'delete-family'
+          await tx.family.delete({ where: { id: user.familyId } })
+        }
+      }
+
+      // ── 3. User-level records ───────────────────────────────────────────────
+      // AdjustmentLog (admin side) — no cascade; clean up logs where this user was the admin
+      step = 'delete-adjustment-logs-admin'
+      await tx.adjustmentLog.deleteMany({ where: { adminId: userId } })
+
+      step = 'delete-verification-tokens'
+      await tx.verificationToken.deleteMany({ where: { identifier: user.email } })
+
+      // Account + Session have onDelete: Cascade from User — handled automatically
+      step = 'delete-user'
+      await tx.user.delete({ where: { id: userId } })
+    })
+  } catch (error) {
+    console.error('Delete user error at step:', step, error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to delete user', code: 'SERVER_ERROR' },
+      { status: 500 }
+    )
+  }
 
   return NextResponse.json({ success: true })
 }
