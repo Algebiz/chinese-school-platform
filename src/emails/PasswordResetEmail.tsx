@@ -10,7 +10,7 @@ import {
   Section,
   Text,
 } from '@react-email/components'
-import { Footer } from './WelcomeEmail'
+import { EmailHeader, Footer } from './WelcomeEmail'
 
 export interface PasswordResetEmailProps {
   parentName: string
@@ -24,10 +24,7 @@ export function PasswordResetEmail({ parentName, resetUrl }: PasswordResetEmailP
       <Preview>重置您的密码 / Reset your password — Charlotte Chinese Academy</Preview>
       <Body style={body}>
         <Container style={container}>
-          <Section style={header}>
-            <Heading style={schoolZh}>夏洛特中文学校</Heading>
-            <Text style={schoolEn}>Charlotte Chinese Academy</Text>
-          </Section>
+          <EmailHeader />
 
           <Section style={content}>
             <Heading as="h2" style={h2}>重置密码</Heading>
@@ -79,9 +76,6 @@ const container: React.CSSProperties = {
   maxWidth: 560,
   overflow: 'hidden',
 }
-const header: React.CSSProperties = { backgroundColor: '#dc2626', padding: '28px 32px 20px', textAlign: 'center' }
-const schoolZh: React.CSSProperties = { color: '#ffffff', fontSize: 24, fontWeight: 'bold', margin: 0, letterSpacing: '0.05em' }
-const schoolEn: React.CSSProperties = { color: '#fecaca', fontSize: 13, margin: '4px 0 0' }
 const content: React.CSSProperties = { padding: '28px 32px' }
 const h2: React.CSSProperties = { color: '#111827', fontSize: 20, fontWeight: 'bold', margin: '0 0 2px' }
 const subtitle: React.CSSProperties = { color: '#6b7280', fontSize: 13, margin: '0 0 20px' }

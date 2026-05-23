@@ -10,7 +10,7 @@ import {
   Img,
   Hr,
 } from '@react-email/components'
-import { Footer } from './WelcomeEmail'
+import { EmailHeader, Footer } from './WelcomeEmail'
 
 export interface VolunteerRefundProcessedProps {
   parentName: string
@@ -41,17 +41,7 @@ export function VolunteerRefundProcessed({
       <Preview>押金退款已自动处理 / Volunteer deposit refund processed automatically</Preview>
       <Body style={body}>
         <Container style={container}>
-          <Section style={header}>
-            <Img
-              src="https://chinese-school-platform.vercel.app/logo.png"
-              alt="Charlotte Chinese Academy"
-              width="80"
-              height="80"
-              style={{ margin: '0 auto 12px', display: 'block' }}
-            />
-            <Heading style={schoolZh}>夏洛特中文学校</Heading>
-            <Text style={schoolEn}>Charlotte Chinese Academy</Text>
-          </Section>
+          <EmailHeader />
 
           <Section style={content}>
             <Section style={badge}>
@@ -122,21 +112,6 @@ const container: React.CSSProperties = {
   overflow: 'hidden',
 }
 
-const header: React.CSSProperties = {
-  backgroundColor: '#16a34a',
-  padding: '28px 32px 20px',
-  textAlign: 'center',
-}
-
-const schoolZh: React.CSSProperties = {
-  color: '#ffffff',
-  fontSize: 24,
-  fontWeight: 'bold',
-  margin: 0,
-  letterSpacing: '0.05em',
-}
-
-const schoolEn: React.CSSProperties = { color: '#bbf7d0', fontSize: 13, margin: '4px 0 0' }
 
 const content: React.CSSProperties = { padding: '28px 32px' }
 

@@ -1,13 +1,15 @@
 import {
   Body,
+  Column,
   Container,
   Head,
   Heading,
   Hr,
   Html,
-  Preview,
-  Section,
   Img,
+  Preview,
+  Row,
+  Section,
   Text,
 } from '@react-email/components'
 
@@ -22,18 +24,7 @@ export function WelcomeEmail({ parentName }: WelcomeEmailProps) {
       <Preview>欢迎加入夏洛特中文学校 / Welcome to Charlotte Chinese Academy</Preview>
       <Body style={body}>
         <Container style={container}>
-          {/* Header / logo */}
-          <Section style={header}>
-            <Img
-              src="https://chinese-school-platform.vercel.app/logo.png"
-              alt="Charlotte Chinese Academy"
-              width="80"
-              height="80"
-              style={{ margin: '0 auto 12px', display: 'block' }}
-            />
-            <Heading style={schoolZh}>夏洛特中文学校</Heading>
-            <Text style={schoolEn}>Charlotte Chinese Academy</Text>
-          </Section>
+          <EmailHeader />
 
           <Section style={content}>
             <Heading as="h2" style={h2}>欢迎，{parentName}！</Heading>
@@ -80,6 +71,32 @@ function Step({ n, zh, en }: { n: string; zh: string; en: string }) {
   )
 }
 
+export function EmailHeader() {
+  return (
+    <Section style={{ backgroundColor: '#CC0000', padding: '12px 24px' }}>
+      <Row>
+        <Column style={{ width: '48px', verticalAlign: 'middle' }}>
+          <Img
+            src="https://chinese-school-platform.vercel.app/logo.png"
+            alt="CCA Logo"
+            width="40"
+            height="40"
+            style={{ borderRadius: '50%', backgroundColor: 'white', padding: '2px', display: 'block' }}
+          />
+        </Column>
+        <Column style={{ verticalAlign: 'middle', paddingLeft: '12px' }}>
+          <Text style={{ fontSize: '15px', fontWeight: '500', color: 'white', margin: '0', lineHeight: '1.2' }}>
+            夏洛特中文学校
+          </Text>
+          <Text style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', margin: '0', lineHeight: '1.2' }}>
+            Charlotte Chinese Academy
+          </Text>
+        </Column>
+      </Row>
+    </Section>
+  )
+}
+
 export function Footer({ academicYear = '2026-2027' }: { academicYear?: string } = {}) {
   return (
     <Section style={footer}>
@@ -108,26 +125,6 @@ const container: React.CSSProperties = {
   margin: '0 auto',
   maxWidth: 560,
   overflow: 'hidden',
-}
-
-const header: React.CSSProperties = {
-  backgroundColor: '#dc2626',
-  padding: '28px 32px 20px',
-  textAlign: 'center',
-}
-
-const schoolZh: React.CSSProperties = {
-  color: '#ffffff',
-  fontSize: 24,
-  fontWeight: 'bold',
-  margin: 0,
-  letterSpacing: '0.05em',
-}
-
-const schoolEn: React.CSSProperties = {
-  color: '#fecaca',
-  fontSize: 13,
-  margin: '4px 0 0',
 }
 
 const content: React.CSSProperties = { padding: '28px 32px' }

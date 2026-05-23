@@ -9,6 +9,7 @@ import {
   Section,
   Text,
 } from '@react-email/components'
+import { EmailHeader } from './WelcomeEmail'
 
 export interface ContactNotificationProps {
   name: string
@@ -39,9 +40,7 @@ export function ContactNotification({
       <Preview>[NEW CONTACT] {subject} — {name}</Preview>
       <Body style={body}>
         <Container style={container}>
-          <Section style={headerBand}>
-            <Heading style={h1}>[NEW CONTACT] 联系表单提交</Heading>
-          </Section>
+          <EmailHeader />
 
           <Section style={content}>
             <Row label="姓名 / Name" value={name} />
@@ -92,13 +91,6 @@ const container: React.CSSProperties = {
   margin: '0 auto',
   maxWidth: 560,
   overflow: 'hidden',
-}
-const headerBand: React.CSSProperties = {
-  backgroundColor: '#1f2937',
-  padding: '16px 24px',
-}
-const h1: React.CSSProperties = {
-  color: '#f9fafb', fontSize: 16, fontWeight: 'bold', margin: 0,
 }
 const content: React.CSSProperties = { padding: '24px 32px' }
 const fieldLabel: React.CSSProperties = {
