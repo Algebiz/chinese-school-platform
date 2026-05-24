@@ -58,8 +58,11 @@ export interface WaitlistData {
 // ── Exported functions ────────────────────────────────────────────────────────
 
 export async function sendWelcomeEmail(to: string, parentName: string): Promise<void> {
-  console.log('Resend API Key exists:', !!process.env.RESEND_API_KEY)
-  console.log('Email FROM:', FROM)
+  if (!process.env.RESEND_API_KEY) {
+    console.error('RESEND_API_KEY is not set — cannot send welcome email')
+    return
+  }
+  console.log('[email] sendWelcomeEmail → to:', to, '| from:', FROM)
   const html = await render(createElement(WelcomeEmail, { parentName }))
   const result = await resend.emails.send({
     from: FROM,
@@ -67,7 +70,11 @@ export async function sendWelcomeEmail(to: string, parentName: string): Promise<
     subject: `欢迎加入夏洛特中文学校 / Welcome to Charlotte Chinese Academy`,
     html,
   })
-  console.log('Welcome email result:', result)
+  if (result.error) {
+    console.error('[email] Resend rejected welcome email:', JSON.stringify(result.error))
+    throw new Error(`Resend error: ${result.error.message ?? JSON.stringify(result.error)}`)
+  }
+  console.log('[email] Welcome email accepted by Resend, id:', result.data?.id)
 }
 
 export async function sendEnrollmentConfirmation(to: string, data: EnrollmentData): Promise<void> {
