@@ -50,8 +50,16 @@ export default async function PortalLayout({ children }: { children: React.React
             </div>
           </div>
 
-          {/* Right: user name + logout */}
+          {/* Right: admin switcher (if applicable) + user name + logout */}
           <div className="flex items-center gap-2">
+            {(session.user?.role === 'ADMIN' || session.user?.role === 'SUPER_ADMIN') && (
+              <Link
+                href="/admin"
+                className="rounded-md border border-[#CC0000] px-3 py-1.5 text-sm font-medium text-[#CC0000] bg-white hover:bg-[#CC0000] hover:text-white transition-colors whitespace-nowrap"
+              >
+                管理后台 / Admin ↗
+              </Link>
+            )}
             <span className="hidden lg:block text-sm text-gray-500 max-w-[140px] truncate">
               {displayName}
             </span>
