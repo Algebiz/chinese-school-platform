@@ -29,6 +29,21 @@ export default async function DashboardPage() {
       })
     : null
 
+  const myClassExamResults = await prisma.classExamResult.findMany({
+    where: {
+      student: { family: { users: { some: { id: session.user.id } } } },
+      exam: { isPublished: true },
+      score: { not: null },
+    },
+    include: {
+      exam: {
+        select: { id: true, name: true, nameZh: true, examDate: true, maxScore: true, class: { select: { name: true } } },
+      },
+      student: { select: { id: true, name: true } },
+    },
+    orderBy: { exam: { examDate: 'desc' } },
+  })
+
   const myExamRegistrations = await prisma.examRegistration.findMany({
     where: {
       student: { family: { users: { some: { id: session.user.id } } } },
@@ -367,6 +382,51 @@ export default async function DashboardPage() {
           )}
         </div>
       </div>
+
+      {/* Class Exam Results */}
+      {myClassExamResults.length > 0 && (() => {
+        const byStudent: Record<string, typeof myClassExamResults> = {}
+        for (const r of myClassExamResults) {
+          if (!byStudent[r.student.id]) byStudent[r.student.id] = []
+          byStudent[r.student.id].push(r)
+        }
+        return (
+          <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+            <div className="border-b border-gray-100 bg-gray-50 px-5 py-3">
+              <h2 className="font-semibold text-gray-900">📝 班级考试成绩 / Class Exam Results</h2>
+            </div>
+            <div className="divide-y divide-gray-50">
+              {Object.entries(byStudent).map(([studentId, results]) => (
+                <div key={studentId} className="px-5 py-4">
+                  <p className="mb-2 font-medium text-gray-900">{results[0].student.name}</p>
+                  <div className="space-y-2">
+                    {results.map((r) => (
+                      <div key={r.id} className="flex items-center justify-between rounded-md bg-gray-50 px-4 py-2.5">
+                        <div>
+                          <p className="text-sm font-medium text-gray-800">
+                            {r.exam.nameZh} / {r.exam.name}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {r.exam.class.name} · {new Date(r.exam.examDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          </p>
+                        </div>
+                        <div className="text-right shrink-0 ml-4">
+                          <p className="text-sm font-bold text-gray-900">{r.score} / {r.exam.maxScore}</p>
+                          <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                            r.passed ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                          }`}>
+                            {r.passed ? '✅ 通过 / Passed' : '❌ 未通过 / Not Passed'}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      })()}
 
       {/* Quick links */}
       <div className="rounded-lg border border-gray-200 bg-white p-5">

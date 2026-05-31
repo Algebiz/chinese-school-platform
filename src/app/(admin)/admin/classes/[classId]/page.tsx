@@ -227,6 +227,71 @@ export default async function ClassDetailPage({
           />
         </div>
       )}
+
+      {/* Class Exams — read-only admin view */}
+      <AdminClassExamsSection classId={classId} />
+    </div>
+  )
+}
+
+async function AdminClassExamsSection({ classId }: { classId: string }) {
+  const exams = await prisma.classExam.findMany({
+    where: { classId },
+    include: {
+      results: { select: { score: true, passed: true } },
+    },
+    orderBy: { examDate: 'desc' },
+  })
+
+  if (exams.length === 0) return null
+
+  return (
+    <div>
+      <h2 className="mb-3 font-semibold text-gray-900">
+        班级考试 / Class Exams ({exams.length})
+      </h2>
+      <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+        <table className="min-w-full text-sm">
+          <thead className="bg-gray-50 text-xs text-gray-500 uppercase">
+            <tr>
+              <th className="px-4 py-3 text-left">考试名称</th>
+              <th className="px-4 py-3 text-left">日期</th>
+              <th className="px-4 py-3 text-left">满分</th>
+              <th className="px-4 py-3 text-left">通过 / 总人数</th>
+              <th className="px-4 py-3 text-left">状态</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {exams.map((exam) => {
+              const entered = exam.results.filter((r) => r.score !== null)
+              const passed = entered.filter((r) => r.passed === true).length
+              return (
+                <tr key={exam.id} className="hover:bg-gray-50">
+                  <td className="px-4 py-3">
+                    <p className="font-medium text-gray-900">{exam.nameZh}</p>
+                    <p className="text-xs text-gray-400">{exam.name}</p>
+                  </td>
+                  <td className="px-4 py-3 text-gray-600 text-xs">
+                    {exam.examDate.toLocaleDateString('zh-CN')}
+                  </td>
+                  <td className="px-4 py-3 text-gray-600">{exam.maxScore}</td>
+                  <td className="px-4 py-3">
+                    <span className="font-medium text-green-700">{passed}</span>
+                    <span className="text-gray-400"> / {exam.results.length}</span>
+                  </td>
+                  <td className="px-4 py-3">
+                    {exam.isPublished ? (
+                      <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">已发布</span>
+                    ) : (
+                      <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">草稿</span>
+                    )}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

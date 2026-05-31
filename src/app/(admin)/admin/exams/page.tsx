@@ -12,7 +12,7 @@ export default async function AdminExamsPage() {
 
   const CURRENT_YEAR = await getCurrentAcademicYear()
 
-  const [sessions, registrations, paidCount] = await Promise.all([
+  const [sessions, registrations, paidCount, classExams] = await Promise.all([
     prisma.examSession.findMany({
       where: { academicYear: CURRENT_YEAR },
       include: {
@@ -31,6 +31,14 @@ export default async function AdminExamsPage() {
       orderBy: { createdAt: 'desc' },
     }),
     prisma.examRegistration.count({ where: { status: 'PAID' } }),
+    prisma.classExam.findMany({
+      where: { academicYear: CURRENT_YEAR },
+      include: {
+        class: { select: { name: true, nameEn: true } },
+        results: { select: { score: true, passed: true } },
+      },
+      orderBy: { examDate: 'desc' },
+    }),
   ])
 
   const yctCount = registrations.filter((r) => r.examSession.examType === 'YCT').length
@@ -112,6 +120,64 @@ export default async function AdminExamsPage() {
         })}
         paidCount={paidCount}
       />
+
+      {/* Class Exams overview */}
+      {classExams.length > 0 && (
+        <div>
+          <h2 className="mb-3 font-semibold text-gray-900">
+            班级考试 / Class Exams — {CURRENT_YEAR}
+            <span className="ml-2 text-sm font-normal text-gray-400">({classExams.length} 场)</span>
+          </h2>
+          <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+            <table className="min-w-full text-sm">
+              <thead className="bg-gray-50 text-xs text-gray-500 uppercase">
+                <tr>
+                  <th className="px-4 py-3 text-left">班级 / Class</th>
+                  <th className="px-4 py-3 text-left">考试名称</th>
+                  <th className="px-4 py-3 text-left">日期</th>
+                  <th className="px-4 py-3 text-left">总人数</th>
+                  <th className="px-4 py-3 text-left">通过</th>
+                  <th className="px-4 py-3 text-left">未通过</th>
+                  <th className="px-4 py-3 text-left">待录入</th>
+                  <th className="px-4 py-3 text-left">状态</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {classExams.map((exam) => {
+                  const entered = exam.results.filter((r) => r.score !== null)
+                  const passed = entered.filter((r) => r.passed === true).length
+                  const failed = entered.filter((r) => r.passed === false).length
+                  const pending = exam.results.length - entered.length
+                  return (
+                    <tr key={exam.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3">
+                        <p className="font-medium text-gray-900">{exam.class.name}</p>
+                        {exam.class.nameEn && <p className="text-xs text-gray-400">{exam.class.nameEn}</p>}
+                      </td>
+                      <td className="px-4 py-3">
+                        <p className="text-gray-900">{exam.nameZh}</p>
+                        <p className="text-xs text-gray-400">{exam.name}</p>
+                      </td>
+                      <td className="px-4 py-3 text-gray-600 text-xs">{exam.examDate.toLocaleDateString('zh-CN')}</td>
+                      <td className="px-4 py-3 text-gray-700">{exam.results.length}</td>
+                      <td className="px-4 py-3 font-medium text-green-700">{passed}</td>
+                      <td className="px-4 py-3 font-medium text-red-600">{failed}</td>
+                      <td className="px-4 py-3 text-amber-600">{pending}</td>
+                      <td className="px-4 py-3">
+                        {exam.isPublished ? (
+                          <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">已发布</span>
+                        ) : (
+                          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">草稿</span>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

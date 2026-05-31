@@ -416,6 +416,33 @@ exports.Prisma.VolunteerClaimScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ClassExamScalarFieldEnum = {
+  id: 'id',
+  classId: 'classId',
+  name: 'name',
+  nameZh: 'nameZh',
+  description: 'description',
+  examDate: 'examDate',
+  maxScore: 'maxScore',
+  academicYear: 'academicYear',
+  createdBy: 'createdBy',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ClassExamResultScalarFieldEnum = {
+  id: 'id',
+  examId: 'examId',
+  studentId: 'studentId',
+  score: 'score',
+  passed: 'passed',
+  notes: 'notes',
+  enteredBy: 'enteredBy',
+  enteredAt: 'enteredAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -530,7 +557,9 @@ exports.Prisma.ModelName = {
   SystemSettings: 'SystemSettings',
   VolunteerService: 'VolunteerService',
   VolunteerDeposit: 'VolunteerDeposit',
-  VolunteerClaim: 'VolunteerClaim'
+  VolunteerClaim: 'VolunteerClaim',
+  ClassExam: 'ClassExam',
+  ClassExamResult: 'ClassExamResult'
 };
 
 /**

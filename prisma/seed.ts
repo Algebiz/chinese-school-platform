@@ -25,6 +25,8 @@ async function main() {
   if (oldClassIds.length > 0) {
     await prisma.studentNextClassOverride.deleteMany({ where: { classId: { in: oldClassIds } } })
     await prisma.waitlist.deleteMany({ where: { classId: { in: oldClassIds } } })
+    // ClassExam cascade-deletes its results, but we must delete ClassExams before Classes
+    await prisma.classExam.deleteMany({ where: { classId: { in: oldClassIds } } })
     const oldEnrollments = await prisma.enrollment.findMany({
       where: { classId: { in: oldClassIds } },
       select: { id: true },
@@ -597,6 +599,35 @@ async function main() {
     data: { userId: teacherUser.id },
   })
   console.log('  ✓ Teacher account (teacher@chineseschool.com / Teacher123!) linked to 薛丽')
+
+  // ── Test Class Exam ───────────────────────────────────────────────────────────
+  // AP Chinese class has the fixed seed ID 'chl-ap'
+  const exam = await prisma.classExam.create({
+    data: {
+      classId: 'chl-ap',
+      name: 'Mid-term Exam',
+      nameZh: '期中考试',
+      examDate: new Date('2027-03-15'),
+      maxScore: 100,
+      academicYear: CURRENT_YEAR,
+      createdBy: teacherUser.id,
+      isPublished: false,
+    },
+  })
+  const apEnrollments = await prisma.enrollment.findMany({
+    where: { classId: 'chl-ap', status: 'CONFIRMED' },
+    select: { studentId: true },
+  })
+  if (apEnrollments.length > 0) {
+    await prisma.classExamResult.createMany({
+      data: apEnrollments.map((e) => ({
+        examId: exam.id,
+        studentId: e.studentId,
+        enteredBy: teacherUser.id,
+      })),
+    })
+  }
+  console.log('  ✓ Test class exam "期中考试" created for AP Chinese')
 
   // ── Exam Sessions ─────────────────────────────────────────────────────────────
   const EXAM_LOCATION_EN = 'Charlotte Chinese Academy — Room 101'

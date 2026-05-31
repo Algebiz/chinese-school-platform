@@ -36,6 +36,17 @@ export interface ExamRow {
   studentNameZh: string
 }
 
+export interface ClassExamRow {
+  id: string
+  name: string
+  nameZh: string
+  examDate: string
+  maxScore: number
+  isPublished: boolean
+  totalStudents: number
+  enteredCount: number
+}
+
 interface ClassInfo {
   name: string
   nameEn: string | null
@@ -55,15 +66,16 @@ interface Props {
   students: StudentRow[]
   textbooks: TextbookRow[]
   examRegistrations: ExamRow[]
+  classExams: ClassExamRow[]
 }
 
 type Tab = 'roster' | 'textbooks' | 'info' | 'exams'
 
 const TABS: { id: Tab; zh: string; en: string }[] = [
-  { id: 'roster',    zh: '学生名单',   en: 'Student Roster' },
-  { id: 'textbooks', zh: '教材管理',   en: 'Textbooks' },
-  { id: 'info',      zh: '班级信息',   en: 'Class Details' },
-  { id: 'exams',     zh: '考试名单',   en: 'Exam Registrations' },
+  { id: 'roster',    zh: '学生名单', en: 'Student Roster' },
+  { id: 'textbooks', zh: '教材管理', en: 'Textbooks' },
+  { id: 'info',      zh: '班级信息', en: 'Class Details' },
+  { id: 'exams',     zh: '考试管理', en: 'Exams' },
 ]
 
 const STATUS_LABEL: Record<string, { label: string; color: string }> = {
@@ -219,10 +231,21 @@ function TextbookManager({ classId, initial }: { classId: string; initial: Textb
 
 // ── Main tabs component ───────────────────────────────────────────────────────
 
-export function TeacherClassTabs({ classId, cls, students, textbooks, examRegistrations }: Props) {
+const emptyExamForm = { name: '', nameZh: '', examDate: '', maxScore: '100', description: '' }
+
+export function TeacherClassTabs({ classId, cls, students, textbooks, examRegistrations, classExams: initialClassExams }: Props) {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<Tab>('roster')
   const [search, setSearch] = useState('')
+  const [examSubTab, setExamSubTab] = useState<'class' | 'official'>('class')
+
+  // Class exams state
+  const [classExams, setClassExams] = useState<ClassExamRow[]>(initialClassExams)
+  const [showCreateExam, setShowCreateExam] = useState(false)
+  const [examForm, setExamForm] = useState(emptyExamForm)
+  const [examSaving, setExamSaving] = useState(false)
+  const [examError, setExamError] = useState<string | null>(null)
+  const [deletingExamId, setDeletingExamId] = useState<string | null>(null)
 
   // Class info form state
   const [descEn, setDescEn] = useState(cls.description ?? '')
@@ -230,6 +253,52 @@ export function TeacherClassTabs({ classId, cls, students, textbooks, examRegist
   const [notes, setNotes] = useState(cls.notes ?? '')
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState<string | null>(null)
+
+  async function handleCreateExam() {
+    if (!examForm.name.trim() || !examForm.nameZh.trim() || !examForm.examDate) {
+      setExamError('请填写所有必填字段 / Please fill all required fields')
+      return
+    }
+    setExamSaving(true)
+    setExamError(null)
+    try {
+      const res = await fetch(`/api/teacher/classes/${classId}/exams`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: examForm.name,
+          nameZh: examForm.nameZh,
+          examDate: examForm.examDate,
+          maxScore: parseInt(examForm.maxScore, 10) || 100,
+          description: examForm.description || undefined,
+        }),
+      })
+      const json = await res.json()
+      if (!json.success) { setExamError(json.error ?? 'Failed'); return }
+      // Navigate to results entry page
+      router.push(`/teacher/classes/${classId}/exams/${json.data.id}`)
+    } catch {
+      setExamError('Network error')
+    } finally {
+      setExamSaving(false)
+    }
+  }
+
+  async function handleDeleteExam(examId: string, examName: string) {
+    if (!confirm(`确认删除考试 "${examName}"？\nConfirm delete exam?`)) return
+    setDeletingExamId(examId)
+    try {
+      const res = await fetch(`/api/teacher/classes/${classId}/exams/${examId}`, { method: 'DELETE' })
+      const json = await res.json()
+      if (!json.success) { alert(json.error ?? 'Delete failed'); return }
+      setClassExams((prev) => prev.filter((e) => e.id !== examId))
+      router.refresh()
+    } catch {
+      alert('Network error')
+    } finally {
+      setDeletingExamId(null)
+    }
+  }
 
   const filtered = search.trim()
     ? students.filter((s) =>
@@ -467,64 +536,181 @@ export function TeacherClassTabs({ classId, cls, students, textbooks, examRegist
         </div>
       )}
 
-      {/* Tab 4: Exam Registrations */}
+      {/* Tab 4: Exam Management (two sub-tabs) */}
       {activeTab === 'exams' && (
-        <div className="space-y-3">
-          <div className="flex justify-end">
-            <button
-              onClick={downloadExamCsv}
-              className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >
-              ↓ 下载考试名单 / Download Exam List
-            </button>
+        <div className="space-y-4">
+          {/* Sub-tab bar */}
+          <div className="flex gap-1 border-b border-gray-200">
+            {([
+              { id: 'class' as const, zh: '班级考试', en: 'Class Exams' },
+              { id: 'official' as const, zh: '官方考试', en: 'Official Exams (YCT/HSK)' },
+            ] as const).map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setExamSubTab(t.id)}
+                className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+                  examSubTab === t.id ? 'border-blue-600 text-blue-700' : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                {t.zh} <span className="hidden sm:inline text-xs text-gray-400">/ {t.en}</span>
+              </button>
+            ))}
           </div>
 
-          <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
-            <table className="min-w-full text-sm">
-              <thead className="bg-gray-50 text-xs text-gray-500 uppercase">
-                <tr>
-                  <th className="px-4 py-3 text-left">学生</th>
-                  <th className="px-4 py-3 text-left">考试</th>
-                  <th className="px-4 py-3 text-left hidden sm:table-cell">级别</th>
-                  <th className="px-4 py-3 text-left hidden md:table-cell">考试日期</th>
-                  <th className="px-4 py-3 text-left">状态</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {examRegistrations.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} className="px-4 py-8 text-center text-gray-400">
-                      暂无考试报名 / No exam registrations
-                    </td>
-                  </tr>
-                ) : (
-                  examRegistrations.map((r) => {
-                    const badge = STATUS_LABEL[r.status]
-                    return (
-                      <tr key={r.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3">
-                          <p className="font-medium text-gray-900">{r.studentName}</p>
-                          {r.studentNameEn && <p className="text-xs text-gray-400">{r.studentNameEn}</p>}
-                        </td>
-                        <td className="px-4 py-3 text-gray-700">{r.examType}</td>
-                        <td className="px-4 py-3 text-gray-600 hidden sm:table-cell">Level {r.level}</td>
-                        <td className="px-4 py-3 text-gray-500 hidden md:table-cell">
-                          {new Date(r.examDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                        </td>
-                        <td className="px-4 py-3">
-                          {badge && (
-                            <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${badge.color}`}>
-                              {badge.label}
-                            </span>
+          {/* Sub-tab A: Class Exams */}
+          {examSubTab === 'class' && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-gray-500">{classExams.length} 场考试</p>
+                <button
+                  onClick={() => { setExamForm(emptyExamForm); setExamError(null); setShowCreateExam(true) }}
+                  className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700"
+                >
+                  + 创建考试 / Create Exam
+                </button>
+              </div>
+
+              {classExams.length === 0 ? (
+                <p className="rounded-lg border border-dashed border-gray-300 bg-white px-5 py-10 text-center text-sm text-gray-400">
+                  暂无班级考试 / No class exams yet
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {classExams.map((exam) => (
+                    <div key={exam.id} className="rounded-lg border border-gray-200 bg-white px-5 py-4 flex items-center gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-semibold text-gray-900">{exam.nameZh}</span>
+                          <span className="text-sm text-gray-500">{exam.name}</span>
+                          {exam.isPublished ? (
+                            <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">已发布</span>
+                          ) : (
+                            <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">草稿</span>
                           )}
-                        </td>
-                      </tr>
-                    )
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
+                        </div>
+                        <p className="mt-0.5 text-xs text-gray-500">
+                          {new Date(exam.examDate).toLocaleDateString('zh-CN')} · 满分 {exam.maxScore} ·{' '}
+                          已录入 {exam.enteredCount}/{exam.totalStudents} 名学生
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <a
+                          href={`/teacher/classes/${classId}/exams/${exam.id}`}
+                          className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
+                        >
+                          录入成绩 / Enter Results
+                        </a>
+                        {!exam.isPublished && exam.enteredCount === 0 && (
+                          <button
+                            onClick={() => handleDeleteExam(exam.id, exam.nameZh)}
+                            disabled={deletingExamId === exam.id}
+                            className="rounded-md border border-red-200 px-2.5 py-1.5 text-xs text-red-600 hover:bg-red-50 disabled:opacity-50"
+                          >
+                            {deletingExamId === exam.id ? '…' : '删除'}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Create Exam Modal */}
+              {showCreateExam && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+                  <div className="w-full max-w-md rounded-xl bg-white shadow-2xl">
+                    <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+                      <h2 className="font-semibold text-gray-900">创建考试 / Create Exam</h2>
+                      <button onClick={() => setShowCreateExam(false)} className="text-gray-400 hover:text-gray-600">✕</button>
+                    </div>
+                    <div className="space-y-4 px-6 py-5">
+                      <div>
+                        <label className="mb-1 block text-sm font-medium text-gray-700">考试名称（中文）*</label>
+                        <input type="text" value={examForm.nameZh} onChange={(e) => setExamForm((f) => ({ ...f, nameZh: e.target.value }))}
+                          placeholder="例：期中考试、期末考试" className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500" />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-sm font-medium text-gray-700">Exam Name (English) *</label>
+                        <input type="text" value={examForm.name} onChange={(e) => setExamForm((f) => ({ ...f, name: e.target.value }))}
+                          placeholder="e.g. Mid-term Exam, Final Exam" className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500" />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-sm font-medium text-gray-700">考试日期 / Exam Date *</label>
+                        <input type="date" value={examForm.examDate} onChange={(e) => setExamForm((f) => ({ ...f, examDate: e.target.value }))}
+                          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500" />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-sm font-medium text-gray-700">满分 / Max Score *</label>
+                        <input type="number" value={examForm.maxScore} onChange={(e) => setExamForm((f) => ({ ...f, maxScore: e.target.value }))}
+                          min={1} className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500" />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-sm font-medium text-gray-700">备注 / Description（可选）</label>
+                        <textarea value={examForm.description} onChange={(e) => setExamForm((f) => ({ ...f, description: e.target.value }))}
+                          rows={2} className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500" />
+                      </div>
+                      {examError && <p className="rounded bg-red-50 px-3 py-2 text-sm text-red-700">{examError}</p>}
+                    </div>
+                    <div className="flex justify-end gap-3 border-t border-gray-200 px-6 py-4">
+                      <button onClick={() => setShowCreateExam(false)} className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">取消</button>
+                      <button onClick={handleCreateExam} disabled={examSaving} className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50">
+                        {examSaving ? '创建中…' : '创建并录入成绩 / Create & Enter Results'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Sub-tab B: Official Exams (YCT/HSK) */}
+          {examSubTab === 'official' && (
+            <div className="space-y-3">
+              <div className="flex justify-end">
+                <button onClick={downloadExamCsv} className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                  ↓ 下载考试名单 / Download Exam List
+                </button>
+              </div>
+              <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+                <table className="min-w-full text-sm">
+                  <thead className="bg-gray-50 text-xs text-gray-500 uppercase">
+                    <tr>
+                      <th className="px-4 py-3 text-left">学生</th>
+                      <th className="px-4 py-3 text-left">考试</th>
+                      <th className="px-4 py-3 text-left hidden sm:table-cell">级别</th>
+                      <th className="px-4 py-3 text-left hidden md:table-cell">考试日期</th>
+                      <th className="px-4 py-3 text-left">状态</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {examRegistrations.length === 0 ? (
+                      <tr><td colSpan={5} className="px-4 py-8 text-center text-gray-400">暂无官方考试报名 / No official exam registrations</td></tr>
+                    ) : (
+                      examRegistrations.map((r) => {
+                        const badge = STATUS_LABEL[r.status]
+                        return (
+                          <tr key={r.id} className="hover:bg-gray-50">
+                            <td className="px-4 py-3">
+                              <p className="font-medium text-gray-900">{r.studentName}</p>
+                              {r.studentNameEn && <p className="text-xs text-gray-400">{r.studentNameEn}</p>}
+                            </td>
+                            <td className="px-4 py-3 text-gray-700">{r.examType}</td>
+                            <td className="px-4 py-3 text-gray-600 hidden sm:table-cell">Level {r.level}</td>
+                            <td className="px-4 py-3 text-gray-500 hidden md:table-cell">
+                              {new Date(r.examDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </td>
+                            <td className="px-4 py-3">
+                              {badge && <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${badge.color}`}>{badge.label}</span>}
+                            </td>
+                          </tr>
+                        )
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

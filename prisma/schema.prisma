@@ -142,6 +142,7 @@ model Student {
   waitlists          Waitlist[]
   nextClassOverrides StudentNextClassOverride[]
   examRegistrations  ExamRegistration[]
+  classExamResults   ClassExamResult[]
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
 }
@@ -181,6 +182,7 @@ model Class {
   waitlists          Waitlist[]
   nextClassOverrides StudentNextClassOverride[]
   textbooks          Textbook[]
+  classExams         ClassExam[]
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
 }
@@ -440,4 +442,39 @@ model VolunteerClaim {
   deposit VolunteerDeposit @relation(fields: [depositId], references: [id])
   family  Family           @relation(fields: [familyId], references: [id])
   service VolunteerService @relation(fields: [serviceId], references: [id])
+}
+
+model ClassExam {
+  id           String   @id @default(cuid())
+  classId      String
+  name         String
+  nameZh       String
+  description  String?
+  examDate     DateTime
+  maxScore     Int      @default(100)
+  academicYear String
+  createdBy    String
+  isPublished  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  class   Class             @relation(fields: [classId], references: [id])
+  results ClassExamResult[]
+}
+
+model ClassExamResult {
+  id          String   @id @default(cuid())
+  examId      String
+  studentId   String
+  score       Int?
+  passed      Boolean?
+  notes       String?
+  enteredBy   String
+  enteredAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  exam    ClassExam @relation(fields: [examId], references: [id], onDelete: Cascade)
+  student Student   @relation(fields: [studentId], references: [id])
+
+  @@unique([examId, studentId])
 }

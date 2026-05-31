@@ -49,7 +49,7 @@ export default async function TeacherClassDetailPage({
 
   const YEAR = await getCurrentAcademicYear()
 
-  const [cls, enrollments, examRegistrations] = await Promise.all([
+  const [cls, enrollments, examRegistrations, classExams] = await Promise.all([
     prisma.class.findUnique({
       where: { id: classId },
       include: {
@@ -80,6 +80,11 @@ export default async function TeacherClassDetailPage({
         examSession: { select: { examType: true, level: true, examDate: true } },
       },
       orderBy: { createdAt: 'desc' },
+    }),
+    prisma.classExam.findMany({
+      where: { classId },
+      include: { results: { select: { score: true } } },
+      orderBy: { examDate: 'desc' },
     }),
   ])
 
@@ -139,6 +144,17 @@ export default async function TeacherClassDetailPage({
     year: cls.year,
   }
 
+  const classExamRows = classExams.map((e) => ({
+    id: e.id,
+    name: e.name,
+    nameZh: e.nameZh,
+    examDate: e.examDate.toISOString(),
+    maxScore: e.maxScore,
+    isPublished: e.isPublished,
+    totalStudents: e.results.length,
+    enteredCount: e.results.filter((r) => r.score !== null).length,
+  }))
+
   return (
     <div className="space-y-6">
       <div>
@@ -157,6 +173,7 @@ export default async function TeacherClassDetailPage({
         students={students}
         textbooks={textbooks}
         examRegistrations={exams}
+        classExams={classExamRows}
       />
     </div>
   )
