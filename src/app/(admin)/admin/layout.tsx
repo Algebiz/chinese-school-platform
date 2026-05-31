@@ -5,10 +5,21 @@ import { LegalFooter } from '@/components/LegalFooter'
 import { LanguageToggle } from '@/components/LanguageToggle'
 import { LanguageText } from '@/components/LanguageText'
 import { AdminNavLinks } from '@/components/AdminNavLinks'
+import { AvatarMenu } from '@/components/AvatarMenu'
+
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/)
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+  }
+  return name.substring(0, 2).toUpperCase()
+}
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
   const isSuperAdmin = session?.user?.role === 'SUPER_ADMIN'
+  const userName = session?.user?.name ?? session?.user?.email ?? 'Admin'
+  const initials = getInitials(userName)
 
   let unreadContactCount = 0
   let pendingExamCount = 0
@@ -25,9 +36,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="flex min-h-screen flex-col bg-gray-50">
       <nav className="bg-gray-900 text-white">
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-4">
-          <span className="font-bold text-red-400 shrink-0">
-            <LanguageText zh="管理后台" en="Admin Portal" />
-          </span>
+          <Link href="/admin" className="font-bold text-red-400 shrink-0 hover:text-red-300 transition-colors">
+            <LanguageText zh="管理后台" en="Admin" />
+          </Link>
 
           <AdminNavLinks
             unreadContactCount={unreadContactCount}
@@ -36,11 +47,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             isSuperAdmin={isSuperAdmin}
           />
 
-          <div className="ml-auto flex shrink-0 items-center gap-3">
+          <div className="ml-auto flex shrink-0 items-center gap-2">
             <LanguageToggle />
-            <Link href="/dashboard" className="text-xs text-gray-500 hover:text-gray-300">
-              ← <LanguageText zh="家长门户" en="Parent Portal" />
-            </Link>
+            <div className="w-px h-5 bg-gray-700" />
+            <AvatarMenu
+              userName={userName}
+              initials={initials}
+              portalLink={{ href: '/dashboard', labelZh: '家长门户', labelEn: 'Parent Portal' }}
+            />
           </div>
         </div>
       </nav>

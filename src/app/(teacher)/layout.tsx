@@ -1,14 +1,18 @@
 import { redirect } from 'next/navigation'
-import { auth, signOut } from '@/lib/auth'
+import { auth } from '@/lib/auth'
 import Link from 'next/link'
 import { LegalFooter } from '@/components/LegalFooter'
 import { LanguageToggle } from '@/components/LanguageToggle'
 import { LanguageText } from '@/components/LanguageText'
 import { TeacherNavLinks } from '@/components/TeacherNavLinks'
+import { AvatarMenu } from '@/components/AvatarMenu'
 
-async function logout() {
-  'use server'
-  await signOut({ redirectTo: '/login' })
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/)
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+  }
+  return name.substring(0, 2).toUpperCase()
 }
 
 export default async function TeacherLayout({ children }: { children: React.ReactNode }) {
@@ -18,31 +22,26 @@ export default async function TeacherLayout({ children }: { children: React.Reac
   if (!session) redirect('/login')
   if (role !== 'TEACHER' && role !== 'ADMIN' && role !== 'SUPER_ADMIN') redirect('/dashboard')
 
-  const displayName = session.user?.name ?? session.user?.email ?? '教师'
+  const userName = session.user?.name ?? session.user?.email ?? '教师'
+  const initials = getInitials(userName)
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       <nav className="bg-gray-900 text-white">
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4">
-          <span className="font-bold text-red-400 shrink-0">
+          <Link href="/teacher/classes" className="font-bold text-red-400 shrink-0 hover:text-red-300 transition-colors">
             <LanguageText zh="教师门户" en="Teacher Portal" />
-          </span>
+          </Link>
 
           <TeacherNavLinks />
 
-          <div className="ml-auto flex shrink-0 items-center gap-3">
+          <div className="ml-auto flex shrink-0 items-center gap-2">
             <LanguageToggle />
-            <span className="hidden sm:block text-sm text-gray-400 max-w-[160px] truncate">
-              {displayName}
-            </span>
-            <form action={logout}>
-              <button
-                type="submit"
-                className="rounded-md border border-gray-600 px-3 py-1.5 text-sm text-gray-300 hover:bg-gray-700 transition-colors"
-              >
-                <LanguageText zh="退出" en="Log out" />
-              </button>
-            </form>
+            <div className="w-px h-5 bg-gray-700" />
+            <AvatarMenu
+              userName={userName}
+              initials={initials}
+            />
           </div>
         </div>
       </nav>

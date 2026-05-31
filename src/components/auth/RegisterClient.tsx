@@ -60,12 +60,12 @@ export function RegisterClient() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="relative min-h-screen flex flex-col bg-gray-50">
+      <div className="absolute top-4 right-4 z-10">
+        <LanguageToggle />
+      </div>
       <div className="flex flex-1 items-center justify-center py-12 px-4">
         <div className="max-w-md w-full space-y-8">
-          <div className="flex justify-end">
-            <LanguageToggle />
-          </div>
           <div className="text-center">
             <h1 className="text-3xl font-bold text-gray-900">{t('创建账号', 'Create Account')}</h1>
           </div>

@@ -1,14 +1,18 @@
 import { redirect } from 'next/navigation'
-import { auth, signOut } from '@/lib/auth'
+import { auth } from '@/lib/auth'
 import Link from 'next/link'
 import { LegalFooter } from '@/components/LegalFooter'
 import { LanguageToggle } from '@/components/LanguageToggle'
 import { LanguageText } from '@/components/LanguageText'
-import { PortalNavLinks, PortalNavLinksMobile } from '@/components/PortalNavLinks'
+import { PortalNavLinks, PortalHamburger } from '@/components/PortalNavLinks'
+import { AvatarMenu } from '@/components/AvatarMenu'
 
-async function logout() {
-  'use server'
-  await signOut({ redirectTo: '/login' })
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/)
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+  }
+  return name.substring(0, 2).toUpperCase()
 }
 
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
@@ -16,14 +20,16 @@ export default async function PortalLayout({ children }: { children: React.React
   if (!session) redirect('/login')
   if (session.user?.role === 'TEACHER') redirect('/teacher/classes')
 
-  const displayName = session.user?.name ?? session.user?.email ?? '家长'
-  const isAdmin = session.user?.role === 'ADMIN' || session.user?.role === 'SUPER_ADMIN'
+  const userName = session.user?.name ?? session.user?.email ?? '用户'
+  const initials = getInitials(userName)
+  const role = session.user?.role as 'PARENT' | 'ADMIN' | 'SUPER_ADMIN'
+  const isAdmin = role === 'ADMIN' || role === 'SUPER_ADMIN'
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <nav className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm">
+      <nav className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm relative">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2.5">
-          {/* Left: logo + nav links */}
+          {/* Left: logo + desktop nav */}
           <div className="flex items-center gap-4">
             <Link href="/dashboard" className="flex shrink-0 items-center gap-2">
               <img src="/logo.png" alt="CCA Logo" className="h-9 w-9 object-contain" />
@@ -36,32 +42,18 @@ export default async function PortalLayout({ children }: { children: React.React
             <PortalNavLinks />
           </div>
 
-          {/* Right: toggle + admin switcher + username + logout */}
+          {/* Right: hamburger (mobile) + toggle + divider + avatar */}
           <div className="flex items-center gap-2">
+            <PortalHamburger />
             <LanguageToggle />
-            {isAdmin && (
-              <Link
-                href="/admin"
-                className="rounded-md border border-[#CC0000] px-3 py-1.5 text-sm font-medium text-[#CC0000] bg-white hover:bg-[#CC0000] hover:text-white transition-colors whitespace-nowrap"
-              >
-                <LanguageText zh="管理后台" en="Admin" /> ↗
-              </Link>
-            )}
-            <span className="hidden lg:block text-sm text-gray-500 max-w-[140px] truncate">
-              {displayName}
-            </span>
-            <form action={logout}>
-              <button
-                type="submit"
-                className="rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap"
-              >
-                <LanguageText zh="退出" en="Log out" />
-              </button>
-            </form>
+            <div className="hidden sm:block w-px h-5 bg-gray-200" />
+            <AvatarMenu
+              userName={userName}
+              initials={initials}
+              portalLink={isAdmin ? { href: '/admin', labelZh: '管理后台', labelEn: 'Admin Portal' } : undefined}
+            />
           </div>
         </div>
-
-        <PortalNavLinksMobile />
       </nav>
 
       <div className="flex-1">{children}</div>
