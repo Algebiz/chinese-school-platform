@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation'
 import { auth, signOut } from '@/lib/auth'
 import Link from 'next/link'
 import { LegalFooter } from '@/components/LegalFooter'
+import { LanguageToggle } from '@/components/LanguageToggle'
+import { PortalNavLinks, PortalNavLinksMobile } from '@/components/PortalNavLinks'
 
 async function logout() {
   'use server'
@@ -30,29 +32,13 @@ export default async function PortalLayout({ children }: { children: React.React
               </div>
             </Link>
 
-            <div className="hidden sm:flex items-center gap-1">
-              {[
-                { href: '/dashboard', zh: '仪表盘', en: 'Dashboard' },
-                { href: '/classes',   zh: '班级',   en: 'Classes'   },
-                { href: '/enroll',    zh: '报名',   en: 'Enroll'    },
-                { href: '/exams',     zh: '考试报名', en: 'Exams'      },
-                { href: '/volunteer', zh: '志愿服务', en: 'Volunteer' },
-                { href: '/contact',   zh: '联系我们', en: 'Contact'   },
-              ].map(({ href, zh, en }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="flex flex-col items-center rounded-md px-2.5 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-red-700 transition-colors"
-                >
-                  <span className="text-sm font-medium leading-tight">{zh}</span>
-                  <span className="text-[10px] text-gray-400 leading-tight">{en}</span>
-                </Link>
-              ))}
-            </div>
+            <PortalNavLinks />
           </div>
 
-          {/* Right: admin switcher (if applicable) + user name + logout */}
+          {/* Right: language toggle + admin switcher + user + logout */}
           <div className="flex items-center gap-2">
+            <LanguageToggle />
+
             {(session.user?.role === 'ADMIN' || session.user?.role === 'SUPER_ADMIN') && (
               <Link
                 href="/admin"
@@ -75,25 +61,8 @@ export default async function PortalLayout({ children }: { children: React.React
           </div>
         </div>
 
-        {/* Mobile nav links — scrollable row */}
-        <div className="flex sm:hidden items-center gap-1 overflow-x-auto px-3 pb-2 scrollbar-none">
-          {[
-            { href: '/dashboard', label: 'Dashboard' },
-            { href: '/classes',   label: 'Classes'   },
-            { href: '/enroll',    label: 'Enroll'    },
-            { href: '/exams',     label: 'Exams'     },
-            { href: '/volunteer', label: 'Volunteer' },
-            { href: '/contact',   label: 'Contact'   },
-          ].map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className="shrink-0 rounded-md px-3 py-1 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-red-700 transition-colors"
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
+        {/* Mobile nav links */}
+        <PortalNavLinksMobile />
       </nav>
 
       {/* Page content */}

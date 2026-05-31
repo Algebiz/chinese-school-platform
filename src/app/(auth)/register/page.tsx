@@ -7,6 +7,8 @@ import { z } from "zod"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { LegalFooter } from "@/components/LegalFooter"
+import { LanguageToggle } from "@/components/LanguageToggle"
+import { useLanguage } from "@/lib/i18n/LanguageContext"
 
 const schema = z
   .object({
@@ -27,6 +29,7 @@ export default function RegisterPage() {
   const router = useRouter()
   const [serverError, setServerError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const { t } = useLanguage()
 
   const {
     register,
@@ -51,13 +54,15 @@ export default function RegisterPage() {
       const json = await res.json()
       if (!json.success) {
         setServerError(
-          json.code === "EMAIL_EXISTS" ? "该邮箱已被注册" : "注册失败，请重试"
+          json.code === "EMAIL_EXISTS"
+            ? t("该邮箱已被注册", "This email is already registered")
+            : t("注册失败，请重试", "Registration failed, please try again")
         )
         return
       }
       router.push("/login?registered=true")
     } catch {
-      setServerError("网络错误，请重试")
+      setServerError(t("网络错误，请重试", "Network error, please try again"))
     } finally {
       setLoading(false)
     }
@@ -67,9 +72,12 @@ export default function RegisterPage() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <div className="flex flex-1 items-center justify-center py-12 px-4">
       <div className="max-w-md w-full space-y-8">
+        <div className="flex justify-end">
+          <LanguageToggle />
+        </div>
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900">创建账号</h1>
-          <p className="mt-1 text-sm text-gray-500">Create Account</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t('创建账号', 'Create Account')}</h1>
+          <p className="mt-1 text-sm text-gray-500">{t('Create Account', '创建账号')}</p>
         </div>
 
         <form className="mt-8 space-y-5" onSubmit={handleSubmit(onSubmit)}>
@@ -81,7 +89,7 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              家长姓名 <span className="text-gray-400 text-xs">/ Parent Name</span>
+              {t('家长姓名', 'Parent Name')}
             </label>
             <input
               {...register("name")}
@@ -94,7 +102,7 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              电子邮件 <span className="text-gray-400 text-xs">/ Email</span>
+              {t('电子邮件', 'Email')}
             </label>
             <input
               {...register("email")}
@@ -109,7 +117,7 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              密码 <span className="text-gray-400 text-xs">/ Password</span>
+              {t('密码', 'Password')}
             </label>
             <input
               {...register("password")}
@@ -124,7 +132,7 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              确认密码 <span className="text-gray-400 text-xs">/ Confirm Password</span>
+              {t('确认密码', 'Confirm Password')}
             </label>
             <input
               {...register("confirmPassword")}
@@ -139,8 +147,7 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              手机号码{" "}
-              <span className="text-gray-400 text-xs">/ Phone Number (optional)</span>
+              {t('手机号码（可选）', 'Phone Number (optional)')}
             </label>
             <input
               {...register("phone")}
@@ -154,7 +161,7 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "注册中..." : "注册 / Register"}
+            {loading ? t('注册中...', 'Creating account...') : t('注册 / Register', 'Register')}
           </button>
 
           <p className="text-center text-xs text-gray-500">
@@ -170,9 +177,10 @@ export default function RegisterPage() {
           </p>
 
           <p className="text-center text-sm text-gray-600">
-            已有账号？{" "}
+            {t('已有账号？', 'Already have an account?')}
+            {" "}
             <Link href="/login" className="font-medium text-red-600 hover:text-red-500">
-              立即登录 / Sign In
+              {t('立即登录', 'Sign In')}
             </Link>
           </p>
         </form>

@@ -8,6 +8,8 @@ import { signIn, getSession } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { LegalFooter } from "@/components/LegalFooter"
+import { LanguageToggle } from "@/components/LanguageToggle"
+import { useLanguage } from "@/lib/i18n/LanguageContext"
 
 const schema = z.object({
   email: z.string().email("请输入有效的电子邮件"),
@@ -22,6 +24,7 @@ function LoginForm() {
   const justRegistered = searchParams.get("registered") === "true"
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const { t } = useLanguage()
 
   const {
     register,
@@ -57,14 +60,17 @@ function LoginForm() {
 
   return (
     <div className="w-full max-w-md space-y-8">
+        <div className="flex justify-end">
+          <LanguageToggle />
+        </div>
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900">登录账号</h1>
-          <p className="mt-1 text-sm text-gray-500">Sign In</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t('登录账号', 'Sign In')}</h1>
+          <p className="mt-1 text-sm text-gray-500">{t('Sign In', '登录账号')}</p>
         </div>
 
         {justRegistered && (
           <div className="rounded-md bg-green-50 p-3 text-sm text-green-700">
-            注册成功，请登录 / Registration successful, please sign in
+            {t('注册成功，请登录', 'Registration successful, please sign in')}
           </div>
         )}
 
@@ -77,7 +83,7 @@ function LoginForm() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              电子邮件 <span className="text-gray-400 text-xs">/ Email</span>
+              {t('电子邮件', 'Email')}
             </label>
             <input
               {...register("email")}
@@ -93,13 +99,13 @@ function LoginForm() {
           <div>
             <div className="flex items-center justify-between">
               <label className="block text-sm font-medium text-gray-700">
-                密码 <span className="text-gray-400 text-xs">/ Password</span>
+                {t('密码', 'Password')}
               </label>
               <Link
                 href="/forgot-password"
                 className="text-xs text-red-600 hover:text-red-500"
               >
-                忘记密码？/ Forgot password?
+                {t('忘记密码？', 'Forgot password?')}
               </Link>
             </div>
             <input
@@ -118,13 +124,14 @@ function LoginForm() {
             disabled={loading}
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "登录中..." : "登录 / Sign In"}
+            {loading ? t('登录中...', 'Signing in...') : t('登录 / Sign In', 'Sign In')}
           </button>
 
           <p className="text-center text-sm text-gray-600">
-            还没有账号？{" "}
+            {t('还没有账号？', "Don't have an account?")}
+            {" "}
             <Link href="/register" className="font-medium text-red-600 hover:text-red-500">
-              立即注册 / Register
+              {t('立即注册', 'Register')}
             </Link>
           </p>
         </form>

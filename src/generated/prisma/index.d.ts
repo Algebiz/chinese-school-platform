@@ -8039,6 +8039,7 @@ export namespace Prisma {
     password: string | null
     role: $Enums.Role | null
     phone: string | null
+    preferredLanguage: string | null
     familyId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8053,6 +8054,7 @@ export namespace Prisma {
     password: string | null
     role: $Enums.Role | null
     phone: string | null
+    preferredLanguage: string | null
     familyId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8067,6 +8069,7 @@ export namespace Prisma {
     password: number
     role: number
     phone: number
+    preferredLanguage: number
     familyId: number
     createdAt: number
     updatedAt: number
@@ -8083,6 +8086,7 @@ export namespace Prisma {
     password?: true
     role?: true
     phone?: true
+    preferredLanguage?: true
     familyId?: true
     createdAt?: true
     updatedAt?: true
@@ -8097,6 +8101,7 @@ export namespace Prisma {
     password?: true
     role?: true
     phone?: true
+    preferredLanguage?: true
     familyId?: true
     createdAt?: true
     updatedAt?: true
@@ -8111,6 +8116,7 @@ export namespace Prisma {
     password?: true
     role?: true
     phone?: true
+    preferredLanguage?: true
     familyId?: true
     createdAt?: true
     updatedAt?: true
@@ -8198,6 +8204,7 @@ export namespace Prisma {
     password: string | null
     role: $Enums.Role
     phone: string | null
+    preferredLanguage: string
     familyId: string | null
     createdAt: Date
     updatedAt: Date
@@ -8229,6 +8236,7 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     phone?: boolean
+    preferredLanguage?: boolean
     familyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8248,6 +8256,7 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     phone?: boolean
+    preferredLanguage?: boolean
     familyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8263,6 +8272,7 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     phone?: boolean
+    preferredLanguage?: boolean
     familyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8278,12 +8288,13 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     phone?: boolean
+    preferredLanguage?: boolean
     familyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "role" | "phone" | "familyId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "role" | "phone" | "preferredLanguage" | "familyId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     family?: boolean | User$familyArgs<ExtArgs>
     teacherProfile?: boolean | User$teacherProfileArgs<ExtArgs>
@@ -8315,6 +8326,7 @@ export namespace Prisma {
       password: string | null
       role: $Enums.Role
       phone: string | null
+      preferredLanguage: string
       familyId: string | null
       createdAt: Date
       updatedAt: Date
@@ -8753,6 +8765,7 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
     readonly phone: FieldRef<"User", 'String'>
+    readonly preferredLanguage: FieldRef<"User", 'String'>
     readonly familyId: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
@@ -32783,6 +32796,7 @@ export namespace Prisma {
     password: 'password',
     role: 'role',
     phone: 'phone',
+    preferredLanguage: 'preferredLanguage',
     familyId: 'familyId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -33665,6 +33679,7 @@ export namespace Prisma {
     password?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     phone?: StringNullableFilter<"User"> | string | null
+    preferredLanguage?: StringFilter<"User"> | string
     familyId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -33683,6 +33698,7 @@ export namespace Prisma {
     password?: SortOrderInput | SortOrder
     role?: SortOrder
     phone?: SortOrderInput | SortOrder
+    preferredLanguage?: SortOrder
     familyId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -33704,6 +33720,7 @@ export namespace Prisma {
     password?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     phone?: StringNullableFilter<"User"> | string | null
+    preferredLanguage?: StringFilter<"User"> | string
     familyId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -33722,6 +33739,7 @@ export namespace Prisma {
     password?: SortOrderInput | SortOrder
     role?: SortOrder
     phone?: SortOrderInput | SortOrder
+    preferredLanguage?: SortOrder
     familyId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -33742,6 +33760,7 @@ export namespace Prisma {
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
+    preferredLanguage?: StringWithAggregatesFilter<"User"> | string
     familyId?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -35776,6 +35795,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     family?: FamilyCreateNestedOneWithoutUsersInput
@@ -35793,6 +35813,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     familyId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -35810,6 +35831,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneWithoutUsersNestedInput
@@ -35827,6 +35849,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     familyId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35844,6 +35867,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     familyId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -35858,6 +35882,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35871,6 +35896,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     familyId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38188,6 +38214,7 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     phone?: SortOrder
+    preferredLanguage?: SortOrder
     familyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -38202,6 +38229,7 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     phone?: SortOrder
+    preferredLanguage?: SortOrder
     familyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -38216,6 +38244,7 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     phone?: SortOrder
+    preferredLanguage?: SortOrder
     familyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -41652,6 +41681,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     family?: FamilyCreateNestedOneWithoutUsersInput
@@ -41668,6 +41698,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     familyId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -41700,6 +41731,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneWithoutUsersNestedInput
@@ -41716,6 +41748,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     familyId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41732,6 +41765,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     family?: FamilyCreateNestedOneWithoutUsersInput
@@ -41748,6 +41782,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     familyId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -41780,6 +41815,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneWithoutUsersNestedInput
@@ -41796,6 +41832,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     familyId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41812,6 +41849,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     teacherProfile?: TeacherCreateNestedOneWithoutUserInput
@@ -41828,6 +41866,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
@@ -42017,6 +42056,7 @@ export namespace Prisma {
     password?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     phone?: StringNullableFilter<"User"> | string | null
+    preferredLanguage?: StringFilter<"User"> | string
     familyId?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -42779,6 +42819,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     family?: FamilyCreateNestedOneWithoutUsersInput
@@ -42795,6 +42836,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     familyId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -42881,6 +42923,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneWithoutUsersNestedInput
@@ -42897,6 +42940,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     familyId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45265,6 +45309,7 @@ export namespace Prisma {
     password?: string | null
     role?: $Enums.Role
     phone?: string | null
+    preferredLanguage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -45329,6 +45374,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
@@ -45345,6 +45391,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
@@ -45361,6 +45408,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

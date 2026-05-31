@@ -6,6 +6,7 @@ import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { getStudentStatuses } from '@/lib/student-status'
 import { StudentStatusBadge } from '@/components/StudentStatusBadge'
 import { PendingEnrollmentCard } from './PendingEnrollmentCard'
+import { cookies } from 'next/headers'
 
 const CLASS_TYPE_LABEL: Record<string, string> = {
   CHINESE: '中文班',
@@ -17,6 +18,9 @@ export default async function DashboardPage() {
   if (!session) redirect('/login')
 
   const CURRENT_YEAR = await getCurrentAcademicYear()
+  const cookieStore = await cookies()
+  const lang = cookieStore.get('preferredLanguage')?.value ?? 'zh'
+  const t = (zh: string, en: string) => lang === 'zh' ? zh : en
 
   const familyIdForDeposit = (await prisma.user.findUnique({
     where: { id: session.user.id },
@@ -125,29 +129,29 @@ export default async function DashboardPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">
-          你好，{user?.name ?? '家长'} 👋
+          {t('你好，', 'Hello, ')}{user?.name ?? t('家长', 'Parent')} 👋
         </h1>
         <p className="mt-1 text-sm text-gray-500">
-          {CURRENT_YEAR} 学年注册状态 / {CURRENT_YEAR} Academic Year Enrollment Status
+          {t(`${CURRENT_YEAR} 学年注册状态`, `${CURRENT_YEAR} Academic Year Enrollment Status`)}
         </p>
       </div>
 
       {/* Summary cards */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         <div className="rounded-lg border border-gray-200 bg-white p-4">
-          <p className="text-xs text-gray-400 uppercase tracking-wide">学生人数</p>
+          <p className="text-xs text-gray-400 uppercase tracking-wide">{t('学生人数', 'Students')}</p>
           <p className="mt-1 text-3xl font-bold text-gray-900">{students.length}</p>
-          <p className="text-xs text-gray-500">Students</p>
+          <p className="text-xs text-gray-500">{t('学生', 'Students')}</p>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-4">
-          <p className="text-xs text-gray-400 uppercase tracking-wide">已确认报名</p>
+          <p className="text-xs text-gray-400 uppercase tracking-wide">{t('已确认报名', 'Confirmed')}</p>
           <p className="mt-1 text-3xl font-bold text-green-600">{totalConfirmed}</p>
-          <p className="text-xs text-gray-500">Confirmed enrollments</p>
+          <p className="text-xs text-gray-500">{t('已确认报名', 'Confirmed enrollments')}</p>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-4 col-span-2 sm:col-span-1">
-          <p className="text-xs text-gray-400 uppercase tracking-wide">待付款</p>
+          <p className="text-xs text-gray-400 uppercase tracking-wide">{t('待付款', 'Pending')}</p>
           <p className="mt-1 text-3xl font-bold text-amber-500">{pendingEnrollments.length}</p>
-          <p className="text-xs text-gray-500">Pending payment</p>
+          <p className="text-xs text-gray-500">{t('待付款', 'Pending payment')}</p>
         </div>
       </div>
 
@@ -166,17 +170,17 @@ export default async function DashboardPage() {
       {/* Students & enrollments */}
       <div className="space-y-5">
         <h2 className="font-semibold text-gray-900 text-lg">
-          学生报名详情 / Student Enrollment Details
+          {t('学生报名详情', 'Student Enrollment Details')}
         </h2>
 
         {!hasFamily || students.length === 0 ? (
           <div className="rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center">
-            <p className="text-gray-500">尚未添加学生 / No students added yet</p>
+            <p className="text-gray-500">{t('尚未添加学生', 'No students added yet')}</p>
             <Link
               href="/enroll"
               className="mt-3 inline-block rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
             >
-              开始报名 / Start Enrollment
+              {t('开始报名', 'Start Enrollment')}
             </Link>
           </div>
         ) : (
@@ -430,32 +434,20 @@ export default async function DashboardPage() {
 
       {/* Quick links */}
       <div className="rounded-lg border border-gray-200 bg-white p-5">
-        <h2 className="mb-4 font-semibold text-gray-900">快速操作 / Quick Actions</h2>
+        <h2 className="mb-4 font-semibold text-gray-900">{t('快速操作', 'Quick Actions')}</h2>
 
         <div className="flex flex-wrap gap-3">
-          <Link
-            href="/classes"
-            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            浏览班级 / Browse Classes
+          <Link href="/classes" className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+            {t('浏览班级', 'Browse Classes')}
           </Link>
-          <Link
-            href="/enroll"
-            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
-          >
-            为学生报名 / Enroll a Student
+          <Link href="/enroll" className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors">
+            {t('为学生报名', 'Enroll a Student')}
           </Link>
-          <Link
-            href="/exams"
-            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            报名考试 / Register for Exam
+          <Link href="/exams" className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+            {t('报名考试', 'Register for Exam')}
           </Link>
-          <Link
-            href="/contact"
-            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            联系学校 / Contact School
+          <Link href="/contact" className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+            {t('联系学校', 'Contact School')}
           </Link>
         </div>
       </div>

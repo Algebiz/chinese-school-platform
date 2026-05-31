@@ -165,6 +165,7 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   role: 'role',
   phone: 'phone',
+  preferredLanguage: 'preferredLanguage',
   familyId: 'familyId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

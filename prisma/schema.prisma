@@ -116,10 +116,11 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
-  password        String?
-  role            Role      @default(PARENT)
-  phone           String?
-  familyId        String?
+  password          String?
+  role              Role      @default(PARENT)
+  phone             String?
+  preferredLanguage String    @default("zh")
+  familyId          String?
   family          Family?   @relation(fields: [familyId], references: [id])
   teacherProfile  Teacher?
   accounts        Account[]

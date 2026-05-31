@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
+import { cookies } from 'next/headers'
 import { ClassBrowser } from './ClassBrowser'
 import type { ClassData } from '@/components/ClassCard'
 import { sortClasses } from '@/lib/class-order'
@@ -24,6 +25,9 @@ export default async function ClassesPage() {
   if (!session) redirect('/login')
 
   const CURRENT_YEAR = await getCurrentAcademicYear()
+  const cookieStore = await cookies()
+  const lang = cookieStore.get('preferredLanguage')?.value ?? 'zh'
+  const t = (zh: string, en: string) => lang === 'zh' ? zh : en
   const classes = sortClasses(await fetchClasses(CURRENT_YEAR))
   const chineseClasses = classes.filter((c) => c.type === 'CHINESE')
   const artsClasses = classes.filter((c) => c.type === 'ARTS')
@@ -33,10 +37,10 @@ export default async function ClassesPage() {
       <div className="mx-auto max-w-5xl px-4 py-8">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">
-            欢迎，{session.user?.name ?? '家长'}
+            {t('欢迎，', 'Welcome, ')}{session.user?.name ?? t('家长', 'Parent')}
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            Welcome · {CURRENT_YEAR} 学年 / Academic Year
+            {t(`${CURRENT_YEAR} 学年`, `${CURRENT_YEAR} Academic Year`)}
           </p>
         </div>
 

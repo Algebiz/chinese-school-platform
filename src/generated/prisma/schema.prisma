@@ -111,21 +111,22 @@ model Family {
 }
 
 model User {
-  id             String    @id @default(cuid())
-  name           String?
-  email          String    @unique
-  emailVerified  DateTime?
-  image          String?
-  password       String?
-  role           Role      @default(PARENT)
-  phone          String?
-  familyId       String?
-  family         Family?   @relation(fields: [familyId], references: [id])
-  teacherProfile Teacher?
-  accounts       Account[]
-  sessions       Session[]
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id                String    @id @default(cuid())
+  name              String?
+  email             String    @unique
+  emailVerified     DateTime?
+  image             String?
+  password          String?
+  role              Role      @default(PARENT)
+  phone             String?
+  preferredLanguage String    @default("zh")
+  familyId          String?
+  family            Family?   @relation(fields: [familyId], references: [id])
+  teacherProfile    Teacher?
+  accounts          Account[]
+  sessions          Session[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
 
 model Student {
