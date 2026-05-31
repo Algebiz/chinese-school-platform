@@ -21,16 +21,9 @@ export function PortalNavLinks() {
         <Link
           key={href}
           href={href}
-          className="flex flex-col items-center rounded-md px-2.5 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-red-700 transition-colors"
+          className="rounded-md px-2.5 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-red-700 transition-colors"
         >
-          {lang === 'zh' ? (
-            <>
-              <span className="text-sm font-medium leading-tight">{zh}</span>
-              <span className="text-[10px] text-gray-400 leading-tight">{en}</span>
-            </>
-          ) : (
-            <span className="text-sm font-medium leading-tight">{en}</span>
-          )}
+          {lang === 'zh' ? zh : en}
         </Link>
       ))}
     </div>
