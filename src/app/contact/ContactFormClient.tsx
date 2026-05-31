@@ -2,23 +2,28 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
-const SUBJECTS = [
-  '注册咨询 / Registration Help',
-  '课程咨询 / Class Information',
-  'CHL课程 / CHL Program Inquiry',
-  'CSL课程 / CSL Program Inquiry',
-  '教材问题 / Textbook Question',
-  '付款问题 / Payment Issue',
-  '班级调整 / Class Transfer Request',
-  '其他 / Other',
-]
+// subjects defined inside component so they can use t()
 
 interface Props {
   prefill: { name: string; email: string } | null
 }
 
 export function ContactFormClient({ prefill }: Props) {
+  const { t } = useLanguage()
+
+  const SUBJECTS = [
+    t('注册咨询', 'Registration Help'),
+    t('课程咨询', 'Class Information'),
+    t('CHL课程', 'CHL Program Inquiry'),
+    t('CSL课程', 'CSL Program Inquiry'),
+    t('教材问题', 'Textbook Question'),
+    t('付款问题', 'Payment Issue'),
+    t('班级调整', 'Class Transfer Request'),
+    t('其他', 'Other'),
+  ]
+
   const [name, setName] = useState(prefill?.name ?? '')
   const [email, setEmail] = useState(prefill?.email ?? '')
   const [phone, setPhone] = useState('')

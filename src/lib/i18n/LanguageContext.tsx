@@ -26,10 +26,17 @@ export function LanguageProvider({
   const [lang, setLangState] = useState<Language>(initialLang)
 
   useEffect(() => {
-    // Sync from localStorage on first mount (handles non-auth pages)
     const saved = localStorage.getItem('preferredLanguage') as Language | null
-    if (saved && saved !== lang && (saved === 'zh' || saved === 'en')) {
-      setLangState(saved)
+    if (saved === 'zh' || saved === 'en') {
+      if (saved !== lang) setLangState(saved)
+    } else {
+      // First visit — use browser language as default
+      const browserLang = navigator.language.startsWith('zh') ? 'zh' : 'en'
+      if (browserLang !== lang) {
+        setLangState(browserLang)
+        localStorage.setItem('preferredLanguage', browserLang)
+        document.cookie = `preferredLanguage=${browserLang}; path=/; max-age=${365 * 24 * 3600}; SameSite=Lax`
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

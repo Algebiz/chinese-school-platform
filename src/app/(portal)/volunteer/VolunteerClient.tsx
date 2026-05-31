@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { PhotoUpload } from '@/components/PhotoUpload'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 type DepositStatus = 'PENDING' | 'PAID' | 'CLAIM_PENDING' | 'CLAIM_APPROVED' | 'REFUNDED' | 'FORFEITED' | 'REFUND_FAILED'
 type ClaimStatus = 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED'
@@ -46,24 +47,25 @@ interface Props {
   academicYear: string
 }
 
-const DEPOSIT_STATUS_MAP: Record<DepositStatus, { label: string; color: string }> = {
-  PENDING: { label: '待支付 / Pending Payment', color: 'bg-amber-100 text-amber-700' },
-  PAID: { label: '已支付 / Paid', color: 'bg-blue-100 text-blue-700' },
-  CLAIM_PENDING: { label: '申请审核中 / Claim Under Review', color: 'bg-purple-100 text-purple-700' },
-  CLAIM_APPROVED: { label: '申请已批准 / Claim Approved', color: 'bg-green-100 text-green-700' },
-  REFUNDED: { label: '已退款 / Refunded', color: 'bg-green-100 text-green-700' },
-  FORFEITED: { label: '已没收 / Forfeited', color: 'bg-gray-100 text-gray-500' },
-  REFUND_FAILED: { label: '退款处理中 / Refund Processing', color: 'bg-amber-100 text-amber-700' },
+const DEPOSIT_STATUS_COLORS: Record<DepositStatus, string> = {
+  PENDING: 'bg-amber-100 text-amber-700',
+  PAID: 'bg-blue-100 text-blue-700',
+  CLAIM_PENDING: 'bg-purple-100 text-purple-700',
+  CLAIM_APPROVED: 'bg-green-100 text-green-700',
+  REFUNDED: 'bg-green-100 text-green-700',
+  FORFEITED: 'bg-gray-100 text-gray-500',
+  REFUND_FAILED: 'bg-amber-100 text-amber-700',
 }
 
-const CLAIM_STATUS_MAP: Record<ClaimStatus, { label: string; color: string }> = {
-  PENDING_REVIEW: { label: '审核中 / Under Review', color: 'bg-amber-100 text-amber-700' },
-  APPROVED: { label: '已批准 / Approved', color: 'bg-green-100 text-green-700' },
-  REJECTED: { label: '未通过 / Rejected', color: 'bg-red-100 text-red-700' },
+const CLAIM_STATUS_COLORS: Record<ClaimStatus, string> = {
+  PENDING_REVIEW: 'bg-amber-100 text-amber-700',
+  APPROVED: 'bg-green-100 text-green-700',
+  REJECTED: 'bg-red-100 text-red-700',
 }
 
 export function VolunteerClient({ deposit, services, academicYear }: Props) {
   const router = useRouter()
+  const { t } = useLanguage()
   const [serviceId, setServiceId] = useState('')
   const [description, setDescription] = useState('')
   const [photoUrl, setPhotoUrl] = useState('')
@@ -84,7 +86,7 @@ export function VolunteerClient({ deposit, services, academicYear }: Props) {
     setError(null)
 
     if (description.length < 50) {
-      setError('描述至少需要50个字符 / Description must be at least 50 characters')
+      setError(t('描述至少需要50个字符', 'Description must be at least 50 characters'))
       return
     }
 
@@ -97,13 +99,13 @@ export function VolunteerClient({ deposit, services, academicYear }: Props) {
       })
       const json = await res.json()
       if (!json.success) {
-        setError(json.error ?? '提交失败，请重试')
+        setError(json.error ?? t('提交失败，请重试', 'Submission failed, please try again'))
       } else {
         setSuccess(true)
         router.refresh()
       }
     } catch {
-      setError('网络错误，请重试')
+      setError(t('网络错误，请重试', 'Network error, please try again'))
     } finally {
       setSubmitting(false)
     }
@@ -113,24 +115,33 @@ export function VolunteerClient({ deposit, services, academicYear }: Props) {
     <div className="space-y-6">
       {/* Section 1: Deposit Status Card */}
       <div className="rounded-lg border border-gray-200 bg-white p-6">
-        <h2 className="mb-4 text-base font-semibold text-gray-900">押金状态 / Deposit Status</h2>
+        <h2 className="mb-4 text-base font-semibold text-gray-900">{t('押金状态', 'Deposit Status')}</h2>
 
         {!deposit ? (
           <div className="rounded-md bg-amber-50 border border-amber-200 p-4">
-            <p className="text-sm font-medium text-amber-800">尚未缴纳志愿服务押金</p>
+            <p className="text-sm font-medium text-amber-800">
+              {t('尚未缴纳志愿服务押金', 'Volunteer deposit not yet paid')}
+            </p>
             <p className="mt-1 text-xs text-amber-600">
-              You have not paid the volunteer deposit for {academicYear}. It will be collected
-              at checkout when you enroll.
+              {t(`${academicYear} 学年押金将在报名结账时收取。`, `The volunteer deposit for ${academicYear} will be collected at checkout when you enroll.`)}
             </p>
           </div>
         ) : (
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <span className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${DEPOSIT_STATUS_MAP[deposit.status]?.color ?? 'bg-gray-100 text-gray-600'}`}>
-                {DEPOSIT_STATUS_MAP[deposit.status]?.label ?? deposit.status}
+              <span className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${DEPOSIT_STATUS_COLORS[deposit.status] ?? 'bg-gray-100 text-gray-600'}`}>
+                {({
+                  PENDING: t('待支付', 'Pending'),
+                  PAID: t('已支付', 'Paid'),
+                  CLAIM_PENDING: t('申请审核中', 'Claim Under Review'),
+                  CLAIM_APPROVED: t('申请已批准', 'Claim Approved'),
+                  REFUNDED: t('已退款', 'Refunded'),
+                  FORFEITED: t('已没收', 'Forfeited'),
+                  REFUND_FAILED: t('退款处理中', 'Refund Processing'),
+                } as Record<string, string>)[deposit.status] ?? deposit.status}
               </span>
               <span className="text-sm text-gray-500">
-                金额 / Amount: <strong>${amount.toFixed(2)}</strong>
+                {t('金额', 'Amount')}: <strong>${amount.toFixed(2)}</strong>
               </span>
             </div>
 
@@ -331,10 +342,14 @@ export function VolunteerClient({ deposit, services, academicYear }: Props) {
                   </div>
                   <span
                     className={`shrink-0 inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      CLAIM_STATUS_MAP[claim.status]?.color ?? 'bg-gray-100 text-gray-600'
+                      CLAIM_STATUS_COLORS[claim.status] ?? 'bg-gray-100 text-gray-600'
                     }`}
                   >
-                    {CLAIM_STATUS_MAP[claim.status]?.label ?? claim.status}
+                    {({
+                      PENDING_REVIEW: t('审核中', 'Under Review'),
+                      APPROVED: t('已批准', 'Approved'),
+                      REJECTED: t('未通过', 'Rejected'),
+                    } as Record<string, string>)[claim.status] ?? claim.status}
                   </span>
                 </div>
               </div>

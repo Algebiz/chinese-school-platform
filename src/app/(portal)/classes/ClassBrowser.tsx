@@ -4,13 +4,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ClassCard } from '@/components/ClassCard'
 import type { ClassData } from '@/components/ClassCard'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 type Tab = 'CHINESE' | 'ARTS'
-
-const TABS: { tab: Tab; label: string; labelEn: string }[] = [
-  { tab: 'CHINESE', label: '中文班', labelEn: 'Chinese Classes' },
-  { tab: 'ARTS', label: '才艺班', labelEn: 'Arts Classes' },
-]
 
 interface ClassBrowserProps {
   chineseClasses: ClassData[]
@@ -19,8 +15,14 @@ interface ClassBrowserProps {
 
 export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps) {
   const router = useRouter()
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState<Tab>('CHINESE')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+
+  const TABS: { tab: Tab; label: string }[] = [
+    { tab: 'CHINESE', label: t('中文班', 'Chinese Classes') },
+    { tab: 'ARTS',    label: t('才艺班', 'Arts Classes') },
+  ]
 
   const visibleClasses = activeTab === 'CHINESE' ? chineseClasses : artsClasses
   const selectedCount = selectedIds.size
@@ -41,7 +43,7 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
     <div className="relative pb-28">
       {/* Tab bar */}
       <div className="mb-6 flex w-fit gap-1 rounded-lg bg-gray-100 p-1">
-        {TABS.map(({ tab, label, labelEn }) => (
+        {TABS.map(({ tab, label }) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -53,7 +55,6 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
             ].join(' ')}
           >
             {label}
-            <span className="ml-1 text-xs text-gray-400">/ {labelEn}</span>
           </button>
         ))}
       </div>
@@ -61,7 +62,7 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
       {/* Class grid */}
       {visibleClasses.length === 0 ? (
         <div className="rounded-lg border border-dashed border-gray-300 bg-white py-16 text-center text-sm text-gray-400">
-          暂无班级 / No classes available
+          {t('暂无班级', 'No classes available')}
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -81,12 +82,9 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
         <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white px-4 py-4 shadow-lg">
           <div className="mx-auto flex max-w-5xl items-center justify-between">
             <span className="text-sm text-gray-600">
-              已选{' '}
+              {t('已选', 'Selected')}{' '}
               <span className="font-semibold text-gray-900">{selectedCount}</span>{' '}
-              个班级
-              <span className="ml-1 text-gray-400">
-                / {selectedCount} class{selectedCount !== 1 ? 'es' : ''} selected
-              </span>
+              {t('个班级', `class${selectedCount !== 1 ? 'es' : ''}`)}
             </span>
             <button
               onClick={() => {
@@ -95,7 +93,7 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
               }}
               className="rounded-md bg-red-600 px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-700"
             >
-              去报名 / Proceed to Enroll →
+              {t('去报名', 'Proceed to Enroll')} →
             </button>
           </div>
         </div>
