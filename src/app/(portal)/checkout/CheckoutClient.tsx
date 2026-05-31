@@ -49,8 +49,7 @@ export function CheckoutClient({ data }: Props) {
   if (paid) {
     return (
       <div className="mx-auto max-w-md py-16 text-center">
-        <div className="mb-4 text-5xl">✅</div>
-        <h2 className="text-xl font-bold text-gray-900">支付成功！</h2>
+        <h2 className="text-xl font-bold text-gray-900">支付成功 / Payment Successful</h2>
         <p className="mt-1 text-sm text-gray-500">Payment successful — confirmation email sent</p>
         <p className="mt-3 text-sm text-gray-600">
           确认邮件已发送。我们期待在课堂上见到{' '}
@@ -132,9 +131,9 @@ export function CheckoutClient({ data }: Props) {
       <div style={CARD}>
         <div style={{ display: 'flex', borderBottom: '0.5px solid #E5E7EB' }}>
           {([
-            { id: 'stripe' as const, icon: '💳', label: '信用卡 / Credit Card' },
-            { id: 'paypal' as const, icon: '🅿', label: 'PayPal' },
-          ]).map(({ id, icon, label }) => (
+            { id: 'stripe' as const, label: '信用卡 / Credit Card' },
+            { id: 'paypal' as const, label: 'PayPal' },
+          ]).map(({ id, label }) => (
             <button
               key={id}
               onClick={() => setTab(id)}
@@ -143,10 +142,10 @@ export function CheckoutClient({ data }: Props) {
                 color: tab === id ? '#CC0000' : '#6b7280',
                 background: 'none', border: 'none',
                 borderBottom: tab === id ? '2px solid #CC0000' : '2px solid transparent',
-                cursor: 'pointer', marginBottom: -1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                cursor: 'pointer', marginBottom: -1,
               }}
             >
-              {icon} {label}
+              {label}
             </button>
           ))}
         </div>

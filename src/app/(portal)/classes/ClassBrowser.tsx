@@ -53,7 +53,7 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
       {/* Page hero */}
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
-          {t('班级目录', 'Class Directory')}
+          {t('班级', 'Classes')}
         </h1>
         <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
           {t('浏览并选择您心仪的班级', 'Browse and select the classes you want to enroll in')}
@@ -63,10 +63,10 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
       {/* Tabs */}
       <div style={{ borderBottom: '0.5px solid #E5E7EB', marginBottom: 16, display: 'flex' }}>
         <button style={TAB_STYLE(activeTab === 'CHINESE')} onClick={() => setActiveTab('CHINESE')}>
-          📖 {t('中文班', 'Chinese Classes')} ({chineseClasses.length})
+          {t('中文班', 'Chinese Classes')} ({chineseClasses.length})
         </button>
         <button style={TAB_STYLE(activeTab === 'ARTS')} onClick={() => setActiveTab('ARTS')}>
-          🎨 {t('才艺班', 'Arts Classes')} ({artsClasses.length})
+          {t('才艺班', 'Arts Classes')} ({artsClasses.length})
         </button>
       </div>
 

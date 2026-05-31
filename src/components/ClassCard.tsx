@@ -2,39 +2,22 @@
 
 import { useState } from 'react'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
-import { badge, iconBox } from '@/lib/design'
+import { badge } from '@/lib/design'
 
 export interface TextbookInfo {
-  id: string
-  name: string
-  nameZh: string
-  price: string
-  description?: string | null
+  id: string; name: string; nameZh: string; price: string; description?: string | null
 }
 
 export interface TeacherInfo {
-  id: string
-  name: string
-  nameEn: string | null
-  bioEn: string | null
-  bioZh: string | null
-  photoUrl: string | null
+  id: string; name: string; nameEn: string | null
+  bioEn: string | null; bioZh: string | null; photoUrl: string | null
 }
 
 export interface ClassData {
-  id: string
-  name: string
-  nameEn: string | null
-  type: 'CHINESE' | 'ARTS'
-  description: string | null
-  teacher: TeacherInfo | null
-  schedule: unknown
-  capacity: number
-  fee: string
-  year: string
-  enrolledCount: number
-  spotsRemaining: number
-  textbooks: TextbookInfo[]
+  id: string; name: string; nameEn: string | null; type: 'CHINESE' | 'ARTS'
+  description: string | null; teacher: TeacherInfo | null; schedule: unknown
+  capacity: number; fee: string; year: string; enrolledCount: number
+  spotsRemaining: number; textbooks: TextbookInfo[]
 }
 
 interface ClassCardProps {
@@ -49,19 +32,19 @@ function fmtSchedule(schedule: unknown): string {
   return [s.dayOfWeek, s.startTime && s.endTime ? `${s.startTime}–${s.endTime}` : ''].filter(Boolean).join(' ')
 }
 
-function classTypeBadge(cls: ClassData, t: (zh: string, en: string) => string) {
-  if (cls.type === 'ARTS') return <span style={badge('pink')}>{t('才艺班', 'Arts')}</span>
-  if (cls.name.includes('第二语言')) return <span style={badge('green')}>{t('CSL', 'CSL')}</span>
-  return <span style={badge('blue')}>{t('CHL', 'CHL')}</span>
-}
-
 export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) {
   const { t, lang } = useLanguage()
   const [showBio, setShowBio] = useState(false)
   const isFull = cls.spotsRemaining === 0
   const hasBio = cls.teacher && (cls.teacher.bioEn || cls.teacher.bioZh)
-  const pct = Math.min(100, Math.round(((cls.capacity - cls.spotsRemaining) / cls.capacity) * 100))
-  const isArts = cls.type === 'ARTS'
+  const enrolled = cls.capacity - cls.spotsRemaining
+  const pct = Math.min(100, Math.round((enrolled / cls.capacity) * 100))
+
+  function typeBadge() {
+    if (cls.type === 'ARTS') return <span style={badge('pink')}>{t('才艺班', 'Arts')}</span>
+    if (cls.name.includes('第二语言')) return <span style={badge('green')}>CSL</span>
+    return <span style={badge('blue')}>CHL</span>
+  }
 
   return (
     <div
@@ -69,64 +52,58 @@ export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) 
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 12,
-        padding: '12px 16px',
+        gap: 16,
+        padding: '14px 20px',
         borderBottom: '0.5px solid #E5E7EB',
         cursor: 'pointer',
-        backgroundColor: isSelected ? '#FFF5F5' : 'transparent',
         borderLeft: isSelected ? '3px solid #CC0000' : '3px solid transparent',
+        background: isSelected ? '#FFF5F5' : 'transparent',
         transition: 'background 0.1s',
       }}
     >
-      {/* Icon box */}
-      <div style={iconBox(isArts ? 'pink' : 'blue')}>
-        {isArts ? '🎨' : '📖'}
-      </div>
-
       {/* Class info */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
           <span style={{ fontSize: 14, fontWeight: 500, color: '#111827' }}>{cls.name}</span>
-          {classTypeBadge(cls, t)}
+          {typeBadge()}
         </div>
-        <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          {cls.teacher && <span>{cls.teacher.name}</span>}
+        <p style={{ fontSize: 12, color: '#6b7280', display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          {cls.teacher && <span>{cls.teacher.name}{cls.teacher.nameEn ? ` (${cls.teacher.nameEn})` : ''}</span>}
           <span>{fmtSchedule(cls.schedule)}</span>
-        </div>
+        </p>
 
-        {/* Teacher bio expand */}
         {hasBio && (
           <button
-            onClick={(e) => { e.stopPropagation(); setShowBio((v) => !v) }}
-            style={{ fontSize: 11, color: '#CC0000', marginTop: 4, background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+            onClick={(e) => { e.stopPropagation(); setShowBio(v => !v) }}
+            style={{ marginTop: 4, fontSize: 11, color: '#CC0000', background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'underline' }}
           >
-            {showBio ? t('收起', 'Hide') : t('了解老师 ▸', 'About teacher ▸')}
+            {showBio ? t('收起', 'Hide') : t('了解老师', 'About teacher')}
           </button>
         )}
         {showBio && cls.teacher && (
-          <div style={{ marginTop: 6, padding: '8px 10px', background: '#F9FAFB', borderRadius: 6, fontSize: 12, color: '#374151' }}>
-            {lang === 'zh' ? cls.teacher.bioZh || cls.teacher.bioEn : cls.teacher.bioEn || cls.teacher.bioZh}
-          </div>
+          <p style={{ marginTop: 6, fontSize: 12, color: '#4B5563', lineHeight: 1.5, paddingLeft: 0 }}>
+            {lang === 'zh' ? (cls.teacher.bioZh || cls.teacher.bioEn) : (cls.teacher.bioEn || cls.teacher.bioZh)}
+          </p>
         )}
       </div>
 
       {/* Fee + capacity */}
-      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+      <div style={{ textAlign: 'right', flexShrink: 0, minWidth: 80 }}>
         <p style={{ fontSize: 14, fontWeight: 600, color: '#111827' }}>${parseFloat(cls.fee).toFixed(0)}</p>
-        <div style={{ width: 72, height: 4, backgroundColor: '#E5E7EB', borderRadius: 2, marginTop: 4, marginLeft: 'auto' }}>
-          <div style={{ width: `${pct}%`, height: '100%', backgroundColor: pct >= 80 ? '#CC0000' : '#6B7280', borderRadius: 2 }} />
+        <p style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>{enrolled}/{cls.capacity}</p>
+        {/* Progress bar */}
+        <div style={{ width: 64, height: 3, backgroundColor: '#E5E7EB', borderRadius: 2, marginTop: 4, marginLeft: 'auto' }}>
+          <div style={{ width: `${pct}%`, height: '100%', backgroundColor: pct >= 80 ? '#CC0000' : '#9CA3AF', borderRadius: 2 }} />
         </div>
-        <p style={{ fontSize: 11, color: isFull ? '#A32D2D' : '#6b7280', marginTop: 2 }}>
-          {isFull ? t('已满', 'Full') : `${cls.spotsRemaining} ${t('余位', 'left')}`}
-        </p>
+        {isFull && <p style={{ fontSize: 11, color: '#A32D2D', marginTop: 2 }}>{t('已满', 'Full')}</p>}
       </div>
 
-      {/* Select button */}
+      {/* Action button */}
       <button
         onClick={(e) => { e.stopPropagation(); onClick() }}
         style={{
           flexShrink: 0,
-          padding: '7px 14px',
+          padding: '7px 16px',
           borderRadius: 6,
           fontSize: 13,
           fontWeight: 500,
@@ -135,12 +112,12 @@ export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) 
           ...(isSelected
             ? { background: '#CC0000', color: 'white', border: 'none' }
             : isFull
-              ? { background: '#FCEBEB', color: '#A32D2D', border: '0.5px solid #CC0000' }
-              : { background: 'white', color: '#374151', border: '0.5px solid #E5E7EB' }
+              ? { background: 'transparent', color: '#CC0000', border: '0.5px solid #CC0000' }
+              : { background: 'transparent', color: '#374151', border: '0.5px solid #E5E7EB' }
           ),
         }}
       >
-        {isSelected ? `✓ ${t('已选', 'Selected')}` : isFull ? t('候补', 'Waitlist') : t('选择', 'Select')}
+        {isSelected ? t('已选 ✓', '✓ Selected') : isFull ? t('候补', 'Waitlist') : t('选择', 'Select')}
       </button>
     </div>
   )

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
-import { CARD, iconBox } from '@/lib/design'
+import { CARD } from '@/lib/design'
 
 interface Props {
   prefill: { name: string; email: string } | null
@@ -144,16 +144,13 @@ export function ContactFormClient({ prefill }: Props) {
           <p style={{ fontSize: 15, fontWeight: 500, color: '#111827' }}>{t('学校信息', 'School Info')}</p>
         </div>
         {[
-          { icon: '📍', color: 'red' as const,   label: t('地址', 'Address'), value: 'Charlotte, NC' },
-          { icon: '📧', color: 'blue' as const,  label: t('邮箱', 'Email'),   value: 'info@charlottechineseacademy.org' },
-          { icon: '🕐', color: 'amber' as const, label: t('上课时间', 'Hours'), value: t('每周日上午', 'Sundays AM') },
-        ].map(({ icon, color, label, value }, i, arr) => (
-          <div key={label} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '12px 16px', borderBottom: i < arr.length - 1 ? '0.5px solid #E5E7EB' : 'none' }}>
-            <div style={iconBox(color)}>{icon}</div>
-            <div>
-              <p style={{ fontSize: 11, color: '#9ca3af', marginBottom: 2 }}>{label}</p>
-              <p style={{ fontSize: 13, color: '#374151', fontWeight: 500 }}>{value}</p>
-            </div>
+          { label: t('地址', 'Address'), value: 'Charlotte, NC' },
+          { label: t('邮箱', 'Email'),   value: 'info@charlottechineseacademy.org' },
+          { label: t('上课时间', 'Hours'), value: t('每周日上午', 'Sundays AM') },
+        ].map(({ label, value }, i, arr) => (
+          <div key={label} style={{ padding: '14px 16px', borderBottom: i < arr.length - 1 ? '0.5px solid #E5E7EB' : 'none' }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>{label}</p>
+            <p style={{ fontSize: 13, color: '#374151' }}>{value}</p>
           </div>
         ))}
       </div>
