@@ -372,21 +372,6 @@ export default async function DashboardPage() {
       <div className="rounded-lg border border-gray-200 bg-white p-5">
         <h2 className="mb-4 font-semibold text-gray-900">快速操作 / Quick Actions</h2>
 
-        {(session.user?.role === 'ADMIN' || session.user?.role === 'SUPER_ADMIN') && (
-          <Link
-            href="/admin"
-            className="mb-4 flex items-center justify-between rounded-lg border border-red-200 bg-red-50 px-4 py-3 hover:bg-red-100 transition-colors"
-          >
-            <div>
-              <p className="font-semibold text-red-800">🔧 管理后台 / Admin Portal</p>
-              <p className="text-xs text-red-600">Switch to admin view</p>
-            </div>
-            <span className="text-sm font-medium text-red-700 whitespace-nowrap">
-              前往管理后台 / Go to Admin →
-            </span>
-          </Link>
-        )}
-
         <div className="flex flex-wrap gap-3">
           <Link
             href="/classes"
