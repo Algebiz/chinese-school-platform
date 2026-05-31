@@ -135,6 +135,7 @@ export type VolunteerClaim = $Result.DefaultSelection<Prisma.$VolunteerClaimPayl
 export namespace $Enums {
   export const Role: {
   PARENT: 'PARENT',
+  TEACHER: 'TEACHER',
   ADMIN: 'ADMIN',
   SUPER_ADMIN: 'SUPER_ADMIN'
 };
@@ -8001,6 +8002,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     family?: boolean | User$familyArgs<ExtArgs>
+    teacherProfile?: boolean | User$teacherProfileArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -8053,6 +8055,7 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "role" | "phone" | "familyId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     family?: boolean | User$familyArgs<ExtArgs>
+    teacherProfile?: boolean | User$teacherProfileArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -8068,6 +8071,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       family: Prisma.$FamilyPayload<ExtArgs> | null
+      teacherProfile: Prisma.$TeacherPayload<ExtArgs> | null
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
     }
@@ -8478,6 +8482,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     family<T extends User$familyArgs<ExtArgs> = {}>(args?: Subset<T, User$familyArgs<ExtArgs>>): Prisma__FamilyClient<$Result.GetResult<Prisma.$FamilyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    teacherProfile<T extends User$teacherProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$teacherProfileArgs<ExtArgs>>): Prisma__TeacherClient<$Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -8937,6 +8942,25 @@ export namespace Prisma {
      */
     include?: FamilyInclude<ExtArgs> | null
     where?: FamilyWhereInput
+  }
+
+  /**
+   * User.teacherProfile
+   */
+  export type User$teacherProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Teacher
+     */
+    select?: TeacherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Teacher
+     */
+    omit?: TeacherOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeacherInclude<ExtArgs> | null
+    where?: TeacherWhereInput
   }
 
   /**
@@ -10267,6 +10291,7 @@ export namespace Prisma {
     bioEn: string | null
     bioZh: string | null
     photoUrl: string | null
+    userId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10280,6 +10305,7 @@ export namespace Prisma {
     bioEn: string | null
     bioZh: string | null
     photoUrl: string | null
+    userId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10293,6 +10319,7 @@ export namespace Prisma {
     bioEn: number
     bioZh: number
     photoUrl: number
+    userId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -10308,6 +10335,7 @@ export namespace Prisma {
     bioEn?: true
     bioZh?: true
     photoUrl?: true
+    userId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10321,6 +10349,7 @@ export namespace Prisma {
     bioEn?: true
     bioZh?: true
     photoUrl?: true
+    userId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10334,6 +10363,7 @@ export namespace Prisma {
     bioEn?: true
     bioZh?: true
     photoUrl?: true
+    userId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -10420,6 +10450,7 @@ export namespace Prisma {
     bioEn: string | null
     bioZh: string | null
     photoUrl: string | null
+    userId: string | null
     createdAt: Date
     updatedAt: Date
     _count: TeacherCountAggregateOutputType | null
@@ -10450,8 +10481,10 @@ export namespace Prisma {
     bioEn?: boolean
     bioZh?: boolean
     photoUrl?: boolean
+    userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    user?: boolean | Teacher$userArgs<ExtArgs>
     classes?: boolean | Teacher$classesArgs<ExtArgs>
     _count?: boolean | TeacherCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teacher"]>
@@ -10465,8 +10498,10 @@ export namespace Prisma {
     bioEn?: boolean
     bioZh?: boolean
     photoUrl?: boolean
+    userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    user?: boolean | Teacher$userArgs<ExtArgs>
   }, ExtArgs["result"]["teacher"]>
 
   export type TeacherSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10478,8 +10513,10 @@ export namespace Prisma {
     bioEn?: boolean
     bioZh?: boolean
     photoUrl?: boolean
+    userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    user?: boolean | Teacher$userArgs<ExtArgs>
   }, ExtArgs["result"]["teacher"]>
 
   export type TeacherSelectScalar = {
@@ -10491,21 +10528,28 @@ export namespace Prisma {
     bioEn?: boolean
     bioZh?: boolean
     photoUrl?: boolean
+    userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TeacherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameEn" | "email" | "phone" | "bioEn" | "bioZh" | "photoUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["teacher"]>
+  export type TeacherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameEn" | "email" | "phone" | "bioEn" | "bioZh" | "photoUrl" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["teacher"]>
   export type TeacherInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Teacher$userArgs<ExtArgs>
     classes?: boolean | Teacher$classesArgs<ExtArgs>
     _count?: boolean | TeacherCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type TeacherIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type TeacherIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type TeacherIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Teacher$userArgs<ExtArgs>
+  }
+  export type TeacherIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Teacher$userArgs<ExtArgs>
+  }
 
   export type $TeacherPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Teacher"
     objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
       classes: Prisma.$ClassPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -10517,6 +10561,7 @@ export namespace Prisma {
       bioEn: string | null
       bioZh: string | null
       photoUrl: string | null
+      userId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["teacher"]>
@@ -10913,6 +10958,7 @@ export namespace Prisma {
    */
   export interface Prisma__TeacherClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends Teacher$userArgs<ExtArgs> = {}>(args?: Subset<T, Teacher$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     classes<T extends Teacher$classesArgs<ExtArgs> = {}>(args?: Subset<T, Teacher$classesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -10951,6 +10997,7 @@ export namespace Prisma {
     readonly bioEn: FieldRef<"Teacher", 'String'>
     readonly bioZh: FieldRef<"Teacher", 'String'>
     readonly photoUrl: FieldRef<"Teacher", 'String'>
+    readonly userId: FieldRef<"Teacher", 'String'>
     readonly createdAt: FieldRef<"Teacher", 'DateTime'>
     readonly updatedAt: FieldRef<"Teacher", 'DateTime'>
   }
@@ -11207,6 +11254,10 @@ export namespace Prisma {
      */
     data: TeacherCreateManyInput | TeacherCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeacherIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -11277,6 +11328,10 @@ export namespace Prisma {
      * Limit how many Teachers to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeacherIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -11343,6 +11398,25 @@ export namespace Prisma {
      * Limit how many Teachers to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Teacher.user
+   */
+  export type Teacher$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -11422,6 +11496,7 @@ export namespace Prisma {
     capacity: number | null
     fee: Decimal | null
     year: string | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11438,6 +11513,7 @@ export namespace Prisma {
     capacity: number | null
     fee: Decimal | null
     year: string | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11455,6 +11531,7 @@ export namespace Prisma {
     capacity: number
     fee: number
     year: number
+    notes: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -11483,6 +11560,7 @@ export namespace Prisma {
     capacity?: true
     fee?: true
     year?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11499,6 +11577,7 @@ export namespace Prisma {
     capacity?: true
     fee?: true
     year?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11516,6 +11595,7 @@ export namespace Prisma {
     capacity?: true
     fee?: true
     year?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -11620,6 +11700,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal
     year: string
+    notes: string | null
     createdAt: Date
     updatedAt: Date
     _count: ClassCountAggregateOutputType | null
@@ -11656,6 +11737,7 @@ export namespace Prisma {
     capacity?: boolean
     fee?: boolean
     year?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     teacher?: boolean | Class$teacherArgs<ExtArgs>
@@ -11679,6 +11761,7 @@ export namespace Prisma {
     capacity?: boolean
     fee?: boolean
     year?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     teacher?: boolean | Class$teacherArgs<ExtArgs>
@@ -11697,6 +11780,7 @@ export namespace Prisma {
     capacity?: boolean
     fee?: boolean
     year?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     teacher?: boolean | Class$teacherArgs<ExtArgs>
@@ -11715,11 +11799,12 @@ export namespace Prisma {
     capacity?: boolean
     fee?: boolean
     year?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ClassOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameEn" | "type" | "description" | "descriptionZh" | "isActive" | "teacherId" | "schedule" | "capacity" | "fee" | "year" | "createdAt" | "updatedAt", ExtArgs["result"]["class"]>
+  export type ClassOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameEn" | "type" | "description" | "descriptionZh" | "isActive" | "teacherId" | "schedule" | "capacity" | "fee" | "year" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["class"]>
   export type ClassInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     teacher?: boolean | Class$teacherArgs<ExtArgs>
     enrollments?: boolean | Class$enrollmentsArgs<ExtArgs>
@@ -11757,6 +11842,7 @@ export namespace Prisma {
       capacity: number
       fee: Prisma.Decimal
       year: string
+      notes: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["class"]>
@@ -12199,6 +12285,7 @@ export namespace Prisma {
     readonly capacity: FieldRef<"Class", 'Int'>
     readonly fee: FieldRef<"Class", 'Decimal'>
     readonly year: FieldRef<"Class", 'String'>
+    readonly notes: FieldRef<"Class", 'String'>
     readonly createdAt: FieldRef<"Class", 'DateTime'>
     readonly updatedAt: FieldRef<"Class", 'DateTime'>
   }
@@ -30067,6 +30154,7 @@ export namespace Prisma {
     bioEn: 'bioEn',
     bioZh: 'bioZh',
     photoUrl: 'photoUrl',
+    userId: 'userId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -30087,6 +30175,7 @@ export namespace Prisma {
     capacity: 'capacity',
     fee: 'fee',
     year: 'year',
+    notes: 'notes',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -30885,6 +30974,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     family?: XOR<FamilyNullableScalarRelationFilter, FamilyWhereInput> | null
+    teacherProfile?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
   }
@@ -30902,6 +30992,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     family?: FamilyOrderByWithRelationInput
+    teacherProfile?: TeacherOrderByWithRelationInput
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
   }
@@ -30922,6 +31013,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     family?: XOR<FamilyNullableScalarRelationFilter, FamilyWhereInput> | null
+    teacherProfile?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
   }, "id" | "email">
@@ -31064,8 +31156,10 @@ export namespace Prisma {
     bioEn?: StringNullableFilter<"Teacher"> | string | null
     bioZh?: StringNullableFilter<"Teacher"> | string | null
     photoUrl?: StringNullableFilter<"Teacher"> | string | null
+    userId?: StringNullableFilter<"Teacher"> | string | null
     createdAt?: DateTimeFilter<"Teacher"> | Date | string
     updatedAt?: DateTimeFilter<"Teacher"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     classes?: ClassListRelationFilter
   }
 
@@ -31078,13 +31172,16 @@ export namespace Prisma {
     bioEn?: SortOrderInput | SortOrder
     bioZh?: SortOrderInput | SortOrder
     photoUrl?: SortOrderInput | SortOrder
+    userId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
     classes?: ClassOrderByRelationAggregateInput
   }
 
   export type TeacherWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    userId?: string
     AND?: TeacherWhereInput | TeacherWhereInput[]
     OR?: TeacherWhereInput[]
     NOT?: TeacherWhereInput | TeacherWhereInput[]
@@ -31097,8 +31194,9 @@ export namespace Prisma {
     photoUrl?: StringNullableFilter<"Teacher"> | string | null
     createdAt?: DateTimeFilter<"Teacher"> | Date | string
     updatedAt?: DateTimeFilter<"Teacher"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     classes?: ClassListRelationFilter
-  }, "id">
+  }, "id" | "userId">
 
   export type TeacherOrderByWithAggregationInput = {
     id?: SortOrder
@@ -31109,6 +31207,7 @@ export namespace Prisma {
     bioEn?: SortOrderInput | SortOrder
     bioZh?: SortOrderInput | SortOrder
     photoUrl?: SortOrderInput | SortOrder
+    userId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TeacherCountOrderByAggregateInput
@@ -31128,6 +31227,7 @@ export namespace Prisma {
     bioEn?: StringNullableWithAggregatesFilter<"Teacher"> | string | null
     bioZh?: StringNullableWithAggregatesFilter<"Teacher"> | string | null
     photoUrl?: StringNullableWithAggregatesFilter<"Teacher"> | string | null
+    userId?: StringNullableWithAggregatesFilter<"Teacher"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Teacher"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Teacher"> | Date | string
   }
@@ -31148,6 +31248,7 @@ export namespace Prisma {
     capacity?: IntFilter<"Class"> | number
     fee?: DecimalFilter<"Class"> | Decimal | DecimalJsLike | number | string
     year?: StringFilter<"Class"> | string
+    notes?: StringNullableFilter<"Class"> | string | null
     createdAt?: DateTimeFilter<"Class"> | Date | string
     updatedAt?: DateTimeFilter<"Class"> | Date | string
     teacher?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
@@ -31170,6 +31271,7 @@ export namespace Prisma {
     capacity?: SortOrder
     fee?: SortOrder
     year?: SortOrder
+    notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     teacher?: TeacherOrderByWithRelationInput
@@ -31195,6 +31297,7 @@ export namespace Prisma {
     capacity?: IntFilter<"Class"> | number
     fee?: DecimalFilter<"Class"> | Decimal | DecimalJsLike | number | string
     year?: StringFilter<"Class"> | string
+    notes?: StringNullableFilter<"Class"> | string | null
     createdAt?: DateTimeFilter<"Class"> | Date | string
     updatedAt?: DateTimeFilter<"Class"> | Date | string
     teacher?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
@@ -31217,6 +31320,7 @@ export namespace Prisma {
     capacity?: SortOrder
     fee?: SortOrder
     year?: SortOrder
+    notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ClassCountOrderByAggregateInput
@@ -31242,6 +31346,7 @@ export namespace Prisma {
     capacity?: IntWithAggregatesFilter<"Class"> | number
     fee?: DecimalWithAggregatesFilter<"Class"> | Decimal | DecimalJsLike | number | string
     year?: StringWithAggregatesFilter<"Class"> | string
+    notes?: StringNullableWithAggregatesFilter<"Class"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Class"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Class"> | Date | string
   }
@@ -32797,6 +32902,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     family?: FamilyCreateNestedOneWithoutUsersInput
+    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
@@ -32813,6 +32919,7 @@ export namespace Prisma {
     familyId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
@@ -32829,6 +32936,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneWithoutUsersNestedInput
+    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
@@ -32845,6 +32953,7 @@ export namespace Prisma {
     familyId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -33007,6 +33116,7 @@ export namespace Prisma {
     photoUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutTeacherProfileInput
     classes?: ClassCreateNestedManyWithoutTeacherInput
   }
 
@@ -33019,6 +33129,7 @@ export namespace Prisma {
     bioEn?: string | null
     bioZh?: string | null
     photoUrl?: string | null
+    userId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     classes?: ClassUncheckedCreateNestedManyWithoutTeacherInput
@@ -33035,6 +33146,7 @@ export namespace Prisma {
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutTeacherProfileNestedInput
     classes?: ClassUpdateManyWithoutTeacherNestedInput
   }
 
@@ -33047,6 +33159,7 @@ export namespace Prisma {
     bioEn?: NullableStringFieldUpdateOperationsInput | string | null
     bioZh?: NullableStringFieldUpdateOperationsInput | string | null
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     classes?: ClassUncheckedUpdateManyWithoutTeacherNestedInput
@@ -33061,6 +33174,7 @@ export namespace Prisma {
     bioEn?: string | null
     bioZh?: string | null
     photoUrl?: string | null
+    userId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -33087,6 +33201,7 @@ export namespace Prisma {
     bioEn?: NullableStringFieldUpdateOperationsInput | string | null
     bioZh?: NullableStringFieldUpdateOperationsInput | string | null
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33103,6 +33218,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teacher?: TeacherCreateNestedOneWithoutClassesInput
@@ -33125,6 +33241,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
@@ -33145,6 +33262,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teacher?: TeacherUpdateOneWithoutClassesNestedInput
@@ -33167,6 +33285,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
@@ -33188,6 +33307,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -33204,6 +33324,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33221,6 +33342,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34957,6 +35079,11 @@ export namespace Prisma {
     isNot?: FamilyWhereInput | null
   }
 
+  export type TeacherNullableScalarRelationFilter = {
+    is?: TeacherWhereInput | null
+    isNot?: TeacherWhereInput | null
+  }
+
   export type AccountListRelationFilter = {
     every?: AccountWhereInput
     some?: AccountWhereInput
@@ -35127,6 +35254,11 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
   export type ClassListRelationFilter = {
     every?: ClassWhereInput
     some?: ClassWhereInput
@@ -35146,6 +35278,7 @@ export namespace Prisma {
     bioEn?: SortOrder
     bioZh?: SortOrder
     photoUrl?: SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -35159,6 +35292,7 @@ export namespace Prisma {
     bioEn?: SortOrder
     bioZh?: SortOrder
     photoUrl?: SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -35172,6 +35306,7 @@ export namespace Prisma {
     bioEn?: SortOrder
     bioZh?: SortOrder
     photoUrl?: SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -35233,11 +35368,6 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
-  export type TeacherNullableScalarRelationFilter = {
-    is?: TeacherWhereInput | null
-    isNot?: TeacherWhereInput | null
-  }
-
   export type TextbookListRelationFilter = {
     every?: TextbookWhereInput
     some?: TextbookWhereInput
@@ -35261,6 +35391,7 @@ export namespace Prisma {
     capacity?: SortOrder
     fee?: SortOrder
     year?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -35282,6 +35413,7 @@ export namespace Prisma {
     capacity?: SortOrder
     fee?: SortOrder
     year?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -35298,6 +35430,7 @@ export namespace Prisma {
     capacity?: SortOrder
     fee?: SortOrder
     year?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36543,6 +36676,12 @@ export namespace Prisma {
     connect?: FamilyWhereUniqueInput
   }
 
+  export type TeacherCreateNestedOneWithoutUserInput = {
+    create?: XOR<TeacherCreateWithoutUserInput, TeacherUncheckedCreateWithoutUserInput>
+    connectOrCreate?: TeacherCreateOrConnectWithoutUserInput
+    connect?: TeacherWhereUniqueInput
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -36555,6 +36694,12 @@ export namespace Prisma {
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
     createMany?: SessionCreateManyUserInputEnvelope
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
+  export type TeacherUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<TeacherCreateWithoutUserInput, TeacherUncheckedCreateWithoutUserInput>
+    connectOrCreate?: TeacherCreateOrConnectWithoutUserInput
+    connect?: TeacherWhereUniqueInput
   }
 
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
@@ -36589,6 +36734,16 @@ export namespace Prisma {
     update?: XOR<XOR<FamilyUpdateToOneWithWhereWithoutUsersInput, FamilyUpdateWithoutUsersInput>, FamilyUncheckedUpdateWithoutUsersInput>
   }
 
+  export type TeacherUpdateOneWithoutUserNestedInput = {
+    create?: XOR<TeacherCreateWithoutUserInput, TeacherUncheckedCreateWithoutUserInput>
+    connectOrCreate?: TeacherCreateOrConnectWithoutUserInput
+    upsert?: TeacherUpsertWithoutUserInput
+    disconnect?: TeacherWhereInput | boolean
+    delete?: TeacherWhereInput | boolean
+    connect?: TeacherWhereUniqueInput
+    update?: XOR<XOR<TeacherUpdateToOneWithWhereWithoutUserInput, TeacherUpdateWithoutUserInput>, TeacherUncheckedUpdateWithoutUserInput>
+  }
+
   export type AccountUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -36615,6 +36770,16 @@ export namespace Prisma {
     update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
+  export type TeacherUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<TeacherCreateWithoutUserInput, TeacherUncheckedCreateWithoutUserInput>
+    connectOrCreate?: TeacherCreateOrConnectWithoutUserInput
+    upsert?: TeacherUpsertWithoutUserInput
+    disconnect?: TeacherWhereInput | boolean
+    delete?: TeacherWhereInput | boolean
+    connect?: TeacherWhereUniqueInput
+    update?: XOR<XOR<TeacherUpdateToOneWithWhereWithoutUserInput, TeacherUpdateWithoutUserInput>, TeacherUncheckedUpdateWithoutUserInput>
   }
 
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
@@ -36827,6 +36992,12 @@ export namespace Prisma {
     deleteMany?: ExamRegistrationScalarWhereInput | ExamRegistrationScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutTeacherProfileInput = {
+    create?: XOR<UserCreateWithoutTeacherProfileInput, UserUncheckedCreateWithoutTeacherProfileInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTeacherProfileInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type ClassCreateNestedManyWithoutTeacherInput = {
     create?: XOR<ClassCreateWithoutTeacherInput, ClassUncheckedCreateWithoutTeacherInput> | ClassCreateWithoutTeacherInput[] | ClassUncheckedCreateWithoutTeacherInput[]
     connectOrCreate?: ClassCreateOrConnectWithoutTeacherInput | ClassCreateOrConnectWithoutTeacherInput[]
@@ -36839,6 +37010,16 @@ export namespace Prisma {
     connectOrCreate?: ClassCreateOrConnectWithoutTeacherInput | ClassCreateOrConnectWithoutTeacherInput[]
     createMany?: ClassCreateManyTeacherInputEnvelope
     connect?: ClassWhereUniqueInput | ClassWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneWithoutTeacherProfileNestedInput = {
+    create?: XOR<UserCreateWithoutTeacherProfileInput, UserUncheckedCreateWithoutTeacherProfileInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTeacherProfileInput
+    upsert?: UserUpsertWithoutTeacherProfileInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTeacherProfileInput, UserUpdateWithoutTeacherProfileInput>, UserUncheckedUpdateWithoutTeacherProfileInput>
   }
 
   export type ClassUpdateManyWithoutTeacherNestedInput = {
@@ -38074,6 +38255,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     family?: FamilyCreateNestedOneWithoutUsersInput
+    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
@@ -38089,6 +38271,7 @@ export namespace Prisma {
     familyId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -38120,6 +38303,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneWithoutUsersNestedInput
+    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
@@ -38135,6 +38319,7 @@ export namespace Prisma {
     familyId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -38150,6 +38335,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     family?: FamilyCreateNestedOneWithoutUsersInput
+    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
   }
 
@@ -38165,6 +38351,7 @@ export namespace Prisma {
     familyId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -38196,6 +38383,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     family?: FamilyUpdateOneWithoutUsersNestedInput
+    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
   }
 
@@ -38211,6 +38399,7 @@ export namespace Prisma {
     familyId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -38225,6 +38414,7 @@ export namespace Prisma {
     phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
@@ -38240,6 +38430,7 @@ export namespace Prisma {
     phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
@@ -38567,6 +38758,39 @@ export namespace Prisma {
     create: XOR<FamilyCreateWithoutUsersInput, FamilyUncheckedCreateWithoutUsersInput>
   }
 
+  export type TeacherCreateWithoutUserInput = {
+    id?: string
+    name: string
+    nameEn?: string | null
+    email?: string | null
+    phone?: string | null
+    bioEn?: string | null
+    bioZh?: string | null
+    photoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    classes?: ClassCreateNestedManyWithoutTeacherInput
+  }
+
+  export type TeacherUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    nameEn?: string | null
+    email?: string | null
+    phone?: string | null
+    bioEn?: string | null
+    bioZh?: string | null
+    photoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    classes?: ClassUncheckedCreateNestedManyWithoutTeacherInput
+  }
+
+  export type TeacherCreateOrConnectWithoutUserInput = {
+    where: TeacherWhereUniqueInput
+    create: XOR<TeacherCreateWithoutUserInput, TeacherUncheckedCreateWithoutUserInput>
+  }
+
   export type AccountCreateWithoutUserInput = {
     id?: string
     type: string
@@ -38658,6 +38882,45 @@ export namespace Prisma {
     students?: StudentUncheckedUpdateManyWithoutFamilyNestedInput
     volunteerDeposits?: VolunteerDepositUncheckedUpdateManyWithoutFamilyNestedInput
     volunteerClaims?: VolunteerClaimUncheckedUpdateManyWithoutFamilyNestedInput
+  }
+
+  export type TeacherUpsertWithoutUserInput = {
+    update: XOR<TeacherUpdateWithoutUserInput, TeacherUncheckedUpdateWithoutUserInput>
+    create: XOR<TeacherCreateWithoutUserInput, TeacherUncheckedCreateWithoutUserInput>
+    where?: TeacherWhereInput
+  }
+
+  export type TeacherUpdateToOneWithWhereWithoutUserInput = {
+    where?: TeacherWhereInput
+    data: XOR<TeacherUpdateWithoutUserInput, TeacherUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TeacherUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameEn?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bioEn?: NullableStringFieldUpdateOperationsInput | string | null
+    bioZh?: NullableStringFieldUpdateOperationsInput | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    classes?: ClassUpdateManyWithoutTeacherNestedInput
+  }
+
+  export type TeacherUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameEn?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bioEn?: NullableStringFieldUpdateOperationsInput | string | null
+    bioZh?: NullableStringFieldUpdateOperationsInput | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    classes?: ClassUncheckedUpdateManyWithoutTeacherNestedInput
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -39042,6 +39305,43 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ExamRegistration"> | Date | string
   }
 
+  export type UserCreateWithoutTeacherProfileInput = {
+    id?: string
+    name?: string | null
+    email: string
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    role?: $Enums.Role
+    phone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    family?: FamilyCreateNestedOneWithoutUsersInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTeacherProfileInput = {
+    id?: string
+    name?: string | null
+    email: string
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    role?: $Enums.Role
+    phone?: string | null
+    familyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTeacherProfileInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTeacherProfileInput, UserUncheckedCreateWithoutTeacherProfileInput>
+  }
+
   export type ClassCreateWithoutTeacherInput = {
     id?: string
     name: string
@@ -39054,6 +39354,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: EnrollmentCreateNestedManyWithoutClassInput
@@ -39074,6 +39375,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
@@ -39090,6 +39392,49 @@ export namespace Prisma {
   export type ClassCreateManyTeacherInputEnvelope = {
     data: ClassCreateManyTeacherInput | ClassCreateManyTeacherInput[]
     skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutTeacherProfileInput = {
+    update: XOR<UserUpdateWithoutTeacherProfileInput, UserUncheckedUpdateWithoutTeacherProfileInput>
+    create: XOR<UserCreateWithoutTeacherProfileInput, UserUncheckedCreateWithoutTeacherProfileInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTeacherProfileInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTeacherProfileInput, UserUncheckedUpdateWithoutTeacherProfileInput>
+  }
+
+  export type UserUpdateWithoutTeacherProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    family?: FamilyUpdateOneWithoutUsersNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTeacherProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    familyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ClassUpsertWithWhereUniqueWithoutTeacherInput = {
@@ -39124,6 +39469,7 @@ export namespace Prisma {
     capacity?: IntFilter<"Class"> | number
     fee?: DecimalFilter<"Class"> | Decimal | DecimalJsLike | number | string
     year?: StringFilter<"Class"> | string
+    notes?: StringNullableFilter<"Class"> | string | null
     createdAt?: DateTimeFilter<"Class"> | Date | string
     updatedAt?: DateTimeFilter<"Class"> | Date | string
   }
@@ -39139,6 +39485,7 @@ export namespace Prisma {
     photoUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutTeacherProfileInput
   }
 
   export type TeacherUncheckedCreateWithoutClassesInput = {
@@ -39150,6 +39497,7 @@ export namespace Prisma {
     bioEn?: string | null
     bioZh?: string | null
     photoUrl?: string | null
+    userId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -39299,6 +39647,7 @@ export namespace Prisma {
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutTeacherProfileNestedInput
   }
 
   export type TeacherUncheckedUpdateWithoutClassesInput = {
@@ -39310,6 +39659,7 @@ export namespace Prisma {
     bioEn?: NullableStringFieldUpdateOperationsInput | string | null
     bioZh?: NullableStringFieldUpdateOperationsInput | string | null
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -39406,6 +39756,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teacher?: TeacherCreateNestedOneWithoutClassesInput
@@ -39427,6 +39778,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
@@ -39486,6 +39838,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teacher?: TeacherUpdateOneWithoutClassesNestedInput
@@ -39507,6 +39860,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
@@ -39714,6 +40068,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teacher?: TeacherCreateNestedOneWithoutClassesInput
@@ -39735,6 +40090,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutClassInput
@@ -39871,6 +40227,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teacher?: TeacherUpdateOneWithoutClassesNestedInput
@@ -39892,6 +40249,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     waitlists?: WaitlistUncheckedUpdateManyWithoutClassNestedInput
@@ -40052,6 +40410,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teacher?: TeacherCreateNestedOneWithoutClassesInput
@@ -40073,6 +40432,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
@@ -40151,6 +40511,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teacher?: TeacherUpdateOneWithoutClassesNestedInput
@@ -40172,6 +40533,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
@@ -40228,6 +40590,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     teacher?: TeacherCreateNestedOneWithoutClassesInput
@@ -40249,6 +40612,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassInput
@@ -40327,6 +40691,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teacher?: TeacherUpdateOneWithoutClassesNestedInput
@@ -40348,6 +40713,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
@@ -41080,6 +41446,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
@@ -41095,6 +41462,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -41555,6 +41923,7 @@ export namespace Prisma {
     capacity: number
     fee: Decimal | DecimalJsLike | number | string
     year: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -41571,6 +41940,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUpdateManyWithoutClassNestedInput
@@ -41591,6 +41961,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassNestedInput
@@ -41611,6 +41982,7 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     year?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

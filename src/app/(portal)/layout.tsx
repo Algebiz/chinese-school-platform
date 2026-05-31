@@ -11,6 +11,7 @@ async function logout() {
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
   if (!session) redirect('/login')
+  if (session.user?.role === 'TEACHER') redirect('/teacher/classes')
 
   const displayName = session.user?.name ?? session.user?.email ?? '家长'
 

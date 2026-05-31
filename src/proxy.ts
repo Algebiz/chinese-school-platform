@@ -28,6 +28,7 @@ export default auth((req) => {
     pathname.startsWith('/exams') ||
     pathname.startsWith('/exam-checkout') ||
     pathname.startsWith('/volunteer')
+  const isTeacherRoute = pathname.startsWith('/teacher')
   const isAdminRoute = pathname.startsWith('/admin')
   const isSuperAdminRoute = pathname.startsWith('/super-admin')
 
@@ -35,11 +36,17 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/login", nextUrl))
   }
 
+  if (isTeacherRoute) {
+    if (!isLoggedIn) return NextResponse.redirect(new URL("/login", nextUrl))
+    if (userRole !== "TEACHER" && userRole !== "ADMIN" && userRole !== "SUPER_ADMIN") {
+      return NextResponse.redirect(new URL("/dashboard", nextUrl))
+    }
+  }
+
   if (isSuperAdminRoute) {
     if (!isLoggedIn) return NextResponse.redirect(new URL("/login", nextUrl))
     if (userRole !== "SUPER_ADMIN") {
-      // ADMIN gets bounced to admin panel; everyone else to dashboard
-      const dest = userRole === "ADMIN" ? "/admin" : "/dashboard"
+      const dest = userRole === "ADMIN" ? "/admin" : userRole === "TEACHER" ? "/teacher/classes" : "/dashboard"
       return NextResponse.redirect(new URL(dest, nextUrl))
     }
   }
@@ -47,7 +54,8 @@ export default auth((req) => {
   if (isAdminRoute) {
     if (!isLoggedIn) return NextResponse.redirect(new URL("/login", nextUrl))
     if (userRole !== "ADMIN" && userRole !== "SUPER_ADMIN") {
-      return NextResponse.redirect(new URL("/dashboard", nextUrl))
+      const dest = userRole === "TEACHER" ? "/teacher/classes" : "/dashboard"
+      return NextResponse.redirect(new URL(dest, nextUrl))
     }
   }
 })

@@ -21,6 +21,59 @@ export async function PATCH(
     photoUrl?: string
   }
 
+  // Handle user account linking/unlinking
+  if ('userId' in body) {
+    const userId: string | null = body.userId
+
+    if (userId === null) {
+      // Unlink: get current linked user, reset their role to PARENT
+      const current = await prisma.teacher.findUnique({
+        where: { id: teacherId },
+        select: { userId: true },
+      })
+      await prisma.$transaction(async (tx) => {
+        if (current?.userId) {
+          await tx.user.update({
+            where: { id: current.userId },
+            data: { role: 'PARENT' },
+          })
+        }
+        await tx.teacher.update({
+          where: { id: teacherId },
+          data: { userId: null },
+        })
+      })
+    } else {
+      // Link: verify user exists, set userId on teacher, set user.role = TEACHER
+      const user = await prisma.user.findUnique({ where: { id: userId } })
+      if (!user) {
+        return NextResponse.json({ success: false, error: 'User not found' }, { status: 404 })
+      }
+      // Ensure this user isn't already linked to another teacher
+      const existing = await prisma.teacher.findUnique({ where: { userId } })
+      if (existing && existing.id !== teacherId) {
+        return NextResponse.json({ success: false, error: 'User already linked to another teacher', code: 'ALREADY_LINKED' }, { status: 409 })
+      }
+      await prisma.$transaction(async (tx) => {
+        await tx.teacher.update({
+          where: { id: teacherId },
+          data: { userId },
+        })
+        await tx.user.update({
+          where: { id: userId },
+          data: { role: 'TEACHER' },
+        })
+      })
+    }
+
+    const updated = await prisma.teacher.findUnique({
+      where: { id: teacherId },
+      include: { user: { select: { id: true, name: true, email: true } } },
+    })
+    return NextResponse.json({ success: true, data: updated })
+  }
+
+  // Standard field update
   const teacher = await prisma.teacher.update({
     where: { id: teacherId },
     data: {
@@ -54,6 +107,12 @@ export async function DELETE(
       { success: false, error: 'Please reassign this teacher\'s classes first', code: 'HAS_CLASSES' },
       { status: 409 }
     )
+  }
+
+  // Unlink user account before deleting
+  const teacher = await prisma.teacher.findUnique({ where: { id: teacherId }, select: { userId: true } })
+  if (teacher?.userId) {
+    await prisma.user.update({ where: { id: teacher.userId }, data: { role: 'PARENT' } })
   }
 
   await prisma.teacher.delete({ where: { id: teacherId } })

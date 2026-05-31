@@ -192,6 +192,7 @@ exports.Prisma.TeacherScalarFieldEnum = {
   bioEn: 'bioEn',
   bioZh: 'bioZh',
   photoUrl: 'photoUrl',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -209,6 +210,7 @@ exports.Prisma.ClassScalarFieldEnum = {
   capacity: 'capacity',
   fee: 'fee',
   year: 'year',
+  notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -440,6 +442,7 @@ exports.Prisma.JsonNullValueFilter = {
 };
 exports.Role = exports.$Enums.Role = {
   PARENT: 'PARENT',
+  TEACHER: 'TEACHER',
   ADMIN: 'ADMIN',
   SUPER_ADMIN: 'SUPER_ADMIN'
 };

@@ -579,6 +579,25 @@ async function main() {
 
   console.log('  ✓ Parent 2 (parent2@test.com / Test123!) with 1 student')
 
+  // ── Test Teacher Account ──────────────────────────────────────────────────────
+  const teacherHash = await bcrypt.hash('Teacher123!', 12)
+  const teacherUser = await prisma.user.upsert({
+    where: { email: 'teacher@chineseschool.com' },
+    update: { role: 'TEACHER', password: teacherHash },
+    create: {
+      email: 'teacher@chineseschool.com',
+      name: '薛丽 (Test)',
+      password: teacherHash,
+      role: 'TEACHER',
+    },
+  })
+  // Link this user to the AP Chinese teacher record
+  await prisma.teacher.update({
+    where: { id: 'teacher-xueli' },
+    data: { userId: teacherUser.id },
+  })
+  console.log('  ✓ Teacher account (teacher@chineseschool.com / Teacher123!) linked to 薛丽')
+
   // ── Exam Sessions ─────────────────────────────────────────────────────────────
   const EXAM_LOCATION_EN = 'Charlotte Chinese Academy — Room 101'
   const EXAM_LOCATION_ZH = '夏洛特中文学校 — 101教室'
@@ -678,6 +697,7 @@ async function main() {
   console.log('  Total language:    19')
   console.log('  Arts classes:       5')
   console.log('  Admin:             admin@chineseschool.com / Admin123!')
+  console.log('  Teacher:           teacher@chineseschool.com / Teacher123!')
   console.log('  Test parents:      parent1@test.com, parent2@test.com / Test123!')
   console.log('  Test students:     Wang Xiaoming, Wang Xiaohua, Zhang Haoran')
 }

@@ -16,6 +16,7 @@ export default async function TeachersPage() {
         where: { year: YEAR },
         select: { id: true, name: true, nameEn: true, type: true },
       },
+      user: { select: { id: true, name: true, email: true } },
     },
     orderBy: { name: 'asc' },
   })
@@ -27,6 +28,9 @@ export default async function TeachersPage() {
     bioEn: t.bioEn,
     bioZh: t.bioZh,
     photoUrl: t.photoUrl,
+    userId: t.userId,
+    linkedEmail: t.user?.email ?? null,
+    linkedName: t.user?.name ?? null,
     classes: t.classes,
   }))
 

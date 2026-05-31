@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { verifyTeacherClassAccess } from '@/lib/teacher-auth'
 
 const createSchema = z.object({
   name: z.string().min(1),
@@ -15,16 +16,25 @@ function isAdmin(role?: string) {
   return role === 'ADMIN' || role === 'SUPER_ADMIN'
 }
 
+async function authorize(userId: string, role: string | undefined, classId: string) {
+  if (isAdmin(role)) return true
+  if (role === 'TEACHER') {
+    const { authorized } = await verifyTeacherClassAccess(userId, classId)
+    return authorized
+  }
+  return false
+}
+
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ classId: string }> }
 ) {
   const session = await auth()
-  if (!isAdmin(session?.user?.role)) {
+  const { classId } = await params
+  if (!await authorize(session?.user?.id ?? '', session?.user?.role, classId)) {
     return NextResponse.json({ success: false, error: 'Forbidden', code: 'FORBIDDEN' }, { status: 403 })
   }
 
-  const { classId } = await params
   const textbooks = await prisma.textbook.findMany({
     where: { classId },
     orderBy: { createdAt: 'asc' },
@@ -49,11 +59,11 @@ export async function POST(
   { params }: { params: Promise<{ classId: string }> }
 ) {
   const session = await auth()
-  if (!isAdmin(session?.user?.role)) {
+  const { classId } = await params
+  if (!await authorize(session?.user?.id ?? '', session?.user?.role, classId)) {
     return NextResponse.json({ success: false, error: 'Forbidden', code: 'FORBIDDEN' }, { status: 403 })
   }
 
-  const { classId } = await params
   const cls = await prisma.class.findUnique({ where: { id: classId }, select: { id: true, type: true } })
   if (!cls) {
     return NextResponse.json({ success: false, error: 'Class not found', code: 'NOT_FOUND' }, { status: 404 })
