@@ -30,12 +30,12 @@ export function LanguageToggle() {
     e.currentTarget.style.boxShadow = 'none'
   }
 
-  if (lang === 'zh') {
+  if (lang === 'en') {
     return (
       <button
-        onClick={() => setLang('en')}
-        title="Switch to English"
-        aria-label="Switch to English"
+        onClick={() => setLang('zh')}
+        title="切换中文"
+        aria-label="切换中文"
         style={btnStyle}
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
@@ -47,9 +47,9 @@ export function LanguageToggle() {
 
   return (
     <button
-      onClick={() => setLang('zh')}
-      title="切换中文"
-      aria-label="切换中文"
+      onClick={() => setLang('en')}
+      title="Switch to English"
+      aria-label="Switch to English"
       style={btnStyle}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
