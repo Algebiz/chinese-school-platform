@@ -21,11 +21,12 @@ interface Props {
   search: string
 }
 
-const ROLE_OPTIONS = ['PARENT', 'ADMIN', 'SUPER_ADMIN'] as const
+const ROLE_OPTIONS = ['PARENT', 'TEACHER', 'ADMIN', 'SUPER_ADMIN'] as const
 
 function RoleBadge({ role }: { role: string }) {
   if (role === 'SUPER_ADMIN') return <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-semibold text-red-700">SUPER_ADMIN</span>
-  if (role === 'ADMIN') return <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-700">ADMIN</span>
+  if (role === 'ADMIN') return <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-700">ADMIN</span>
+  if (role === 'TEACHER') return <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-700">TEACHER</span>
   return <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-600">PARENT</span>
 }
 

@@ -4,7 +4,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 
 const schema = z.object({
-  role: z.enum(['PARENT', 'ADMIN', 'SUPER_ADMIN']),
+  role: z.enum(['PARENT', 'TEACHER', 'ADMIN', 'SUPER_ADMIN']),
 })
 
 export async function PATCH(
