@@ -3,6 +3,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { LegalFooter } from '@/components/LegalFooter'
 import { LanguageToggle } from '@/components/LanguageToggle'
+import { LanguageText } from '@/components/LanguageText'
 import { AdminNavLinks } from '@/components/AdminNavLinks'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -25,7 +26,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <nav className="bg-gray-900 text-white">
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-4">
           <span className="font-bold text-red-400 shrink-0">
-            管理后台 / Admin
+            <LanguageText zh="管理后台" en="Admin Portal" />
           </span>
 
           <AdminNavLinks
@@ -38,7 +39,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <div className="ml-auto flex shrink-0 items-center gap-3">
             <LanguageToggle />
             <Link href="/dashboard" className="text-xs text-gray-500 hover:text-gray-300">
-              ← 家长门户
+              ← <LanguageText zh="家长门户" en="Parent Portal" />
             </Link>
           </div>
         </div>

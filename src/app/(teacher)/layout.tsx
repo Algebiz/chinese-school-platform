@@ -3,6 +3,7 @@ import { auth, signOut } from '@/lib/auth'
 import Link from 'next/link'
 import { LegalFooter } from '@/components/LegalFooter'
 import { LanguageToggle } from '@/components/LanguageToggle'
+import { LanguageText } from '@/components/LanguageText'
 import { TeacherNavLinks } from '@/components/TeacherNavLinks'
 
 async function logout() {
@@ -24,7 +25,7 @@ export default async function TeacherLayout({ children }: { children: React.Reac
       <nav className="bg-gray-900 text-white">
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4">
           <span className="font-bold text-red-400 shrink-0">
-            教师门户 / Teacher Portal
+            <LanguageText zh="教师门户" en="Teacher Portal" />
           </span>
 
           <TeacherNavLinks />
@@ -39,7 +40,7 @@ export default async function TeacherLayout({ children }: { children: React.Reac
                 type="submit"
                 className="rounded-md border border-gray-600 px-3 py-1.5 text-sm text-gray-300 hover:bg-gray-700 transition-colors"
               >
-                退出
+                <LanguageText zh="退出" en="Log out" />
               </button>
             </form>
           </div>

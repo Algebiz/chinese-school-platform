@@ -3,6 +3,7 @@ import { auth, signOut } from '@/lib/auth'
 import Link from 'next/link'
 import { LegalFooter } from '@/components/LegalFooter'
 import { LanguageToggle } from '@/components/LanguageToggle'
+import { LanguageText } from '@/components/LanguageText'
 import { PortalNavLinks, PortalNavLinksMobile } from '@/components/PortalNavLinks'
 
 async function logout() {
@@ -24,12 +25,13 @@ export default async function PortalLayout({ children }: { children: React.React
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2.5">
           {/* Left: logo + nav links */}
           <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="flex shrink-0 items-center gap-2 leading-tight">
+            <Link href="/dashboard" className="flex shrink-0 items-center gap-2">
               <img src="/logo.png" alt="CCA Logo" className="h-9 w-9 object-contain" />
-              <div className="hidden md:flex flex-col">
-                <span className="font-bold text-red-700 text-sm leading-tight">夏洛特中文学校</span>
-                <span className="text-[10px] text-gray-400 leading-tight">Charlotte Chinese Academy</span>
-              </div>
+              <LanguageText
+                zh="夏洛特中文学校"
+                en="Charlotte Chinese Academy"
+                className="hidden md:block font-bold text-red-700 text-sm"
+              />
             </Link>
             <PortalNavLinks />
           </div>
@@ -42,7 +44,7 @@ export default async function PortalLayout({ children }: { children: React.React
                 href="/admin"
                 className="rounded-md border border-[#CC0000] px-3 py-1.5 text-sm font-medium text-[#CC0000] bg-white hover:bg-[#CC0000] hover:text-white transition-colors whitespace-nowrap"
               >
-                管理后台 / Admin ↗
+                <LanguageText zh="管理后台" en="Admin" /> ↗
               </Link>
             )}
             <span className="hidden lg:block text-sm text-gray-500 max-w-[140px] truncate">
@@ -53,7 +55,7 @@ export default async function PortalLayout({ children }: { children: React.React
                 type="submit"
                 className="rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap"
               >
-                退出 / Log out
+                <LanguageText zh="退出" en="Log out" />
               </button>
             </form>
           </div>
