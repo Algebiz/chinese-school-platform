@@ -7,13 +7,13 @@ export function StudentStatusBadge({ status }: { status: StudentStatus }) {
   const { t } = useLanguage()
   if (status === 'RETURNING') {
     return (
-      <span className="inline-flex items-center rounded-full border border-blue-200 bg-blue-100 px-2 py-0.5 text-[11px] font-medium text-blue-700">
+      <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, backgroundColor: '#E6F1FB', color: '#185FA5', fontWeight: 500 }}>
         {t('老生', 'Returning')}
       </span>
     )
   }
   return (
-    <span className="inline-flex items-center rounded-full border border-green-200 bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-700">
+    <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, backgroundColor: '#EAF3DE', color: '#3B6D11', fontWeight: 500 }}>
       {t('新生', 'New')}
     </span>
   )

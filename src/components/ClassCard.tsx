@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { clsx } from 'clsx'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { badge, iconBox } from '@/lib/design'
 
 export interface TextbookInfo {
   id: string
@@ -42,126 +43,105 @@ interface ClassCardProps {
   onClick: () => void
 }
 
-function formatSchedule(schedule: unknown): string {
+function fmtSchedule(schedule: unknown): string {
   if (!schedule || typeof schedule !== 'object') return '待定 / TBD'
   const s = schedule as Record<string, string>
-  const parts = [s.dayOfWeek, s.startTime && s.endTime ? `${s.startTime}–${s.endTime}` : ''].filter(Boolean)
-  return parts.join(' ') + (s.room ? ` | ${s.room}` : '')
+  return [s.dayOfWeek, s.startTime && s.endTime ? `${s.startTime}–${s.endTime}` : ''].filter(Boolean).join(' ')
 }
 
-function TeacherAvatar({ teacher }: { teacher: TeacherInfo }) {
-  if (teacher.photoUrl) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={teacher.photoUrl}
-        alt={teacher.name}
-        className="h-8 w-8 rounded-full object-cover border border-gray-200"
-      />
-    )
-  }
-  const initials = teacher.nameEn
-    ? teacher.nameEn.split(' ').map((w) => w[0]).slice(0, 2).join('')
-    : teacher.name.slice(0, 1)
-  return (
-    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 text-xs font-semibold text-red-700 border border-red-200">
-      {initials}
-    </div>
-  )
+function classTypeBadge(cls: ClassData, t: (zh: string, en: string) => string) {
+  if (cls.type === 'ARTS') return <span style={badge('pink')}>{t('才艺班', 'Arts')}</span>
+  if (cls.name.includes('第二语言')) return <span style={badge('green')}>{t('CSL', 'CSL')}</span>
+  return <span style={badge('blue')}>{t('CHL', 'CHL')}</span>
 }
 
 export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) {
+  const { t, lang } = useLanguage()
   const [showBio, setShowBio] = useState(false)
   const isFull = cls.spotsRemaining === 0
   const hasBio = cls.teacher && (cls.teacher.bioEn || cls.teacher.bioZh)
+  const pct = Math.min(100, Math.round(((cls.capacity - cls.spotsRemaining) / cls.capacity) * 100))
+  const isArts = cls.type === 'ARTS'
 
   return (
     <div
-      className={clsx(
-        'flex flex-col rounded-lg border bg-white p-5 shadow-sm transition-all',
-        isSelected ? 'border-red-500 ring-2 ring-red-500' : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
-      )}
+      onClick={onClick}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        padding: '12px 16px',
+        borderBottom: '0.5px solid #E5E7EB',
+        cursor: 'pointer',
+        backgroundColor: isSelected ? '#FFF5F5' : 'transparent',
+        borderLeft: isSelected ? '3px solid #CC0000' : '3px solid transparent',
+        transition: 'background 0.1s',
+      }}
     >
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <h3 className="text-base font-semibold text-gray-900">{cls.name}</h3>
-          {cls.nameEn && <p className="text-sm text-gray-500">{cls.nameEn}</p>}
+      {/* Icon box */}
+      <div style={iconBox(isArts ? 'pink' : 'blue')}>
+        {isArts ? '🎨' : '📖'}
+      </div>
+
+      {/* Class info */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 14, fontWeight: 500, color: '#111827' }}>{cls.name}</span>
+          {classTypeBadge(cls, t)}
         </div>
-        {isFull ? (
-          <span className="shrink-0 rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">
-            已满 / Full
-          </span>
-        ) : (
-          <span className="shrink-0 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">
-            余 {cls.spotsRemaining} 位
-          </span>
+        <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {cls.teacher && <span>{cls.teacher.name}</span>}
+          <span>{fmtSchedule(cls.schedule)}</span>
+        </div>
+
+        {/* Teacher bio expand */}
+        {hasBio && (
+          <button
+            onClick={(e) => { e.stopPropagation(); setShowBio((v) => !v) }}
+            style={{ fontSize: 11, color: '#CC0000', marginTop: 4, background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+          >
+            {showBio ? t('收起', 'Hide') : t('了解老师 ▸', 'About teacher ▸')}
+          </button>
+        )}
+        {showBio && cls.teacher && (
+          <div style={{ marginTop: 6, padding: '8px 10px', background: '#F9FAFB', borderRadius: 6, fontSize: 12, color: '#374151' }}>
+            {lang === 'zh' ? cls.teacher.bioZh || cls.teacher.bioEn : cls.teacher.bioEn || cls.teacher.bioZh}
+          </div>
         )}
       </div>
 
-      <div className="mt-3 grow space-y-1.5 text-sm text-gray-600">
-        {cls.teacher && (
-          <div className="flex items-center gap-2">
-            <TeacherAvatar teacher={cls.teacher} />
-            <div className="min-w-0">
-              <span className="text-gray-800 font-medium">{cls.teacher.name}</span>
-              {cls.teacher.nameEn && (
-                <span className="ml-1 text-gray-400 text-xs">{cls.teacher.nameEn}</span>
-              )}
-            </div>
-            {hasBio && (
-              <button
-                onClick={(e) => { e.stopPropagation(); setShowBio((v) => !v) }}
-                className="ml-auto shrink-0 text-xs text-red-600 hover:text-red-800 underline underline-offset-2"
-              >
-                {showBio ? '收起' : '了解老师 / About'}
-              </button>
-            )}
-          </div>
-        )}
-
-        {showBio && cls.teacher && (hasBio) && (
-          <div className="rounded-md bg-gray-50 p-3 text-xs text-gray-600 space-y-1.5 border border-gray-100">
-            {cls.teacher.bioEn && <p>{cls.teacher.bioEn}</p>}
-            {cls.teacher.bioZh && <p className="text-gray-500">{cls.teacher.bioZh}</p>}
-          </div>
-        )}
-
-        <p>
-          <span className="text-gray-400">时间：</span>
-          {formatSchedule(cls.schedule)}
-        </p>
-        <p>
-          <span className="text-gray-400">费用：</span>
-          <span className="font-medium text-gray-900">${cls.fee}</span>
+      {/* Fee + capacity */}
+      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+        <p style={{ fontSize: 14, fontWeight: 600, color: '#111827' }}>${parseFloat(cls.fee).toFixed(0)}</p>
+        <div style={{ width: 72, height: 4, backgroundColor: '#E5E7EB', borderRadius: 2, marginTop: 4, marginLeft: 'auto' }}>
+          <div style={{ width: `${pct}%`, height: '100%', backgroundColor: pct >= 80 ? '#CC0000' : '#6B7280', borderRadius: 2 }} />
+        </div>
+        <p style={{ fontSize: 11, color: isFull ? '#A32D2D' : '#6b7280', marginTop: 2 }}>
+          {isFull ? t('已满', 'Full') : `${cls.spotsRemaining} ${t('余位', 'left')}`}
         </p>
       </div>
 
-      {cls.description && (
-        <p className="mt-3 line-clamp-2 text-xs text-gray-400">{cls.description}</p>
-      )}
-
-      <div className="mt-4">
-        {isFull ? (
-          <button
-            onClick={onClick}
-            className="w-full rounded-md border border-red-300 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-100"
-          >
-            加入候补 / Join Waitlist
-          </button>
-        ) : (
-          <button
-            onClick={onClick}
-            className={clsx(
-              'w-full rounded-md px-4 py-2 text-sm font-medium transition-colors',
-              isSelected
-                ? 'bg-red-600 text-white hover:bg-red-700'
-                : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-            )}
-          >
-            {isSelected ? '已选 ✓ / Selected' : '选择 / Select'}
-          </button>
-        )}
-      </div>
+      {/* Select button */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onClick() }}
+        style={{
+          flexShrink: 0,
+          padding: '7px 14px',
+          borderRadius: 6,
+          fontSize: 13,
+          fontWeight: 500,
+          cursor: 'pointer',
+          transition: 'all 0.15s',
+          ...(isSelected
+            ? { background: '#CC0000', color: 'white', border: 'none' }
+            : isFull
+              ? { background: '#FCEBEB', color: '#A32D2D', border: '0.5px solid #CC0000' }
+              : { background: 'white', color: '#374151', border: '0.5px solid #E5E7EB' }
+          ),
+        }}
+      >
+        {isSelected ? `✓ ${t('已选', 'Selected')}` : isFull ? t('候补', 'Waitlist') : t('选择', 'Select')}
+      </button>
     </div>
   )
 }

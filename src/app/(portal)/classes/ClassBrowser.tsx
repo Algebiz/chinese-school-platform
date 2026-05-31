@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { ClassCard } from '@/components/ClassCard'
 import type { ClassData } from '@/components/ClassCard'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { CARD } from '@/lib/design'
 
 type Tab = 'CHINESE' | 'ARTS'
 
@@ -18,11 +19,6 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
   const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState<Tab>('CHINESE')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
-
-  const TABS: { tab: Tab; label: string }[] = [
-    { tab: 'CHINESE', label: t('中文班', 'Chinese Classes') },
-    { tab: 'ARTS',    label: t('才艺班', 'Arts Classes') },
-  ]
 
   const visibleClasses = activeTab === 'CHINESE' ? chineseClasses : artsClasses
   const selectedCount = selectedIds.size
@@ -39,33 +35,48 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
     })
   }
 
+  const TAB_STYLE = (active: boolean): React.CSSProperties => ({
+    padding: '8px 16px',
+    fontSize: 13,
+    fontWeight: active ? 500 : 400,
+    color: active ? '#CC0000' : '#6b7280',
+    background: 'none',
+    border: 'none',
+    borderBottom: active ? '2px solid #CC0000' : '2px solid transparent',
+    cursor: 'pointer',
+    transition: 'color 0.15s',
+    marginBottom: -1,
+  })
+
   return (
-    <div className="relative pb-28">
-      {/* Tab bar */}
-      <div className="mb-6 flex w-fit gap-1 rounded-lg bg-gray-100 p-1">
-        {TABS.map(({ tab, label }) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={[
-              'rounded-md px-6 py-2 text-sm font-medium transition-colors',
-              activeTab === tab
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700',
-            ].join(' ')}
-          >
-            {label}
-          </button>
-        ))}
+    <div style={{ maxWidth: 900, margin: '0 auto', paddingBottom: 100 }}>
+      {/* Page hero */}
+      <div style={{ marginBottom: 24 }}>
+        <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
+          {t('班级目录', 'Class Directory')}
+        </h1>
+        <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
+          {t('浏览并选择您心仪的班级', 'Browse and select the classes you want to enroll in')}
+        </p>
       </div>
 
-      {/* Class grid */}
+      {/* Tabs */}
+      <div style={{ borderBottom: '0.5px solid #E5E7EB', marginBottom: 16, display: 'flex' }}>
+        <button style={TAB_STYLE(activeTab === 'CHINESE')} onClick={() => setActiveTab('CHINESE')}>
+          📖 {t('中文班', 'Chinese Classes')} ({chineseClasses.length})
+        </button>
+        <button style={TAB_STYLE(activeTab === 'ARTS')} onClick={() => setActiveTab('ARTS')}>
+          🎨 {t('才艺班', 'Arts Classes')} ({artsClasses.length})
+        </button>
+      </div>
+
+      {/* Class list */}
       {visibleClasses.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-gray-300 bg-white py-16 text-center text-sm text-gray-400">
+        <div style={{ padding: '48px 16px', textAlign: 'center', color: '#9ca3af', fontSize: 14 }}>
           {t('暂无班级', 'No classes available')}
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div style={CARD}>
           {visibleClasses.map((cls) => (
             <ClassCard
               key={cls.id}
@@ -74,28 +85,31 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
               onClick={() => handleToggle(cls)}
             />
           ))}
+          {/* Remove border-bottom on last item */}
+          <style>{`.class-last-row { border-bottom: none !important; }`}</style>
         </div>
       )}
 
-      {/* Sticky footer — only shown when something is selected */}
+      {/* Sticky footer when classes selected */}
       {selectedCount > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white px-4 py-4 shadow-lg">
-          <div className="mx-auto flex max-w-5xl items-center justify-between">
-            <span className="text-sm text-gray-600">
-              {t('已选', 'Selected')}{' '}
-              <span className="font-semibold text-gray-900">{selectedCount}</span>{' '}
-              {t('个班级', `class${selectedCount !== 1 ? 'es' : ''}`)}
-            </span>
-            <button
-              onClick={() => {
-                const ids = Array.from(selectedIds).join(',')
-                router.push(`/enroll?classIds=${ids}`)
-              }}
-              className="rounded-md bg-red-600 px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-700"
-            >
-              {t('去报名', 'Proceed to Enroll')} →
-            </button>
-          </div>
+        <div style={{
+          position: 'fixed', bottom: 0, left: 0, right: 0,
+          background: 'white', borderTop: '0.5px solid #E5E7EB',
+          padding: '14px 24px', zIndex: 50,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          boxShadow: '0 -4px 12px rgba(0,0,0,0.06)',
+        }}>
+          <span style={{ fontSize: 14, color: '#374151' }}>
+            {t('已选', 'Selected')}{' '}
+            <strong style={{ color: '#111827' }}>{selectedCount}</strong>{' '}
+            {t('个班级', selectedCount !== 1 ? 'classes' : 'class')}
+          </span>
+          <button
+            onClick={() => router.push(`/enroll?classIds=${Array.from(selectedIds).join(',')}`)}
+            style={{ padding: '8px 20px', borderRadius: 6, background: '#CC0000', color: 'white', border: 'none', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+          >
+            {t('前往报名', 'Proceed to Enroll')} →
+          </button>
         </div>
       )}
     </div>

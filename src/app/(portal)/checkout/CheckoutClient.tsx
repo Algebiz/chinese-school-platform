@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { clsx } from 'clsx'
 import { StripePaymentForm } from '@/components/payment/StripePaymentForm'
 import { PayPalButton } from '@/components/payment/PayPalButton'
 
@@ -67,122 +66,107 @@ export function CheckoutClient({ data }: Props) {
     )
   }
 
-  return (
-    <div className="mx-auto max-w-lg">
-      {/* Order summary */}
-      <div className="mb-6 rounded-lg border border-gray-200 bg-white p-5">
-        <h2 className="mb-1 text-base font-semibold text-gray-900">订单确认 / Order Summary</h2>
-        <p className="mb-4 text-sm text-gray-500">
-          学生：{studentName} · {academicYear} 学年
-        </p>
+  const CARD: React.CSSProperties = { border: '0.5px solid #E5E7EB', borderRadius: 12, overflow: 'hidden', background: 'white' }
+  const ROW_ITEM: React.CSSProperties = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '0.5px solid #F3F4F6', fontSize: 14 }
 
-        {/* Tuition */}
-        <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-gray-400">
-          课程费用 / Tuition
-        </p>
-        <div className="mb-3 space-y-1.5 text-sm">
+  return (
+    <div style={{ maxWidth: 520, margin: '0 auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {/* Hero */}
+      <div>
+        <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>结账 / Checkout</h1>
+        <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>学生 / Student: <strong>{studentName}</strong> · {academicYear}</p>
+      </div>
+
+      {/* Order summary */}
+      <div style={CARD}>
+        <div style={{ background: '#F9FAFB', padding: '14px 16px', borderBottom: '0.5px solid #E5E7EB' }}>
+          <p style={{ fontSize: 15, fontWeight: 500, color: '#111827' }}>订单详情 / Order Summary</p>
+        </div>
+        <div style={{ padding: '4px 16px 0' }}>
+          {/* Tuition */}
+          <p style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', letterSpacing: '0.06em', textTransform: 'uppercase', paddingTop: 12, paddingBottom: 4 }}>课程费用 / Tuition</p>
           {tuition.map((b) => (
-            <div key={b.classId} className="flex justify-between">
-              <span className="text-gray-600">{b.classNameEn ?? b.className}</span>
-              <span className="font-medium">${parseFloat(b.fee).toFixed(2)}</span>
+            <div key={b.classId} style={ROW_ITEM}>
+              <span style={{ color: '#374151' }}>{b.classNameEn ?? b.className}</span>
+              <span style={{ fontWeight: 600 }}>${parseFloat(b.fee).toFixed(2)}</span>
             </div>
           ))}
-        </div>
 
-        {/* Textbooks */}
-        {textbooks.length > 0 && (
-          <>
-            <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-gray-400">
-              教材费用 / Textbooks
-            </p>
-            <div className="mb-3 space-y-1.5 text-sm">
+          {/* Textbooks */}
+          {textbooks.length > 0 && (
+            <>
+              <p style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', letterSpacing: '0.06em', textTransform: 'uppercase', paddingTop: 12, paddingBottom: 4 }}>教材费用 / Textbooks</p>
               {textbooks.map((b) => (
-                <div key={b.textbookId} className="flex justify-between">
-                  <span className="text-gray-600">
-                    {b.textbookName}
-                    {b.textbookNameZh && (
-                      <span className="ml-1.5 text-xs text-gray-400">{b.textbookNameZh}</span>
-                    )}
-                  </span>
-                  <span className="font-medium">${parseFloat(b.fee).toFixed(2)}</span>
+                <div key={b.textbookId} style={{ ...ROW_ITEM, paddingLeft: 8 }}>
+                  <span style={{ color: '#374151' }}>{b.textbookName}{b.textbookNameZh && <span style={{ marginLeft: 6, fontSize: 12, color: '#9ca3af' }}>{b.textbookNameZh}</span>}</span>
+                  <span style={{ fontWeight: 600 }}>${parseFloat(b.fee).toFixed(2)}</span>
                 </div>
               ))}
-            </div>
-            <p className="mb-3 text-xs text-gray-400">
-              教材将在上课当日在学校领取 / Books are picked up at school on class day
-            </p>
-          </>
-        )}
+              <p style={{ fontSize: 11, color: '#9ca3af', paddingBottom: 8 }}>教材将在上课当日在学校领取 / Books are picked up at school on class day</p>
+            </>
+          )}
 
-        {/* Volunteer Deposit */}
-        {includesDeposit && (
-          <>
-            <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-gray-400">
-              志愿服务押金 / Volunteer Deposit
-            </p>
-            <div className="mb-3 text-sm">
-              <div className="flex justify-between">
+          {/* Deposit */}
+          {includesDeposit && (
+            <>
+              <p style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', letterSpacing: '0.06em', textTransform: 'uppercase', paddingTop: 12, paddingBottom: 4 }}>志愿服务押金 / Volunteer Deposit</p>
+              <div style={ROW_ITEM}>
                 <div>
-                  <span className="text-gray-600">押金（可退）/ Refundable Deposit</span>
-                  <p className="text-xs text-gray-400">完成1次志愿服务后可申请退款 / Refundable after 1 volunteer service</p>
+                  <span style={{ color: '#374151' }}>押金（可退）/ Refundable Deposit</span>
+                  <p style={{ fontSize: 11, color: '#9ca3af' }}>完成志愿服务后可申请退款 / Refundable after volunteer service</p>
                 </div>
-                <span className="font-medium">${depositAmount.toFixed(2)}</span>
+                <span style={{ fontWeight: 600 }}>${depositAmount.toFixed(2)}</span>
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
 
-        <div className="flex justify-between border-t border-gray-200 pt-3 font-bold">
-          <span>合计 / Total</span>
-          <span className="text-red-600">${total.toFixed(2)}</span>
+          {/* Total */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 0', borderTop: '1px solid #E5E7EB', marginTop: 4 }}>
+            <span style={{ fontSize: 15, fontWeight: 600, color: '#111827' }}>合计 / Total</span>
+            <span style={{ fontSize: 20, fontWeight: 700, color: '#CC0000' }}>${total.toFixed(2)}</span>
+          </div>
         </div>
       </div>
 
       {/* Payment method tabs */}
-      <div className="mb-5 flex gap-1 rounded-lg bg-gray-100 p-1">
-        {([
-          { id: 'stripe', label: '信用卡', labelEn: 'Credit Card' },
-          { id: 'paypal', label: 'PayPal', labelEn: 'PayPal' },
-        ] as const).map(({ id, label, labelEn }) => (
-          <button
-            key={id}
-            onClick={() => setTab(id)}
-            className={clsx(
-              'flex-1 rounded-md py-2 text-sm font-medium transition-colors',
-              tab === id ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-            )}
-          >
-            {label} <span className="text-xs text-gray-400">/ {labelEn}</span>
-          </button>
-        ))}
-      </div>
-
-      {/* Payment form */}
-      <div className="rounded-lg border border-gray-200 bg-white p-5">
-        {tab === 'stripe' && (
-          <StripePaymentForm
-            studentId={studentId}
-            classIds={classIds}
-            textbookIds={textbookIds}
-            academicYear={academicYear}
-            breakdown={breakdown}
-            familyId={familyId}
-            includesDeposit={includesDeposit}
-            depositAmount={depositAmount}
-            onSuccess={() => setPaid(true)}
-          />
-        )}
-        {tab === 'paypal' && (
-          <PayPalButton
-            studentId={studentId}
-            classIds={classIds}
-            textbookIds={textbookIds}
-            academicYear={academicYear}
-            familyId={familyId}
-            includesDeposit={includesDeposit}
-            onSuccess={() => setPaid(true)}
-          />
-        )}
+      <div style={CARD}>
+        <div style={{ display: 'flex', borderBottom: '0.5px solid #E5E7EB' }}>
+          {([
+            { id: 'stripe' as const, icon: '💳', label: '信用卡 / Credit Card' },
+            { id: 'paypal' as const, icon: '🅿', label: 'PayPal' },
+          ]).map(({ id, icon, label }) => (
+            <button
+              key={id}
+              onClick={() => setTab(id)}
+              style={{
+                flex: 1, padding: '12px 16px', fontSize: 13, fontWeight: tab === id ? 500 : 400,
+                color: tab === id ? '#CC0000' : '#6b7280',
+                background: 'none', border: 'none',
+                borderBottom: tab === id ? '2px solid #CC0000' : '2px solid transparent',
+                cursor: 'pointer', marginBottom: -1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+              }}
+            >
+              {icon} {label}
+            </button>
+          ))}
+        </div>
+        <div style={{ padding: '20px 16px' }}>
+          {tab === 'stripe' && (
+            <StripePaymentForm
+              studentId={studentId} classIds={classIds} textbookIds={textbookIds}
+              academicYear={academicYear} breakdown={breakdown} familyId={familyId}
+              includesDeposit={includesDeposit} depositAmount={depositAmount}
+              onSuccess={() => setPaid(true)}
+            />
+          )}
+          {tab === 'paypal' && (
+            <PayPalButton
+              studentId={studentId} classIds={classIds} textbookIds={textbookIds}
+              academicYear={academicYear} familyId={familyId}
+              includesDeposit={includesDeposit} onSuccess={() => setPaid(true)}
+            />
+          )}
+        </div>
       </div>
     </div>
   )

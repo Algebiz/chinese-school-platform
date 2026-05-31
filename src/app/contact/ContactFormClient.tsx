@@ -3,11 +3,21 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
-
-// subjects defined inside component so they can use t()
+import { CARD, iconBox } from '@/lib/design'
 
 interface Props {
   prefill: { name: string; email: string } | null
+}
+
+const INPUT: React.CSSProperties = {
+  width: '100%',
+  border: '0.5px solid #E5E7EB',
+  borderRadius: 6,
+  padding: '8px 12px',
+  fontSize: 13,
+  color: '#111827',
+  outline: 'none',
+  boxSizing: 'border-box',
 }
 
 export function ContactFormClient({ prefill }: Props) {
@@ -45,15 +55,13 @@ export function ContactFormClient({ prefill }: Props) {
       })
       const json = await res.json()
       if (!json.success) {
-        setError(json.error ?? '提交失败，请重试 / Submission failed, please try again')
+        setError(json.error ?? t('提交失败，请重试', 'Submission failed, please try again'))
       } else {
         setSuccess(true)
-        setPhone('')
-        setSubject('')
-        setMessage('')
+        setPhone(''); setSubject(''); setMessage('')
       }
     } catch {
-      setError('网络错误，请重试 / Network error, please try again')
+      setError(t('网络错误，请重试', 'Network error, please try again'))
     } finally {
       setSubmitting(false)
     }
@@ -61,117 +69,96 @@ export function ContactFormClient({ prefill }: Props) {
 
   if (success) {
     return (
-      <div className="rounded-lg border border-green-200 bg-green-50 p-8 text-center">
-        <p className="text-lg font-semibold text-green-800">
-          ✅ 您的消息已成功发送！我们将在2个工作日内回复您。
+      <div style={{ ...CARD, padding: '40px 24px', textAlign: 'center' }}>
+        <div style={{ fontSize: 40, marginBottom: 16 }}>✅</div>
+        <p style={{ fontSize: 16, fontWeight: 500, color: '#3B6D11', marginBottom: 8 }}>
+          {t('消息已发送！', 'Message sent!')}
         </p>
-        <p className="mt-2 text-sm text-green-700">
-          Your message has been sent! We&apos;ll get back to you within 2 business days.
+        <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 20 }}>
+          {t('我们将在2个工作日内回复您。', "We'll get back to you within 2 business days.")}
         </p>
-        <div className="mt-6 flex justify-center gap-3">
-          <button
-            onClick={() => setSuccess(false)}
-            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            发送新消息 / Send Another
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 10 }}>
+          <button onClick={() => setSuccess(false)} style={{ padding: '8px 16px', borderRadius: 6, border: '0.5px solid #E5E7EB', background: 'white', fontSize: 13, color: '#374151', cursor: 'pointer' }}>
+            {t('发送新消息', 'Send Another')}
           </button>
-          <Link
-            href={prefill ? '/dashboard' : '/'}
-            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
-          >
-            返回首页 / Back to Home
+          <Link href={prefill ? '/dashboard' : '/'} style={{ padding: '8px 16px', borderRadius: 6, background: '#CC0000', color: 'white', fontSize: 13, fontWeight: 500, textDecoration: 'none' }}>
+            {t('返回首页', 'Back to Home')}
           </Link>
         </div>
       </div>
     )
   }
 
+  const LABEL: React.CSSProperties = { display: 'block', fontSize: 13, fontWeight: 500, color: '#374151', marginBottom: 6 }
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 rounded-lg border border-gray-200 bg-white p-6">
-      {error && (
-        <div className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</div>
-      )}
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 20, alignItems: 'start' }} className="contact-grid">
+      {/* Left: Form */}
+      <div style={CARD}>
+        <div style={{ background: '#F9FAFB', padding: '14px 16px', borderBottom: '0.5px solid #E5E7EB' }}>
+          <p style={{ fontSize: 15, fontWeight: 500, color: '#111827' }}>{t('发送消息', 'Send Message')}</p>
+        </div>
+        <form onSubmit={handleSubmit} style={{ padding: '20px 16px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {error && <div style={{ background: '#FCEBEB', border: '0.5px solid #FCA5A5', borderRadius: 6, padding: '10px 14px', fontSize: 13, color: '#A32D2D' }}>{error}</div>}
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            姓名 / Full Name <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            邮箱 / Email <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
-          />
-        </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div>
+              <label style={LABEL}>{t('姓名', 'Name')} <span style={{ color: '#CC0000' }}>*</span></label>
+              <input required type="text" value={name} onChange={(e) => setName(e.target.value)} style={INPUT} />
+            </div>
+            <div>
+              <label style={LABEL}>{t('邮箱', 'Email')} <span style={{ color: '#CC0000' }}>*</span></label>
+              <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={INPUT} />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div>
+              <label style={LABEL}>{t('电话', 'Phone')} <span style={{ fontSize: 11, color: '#9ca3af' }}>({t('可选', 'optional')})</span></label>
+              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} style={INPUT} />
+            </div>
+            <div>
+              <label style={LABEL}>{t('主题', 'Subject')} <span style={{ color: '#CC0000' }}>*</span></label>
+              <select required value={subject} onChange={(e) => setSubject(e.target.value)} style={INPUT}>
+                <option value="">{t('请选择主题', 'Select a subject')}</option>
+                {SUBJECTS.map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label style={LABEL}>{t('留言', 'Message')} <span style={{ color: '#CC0000' }}>*</span></label>
+            <textarea required rows={5} maxLength={1000} value={message} onChange={(e) => setMessage(e.target.value)} style={{ ...INPUT, resize: 'none' }} />
+            <p style={{ textAlign: 'right', fontSize: 11, color: '#9ca3af', marginTop: 4 }}>{message.length} / 1000</p>
+          </div>
+
+          <button type="submit" disabled={submitting} style={{ width: '100%', padding: '10px', borderRadius: 6, background: submitting ? '#e5e7eb' : '#CC0000', color: submitting ? '#9ca3af' : 'white', border: 'none', fontSize: 14, fontWeight: 600, cursor: submitting ? 'not-allowed' : 'pointer' }}>
+            {submitting ? t('发送中…', 'Sending…') : t('发送消息', 'Send Message')}
+          </button>
+        </form>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            电话 / Phone{' '}
-            <span className="text-gray-400 text-xs font-normal">(可选 / Optional)</span>
-          </label>
-          <input
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
-          />
+      {/* Right: School info */}
+      <div style={CARD}>
+        <div style={{ background: '#F9FAFB', padding: '14px 16px', borderBottom: '0.5px solid #E5E7EB' }}>
+          <p style={{ fontSize: 15, fontWeight: 500, color: '#111827' }}>{t('学校信息', 'School Info')}</p>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            主题 / Subject <span className="text-red-500">*</span>
-          </label>
-          <select
-            required
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
-          >
-            <option value="">请选择主题 / Select a subject</option>
-            {SUBJECTS.map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
-          </select>
-        </div>
+        {[
+          { icon: '📍', color: 'red' as const,   label: t('地址', 'Address'), value: 'Charlotte, NC' },
+          { icon: '📧', color: 'blue' as const,  label: t('邮箱', 'Email'),   value: 'info@charlottechineseacademy.org' },
+          { icon: '🕐', color: 'amber' as const, label: t('上课时间', 'Hours'), value: t('每周日上午', 'Sundays AM') },
+        ].map(({ icon, color, label, value }, i, arr) => (
+          <div key={label} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '12px 16px', borderBottom: i < arr.length - 1 ? '0.5px solid #E5E7EB' : 'none' }}>
+            <div style={iconBox(color)}>{icon}</div>
+            <div>
+              <p style={{ fontSize: 11, color: '#9ca3af', marginBottom: 2 }}>{label}</p>
+              <p style={{ fontSize: 13, color: '#374151', fontWeight: 500 }}>{value}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          留言 / Message <span className="text-red-500">*</span>
-        </label>
-        <textarea
-          required
-          rows={5}
-          maxLength={1000}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 resize-none"
-        />
-        <p className="text-right text-xs text-gray-400 mt-1">{message.length} / 1000</p>
-      </div>
-
-      <button
-        type="submit"
-        disabled={submitting}
-        className="w-full rounded-md bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-50 transition-colors"
-      >
-        {submitting ? '发送中… / Sending…' : '发送消息 / Send Message'}
-      </button>
-    </form>
+      <style>{`@media (max-width: 640px) { .contact-grid { grid-template-columns: 1fr !important; } }`}</style>
+    </div>
   )
 }
