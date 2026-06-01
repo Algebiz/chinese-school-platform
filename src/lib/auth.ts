@@ -1,10 +1,27 @@
 import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-// PrismaClient is imported via db.ts which uses the generated client
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import { prisma } from "./db"
 import { authConfig } from "./auth.config"
+
+// ── Session duration maps (seconds) ──────────────────────────────────────────
+
+const EXPIRATIONS: Record<string, number> = {
+  SUPER_ADMIN: 1 * 60 * 60,   // 1 hour
+  ADMIN:       2 * 60 * 60,   // 2 hours
+  TEACHER:     4 * 60 * 60,   // 4 hours
+  PARENT:      2 * 60 * 60,   // 2 hours
+}
+
+const REMEMBER_ME_EXPIRATIONS: Record<string, number> = {
+  SUPER_ADMIN: 24 * 60 * 60,      // 1 day
+  ADMIN:       3 * 24 * 60 * 60,  // 3 days
+  TEACHER:     7 * 24 * 60 * 60,  // 7 days
+  PARENT:      7 * 24 * 60 * 60,  // 7 days
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -14,23 +31,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     CredentialsProvider({
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email:      { label: "Email",       type: "email"    },
+        password:   { label: "Password",    type: "password" },
+        rememberMe: { label: "Remember Me", type: "text"     },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null
+        const { email, password, rememberMe } = credentials as {
+          email: string; password: string; rememberMe?: string
+        }
+        if (!email || !password) return null
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-        })
-
+        const user = await prisma.user.findUnique({ where: { email } })
         if (!user?.password) return null
 
-        const isValid = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        )
-
+        const isValid = await bcrypt.compare(password, user.password)
         if (!isValid) return null
 
         return {
@@ -38,6 +52,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: user.email,
           name: user.name,
           role: user.role,
+          rememberMe: rememberMe === 'true',
         }
       },
     }),
@@ -45,33 +60,51 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id as string
+        // First sign-in — set all custom fields
+        token.id        = user.id as string
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        token.role = (user as any).role as string
+        token.role      = (user as any).role as string
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        token.rememberMe = (user as any).rememberMe ?? false
+
+        const role   = (token.role as string | undefined) ?? 'PARENT'
+        const expiry = token.rememberMe
+          ? (REMEMBER_ME_EXPIRATIONS[role] ?? REMEMBER_ME_EXPIRATIONS.PARENT)
+          : (EXPIRATIONS[role] ?? EXPIRATIONS.PARENT)
+
+        token.expiresAt = Math.floor(Date.now() / 1000) + expiry
       } else if (token.id) {
-        // Re-read role on every token refresh so DB role changes take effect
-        // without requiring the user to sign out and back in.
+        // Subsequent requests — re-read role so DB changes take effect
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id as string },
           select: { role: true },
         })
         if (dbUser) token.role = dbUser.role
       }
+
+      // Enforce our custom expiry (return null to invalidate)
+      if (token.expiresAt && Date.now() / 1000 > (token.expiresAt as number)) {
+        return null
+      }
+
       return token
     },
+
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string
+        session.user.id   = token.id as string
         session.user.role = token.role as string
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ;(session.user as any).expiresAt  = token.expiresAt
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ;(session.user as any).rememberMe = token.rememberMe
       }
       return session
     },
+
     async redirect({ url, baseUrl }) {
-      // Allow relative URLs (e.g. /dashboard, /admin)
       if (url.startsWith('/')) return `${baseUrl}${url}`
-      // Allow same-origin absolute URLs
       if (new URL(url).origin === baseUrl) return url
-      // Default fallback for any external or unknown URL
       return `${baseUrl}/dashboard`
     },
   },

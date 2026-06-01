@@ -6,6 +6,7 @@ import { LanguageToggle } from '@/components/LanguageToggle'
 import { LanguageText } from '@/components/LanguageText'
 import { PortalNavLinks, PortalHamburger } from '@/components/PortalNavLinks'
 import { AvatarMenu } from '@/components/AvatarMenu'
+import { SessionExpiryWarning } from '@/components/SessionExpiryWarning'
 
 function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/)
@@ -58,6 +59,7 @@ export default async function PortalLayout({ children }: { children: React.React
 
       <div className="flex-1">{children}</div>
       <LegalFooter />
+      <SessionExpiryWarning />
     </div>
   )
 }

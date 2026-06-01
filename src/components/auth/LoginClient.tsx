@@ -24,6 +24,7 @@ function LoginForm() {
   const justRegistered = searchParams.get('registered') === 'true'
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
   const { t } = useLanguage()
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) })
@@ -34,6 +35,7 @@ function LoginForm() {
     const result = await signIn('credentials', {
       email: data.email,
       password: data.password,
+      rememberMe: rememberMe.toString(),
       redirect: false,
       callbackUrl: '/dashboard',
     })
@@ -94,6 +96,22 @@ function LoginForm() {
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
           />
           {errors.password && <p className="mt-1 text-xs text-red-600">{t('请输入密码', 'Please enter your password')}</p>}
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '4px 0' }}>
+          <input
+            type="checkbox"
+            id="rememberMe"
+            checked={rememberMe}
+            onChange={e => setRememberMe(e.target.checked)}
+            style={{ width: 16, height: 16, accentColor: '#CC0000', cursor: 'pointer' }}
+          />
+          <label
+            htmlFor="rememberMe"
+            style={{ fontSize: 13, color: 'var(--color-text-secondary)', cursor: 'pointer' }}
+          >
+            {t('记住我（7天）', 'Remember me (7 days)')}
+          </label>
         </div>
 
         <button

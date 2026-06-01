@@ -12,6 +12,10 @@ export const authConfig = {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         token.role = (user as any).role as string
       }
+      // Respect custom expiry so middleware also invalidates expired sessions
+      if (token.expiresAt && Date.now() / 1000 > (token.expiresAt as number)) {
+        return null
+      }
       return token
     },
     session({ session, token }) {

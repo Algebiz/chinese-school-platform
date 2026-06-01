@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { LanguageProvider, type Language } from '@/lib/i18n/LanguageContext'
+import { SessionProviderWrapper } from '@/components/SessionProviderWrapper'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,9 +54,11 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <LanguageProvider initialLang={initialLang}>
-          {children}
-        </LanguageProvider>
+        <SessionProviderWrapper>
+          <LanguageProvider initialLang={initialLang}>
+            {children}
+          </LanguageProvider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );
