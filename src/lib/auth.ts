@@ -5,20 +5,17 @@ import bcrypt from "bcryptjs"
 import { prisma } from "./db"
 import { authConfig } from "./auth.config"
 
-// ── Session duration maps (seconds) ──────────────────────────────────────────
+// ── Session duration helpers ──────────────────────────────────────────────────
 
-const EXPIRATIONS: Record<string, number> = {
-  SUPER_ADMIN: 1 * 60 * 60,   // 1 hour
-  ADMIN:       2 * 60 * 60,   // 2 hours
-  TEACHER:     4 * 60 * 60,   // 4 hours
-  PARENT:      2 * 60 * 60,   // 2 hours
-}
-
-const REMEMBER_ME_EXPIRATIONS: Record<string, number> = {
-  SUPER_ADMIN: 24 * 60 * 60,      // 1 day
-  ADMIN:       3 * 24 * 60 * 60,  // 3 days
-  TEACHER:     7 * 24 * 60 * 60,  // 7 days
-  PARENT:      7 * 24 * 60 * 60,  // 7 days
+function getExpiryForRole(role: string, rememberMe: boolean): number {
+  const durations: Record<string, { normal: number; remember: number }> = {
+    SUPER_ADMIN: { normal: 1 * 60 * 60,        remember: 24 * 60 * 60 },
+    ADMIN:       { normal: 2 * 60 * 60,        remember: 3 * 24 * 60 * 60 },
+    TEACHER:     { normal: 4 * 60 * 60,        remember: 7 * 24 * 60 * 60 },
+    PARENT:      { normal: 2 * 60 * 60,        remember: 7 * 24 * 60 * 60 },
+  }
+  const d = durations[role] ?? durations.PARENT
+  return rememberMe ? d.remember : d.normal
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -27,7 +24,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   adapter: PrismaAdapter(prisma as any),
-  session: { strategy: "jwt" },
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30-day absolute ceiling
+    updateAge: 60 * 60,         // re-issue token at most once per hour
+  },
   providers: [
     CredentialsProvider({
       credentials: {
@@ -59,32 +60,38 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user }) {
+      // ── New login ──────────────────────────────────────────────────────────
       if (user) {
-        // First sign-in — set all custom fields
-        token.id        = user.id as string
+        token.id       = user.id as string
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        token.role      = (user as any).role as string
+        token.role     = (user as any).role as string
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         token.rememberMe = (user as any).rememberMe ?? false
 
-        const role   = (token.role as string | undefined) ?? 'PARENT'
-        const expiry = token.rememberMe
-          ? (REMEMBER_ME_EXPIRATIONS[role] ?? REMEMBER_ME_EXPIRATIONS.PARENT)
-          : (EXPIRATIONS[role] ?? EXPIRATIONS.PARENT)
-
+        const expiry = getExpiryForRole(token.role as string, token.rememberMe as boolean)
         token.expiresAt = Math.floor(Date.now() / 1000) + expiry
-      } else if (token.id) {
-        // Subsequent requests — re-read role so DB changes take effect
+        return token
+      }
+
+      // ── Subsequent requests: check expiry first ────────────────────────────
+      if (token.expiresAt && Date.now() / 1000 > (token.expiresAt as number)) {
+        return null // expired → force re-login
+      }
+
+      // ── Still valid — refresh expiry (auto-renew on activity) ─────────────
+      if (token.id) {
+        // Re-read role so DB changes (e.g. role promotion) take effect
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id as string },
           select: { role: true },
         })
         if (dbUser) token.role = dbUser.role
-      }
 
-      // Enforce our custom expiry (return null to invalidate)
-      if (token.expiresAt && Date.now() / 1000 > (token.expiresAt as number)) {
-        return null
+        const expiry = getExpiryForRole(
+          token.role as string,
+          token.rememberMe as boolean ?? false,
+        )
+        token.expiresAt = Math.floor(Date.now() / 1000) + expiry
       }
 
       return token

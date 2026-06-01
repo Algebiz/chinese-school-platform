@@ -22,6 +22,7 @@ function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const justRegistered = searchParams.get('registered') === 'true'
+  const sessionExpired = searchParams.get('expired') === 'true'
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
@@ -61,6 +62,12 @@ function LoginForm() {
       <div className="text-center">
         <h1 className="text-3xl font-bold text-gray-900">{t('登录账号', 'Sign In')}</h1>
       </div>
+
+      {sessionExpired && (
+        <div className="rounded-md bg-amber-50 border border-amber-200 p-3 text-sm text-amber-800">
+          {t('您的会话已过期，请重新登录。', 'Your session has expired. Please log in again.')}
+        </div>
+      )}
 
       {justRegistered && (
         <div className="rounded-md bg-green-50 p-3 text-sm text-green-700">

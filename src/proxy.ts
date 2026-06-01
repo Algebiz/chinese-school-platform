@@ -33,19 +33,25 @@ export default auth((req) => {
   const isAdminRoute = pathname.startsWith('/admin')
   const isSuperAdminRoute = pathname.startsWith('/super-admin')
 
+  const loginUrl = (expired = false) => {
+    const url = new URL('/login', nextUrl)
+    if (expired) url.searchParams.set('expired', 'true')
+    return url
+  }
+
   if (isPortalRoute && !isLoggedIn) {
-    return NextResponse.redirect(new URL("/login", nextUrl))
+    return NextResponse.redirect(loginUrl(true))
   }
 
   if (isTeacherRoute) {
-    if (!isLoggedIn) return NextResponse.redirect(new URL("/login", nextUrl))
+    if (!isLoggedIn) return NextResponse.redirect(loginUrl(true))
     if (userRole !== "TEACHER" && userRole !== "ADMIN" && userRole !== "SUPER_ADMIN") {
       return NextResponse.redirect(new URL("/dashboard", nextUrl))
     }
   }
 
   if (isSuperAdminRoute) {
-    if (!isLoggedIn) return NextResponse.redirect(new URL("/login", nextUrl))
+    if (!isLoggedIn) return NextResponse.redirect(loginUrl(true))
     if (userRole !== "SUPER_ADMIN") {
       const dest = userRole === "ADMIN" ? "/admin" : userRole === "TEACHER" ? "/teacher/classes" : "/dashboard"
       return NextResponse.redirect(new URL(dest, nextUrl))
@@ -53,7 +59,7 @@ export default auth((req) => {
   }
 
   if (isAdminRoute) {
-    if (!isLoggedIn) return NextResponse.redirect(new URL("/login", nextUrl))
+    if (!isLoggedIn) return NextResponse.redirect(loginUrl(true))
     if (userRole !== "ADMIN" && userRole !== "SUPER_ADMIN") {
       const dest = userRole === "TEACHER" ? "/teacher/classes" : "/dashboard"
       return NextResponse.redirect(new URL(dest, nextUrl))
