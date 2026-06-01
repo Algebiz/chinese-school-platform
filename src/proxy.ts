@@ -28,7 +28,8 @@ export default auth((req) => {
     pathname.startsWith('/exams') ||
     pathname.startsWith('/exam-checkout') ||
     pathname.startsWith('/volunteer') ||
-    pathname.startsWith('/profile')
+    pathname.startsWith('/profile') ||
+    pathname.startsWith('/cart')
   const isTeacherRoute = pathname.startsWith('/teacher')
   const isAdminRoute = pathname.startsWith('/admin')
   const isSuperAdminRoute = pathname.startsWith('/super-admin')

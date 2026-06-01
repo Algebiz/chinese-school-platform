@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { clsx } from 'clsx'
 import type { ClassData } from '@/components/ClassCard'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useCart } from '@/lib/cart/CartContext'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -322,6 +323,9 @@ export function EnrollFlow({
 }: Props) {
   const router = useRouter()
   const { t, lang } = useLanguage()
+  const { addToCart, total: cartTotal } = useCart()
+  const [addedToCart, setAddedToCart] = useState(false)
+  const [cartAddedInfo, setCartAddedInfo] = useState<{ studentName: string; classes: string[]; subtotal: number } | null>(null)
 
   const [step, setStep] = useState<Step>(initialStep)
   const [isArtsOnly, setIsArtsOnly] = useState(artsOnly)
@@ -422,18 +426,27 @@ export function EnrollFlow({
     setIsSubmitting(true)
     setSubmitError(null)
     try {
-      const res = await fetch('/api/enrollments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ studentId: selectedStudentId, classIds: allSelectedClassIds, textbookIds: Array.from(selectedTextbookIds) }),
+      const result = await addToCart({
+        type: 'ENROLLMENT',
+        studentId: selectedStudentId,
+        classIds: allSelectedClassIds,
+        textbookIds: Array.from(selectedTextbookIds),
       })
-      const json = await res.json()
-      if (!json.success) {
-        setSubmitError({ code: json.code ?? 'UNKNOWN', message: json.error ?? t('报名失败，请重试', 'Enrollment failed, please try again') })
+      if (!result.ok) {
+        setSubmitError({ code: 'CART_ERROR', message: result.error ?? t('加入购物车失败，请重试', 'Failed to add to cart, please try again') })
         return
       }
-      const enrollmentIds = json.data.enrollments.map((e: { id: string }) => e.id).join(',')
-      router.push(`/checkout?enrollmentIds=${enrollmentIds}`)
+      // Show "Added to Cart" screen
+      const classNames = [
+        ...(!isArtsOnly && selectedChineseClass ? [lang === 'en' ? (selectedChineseClass.nameEn || selectedChineseClass.name) : selectedChineseClass.name] : []),
+        ...selectedArtsClasses.map(c => lang === 'en' ? (c.nameEn || c.name) : c.name),
+      ]
+      setCartAddedInfo({
+        studentName: selectedStudent?.name ?? '',
+        classes: classNames,
+        subtotal: totalFee,
+      })
+      setAddedToCart(true)
     } catch {
       setSubmitError({ code: 'NETWORK_ERROR', message: t('网络错误，请重试', 'Network error, please try again') })
     } finally {
@@ -787,6 +800,59 @@ export function EnrollFlow({
     if (step === 2) return isArtsOnly ? true : !!selectedChineseId
     if (step === 3) return isArtsOnly ? selectedArtsIds.size > 0 : true
     return false
+  }
+
+  // ── Added to Cart screen ─────────────────────────────────────────────────────
+
+  if (addedToCart && cartAddedInfo) {
+    return (
+      <div className="mx-auto max-w-2xl py-8">
+        <div style={{ border: '0.5px solid #E5E7EB', borderRadius: 12, overflow: 'hidden', background: 'white' }}>
+          <div style={{ background: '#EAF3DE', padding: '20px 24px', borderBottom: '0.5px solid #BBF7D0' }}>
+            <p style={{ fontSize: 18, fontWeight: 600, color: '#3B6D11' }}>
+              ✅ {t('已加入购物车！', 'Added to Cart!')}
+            </p>
+            <p style={{ fontSize: 13, color: '#4a7d1e', marginTop: 4 }}>
+              {cartAddedInfo.studentName} → {cartAddedInfo.classes.join(' + ')}
+            </p>
+          </div>
+          <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <p style={{ fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>
+              {t('接下来您可以：', 'What would you like to do next?')}
+            </p>
+
+            {/* Enroll another student */}
+            {students.filter(s => s.id !== selectedStudentId).length > 0 && (
+              <button
+                onClick={() => { setAddedToCart(false); setStep(1); setSelectedStudentId(null); setSelectedChineseId(null); setSelectedArtsIds(new Set()); setSelectedTextbookIds(new Set()) }}
+                style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '0.5px solid #E5E7EB', background: 'white', fontSize: 13, fontWeight: 500, cursor: 'pointer', textAlign: 'left' as const, color: '#374151' }}
+              >
+                → {t('为其他学生报名', 'Enroll Another Student')}
+              </button>
+            )}
+
+            {/* Browse arts for same student if no arts yet */}
+            {!selectedArtsClasses.length && !isArtsOnly && (
+              <button
+                onClick={() => { setAddedToCart(false); setIsArtsOnly(true); setStep(3) }}
+                style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '0.5px solid #E5E7EB', background: 'white', fontSize: 13, fontWeight: 500, cursor: 'pointer', textAlign: 'left' as const, color: '#374151' }}
+              >
+                → {t('继续为该学生选择才艺班', 'Add Arts Classes for This Student')}
+              </button>
+            )}
+
+            {/* Go to cart */}
+            <button
+              onClick={() => router.push('/cart')}
+              style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: 'none', background: '#CC0000', color: 'white', fontSize: 14, fontWeight: 600, cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+            >
+              <span>{t('前往购物车结账', 'Go to Cart & Checkout')}</span>
+              <span style={{ fontSize: 13, opacity: 0.9 }}>${(cartTotal).toFixed(2)} →</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

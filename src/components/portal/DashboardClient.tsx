@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useLanguage, useLocalizedField } from '@/lib/i18n/LanguageContext'
 import { getYearsAtCCA, getYearsLabel } from '@/lib/student-utils'
+import { useCart } from '@/lib/cart/CartContext'
 import { StudentStatusBadge } from '@/components/StudentStatusBadge'
 import { PendingEnrollmentCard } from '@/app/(portal)/dashboard/PendingEnrollmentCard'
 import { badge } from '@/lib/design'
@@ -105,6 +106,7 @@ export function DashboardClient({
 }: DashboardProps) {
   const { t, lang } = useLanguage()
   const { field } = useLocalizedField()
+  const { itemCount, total: cartTotal } = useCart()
 
   const examResultsByStudent: Record<string, typeof classExamResults> = {}
   for (const r of classExamResults) {
@@ -124,6 +126,22 @@ export function DashboardClient({
           {currentYear} {t('学年注册状态', 'Academic Year Enrollment')}
         </p>
       </div>
+
+      {/* ── Cart banner ── */}
+      {itemCount > 0 && (
+        <Link href="/cart" style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '12px 16px', borderRadius: 8, background: '#FAEEDA',
+          border: '0.5px solid #F9D37F', textDecoration: 'none', gap: 12,
+        }}>
+          <span style={{ fontSize: 13, color: '#92400E', fontWeight: 500 }}>
+            🛒 {t('您有', 'You have')} {itemCount} {t('件商品在购物车，合计', 'item(s) in cart, total')} ${cartTotal.toFixed(2)}
+          </span>
+          <span style={{ fontSize: 13, color: '#CC0000', fontWeight: 600, flexShrink: 0 }}>
+            {t('前往结账', 'Checkout')} →
+          </span>
+        </Link>
+      )}
 
       {/* ── Stats (3-col) ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12 }}>

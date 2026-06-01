@@ -106,6 +106,7 @@ model Family {
   state             String?            @default("NC")
   zipCode           String?
   users             User[]
+  cartItems         CartItem[]
   students          Student[]
   volunteerDeposits VolunteerDeposit[]
   volunteerClaims   VolunteerClaim[]
@@ -147,6 +148,7 @@ model Student {
   nextClassOverrides StudentNextClassOverride[]
   examRegistrations  ExamRegistration[]
   classExamResults   ClassExamResult[]
+  cartItems          CartItem[]
   createdAt          DateTime                   @default(now())
   updatedAt          DateTime                   @updatedAt
 }
@@ -329,6 +331,7 @@ model ExamSession {
   createdAt            DateTime           @default(now())
   updatedAt            DateTime           @updatedAt
   registrations        ExamRegistration[]
+  cartItems            CartItem[]
 }
 
 model ExamRegistration {
@@ -481,4 +484,34 @@ model ClassExamResult {
   student Student   @relation(fields: [studentId], references: [id])
 
   @@unique([examId, studentId])
+}
+
+enum CartItemType {
+  ENROLLMENT
+  EXAM_REGISTRATION
+  TEXTBOOK
+  DEPOSIT
+}
+
+model CartItem {
+  id               String       @id @default(cuid())
+  familyId         String
+  type             CartItemType
+  studentId        String?
+  classId          String?
+  examSessionId    String?
+  textbookId       String?
+  parentCartItemId String?
+  // References to actual records created when adding to cart
+  enrollmentId     String?
+  price            Decimal      @db.Decimal(10, 2)
+  description      String
+  descriptionEn    String?
+  createdAt        DateTime     @default(now())
+
+  family      Family       @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  student     Student?     @relation(fields: [studentId], references: [id])
+  examSession ExamSession? @relation(fields: [examSessionId], references: [id])
+  childItems  CartItem[]   @relation("CartItemChildren")
+  parentItem  CartItem?    @relation("CartItemChildren", fields: [parentCartItemId], references: [id])
 }

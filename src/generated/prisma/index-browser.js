@@ -447,6 +447,22 @@ exports.Prisma.ClassExamResultScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.CartItemScalarFieldEnum = {
+  id: 'id',
+  familyId: 'familyId',
+  type: 'type',
+  studentId: 'studentId',
+  classId: 'classId',
+  examSessionId: 'examSessionId',
+  textbookId: 'textbookId',
+  parentCartItemId: 'parentCartItemId',
+  enrollmentId: 'enrollmentId',
+  price: 'price',
+  description: 'description',
+  descriptionEn: 'descriptionEn',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -538,6 +554,13 @@ exports.ClaimStatus = exports.$Enums.ClaimStatus = {
   REJECTED: 'REJECTED'
 };
 
+exports.CartItemType = exports.$Enums.CartItemType = {
+  ENROLLMENT: 'ENROLLMENT',
+  EXAM_REGISTRATION: 'EXAM_REGISTRATION',
+  TEXTBOOK: 'TEXTBOOK',
+  DEPOSIT: 'DEPOSIT'
+};
+
 exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
@@ -563,7 +586,8 @@ exports.Prisma.ModelName = {
   VolunteerDeposit: 'VolunteerDeposit',
   VolunteerClaim: 'VolunteerClaim',
   ClassExam: 'ClassExam',
-  ClassExamResult: 'ClassExamResult'
+  ClassExamResult: 'ClassExamResult',
+  CartItem: 'CartItem'
 };
 
 /**

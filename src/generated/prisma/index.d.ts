@@ -138,6 +138,11 @@ export type ClassExam = $Result.DefaultSelection<Prisma.$ClassExamPayload>
  * 
  */
 export type ClassExamResult = $Result.DefaultSelection<Prisma.$ClassExamResultPayload>
+/**
+ * Model CartItem
+ * 
+ */
+export type CartItem = $Result.DefaultSelection<Prisma.$CartItemPayload>
 
 /**
  * Enums
@@ -239,6 +244,16 @@ export const ClaimStatus: {
 
 export type ClaimStatus = (typeof ClaimStatus)[keyof typeof ClaimStatus]
 
+
+export const CartItemType: {
+  ENROLLMENT: 'ENROLLMENT',
+  EXAM_REGISTRATION: 'EXAM_REGISTRATION',
+  TEXTBOOK: 'TEXTBOOK',
+  DEPOSIT: 'DEPOSIT'
+};
+
+export type CartItemType = (typeof CartItemType)[keyof typeof CartItemType]
+
 }
 
 export type Role = $Enums.Role
@@ -280,6 +295,10 @@ export const DepositStatus: typeof $Enums.DepositStatus
 export type ClaimStatus = $Enums.ClaimStatus
 
 export const ClaimStatus: typeof $Enums.ClaimStatus
+
+export type CartItemType = $Enums.CartItemType
+
+export const CartItemType: typeof $Enums.CartItemType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -651,6 +670,16 @@ export class PrismaClient<
     * ```
     */
   get classExamResult(): Prisma.ClassExamResultDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.cartItem`: Exposes CRUD operations for the **CartItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CartItems
+    * const cartItems = await prisma.cartItem.findMany()
+    * ```
+    */
+  get cartItem(): Prisma.CartItemDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1109,7 +1138,8 @@ export namespace Prisma {
     VolunteerDeposit: 'VolunteerDeposit',
     VolunteerClaim: 'VolunteerClaim',
     ClassExam: 'ClassExam',
-    ClassExamResult: 'ClassExamResult'
+    ClassExamResult: 'ClassExamResult',
+    CartItem: 'CartItem'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1125,7 +1155,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "verificationToken" | "family" | "user" | "student" | "teacher" | "class" | "textbook" | "enrollmentTextbook" | "enrollment" | "payment" | "waitlist" | "adjustmentLog" | "academicYearConfig" | "studentNextClassOverride" | "contactMessage" | "examSession" | "examRegistration" | "systemSettings" | "volunteerService" | "volunteerDeposit" | "volunteerClaim" | "classExam" | "classExamResult"
+      modelProps: "account" | "session" | "verificationToken" | "family" | "user" | "student" | "teacher" | "class" | "textbook" | "enrollmentTextbook" | "enrollment" | "payment" | "waitlist" | "adjustmentLog" | "academicYearConfig" | "studentNextClassOverride" | "contactMessage" | "examSession" | "examRegistration" | "systemSettings" | "volunteerService" | "volunteerDeposit" | "volunteerClaim" | "classExam" | "classExamResult" | "cartItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2979,6 +3009,80 @@ export namespace Prisma {
           }
         }
       }
+      CartItem: {
+        payload: Prisma.$CartItemPayload<ExtArgs>
+        fields: Prisma.CartItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CartItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CartItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          findFirst: {
+            args: Prisma.CartItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CartItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          findMany: {
+            args: Prisma.CartItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>[]
+          }
+          create: {
+            args: Prisma.CartItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          createMany: {
+            args: Prisma.CartItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CartItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>[]
+          }
+          delete: {
+            args: Prisma.CartItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          update: {
+            args: Prisma.CartItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.CartItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CartItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CartItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.CartItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          aggregate: {
+            args: Prisma.CartItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCartItem>
+          }
+          groupBy: {
+            args: Prisma.CartItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CartItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CartItemCountArgs<ExtArgs>
+            result: $Utils.Optional<CartItemCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3112,6 +3216,7 @@ export namespace Prisma {
     volunteerClaim?: VolunteerClaimOmit
     classExam?: ClassExamOmit
     classExamResult?: ClassExamResultOmit
+    cartItem?: CartItemOmit
   }
 
   /* Types for Logging */
@@ -3193,6 +3298,7 @@ export namespace Prisma {
 
   export type FamilyCountOutputType = {
     users: number
+    cartItems: number
     students: number
     volunteerDeposits: number
     volunteerClaims: number
@@ -3200,6 +3306,7 @@ export namespace Prisma {
 
   export type FamilyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | FamilyCountOutputTypeCountUsersArgs
+    cartItems?: boolean | FamilyCountOutputTypeCountCartItemsArgs
     students?: boolean | FamilyCountOutputTypeCountStudentsArgs
     volunteerDeposits?: boolean | FamilyCountOutputTypeCountVolunteerDepositsArgs
     volunteerClaims?: boolean | FamilyCountOutputTypeCountVolunteerClaimsArgs
@@ -3221,6 +3328,13 @@ export namespace Prisma {
    */
   export type FamilyCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
+  }
+
+  /**
+   * FamilyCountOutputType without action
+   */
+  export type FamilyCountOutputTypeCountCartItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CartItemWhereInput
   }
 
   /**
@@ -3295,6 +3409,7 @@ export namespace Prisma {
     nextClassOverrides: number
     examRegistrations: number
     classExamResults: number
+    cartItems: number
   }
 
   export type StudentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3303,6 +3418,7 @@ export namespace Prisma {
     nextClassOverrides?: boolean | StudentCountOutputTypeCountNextClassOverridesArgs
     examRegistrations?: boolean | StudentCountOutputTypeCountExamRegistrationsArgs
     classExamResults?: boolean | StudentCountOutputTypeCountClassExamResultsArgs
+    cartItems?: boolean | StudentCountOutputTypeCountCartItemsArgs
   }
 
   // Custom InputTypes
@@ -3349,6 +3465,13 @@ export namespace Prisma {
    */
   export type StudentCountOutputTypeCountClassExamResultsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ClassExamResultWhereInput
+  }
+
+  /**
+   * StudentCountOutputType without action
+   */
+  export type StudentCountOutputTypeCountCartItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CartItemWhereInput
   }
 
 
@@ -3527,10 +3650,12 @@ export namespace Prisma {
 
   export type ExamSessionCountOutputType = {
     registrations: number
+    cartItems: number
   }
 
   export type ExamSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     registrations?: boolean | ExamSessionCountOutputTypeCountRegistrationsArgs
+    cartItems?: boolean | ExamSessionCountOutputTypeCountCartItemsArgs
   }
 
   // Custom InputTypes
@@ -3549,6 +3674,13 @@ export namespace Prisma {
    */
   export type ExamSessionCountOutputTypeCountRegistrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ExamRegistrationWhereInput
+  }
+
+  /**
+   * ExamSessionCountOutputType without action
+   */
+  export type ExamSessionCountOutputTypeCountCartItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CartItemWhereInput
   }
 
 
@@ -3642,6 +3774,37 @@ export namespace Prisma {
    */
   export type ClassExamCountOutputTypeCountResultsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ClassExamResultWhereInput
+  }
+
+
+  /**
+   * Count Type CartItemCountOutputType
+   */
+
+  export type CartItemCountOutputType = {
+    childItems: number
+  }
+
+  export type CartItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    childItems?: boolean | CartItemCountOutputTypeCountChildItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CartItemCountOutputType without action
+   */
+  export type CartItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItemCountOutputType
+     */
+    select?: CartItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CartItemCountOutputType without action
+   */
+  export type CartItemCountOutputTypeCountChildItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CartItemWhereInput
   }
 
 
@@ -7050,6 +7213,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     users?: boolean | Family$usersArgs<ExtArgs>
+    cartItems?: boolean | Family$cartItemsArgs<ExtArgs>
     students?: boolean | Family$studentsArgs<ExtArgs>
     volunteerDeposits?: boolean | Family$volunteerDepositsArgs<ExtArgs>
     volunteerClaims?: boolean | Family$volunteerClaimsArgs<ExtArgs>
@@ -7092,6 +7256,7 @@ export namespace Prisma {
   export type FamilyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "phone" | "address" | "city" | "state" | "zipCode" | "createdAt" | "updatedAt", ExtArgs["result"]["family"]>
   export type FamilyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Family$usersArgs<ExtArgs>
+    cartItems?: boolean | Family$cartItemsArgs<ExtArgs>
     students?: boolean | Family$studentsArgs<ExtArgs>
     volunteerDeposits?: boolean | Family$volunteerDepositsArgs<ExtArgs>
     volunteerClaims?: boolean | Family$volunteerClaimsArgs<ExtArgs>
@@ -7104,6 +7269,7 @@ export namespace Prisma {
     name: "Family"
     objects: {
       users: Prisma.$UserPayload<ExtArgs>[]
+      cartItems: Prisma.$CartItemPayload<ExtArgs>[]
       students: Prisma.$StudentPayload<ExtArgs>[]
       volunteerDeposits: Prisma.$VolunteerDepositPayload<ExtArgs>[]
       volunteerClaims: Prisma.$VolunteerClaimPayload<ExtArgs>[]
@@ -7512,6 +7678,7 @@ export namespace Prisma {
   export interface Prisma__FamilyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     users<T extends Family$usersArgs<ExtArgs> = {}>(args?: Subset<T, Family$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cartItems<T extends Family$cartItemsArgs<ExtArgs> = {}>(args?: Subset<T, Family$cartItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     students<T extends Family$studentsArgs<ExtArgs> = {}>(args?: Subset<T, Family$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     volunteerDeposits<T extends Family$volunteerDepositsArgs<ExtArgs> = {}>(args?: Subset<T, Family$volunteerDepositsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerDepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     volunteerClaims<T extends Family$volunteerClaimsArgs<ExtArgs> = {}>(args?: Subset<T, Family$volunteerClaimsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerClaimPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7966,6 +8133,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Family.cartItems
+   */
+  export type Family$cartItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    where?: CartItemWhereInput
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    cursor?: CartItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
   }
 
   /**
@@ -9523,6 +9714,7 @@ export namespace Prisma {
     nextClassOverrides?: boolean | Student$nextClassOverridesArgs<ExtArgs>
     examRegistrations?: boolean | Student$examRegistrationsArgs<ExtArgs>
     classExamResults?: boolean | Student$classExamResultsArgs<ExtArgs>
+    cartItems?: boolean | Student$cartItemsArgs<ExtArgs>
     _count?: boolean | StudentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["student"]>
 
@@ -9575,6 +9767,7 @@ export namespace Prisma {
     nextClassOverrides?: boolean | Student$nextClassOverridesArgs<ExtArgs>
     examRegistrations?: boolean | Student$examRegistrationsArgs<ExtArgs>
     classExamResults?: boolean | Student$classExamResultsArgs<ExtArgs>
+    cartItems?: boolean | Student$cartItemsArgs<ExtArgs>
     _count?: boolean | StudentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type StudentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9593,6 +9786,7 @@ export namespace Prisma {
       nextClassOverrides: Prisma.$StudentNextClassOverridePayload<ExtArgs>[]
       examRegistrations: Prisma.$ExamRegistrationPayload<ExtArgs>[]
       classExamResults: Prisma.$ClassExamResultPayload<ExtArgs>[]
+      cartItems: Prisma.$CartItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10005,6 +10199,7 @@ export namespace Prisma {
     nextClassOverrides<T extends Student$nextClassOverridesArgs<ExtArgs> = {}>(args?: Subset<T, Student$nextClassOverridesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentNextClassOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     examRegistrations<T extends Student$examRegistrationsArgs<ExtArgs> = {}>(args?: Subset<T, Student$examRegistrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExamRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     classExamResults<T extends Student$classExamResultsArgs<ExtArgs> = {}>(args?: Subset<T, Student$classExamResultsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClassExamResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cartItems<T extends Student$cartItemsArgs<ExtArgs> = {}>(args?: Subset<T, Student$cartItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10562,6 +10757,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ClassExamResultScalarFieldEnum | ClassExamResultScalarFieldEnum[]
+  }
+
+  /**
+   * Student.cartItems
+   */
+  export type Student$cartItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    where?: CartItemWhereInput
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    cursor?: CartItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
   }
 
   /**
@@ -23441,6 +23660,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     registrations?: boolean | ExamSession$registrationsArgs<ExtArgs>
+    cartItems?: boolean | ExamSession$cartItemsArgs<ExtArgs>
     _count?: boolean | ExamSessionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["examSession"]>
 
@@ -23501,6 +23721,7 @@ export namespace Prisma {
   export type ExamSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "examType" | "level" | "examDate" | "registrationDeadline" | "location" | "locationZh" | "fee" | "capacity" | "academicYear" | "isActive" | "notes" | "notesZh" | "createdAt" | "updatedAt", ExtArgs["result"]["examSession"]>
   export type ExamSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     registrations?: boolean | ExamSession$registrationsArgs<ExtArgs>
+    cartItems?: boolean | ExamSession$cartItemsArgs<ExtArgs>
     _count?: boolean | ExamSessionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ExamSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -23510,6 +23731,7 @@ export namespace Prisma {
     name: "ExamSession"
     objects: {
       registrations: Prisma.$ExamRegistrationPayload<ExtArgs>[]
+      cartItems: Prisma.$CartItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -23922,6 +24144,7 @@ export namespace Prisma {
   export interface Prisma__ExamSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     registrations<T extends ExamSession$registrationsArgs<ExtArgs> = {}>(args?: Subset<T, ExamSession$registrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExamRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cartItems<T extends ExamSession$cartItemsArgs<ExtArgs> = {}>(args?: Subset<T, ExamSession$cartItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -24380,6 +24603,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ExamRegistrationScalarFieldEnum | ExamRegistrationScalarFieldEnum[]
+  }
+
+  /**
+   * ExamSession.cartItems
+   */
+  export type ExamSession$cartItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    where?: CartItemWhereInput
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    cursor?: CartItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
   }
 
   /**
@@ -32765,6 +33012,1318 @@ export namespace Prisma {
 
 
   /**
+   * Model CartItem
+   */
+
+  export type AggregateCartItem = {
+    _count: CartItemCountAggregateOutputType | null
+    _avg: CartItemAvgAggregateOutputType | null
+    _sum: CartItemSumAggregateOutputType | null
+    _min: CartItemMinAggregateOutputType | null
+    _max: CartItemMaxAggregateOutputType | null
+  }
+
+  export type CartItemAvgAggregateOutputType = {
+    price: Decimal | null
+  }
+
+  export type CartItemSumAggregateOutputType = {
+    price: Decimal | null
+  }
+
+  export type CartItemMinAggregateOutputType = {
+    id: string | null
+    familyId: string | null
+    type: $Enums.CartItemType | null
+    studentId: string | null
+    classId: string | null
+    examSessionId: string | null
+    textbookId: string | null
+    parentCartItemId: string | null
+    enrollmentId: string | null
+    price: Decimal | null
+    description: string | null
+    descriptionEn: string | null
+    createdAt: Date | null
+  }
+
+  export type CartItemMaxAggregateOutputType = {
+    id: string | null
+    familyId: string | null
+    type: $Enums.CartItemType | null
+    studentId: string | null
+    classId: string | null
+    examSessionId: string | null
+    textbookId: string | null
+    parentCartItemId: string | null
+    enrollmentId: string | null
+    price: Decimal | null
+    description: string | null
+    descriptionEn: string | null
+    createdAt: Date | null
+  }
+
+  export type CartItemCountAggregateOutputType = {
+    id: number
+    familyId: number
+    type: number
+    studentId: number
+    classId: number
+    examSessionId: number
+    textbookId: number
+    parentCartItemId: number
+    enrollmentId: number
+    price: number
+    description: number
+    descriptionEn: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type CartItemAvgAggregateInputType = {
+    price?: true
+  }
+
+  export type CartItemSumAggregateInputType = {
+    price?: true
+  }
+
+  export type CartItemMinAggregateInputType = {
+    id?: true
+    familyId?: true
+    type?: true
+    studentId?: true
+    classId?: true
+    examSessionId?: true
+    textbookId?: true
+    parentCartItemId?: true
+    enrollmentId?: true
+    price?: true
+    description?: true
+    descriptionEn?: true
+    createdAt?: true
+  }
+
+  export type CartItemMaxAggregateInputType = {
+    id?: true
+    familyId?: true
+    type?: true
+    studentId?: true
+    classId?: true
+    examSessionId?: true
+    textbookId?: true
+    parentCartItemId?: true
+    enrollmentId?: true
+    price?: true
+    description?: true
+    descriptionEn?: true
+    createdAt?: true
+  }
+
+  export type CartItemCountAggregateInputType = {
+    id?: true
+    familyId?: true
+    type?: true
+    studentId?: true
+    classId?: true
+    examSessionId?: true
+    textbookId?: true
+    parentCartItemId?: true
+    enrollmentId?: true
+    price?: true
+    description?: true
+    descriptionEn?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type CartItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CartItem to aggregate.
+     */
+    where?: CartItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CartItems to fetch.
+     */
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CartItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CartItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CartItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CartItems
+    **/
+    _count?: true | CartItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CartItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CartItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CartItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CartItemMaxAggregateInputType
+  }
+
+  export type GetCartItemAggregateType<T extends CartItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateCartItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCartItem[P]>
+      : GetScalarType<T[P], AggregateCartItem[P]>
+  }
+
+
+
+
+  export type CartItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CartItemWhereInput
+    orderBy?: CartItemOrderByWithAggregationInput | CartItemOrderByWithAggregationInput[]
+    by: CartItemScalarFieldEnum[] | CartItemScalarFieldEnum
+    having?: CartItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CartItemCountAggregateInputType | true
+    _avg?: CartItemAvgAggregateInputType
+    _sum?: CartItemSumAggregateInputType
+    _min?: CartItemMinAggregateInputType
+    _max?: CartItemMaxAggregateInputType
+  }
+
+  export type CartItemGroupByOutputType = {
+    id: string
+    familyId: string
+    type: $Enums.CartItemType
+    studentId: string | null
+    classId: string | null
+    examSessionId: string | null
+    textbookId: string | null
+    parentCartItemId: string | null
+    enrollmentId: string | null
+    price: Decimal
+    description: string
+    descriptionEn: string | null
+    createdAt: Date
+    _count: CartItemCountAggregateOutputType | null
+    _avg: CartItemAvgAggregateOutputType | null
+    _sum: CartItemSumAggregateOutputType | null
+    _min: CartItemMinAggregateOutputType | null
+    _max: CartItemMaxAggregateOutputType | null
+  }
+
+  type GetCartItemGroupByPayload<T extends CartItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CartItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CartItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CartItemGroupByOutputType[P]>
+            : GetScalarType<T[P], CartItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CartItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    familyId?: boolean
+    type?: boolean
+    studentId?: boolean
+    classId?: boolean
+    examSessionId?: boolean
+    textbookId?: boolean
+    parentCartItemId?: boolean
+    enrollmentId?: boolean
+    price?: boolean
+    description?: boolean
+    descriptionEn?: boolean
+    createdAt?: boolean
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    student?: boolean | CartItem$studentArgs<ExtArgs>
+    examSession?: boolean | CartItem$examSessionArgs<ExtArgs>
+    childItems?: boolean | CartItem$childItemsArgs<ExtArgs>
+    parentItem?: boolean | CartItem$parentItemArgs<ExtArgs>
+    _count?: boolean | CartItemCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cartItem"]>
+
+  export type CartItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    familyId?: boolean
+    type?: boolean
+    studentId?: boolean
+    classId?: boolean
+    examSessionId?: boolean
+    textbookId?: boolean
+    parentCartItemId?: boolean
+    enrollmentId?: boolean
+    price?: boolean
+    description?: boolean
+    descriptionEn?: boolean
+    createdAt?: boolean
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    student?: boolean | CartItem$studentArgs<ExtArgs>
+    examSession?: boolean | CartItem$examSessionArgs<ExtArgs>
+    parentItem?: boolean | CartItem$parentItemArgs<ExtArgs>
+  }, ExtArgs["result"]["cartItem"]>
+
+  export type CartItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    familyId?: boolean
+    type?: boolean
+    studentId?: boolean
+    classId?: boolean
+    examSessionId?: boolean
+    textbookId?: boolean
+    parentCartItemId?: boolean
+    enrollmentId?: boolean
+    price?: boolean
+    description?: boolean
+    descriptionEn?: boolean
+    createdAt?: boolean
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    student?: boolean | CartItem$studentArgs<ExtArgs>
+    examSession?: boolean | CartItem$examSessionArgs<ExtArgs>
+    parentItem?: boolean | CartItem$parentItemArgs<ExtArgs>
+  }, ExtArgs["result"]["cartItem"]>
+
+  export type CartItemSelectScalar = {
+    id?: boolean
+    familyId?: boolean
+    type?: boolean
+    studentId?: boolean
+    classId?: boolean
+    examSessionId?: boolean
+    textbookId?: boolean
+    parentCartItemId?: boolean
+    enrollmentId?: boolean
+    price?: boolean
+    description?: boolean
+    descriptionEn?: boolean
+    createdAt?: boolean
+  }
+
+  export type CartItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "familyId" | "type" | "studentId" | "classId" | "examSessionId" | "textbookId" | "parentCartItemId" | "enrollmentId" | "price" | "description" | "descriptionEn" | "createdAt", ExtArgs["result"]["cartItem"]>
+  export type CartItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    student?: boolean | CartItem$studentArgs<ExtArgs>
+    examSession?: boolean | CartItem$examSessionArgs<ExtArgs>
+    childItems?: boolean | CartItem$childItemsArgs<ExtArgs>
+    parentItem?: boolean | CartItem$parentItemArgs<ExtArgs>
+    _count?: boolean | CartItemCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CartItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    student?: boolean | CartItem$studentArgs<ExtArgs>
+    examSession?: boolean | CartItem$examSessionArgs<ExtArgs>
+    parentItem?: boolean | CartItem$parentItemArgs<ExtArgs>
+  }
+  export type CartItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    family?: boolean | FamilyDefaultArgs<ExtArgs>
+    student?: boolean | CartItem$studentArgs<ExtArgs>
+    examSession?: boolean | CartItem$examSessionArgs<ExtArgs>
+    parentItem?: boolean | CartItem$parentItemArgs<ExtArgs>
+  }
+
+  export type $CartItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CartItem"
+    objects: {
+      family: Prisma.$FamilyPayload<ExtArgs>
+      student: Prisma.$StudentPayload<ExtArgs> | null
+      examSession: Prisma.$ExamSessionPayload<ExtArgs> | null
+      childItems: Prisma.$CartItemPayload<ExtArgs>[]
+      parentItem: Prisma.$CartItemPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      familyId: string
+      type: $Enums.CartItemType
+      studentId: string | null
+      classId: string | null
+      examSessionId: string | null
+      textbookId: string | null
+      parentCartItemId: string | null
+      enrollmentId: string | null
+      price: Prisma.Decimal
+      description: string
+      descriptionEn: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["cartItem"]>
+    composites: {}
+  }
+
+  type CartItemGetPayload<S extends boolean | null | undefined | CartItemDefaultArgs> = $Result.GetResult<Prisma.$CartItemPayload, S>
+
+  type CartItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CartItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CartItemCountAggregateInputType | true
+    }
+
+  export interface CartItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CartItem'], meta: { name: 'CartItem' } }
+    /**
+     * Find zero or one CartItem that matches the filter.
+     * @param {CartItemFindUniqueArgs} args - Arguments to find a CartItem
+     * @example
+     * // Get one CartItem
+     * const cartItem = await prisma.cartItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CartItemFindUniqueArgs>(args: SelectSubset<T, CartItemFindUniqueArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CartItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CartItemFindUniqueOrThrowArgs} args - Arguments to find a CartItem
+     * @example
+     * // Get one CartItem
+     * const cartItem = await prisma.cartItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CartItemFindUniqueOrThrowArgs>(args: SelectSubset<T, CartItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CartItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemFindFirstArgs} args - Arguments to find a CartItem
+     * @example
+     * // Get one CartItem
+     * const cartItem = await prisma.cartItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CartItemFindFirstArgs>(args?: SelectSubset<T, CartItemFindFirstArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CartItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemFindFirstOrThrowArgs} args - Arguments to find a CartItem
+     * @example
+     * // Get one CartItem
+     * const cartItem = await prisma.cartItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CartItemFindFirstOrThrowArgs>(args?: SelectSubset<T, CartItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CartItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CartItems
+     * const cartItems = await prisma.cartItem.findMany()
+     * 
+     * // Get first 10 CartItems
+     * const cartItems = await prisma.cartItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cartItemWithIdOnly = await prisma.cartItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CartItemFindManyArgs>(args?: SelectSubset<T, CartItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CartItem.
+     * @param {CartItemCreateArgs} args - Arguments to create a CartItem.
+     * @example
+     * // Create one CartItem
+     * const CartItem = await prisma.cartItem.create({
+     *   data: {
+     *     // ... data to create a CartItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends CartItemCreateArgs>(args: SelectSubset<T, CartItemCreateArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CartItems.
+     * @param {CartItemCreateManyArgs} args - Arguments to create many CartItems.
+     * @example
+     * // Create many CartItems
+     * const cartItem = await prisma.cartItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CartItemCreateManyArgs>(args?: SelectSubset<T, CartItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CartItems and returns the data saved in the database.
+     * @param {CartItemCreateManyAndReturnArgs} args - Arguments to create many CartItems.
+     * @example
+     * // Create many CartItems
+     * const cartItem = await prisma.cartItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CartItems and only return the `id`
+     * const cartItemWithIdOnly = await prisma.cartItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CartItemCreateManyAndReturnArgs>(args?: SelectSubset<T, CartItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CartItem.
+     * @param {CartItemDeleteArgs} args - Arguments to delete one CartItem.
+     * @example
+     * // Delete one CartItem
+     * const CartItem = await prisma.cartItem.delete({
+     *   where: {
+     *     // ... filter to delete one CartItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CartItemDeleteArgs>(args: SelectSubset<T, CartItemDeleteArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CartItem.
+     * @param {CartItemUpdateArgs} args - Arguments to update one CartItem.
+     * @example
+     * // Update one CartItem
+     * const cartItem = await prisma.cartItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CartItemUpdateArgs>(args: SelectSubset<T, CartItemUpdateArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CartItems.
+     * @param {CartItemDeleteManyArgs} args - Arguments to filter CartItems to delete.
+     * @example
+     * // Delete a few CartItems
+     * const { count } = await prisma.cartItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CartItemDeleteManyArgs>(args?: SelectSubset<T, CartItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CartItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CartItems
+     * const cartItem = await prisma.cartItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CartItemUpdateManyArgs>(args: SelectSubset<T, CartItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CartItems and returns the data updated in the database.
+     * @param {CartItemUpdateManyAndReturnArgs} args - Arguments to update many CartItems.
+     * @example
+     * // Update many CartItems
+     * const cartItem = await prisma.cartItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CartItems and only return the `id`
+     * const cartItemWithIdOnly = await prisma.cartItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CartItemUpdateManyAndReturnArgs>(args: SelectSubset<T, CartItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CartItem.
+     * @param {CartItemUpsertArgs} args - Arguments to update or create a CartItem.
+     * @example
+     * // Update or create a CartItem
+     * const cartItem = await prisma.cartItem.upsert({
+     *   create: {
+     *     // ... data to create a CartItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CartItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CartItemUpsertArgs>(args: SelectSubset<T, CartItemUpsertArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CartItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemCountArgs} args - Arguments to filter CartItems to count.
+     * @example
+     * // Count the number of CartItems
+     * const count = await prisma.cartItem.count({
+     *   where: {
+     *     // ... the filter for the CartItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends CartItemCountArgs>(
+      args?: Subset<T, CartItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CartItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CartItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CartItemAggregateArgs>(args: Subset<T, CartItemAggregateArgs>): Prisma.PrismaPromise<GetCartItemAggregateType<T>>
+
+    /**
+     * Group by CartItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CartItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CartItemGroupByArgs['orderBy'] }
+        : { orderBy?: CartItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CartItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCartItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CartItem model
+   */
+  readonly fields: CartItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CartItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CartItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    family<T extends FamilyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FamilyDefaultArgs<ExtArgs>>): Prisma__FamilyClient<$Result.GetResult<Prisma.$FamilyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    student<T extends CartItem$studentArgs<ExtArgs> = {}>(args?: Subset<T, CartItem$studentArgs<ExtArgs>>): Prisma__StudentClient<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    examSession<T extends CartItem$examSessionArgs<ExtArgs> = {}>(args?: Subset<T, CartItem$examSessionArgs<ExtArgs>>): Prisma__ExamSessionClient<$Result.GetResult<Prisma.$ExamSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    childItems<T extends CartItem$childItemsArgs<ExtArgs> = {}>(args?: Subset<T, CartItem$childItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    parentItem<T extends CartItem$parentItemArgs<ExtArgs> = {}>(args?: Subset<T, CartItem$parentItemArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CartItem model
+   */
+  interface CartItemFieldRefs {
+    readonly id: FieldRef<"CartItem", 'String'>
+    readonly familyId: FieldRef<"CartItem", 'String'>
+    readonly type: FieldRef<"CartItem", 'CartItemType'>
+    readonly studentId: FieldRef<"CartItem", 'String'>
+    readonly classId: FieldRef<"CartItem", 'String'>
+    readonly examSessionId: FieldRef<"CartItem", 'String'>
+    readonly textbookId: FieldRef<"CartItem", 'String'>
+    readonly parentCartItemId: FieldRef<"CartItem", 'String'>
+    readonly enrollmentId: FieldRef<"CartItem", 'String'>
+    readonly price: FieldRef<"CartItem", 'Decimal'>
+    readonly description: FieldRef<"CartItem", 'String'>
+    readonly descriptionEn: FieldRef<"CartItem", 'String'>
+    readonly createdAt: FieldRef<"CartItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CartItem findUnique
+   */
+  export type CartItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CartItem to fetch.
+     */
+    where: CartItemWhereUniqueInput
+  }
+
+  /**
+   * CartItem findUniqueOrThrow
+   */
+  export type CartItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CartItem to fetch.
+     */
+    where: CartItemWhereUniqueInput
+  }
+
+  /**
+   * CartItem findFirst
+   */
+  export type CartItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CartItem to fetch.
+     */
+    where?: CartItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CartItems to fetch.
+     */
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CartItems.
+     */
+    cursor?: CartItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CartItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CartItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CartItems.
+     */
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
+  }
+
+  /**
+   * CartItem findFirstOrThrow
+   */
+  export type CartItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CartItem to fetch.
+     */
+    where?: CartItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CartItems to fetch.
+     */
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CartItems.
+     */
+    cursor?: CartItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CartItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CartItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CartItems.
+     */
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
+  }
+
+  /**
+   * CartItem findMany
+   */
+  export type CartItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CartItems to fetch.
+     */
+    where?: CartItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CartItems to fetch.
+     */
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CartItems.
+     */
+    cursor?: CartItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CartItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CartItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CartItems.
+     */
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
+  }
+
+  /**
+   * CartItem create
+   */
+  export type CartItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CartItem.
+     */
+    data: XOR<CartItemCreateInput, CartItemUncheckedCreateInput>
+  }
+
+  /**
+   * CartItem createMany
+   */
+  export type CartItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CartItems.
+     */
+    data: CartItemCreateManyInput | CartItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CartItem createManyAndReturn
+   */
+  export type CartItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many CartItems.
+     */
+    data: CartItemCreateManyInput | CartItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CartItem update
+   */
+  export type CartItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CartItem.
+     */
+    data: XOR<CartItemUpdateInput, CartItemUncheckedUpdateInput>
+    /**
+     * Choose, which CartItem to update.
+     */
+    where: CartItemWhereUniqueInput
+  }
+
+  /**
+   * CartItem updateMany
+   */
+  export type CartItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CartItems.
+     */
+    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyInput>
+    /**
+     * Filter which CartItems to update
+     */
+    where?: CartItemWhereInput
+    /**
+     * Limit how many CartItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CartItem updateManyAndReturn
+   */
+  export type CartItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * The data used to update CartItems.
+     */
+    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyInput>
+    /**
+     * Filter which CartItems to update
+     */
+    where?: CartItemWhereInput
+    /**
+     * Limit how many CartItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CartItem upsert
+   */
+  export type CartItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CartItem to update in case it exists.
+     */
+    where: CartItemWhereUniqueInput
+    /**
+     * In case the CartItem found by the `where` argument doesn't exist, create a new CartItem with this data.
+     */
+    create: XOR<CartItemCreateInput, CartItemUncheckedCreateInput>
+    /**
+     * In case the CartItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CartItemUpdateInput, CartItemUncheckedUpdateInput>
+  }
+
+  /**
+   * CartItem delete
+   */
+  export type CartItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter which CartItem to delete.
+     */
+    where: CartItemWhereUniqueInput
+  }
+
+  /**
+   * CartItem deleteMany
+   */
+  export type CartItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CartItems to delete
+     */
+    where?: CartItemWhereInput
+    /**
+     * Limit how many CartItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CartItem.student
+   */
+  export type CartItem$studentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Student
+     */
+    select?: StudentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Student
+     */
+    omit?: StudentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentInclude<ExtArgs> | null
+    where?: StudentWhereInput
+  }
+
+  /**
+   * CartItem.examSession
+   */
+  export type CartItem$examSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExamSession
+     */
+    select?: ExamSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExamSession
+     */
+    omit?: ExamSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExamSessionInclude<ExtArgs> | null
+    where?: ExamSessionWhereInput
+  }
+
+  /**
+   * CartItem.childItems
+   */
+  export type CartItem$childItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    where?: CartItemWhereInput
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    cursor?: CartItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
+  }
+
+  /**
+   * CartItem.parentItem
+   */
+  export type CartItem$parentItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    where?: CartItemWhereInput
+  }
+
+  /**
+   * CartItem without action
+   */
+  export type CartItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -33180,6 +34739,25 @@ export namespace Prisma {
   export type ClassExamResultScalarFieldEnum = (typeof ClassExamResultScalarFieldEnum)[keyof typeof ClassExamResultScalarFieldEnum]
 
 
+  export const CartItemScalarFieldEnum: {
+    id: 'id',
+    familyId: 'familyId',
+    type: 'type',
+    studentId: 'studentId',
+    classId: 'classId',
+    examSessionId: 'examSessionId',
+    textbookId: 'textbookId',
+    parentCartItemId: 'parentCartItemId',
+    enrollmentId: 'enrollmentId',
+    price: 'price',
+    description: 'description',
+    descriptionEn: 'descriptionEn',
+    createdAt: 'createdAt'
+  };
+
+  export type CartItemScalarFieldEnum = (typeof CartItemScalarFieldEnum)[keyof typeof CartItemScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -33443,6 +35021,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'CartItemType'
+   */
+  export type EnumCartItemTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CartItemType'>
+    
+
+
+  /**
+   * Reference to a field of type 'CartItemType[]'
+   */
+  export type ListEnumCartItemTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CartItemType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -33658,6 +35250,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Family"> | Date | string
     updatedAt?: DateTimeFilter<"Family"> | Date | string
     users?: UserListRelationFilter
+    cartItems?: CartItemListRelationFilter
     students?: StudentListRelationFilter
     volunteerDeposits?: VolunteerDepositListRelationFilter
     volunteerClaims?: VolunteerClaimListRelationFilter
@@ -33673,6 +35266,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     users?: UserOrderByRelationAggregateInput
+    cartItems?: CartItemOrderByRelationAggregateInput
     students?: StudentOrderByRelationAggregateInput
     volunteerDeposits?: VolunteerDepositOrderByRelationAggregateInput
     volunteerClaims?: VolunteerClaimOrderByRelationAggregateInput
@@ -33691,6 +35285,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Family"> | Date | string
     updatedAt?: DateTimeFilter<"Family"> | Date | string
     users?: UserListRelationFilter
+    cartItems?: CartItemListRelationFilter
     students?: StudentListRelationFilter
     volunteerDeposits?: VolunteerDepositListRelationFilter
     volunteerClaims?: VolunteerClaimListRelationFilter
@@ -33843,6 +35438,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideListRelationFilter
     examRegistrations?: ExamRegistrationListRelationFilter
     classExamResults?: ClassExamResultListRelationFilter
+    cartItems?: CartItemListRelationFilter
   }
 
   export type StudentOrderByWithRelationInput = {
@@ -33862,6 +35458,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideOrderByRelationAggregateInput
     examRegistrations?: ExamRegistrationOrderByRelationAggregateInput
     classExamResults?: ClassExamResultOrderByRelationAggregateInput
+    cartItems?: CartItemOrderByRelationAggregateInput
   }
 
   export type StudentWhereUniqueInput = Prisma.AtLeast<{
@@ -33884,6 +35481,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideListRelationFilter
     examRegistrations?: ExamRegistrationListRelationFilter
     classExamResults?: ClassExamResultListRelationFilter
+    cartItems?: CartItemListRelationFilter
   }, "id">
 
   export type StudentOrderByWithAggregationInput = {
@@ -34794,6 +36392,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ExamSession"> | Date | string
     updatedAt?: DateTimeFilter<"ExamSession"> | Date | string
     registrations?: ExamRegistrationListRelationFilter
+    cartItems?: CartItemListRelationFilter
   }
 
   export type ExamSessionOrderByWithRelationInput = {
@@ -34813,6 +36412,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     registrations?: ExamRegistrationOrderByRelationAggregateInput
+    cartItems?: CartItemOrderByRelationAggregateInput
   }
 
   export type ExamSessionWhereUniqueInput = Prisma.AtLeast<{
@@ -34835,6 +36435,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ExamSession"> | Date | string
     updatedAt?: DateTimeFilter<"ExamSession"> | Date | string
     registrations?: ExamRegistrationListRelationFilter
+    cartItems?: CartItemListRelationFilter
   }, "id">
 
   export type ExamSessionOrderByWithAggregationInput = {
@@ -35577,6 +37178,115 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ClassExamResult"> | Date | string
   }
 
+  export type CartItemWhereInput = {
+    AND?: CartItemWhereInput | CartItemWhereInput[]
+    OR?: CartItemWhereInput[]
+    NOT?: CartItemWhereInput | CartItemWhereInput[]
+    id?: StringFilter<"CartItem"> | string
+    familyId?: StringFilter<"CartItem"> | string
+    type?: EnumCartItemTypeFilter<"CartItem"> | $Enums.CartItemType
+    studentId?: StringNullableFilter<"CartItem"> | string | null
+    classId?: StringNullableFilter<"CartItem"> | string | null
+    examSessionId?: StringNullableFilter<"CartItem"> | string | null
+    textbookId?: StringNullableFilter<"CartItem"> | string | null
+    parentCartItemId?: StringNullableFilter<"CartItem"> | string | null
+    enrollmentId?: StringNullableFilter<"CartItem"> | string | null
+    price?: DecimalFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
+    description?: StringFilter<"CartItem"> | string
+    descriptionEn?: StringNullableFilter<"CartItem"> | string | null
+    createdAt?: DateTimeFilter<"CartItem"> | Date | string
+    family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
+    student?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
+    examSession?: XOR<ExamSessionNullableScalarRelationFilter, ExamSessionWhereInput> | null
+    childItems?: CartItemListRelationFilter
+    parentItem?: XOR<CartItemNullableScalarRelationFilter, CartItemWhereInput> | null
+  }
+
+  export type CartItemOrderByWithRelationInput = {
+    id?: SortOrder
+    familyId?: SortOrder
+    type?: SortOrder
+    studentId?: SortOrderInput | SortOrder
+    classId?: SortOrderInput | SortOrder
+    examSessionId?: SortOrderInput | SortOrder
+    textbookId?: SortOrderInput | SortOrder
+    parentCartItemId?: SortOrderInput | SortOrder
+    enrollmentId?: SortOrderInput | SortOrder
+    price?: SortOrder
+    description?: SortOrder
+    descriptionEn?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    family?: FamilyOrderByWithRelationInput
+    student?: StudentOrderByWithRelationInput
+    examSession?: ExamSessionOrderByWithRelationInput
+    childItems?: CartItemOrderByRelationAggregateInput
+    parentItem?: CartItemOrderByWithRelationInput
+  }
+
+  export type CartItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CartItemWhereInput | CartItemWhereInput[]
+    OR?: CartItemWhereInput[]
+    NOT?: CartItemWhereInput | CartItemWhereInput[]
+    familyId?: StringFilter<"CartItem"> | string
+    type?: EnumCartItemTypeFilter<"CartItem"> | $Enums.CartItemType
+    studentId?: StringNullableFilter<"CartItem"> | string | null
+    classId?: StringNullableFilter<"CartItem"> | string | null
+    examSessionId?: StringNullableFilter<"CartItem"> | string | null
+    textbookId?: StringNullableFilter<"CartItem"> | string | null
+    parentCartItemId?: StringNullableFilter<"CartItem"> | string | null
+    enrollmentId?: StringNullableFilter<"CartItem"> | string | null
+    price?: DecimalFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
+    description?: StringFilter<"CartItem"> | string
+    descriptionEn?: StringNullableFilter<"CartItem"> | string | null
+    createdAt?: DateTimeFilter<"CartItem"> | Date | string
+    family?: XOR<FamilyScalarRelationFilter, FamilyWhereInput>
+    student?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
+    examSession?: XOR<ExamSessionNullableScalarRelationFilter, ExamSessionWhereInput> | null
+    childItems?: CartItemListRelationFilter
+    parentItem?: XOR<CartItemNullableScalarRelationFilter, CartItemWhereInput> | null
+  }, "id">
+
+  export type CartItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    familyId?: SortOrder
+    type?: SortOrder
+    studentId?: SortOrderInput | SortOrder
+    classId?: SortOrderInput | SortOrder
+    examSessionId?: SortOrderInput | SortOrder
+    textbookId?: SortOrderInput | SortOrder
+    parentCartItemId?: SortOrderInput | SortOrder
+    enrollmentId?: SortOrderInput | SortOrder
+    price?: SortOrder
+    description?: SortOrder
+    descriptionEn?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: CartItemCountOrderByAggregateInput
+    _avg?: CartItemAvgOrderByAggregateInput
+    _max?: CartItemMaxOrderByAggregateInput
+    _min?: CartItemMinOrderByAggregateInput
+    _sum?: CartItemSumOrderByAggregateInput
+  }
+
+  export type CartItemScalarWhereWithAggregatesInput = {
+    AND?: CartItemScalarWhereWithAggregatesInput | CartItemScalarWhereWithAggregatesInput[]
+    OR?: CartItemScalarWhereWithAggregatesInput[]
+    NOT?: CartItemScalarWhereWithAggregatesInput | CartItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CartItem"> | string
+    familyId?: StringWithAggregatesFilter<"CartItem"> | string
+    type?: EnumCartItemTypeWithAggregatesFilter<"CartItem"> | $Enums.CartItemType
+    studentId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
+    classId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
+    examSessionId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
+    textbookId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
+    parentCartItemId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
+    enrollmentId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
+    price?: DecimalWithAggregatesFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
+    description?: StringWithAggregatesFilter<"CartItem"> | string
+    descriptionEn?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"CartItem"> | Date | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -35781,6 +37491,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutFamilyInput
+    cartItems?: CartItemCreateNestedManyWithoutFamilyInput
     students?: StudentCreateNestedManyWithoutFamilyInput
     volunteerDeposits?: VolunteerDepositCreateNestedManyWithoutFamilyInput
     volunteerClaims?: VolunteerClaimCreateNestedManyWithoutFamilyInput
@@ -35796,6 +37507,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutFamilyInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutFamilyInput
     students?: StudentUncheckedCreateNestedManyWithoutFamilyInput
     volunteerDeposits?: VolunteerDepositUncheckedCreateNestedManyWithoutFamilyInput
     volunteerClaims?: VolunteerClaimUncheckedCreateNestedManyWithoutFamilyInput
@@ -35811,6 +37523,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutFamilyNestedInput
+    cartItems?: CartItemUpdateManyWithoutFamilyNestedInput
     students?: StudentUpdateManyWithoutFamilyNestedInput
     volunteerDeposits?: VolunteerDepositUpdateManyWithoutFamilyNestedInput
     volunteerClaims?: VolunteerClaimUpdateManyWithoutFamilyNestedInput
@@ -35826,6 +37539,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutFamilyNestedInput
     students?: StudentUncheckedUpdateManyWithoutFamilyNestedInput
     volunteerDeposits?: VolunteerDepositUncheckedUpdateManyWithoutFamilyNestedInput
     volunteerClaims?: VolunteerClaimUncheckedUpdateManyWithoutFamilyNestedInput
@@ -35996,6 +37710,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateInput = {
@@ -36014,6 +37729,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationUncheckedCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultUncheckedCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUpdateInput = {
@@ -36032,6 +37748,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateInput = {
@@ -36050,6 +37767,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUncheckedUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUncheckedUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentCreateManyInput = {
@@ -37034,6 +38752,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     registrations?: ExamRegistrationCreateNestedManyWithoutExamSessionInput
+    cartItems?: CartItemCreateNestedManyWithoutExamSessionInput
   }
 
   export type ExamSessionUncheckedCreateInput = {
@@ -37053,6 +38772,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     registrations?: ExamRegistrationUncheckedCreateNestedManyWithoutExamSessionInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutExamSessionInput
   }
 
   export type ExamSessionUpdateInput = {
@@ -37072,6 +38792,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     registrations?: ExamRegistrationUpdateManyWithoutExamSessionNestedInput
+    cartItems?: CartItemUpdateManyWithoutExamSessionNestedInput
   }
 
   export type ExamSessionUncheckedUpdateInput = {
@@ -37091,6 +38812,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     registrations?: ExamRegistrationUncheckedUpdateManyWithoutExamSessionNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutExamSessionNestedInput
   }
 
   export type ExamSessionCreateManyInput = {
@@ -37941,6 +39663,118 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CartItemCreateInput = {
+    id?: string
+    type: $Enums.CartItemType
+    classId?: string | null
+    textbookId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+    family: FamilyCreateNestedOneWithoutCartItemsInput
+    student?: StudentCreateNestedOneWithoutCartItemsInput
+    examSession?: ExamSessionCreateNestedOneWithoutCartItemsInput
+    childItems?: CartItemCreateNestedManyWithoutParentItemInput
+    parentItem?: CartItemCreateNestedOneWithoutChildItemsInput
+  }
+
+  export type CartItemUncheckedCreateInput = {
+    id?: string
+    familyId: string
+    type: $Enums.CartItemType
+    studentId?: string | null
+    classId?: string | null
+    examSessionId?: string | null
+    textbookId?: string | null
+    parentCartItemId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+    childItems?: CartItemUncheckedCreateNestedManyWithoutParentItemInput
+  }
+
+  export type CartItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    family?: FamilyUpdateOneRequiredWithoutCartItemsNestedInput
+    student?: StudentUpdateOneWithoutCartItemsNestedInput
+    examSession?: ExamSessionUpdateOneWithoutCartItemsNestedInput
+    childItems?: CartItemUpdateManyWithoutParentItemNestedInput
+    parentItem?: CartItemUpdateOneWithoutChildItemsNestedInput
+  }
+
+  export type CartItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    examSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    childItems?: CartItemUncheckedUpdateManyWithoutParentItemNestedInput
+  }
+
+  export type CartItemCreateManyInput = {
+    id?: string
+    familyId: string
+    type: $Enums.CartItemType
+    studentId?: string | null
+    classId?: string | null
+    examSessionId?: string | null
+    textbookId?: string | null
+    parentCartItemId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CartItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CartItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    examSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -38177,6 +40011,12 @@ export namespace Prisma {
     none?: UserWhereInput
   }
 
+  export type CartItemListRelationFilter = {
+    every?: CartItemWhereInput
+    some?: CartItemWhereInput
+    none?: CartItemWhereInput
+  }
+
   export type StudentListRelationFilter = {
     every?: StudentWhereInput
     some?: StudentWhereInput
@@ -38196,6 +40036,10 @@ export namespace Prisma {
   }
 
   export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CartItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -39785,6 +41629,94 @@ export namespace Prisma {
     _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
+  export type EnumCartItemTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CartItemType | EnumCartItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CartItemType[] | ListEnumCartItemTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CartItemType[] | ListEnumCartItemTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCartItemTypeFilter<$PrismaModel> | $Enums.CartItemType
+  }
+
+  export type StudentNullableScalarRelationFilter = {
+    is?: StudentWhereInput | null
+    isNot?: StudentWhereInput | null
+  }
+
+  export type ExamSessionNullableScalarRelationFilter = {
+    is?: ExamSessionWhereInput | null
+    isNot?: ExamSessionWhereInput | null
+  }
+
+  export type CartItemNullableScalarRelationFilter = {
+    is?: CartItemWhereInput | null
+    isNot?: CartItemWhereInput | null
+  }
+
+  export type CartItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    familyId?: SortOrder
+    type?: SortOrder
+    studentId?: SortOrder
+    classId?: SortOrder
+    examSessionId?: SortOrder
+    textbookId?: SortOrder
+    parentCartItemId?: SortOrder
+    enrollmentId?: SortOrder
+    price?: SortOrder
+    description?: SortOrder
+    descriptionEn?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CartItemAvgOrderByAggregateInput = {
+    price?: SortOrder
+  }
+
+  export type CartItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    familyId?: SortOrder
+    type?: SortOrder
+    studentId?: SortOrder
+    classId?: SortOrder
+    examSessionId?: SortOrder
+    textbookId?: SortOrder
+    parentCartItemId?: SortOrder
+    enrollmentId?: SortOrder
+    price?: SortOrder
+    description?: SortOrder
+    descriptionEn?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CartItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    familyId?: SortOrder
+    type?: SortOrder
+    studentId?: SortOrder
+    classId?: SortOrder
+    examSessionId?: SortOrder
+    textbookId?: SortOrder
+    parentCartItemId?: SortOrder
+    enrollmentId?: SortOrder
+    price?: SortOrder
+    description?: SortOrder
+    descriptionEn?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CartItemSumOrderByAggregateInput = {
+    price?: SortOrder
+  }
+
+  export type EnumCartItemTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CartItemType | EnumCartItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CartItemType[] | ListEnumCartItemTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CartItemType[] | ListEnumCartItemTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCartItemTypeWithAggregatesFilter<$PrismaModel> | $Enums.CartItemType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCartItemTypeFilter<$PrismaModel>
+    _max?: NestedEnumCartItemTypeFilter<$PrismaModel>
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -39840,6 +41772,13 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
+  export type CartItemCreateNestedManyWithoutFamilyInput = {
+    create?: XOR<CartItemCreateWithoutFamilyInput, CartItemUncheckedCreateWithoutFamilyInput> | CartItemCreateWithoutFamilyInput[] | CartItemUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutFamilyInput | CartItemCreateOrConnectWithoutFamilyInput[]
+    createMany?: CartItemCreateManyFamilyInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+  }
+
   export type StudentCreateNestedManyWithoutFamilyInput = {
     create?: XOR<StudentCreateWithoutFamilyInput, StudentUncheckedCreateWithoutFamilyInput> | StudentCreateWithoutFamilyInput[] | StudentUncheckedCreateWithoutFamilyInput[]
     connectOrCreate?: StudentCreateOrConnectWithoutFamilyInput | StudentCreateOrConnectWithoutFamilyInput[]
@@ -39866,6 +41805,13 @@ export namespace Prisma {
     connectOrCreate?: UserCreateOrConnectWithoutFamilyInput | UserCreateOrConnectWithoutFamilyInput[]
     createMany?: UserCreateManyFamilyInputEnvelope
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type CartItemUncheckedCreateNestedManyWithoutFamilyInput = {
+    create?: XOR<CartItemCreateWithoutFamilyInput, CartItemUncheckedCreateWithoutFamilyInput> | CartItemCreateWithoutFamilyInput[] | CartItemUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutFamilyInput | CartItemCreateOrConnectWithoutFamilyInput[]
+    createMany?: CartItemCreateManyFamilyInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
   }
 
   export type StudentUncheckedCreateNestedManyWithoutFamilyInput = {
@@ -39901,6 +41847,20 @@ export namespace Prisma {
     update?: UserUpdateWithWhereUniqueWithoutFamilyInput | UserUpdateWithWhereUniqueWithoutFamilyInput[]
     updateMany?: UserUpdateManyWithWhereWithoutFamilyInput | UserUpdateManyWithWhereWithoutFamilyInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type CartItemUpdateManyWithoutFamilyNestedInput = {
+    create?: XOR<CartItemCreateWithoutFamilyInput, CartItemUncheckedCreateWithoutFamilyInput> | CartItemCreateWithoutFamilyInput[] | CartItemUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutFamilyInput | CartItemCreateOrConnectWithoutFamilyInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutFamilyInput | CartItemUpsertWithWhereUniqueWithoutFamilyInput[]
+    createMany?: CartItemCreateManyFamilyInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutFamilyInput | CartItemUpdateWithWhereUniqueWithoutFamilyInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutFamilyInput | CartItemUpdateManyWithWhereWithoutFamilyInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
   }
 
   export type StudentUpdateManyWithoutFamilyNestedInput = {
@@ -39957,6 +41917,20 @@ export namespace Prisma {
     update?: UserUpdateWithWhereUniqueWithoutFamilyInput | UserUpdateWithWhereUniqueWithoutFamilyInput[]
     updateMany?: UserUpdateManyWithWhereWithoutFamilyInput | UserUpdateManyWithWhereWithoutFamilyInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type CartItemUncheckedUpdateManyWithoutFamilyNestedInput = {
+    create?: XOR<CartItemCreateWithoutFamilyInput, CartItemUncheckedCreateWithoutFamilyInput> | CartItemCreateWithoutFamilyInput[] | CartItemUncheckedCreateWithoutFamilyInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutFamilyInput | CartItemCreateOrConnectWithoutFamilyInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutFamilyInput | CartItemUpsertWithWhereUniqueWithoutFamilyInput[]
+    createMany?: CartItemCreateManyFamilyInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutFamilyInput | CartItemUpdateWithWhereUniqueWithoutFamilyInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutFamilyInput | CartItemUpdateManyWithWhereWithoutFamilyInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
   }
 
   export type StudentUncheckedUpdateManyWithoutFamilyNestedInput = {
@@ -40182,6 +42156,13 @@ export namespace Prisma {
     connect?: ClassExamResultWhereUniqueInput | ClassExamResultWhereUniqueInput[]
   }
 
+  export type CartItemCreateNestedManyWithoutStudentInput = {
+    create?: XOR<CartItemCreateWithoutStudentInput, CartItemUncheckedCreateWithoutStudentInput> | CartItemCreateWithoutStudentInput[] | CartItemUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutStudentInput | CartItemCreateOrConnectWithoutStudentInput[]
+    createMany?: CartItemCreateManyStudentInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+  }
+
   export type EnrollmentUncheckedCreateNestedManyWithoutStudentInput = {
     create?: XOR<EnrollmentCreateWithoutStudentInput, EnrollmentUncheckedCreateWithoutStudentInput> | EnrollmentCreateWithoutStudentInput[] | EnrollmentUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutStudentInput | EnrollmentCreateOrConnectWithoutStudentInput[]
@@ -40215,6 +42196,13 @@ export namespace Prisma {
     connectOrCreate?: ClassExamResultCreateOrConnectWithoutStudentInput | ClassExamResultCreateOrConnectWithoutStudentInput[]
     createMany?: ClassExamResultCreateManyStudentInputEnvelope
     connect?: ClassExamResultWhereUniqueInput | ClassExamResultWhereUniqueInput[]
+  }
+
+  export type CartItemUncheckedCreateNestedManyWithoutStudentInput = {
+    create?: XOR<CartItemCreateWithoutStudentInput, CartItemUncheckedCreateWithoutStudentInput> | CartItemCreateWithoutStudentInput[] | CartItemUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutStudentInput | CartItemCreateOrConnectWithoutStudentInput[]
+    createMany?: CartItemCreateManyStudentInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
   }
 
   export type FamilyUpdateOneRequiredWithoutStudentsNestedInput = {
@@ -40295,6 +42283,20 @@ export namespace Prisma {
     deleteMany?: ClassExamResultScalarWhereInput | ClassExamResultScalarWhereInput[]
   }
 
+  export type CartItemUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<CartItemCreateWithoutStudentInput, CartItemUncheckedCreateWithoutStudentInput> | CartItemCreateWithoutStudentInput[] | CartItemUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutStudentInput | CartItemCreateOrConnectWithoutStudentInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutStudentInput | CartItemUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: CartItemCreateManyStudentInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutStudentInput | CartItemUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutStudentInput | CartItemUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
+  }
+
   export type EnrollmentUncheckedUpdateManyWithoutStudentNestedInput = {
     create?: XOR<EnrollmentCreateWithoutStudentInput, EnrollmentUncheckedCreateWithoutStudentInput> | EnrollmentCreateWithoutStudentInput[] | EnrollmentUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutStudentInput | EnrollmentCreateOrConnectWithoutStudentInput[]
@@ -40363,6 +42365,20 @@ export namespace Prisma {
     update?: ClassExamResultUpdateWithWhereUniqueWithoutStudentInput | ClassExamResultUpdateWithWhereUniqueWithoutStudentInput[]
     updateMany?: ClassExamResultUpdateManyWithWhereWithoutStudentInput | ClassExamResultUpdateManyWithWhereWithoutStudentInput[]
     deleteMany?: ClassExamResultScalarWhereInput | ClassExamResultScalarWhereInput[]
+  }
+
+  export type CartItemUncheckedUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<CartItemCreateWithoutStudentInput, CartItemUncheckedCreateWithoutStudentInput> | CartItemCreateWithoutStudentInput[] | CartItemUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutStudentInput | CartItemCreateOrConnectWithoutStudentInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutStudentInput | CartItemUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: CartItemCreateManyStudentInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutStudentInput | CartItemUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutStudentInput | CartItemUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTeacherProfileInput = {
@@ -40970,11 +42986,25 @@ export namespace Prisma {
     connect?: ExamRegistrationWhereUniqueInput | ExamRegistrationWhereUniqueInput[]
   }
 
+  export type CartItemCreateNestedManyWithoutExamSessionInput = {
+    create?: XOR<CartItemCreateWithoutExamSessionInput, CartItemUncheckedCreateWithoutExamSessionInput> | CartItemCreateWithoutExamSessionInput[] | CartItemUncheckedCreateWithoutExamSessionInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutExamSessionInput | CartItemCreateOrConnectWithoutExamSessionInput[]
+    createMany?: CartItemCreateManyExamSessionInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+  }
+
   export type ExamRegistrationUncheckedCreateNestedManyWithoutExamSessionInput = {
     create?: XOR<ExamRegistrationCreateWithoutExamSessionInput, ExamRegistrationUncheckedCreateWithoutExamSessionInput> | ExamRegistrationCreateWithoutExamSessionInput[] | ExamRegistrationUncheckedCreateWithoutExamSessionInput[]
     connectOrCreate?: ExamRegistrationCreateOrConnectWithoutExamSessionInput | ExamRegistrationCreateOrConnectWithoutExamSessionInput[]
     createMany?: ExamRegistrationCreateManyExamSessionInputEnvelope
     connect?: ExamRegistrationWhereUniqueInput | ExamRegistrationWhereUniqueInput[]
+  }
+
+  export type CartItemUncheckedCreateNestedManyWithoutExamSessionInput = {
+    create?: XOR<CartItemCreateWithoutExamSessionInput, CartItemUncheckedCreateWithoutExamSessionInput> | CartItemCreateWithoutExamSessionInput[] | CartItemUncheckedCreateWithoutExamSessionInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutExamSessionInput | CartItemCreateOrConnectWithoutExamSessionInput[]
+    createMany?: CartItemCreateManyExamSessionInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
   }
 
   export type EnumExamTypeFieldUpdateOperationsInput = {
@@ -40995,6 +43025,20 @@ export namespace Prisma {
     deleteMany?: ExamRegistrationScalarWhereInput | ExamRegistrationScalarWhereInput[]
   }
 
+  export type CartItemUpdateManyWithoutExamSessionNestedInput = {
+    create?: XOR<CartItemCreateWithoutExamSessionInput, CartItemUncheckedCreateWithoutExamSessionInput> | CartItemCreateWithoutExamSessionInput[] | CartItemUncheckedCreateWithoutExamSessionInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutExamSessionInput | CartItemCreateOrConnectWithoutExamSessionInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutExamSessionInput | CartItemUpsertWithWhereUniqueWithoutExamSessionInput[]
+    createMany?: CartItemCreateManyExamSessionInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutExamSessionInput | CartItemUpdateWithWhereUniqueWithoutExamSessionInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutExamSessionInput | CartItemUpdateManyWithWhereWithoutExamSessionInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
+  }
+
   export type ExamRegistrationUncheckedUpdateManyWithoutExamSessionNestedInput = {
     create?: XOR<ExamRegistrationCreateWithoutExamSessionInput, ExamRegistrationUncheckedCreateWithoutExamSessionInput> | ExamRegistrationCreateWithoutExamSessionInput[] | ExamRegistrationUncheckedCreateWithoutExamSessionInput[]
     connectOrCreate?: ExamRegistrationCreateOrConnectWithoutExamSessionInput | ExamRegistrationCreateOrConnectWithoutExamSessionInput[]
@@ -41007,6 +43051,20 @@ export namespace Prisma {
     update?: ExamRegistrationUpdateWithWhereUniqueWithoutExamSessionInput | ExamRegistrationUpdateWithWhereUniqueWithoutExamSessionInput[]
     updateMany?: ExamRegistrationUpdateManyWithWhereWithoutExamSessionInput | ExamRegistrationUpdateManyWithWhereWithoutExamSessionInput[]
     deleteMany?: ExamRegistrationScalarWhereInput | ExamRegistrationScalarWhereInput[]
+  }
+
+  export type CartItemUncheckedUpdateManyWithoutExamSessionNestedInput = {
+    create?: XOR<CartItemCreateWithoutExamSessionInput, CartItemUncheckedCreateWithoutExamSessionInput> | CartItemCreateWithoutExamSessionInput[] | CartItemUncheckedCreateWithoutExamSessionInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutExamSessionInput | CartItemCreateOrConnectWithoutExamSessionInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutExamSessionInput | CartItemUpsertWithWhereUniqueWithoutExamSessionInput[]
+    createMany?: CartItemCreateManyExamSessionInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutExamSessionInput | CartItemUpdateWithWhereUniqueWithoutExamSessionInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutExamSessionInput | CartItemUpdateManyWithWhereWithoutExamSessionInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
   }
 
   export type ExamSessionCreateNestedOneWithoutRegistrationsInput = {
@@ -41279,6 +43337,114 @@ export namespace Prisma {
     upsert?: StudentUpsertWithoutClassExamResultsInput
     connect?: StudentWhereUniqueInput
     update?: XOR<XOR<StudentUpdateToOneWithWhereWithoutClassExamResultsInput, StudentUpdateWithoutClassExamResultsInput>, StudentUncheckedUpdateWithoutClassExamResultsInput>
+  }
+
+  export type FamilyCreateNestedOneWithoutCartItemsInput = {
+    create?: XOR<FamilyCreateWithoutCartItemsInput, FamilyUncheckedCreateWithoutCartItemsInput>
+    connectOrCreate?: FamilyCreateOrConnectWithoutCartItemsInput
+    connect?: FamilyWhereUniqueInput
+  }
+
+  export type StudentCreateNestedOneWithoutCartItemsInput = {
+    create?: XOR<StudentCreateWithoutCartItemsInput, StudentUncheckedCreateWithoutCartItemsInput>
+    connectOrCreate?: StudentCreateOrConnectWithoutCartItemsInput
+    connect?: StudentWhereUniqueInput
+  }
+
+  export type ExamSessionCreateNestedOneWithoutCartItemsInput = {
+    create?: XOR<ExamSessionCreateWithoutCartItemsInput, ExamSessionUncheckedCreateWithoutCartItemsInput>
+    connectOrCreate?: ExamSessionCreateOrConnectWithoutCartItemsInput
+    connect?: ExamSessionWhereUniqueInput
+  }
+
+  export type CartItemCreateNestedManyWithoutParentItemInput = {
+    create?: XOR<CartItemCreateWithoutParentItemInput, CartItemUncheckedCreateWithoutParentItemInput> | CartItemCreateWithoutParentItemInput[] | CartItemUncheckedCreateWithoutParentItemInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutParentItemInput | CartItemCreateOrConnectWithoutParentItemInput[]
+    createMany?: CartItemCreateManyParentItemInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+  }
+
+  export type CartItemCreateNestedOneWithoutChildItemsInput = {
+    create?: XOR<CartItemCreateWithoutChildItemsInput, CartItemUncheckedCreateWithoutChildItemsInput>
+    connectOrCreate?: CartItemCreateOrConnectWithoutChildItemsInput
+    connect?: CartItemWhereUniqueInput
+  }
+
+  export type CartItemUncheckedCreateNestedManyWithoutParentItemInput = {
+    create?: XOR<CartItemCreateWithoutParentItemInput, CartItemUncheckedCreateWithoutParentItemInput> | CartItemCreateWithoutParentItemInput[] | CartItemUncheckedCreateWithoutParentItemInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutParentItemInput | CartItemCreateOrConnectWithoutParentItemInput[]
+    createMany?: CartItemCreateManyParentItemInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+  }
+
+  export type EnumCartItemTypeFieldUpdateOperationsInput = {
+    set?: $Enums.CartItemType
+  }
+
+  export type FamilyUpdateOneRequiredWithoutCartItemsNestedInput = {
+    create?: XOR<FamilyCreateWithoutCartItemsInput, FamilyUncheckedCreateWithoutCartItemsInput>
+    connectOrCreate?: FamilyCreateOrConnectWithoutCartItemsInput
+    upsert?: FamilyUpsertWithoutCartItemsInput
+    connect?: FamilyWhereUniqueInput
+    update?: XOR<XOR<FamilyUpdateToOneWithWhereWithoutCartItemsInput, FamilyUpdateWithoutCartItemsInput>, FamilyUncheckedUpdateWithoutCartItemsInput>
+  }
+
+  export type StudentUpdateOneWithoutCartItemsNestedInput = {
+    create?: XOR<StudentCreateWithoutCartItemsInput, StudentUncheckedCreateWithoutCartItemsInput>
+    connectOrCreate?: StudentCreateOrConnectWithoutCartItemsInput
+    upsert?: StudentUpsertWithoutCartItemsInput
+    disconnect?: StudentWhereInput | boolean
+    delete?: StudentWhereInput | boolean
+    connect?: StudentWhereUniqueInput
+    update?: XOR<XOR<StudentUpdateToOneWithWhereWithoutCartItemsInput, StudentUpdateWithoutCartItemsInput>, StudentUncheckedUpdateWithoutCartItemsInput>
+  }
+
+  export type ExamSessionUpdateOneWithoutCartItemsNestedInput = {
+    create?: XOR<ExamSessionCreateWithoutCartItemsInput, ExamSessionUncheckedCreateWithoutCartItemsInput>
+    connectOrCreate?: ExamSessionCreateOrConnectWithoutCartItemsInput
+    upsert?: ExamSessionUpsertWithoutCartItemsInput
+    disconnect?: ExamSessionWhereInput | boolean
+    delete?: ExamSessionWhereInput | boolean
+    connect?: ExamSessionWhereUniqueInput
+    update?: XOR<XOR<ExamSessionUpdateToOneWithWhereWithoutCartItemsInput, ExamSessionUpdateWithoutCartItemsInput>, ExamSessionUncheckedUpdateWithoutCartItemsInput>
+  }
+
+  export type CartItemUpdateManyWithoutParentItemNestedInput = {
+    create?: XOR<CartItemCreateWithoutParentItemInput, CartItemUncheckedCreateWithoutParentItemInput> | CartItemCreateWithoutParentItemInput[] | CartItemUncheckedCreateWithoutParentItemInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutParentItemInput | CartItemCreateOrConnectWithoutParentItemInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutParentItemInput | CartItemUpsertWithWhereUniqueWithoutParentItemInput[]
+    createMany?: CartItemCreateManyParentItemInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutParentItemInput | CartItemUpdateWithWhereUniqueWithoutParentItemInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutParentItemInput | CartItemUpdateManyWithWhereWithoutParentItemInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
+  }
+
+  export type CartItemUpdateOneWithoutChildItemsNestedInput = {
+    create?: XOR<CartItemCreateWithoutChildItemsInput, CartItemUncheckedCreateWithoutChildItemsInput>
+    connectOrCreate?: CartItemCreateOrConnectWithoutChildItemsInput
+    upsert?: CartItemUpsertWithoutChildItemsInput
+    disconnect?: CartItemWhereInput | boolean
+    delete?: CartItemWhereInput | boolean
+    connect?: CartItemWhereUniqueInput
+    update?: XOR<XOR<CartItemUpdateToOneWithWhereWithoutChildItemsInput, CartItemUpdateWithoutChildItemsInput>, CartItemUncheckedUpdateWithoutChildItemsInput>
+  }
+
+  export type CartItemUncheckedUpdateManyWithoutParentItemNestedInput = {
+    create?: XOR<CartItemCreateWithoutParentItemInput, CartItemUncheckedCreateWithoutParentItemInput> | CartItemCreateWithoutParentItemInput[] | CartItemUncheckedCreateWithoutParentItemInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutParentItemInput | CartItemCreateOrConnectWithoutParentItemInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutParentItemInput | CartItemUpsertWithWhereUniqueWithoutParentItemInput[]
+    createMany?: CartItemCreateManyParentItemInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutParentItemInput | CartItemUpdateWithWhereUniqueWithoutParentItemInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutParentItemInput | CartItemUpdateManyWithWhereWithoutParentItemInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -41759,6 +43925,23 @@ export namespace Prisma {
     _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumCartItemTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CartItemType | EnumCartItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CartItemType[] | ListEnumCartItemTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CartItemType[] | ListEnumCartItemTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCartItemTypeFilter<$PrismaModel> | $Enums.CartItemType
+  }
+
+  export type NestedEnumCartItemTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CartItemType | EnumCartItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CartItemType[] | ListEnumCartItemTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CartItemType[] | ListEnumCartItemTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCartItemTypeWithAggregatesFilter<$PrismaModel> | $Enums.CartItemType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCartItemTypeFilter<$PrismaModel>
+    _max?: NestedEnumCartItemTypeFilter<$PrismaModel>
+  }
+
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name?: string | null
@@ -41971,6 +44154,48 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CartItemCreateWithoutFamilyInput = {
+    id?: string
+    type: $Enums.CartItemType
+    classId?: string | null
+    textbookId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+    student?: StudentCreateNestedOneWithoutCartItemsInput
+    examSession?: ExamSessionCreateNestedOneWithoutCartItemsInput
+    childItems?: CartItemCreateNestedManyWithoutParentItemInput
+    parentItem?: CartItemCreateNestedOneWithoutChildItemsInput
+  }
+
+  export type CartItemUncheckedCreateWithoutFamilyInput = {
+    id?: string
+    type: $Enums.CartItemType
+    studentId?: string | null
+    classId?: string | null
+    examSessionId?: string | null
+    textbookId?: string | null
+    parentCartItemId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+    childItems?: CartItemUncheckedCreateNestedManyWithoutParentItemInput
+  }
+
+  export type CartItemCreateOrConnectWithoutFamilyInput = {
+    where: CartItemWhereUniqueInput
+    create: XOR<CartItemCreateWithoutFamilyInput, CartItemUncheckedCreateWithoutFamilyInput>
+  }
+
+  export type CartItemCreateManyFamilyInputEnvelope = {
+    data: CartItemCreateManyFamilyInput | CartItemCreateManyFamilyInput[]
+    skipDuplicates?: boolean
+  }
+
   export type StudentCreateWithoutFamilyInput = {
     id?: string
     name: string
@@ -41986,6 +44211,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutFamilyInput = {
@@ -42003,6 +44229,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationUncheckedCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultUncheckedCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutFamilyInput = {
@@ -42149,6 +44376,41 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
 
+  export type CartItemUpsertWithWhereUniqueWithoutFamilyInput = {
+    where: CartItemWhereUniqueInput
+    update: XOR<CartItemUpdateWithoutFamilyInput, CartItemUncheckedUpdateWithoutFamilyInput>
+    create: XOR<CartItemCreateWithoutFamilyInput, CartItemUncheckedCreateWithoutFamilyInput>
+  }
+
+  export type CartItemUpdateWithWhereUniqueWithoutFamilyInput = {
+    where: CartItemWhereUniqueInput
+    data: XOR<CartItemUpdateWithoutFamilyInput, CartItemUncheckedUpdateWithoutFamilyInput>
+  }
+
+  export type CartItemUpdateManyWithWhereWithoutFamilyInput = {
+    where: CartItemScalarWhereInput
+    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyWithoutFamilyInput>
+  }
+
+  export type CartItemScalarWhereInput = {
+    AND?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
+    OR?: CartItemScalarWhereInput[]
+    NOT?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
+    id?: StringFilter<"CartItem"> | string
+    familyId?: StringFilter<"CartItem"> | string
+    type?: EnumCartItemTypeFilter<"CartItem"> | $Enums.CartItemType
+    studentId?: StringNullableFilter<"CartItem"> | string | null
+    classId?: StringNullableFilter<"CartItem"> | string | null
+    examSessionId?: StringNullableFilter<"CartItem"> | string | null
+    textbookId?: StringNullableFilter<"CartItem"> | string | null
+    parentCartItemId?: StringNullableFilter<"CartItem"> | string | null
+    enrollmentId?: StringNullableFilter<"CartItem"> | string | null
+    price?: DecimalFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
+    description?: StringFilter<"CartItem"> | string
+    descriptionEn?: StringNullableFilter<"CartItem"> | string | null
+    createdAt?: DateTimeFilter<"CartItem"> | Date | string
+  }
+
   export type StudentUpsertWithWhereUniqueWithoutFamilyInput = {
     where: StudentWhereUniqueInput
     update: XOR<StudentUpdateWithoutFamilyInput, StudentUncheckedUpdateWithoutFamilyInput>
@@ -42269,6 +44531,7 @@ export namespace Prisma {
     zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    cartItems?: CartItemCreateNestedManyWithoutFamilyInput
     students?: StudentCreateNestedManyWithoutFamilyInput
     volunteerDeposits?: VolunteerDepositCreateNestedManyWithoutFamilyInput
     volunteerClaims?: VolunteerClaimCreateNestedManyWithoutFamilyInput
@@ -42283,6 +44546,7 @@ export namespace Prisma {
     zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutFamilyInput
     students?: StudentUncheckedCreateNestedManyWithoutFamilyInput
     volunteerDeposits?: VolunteerDepositUncheckedCreateNestedManyWithoutFamilyInput
     volunteerClaims?: VolunteerClaimUncheckedCreateNestedManyWithoutFamilyInput
@@ -42406,6 +44670,7 @@ export namespace Prisma {
     zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cartItems?: CartItemUpdateManyWithoutFamilyNestedInput
     students?: StudentUpdateManyWithoutFamilyNestedInput
     volunteerDeposits?: VolunteerDepositUpdateManyWithoutFamilyNestedInput
     volunteerClaims?: VolunteerClaimUpdateManyWithoutFamilyNestedInput
@@ -42420,6 +44685,7 @@ export namespace Prisma {
     zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cartItems?: CartItemUncheckedUpdateManyWithoutFamilyNestedInput
     students?: StudentUncheckedUpdateManyWithoutFamilyNestedInput
     volunteerDeposits?: VolunteerDepositUncheckedUpdateManyWithoutFamilyNestedInput
     volunteerClaims?: VolunteerClaimUncheckedUpdateManyWithoutFamilyNestedInput
@@ -42534,6 +44800,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutFamilyInput
+    cartItems?: CartItemCreateNestedManyWithoutFamilyInput
     volunteerDeposits?: VolunteerDepositCreateNestedManyWithoutFamilyInput
     volunteerClaims?: VolunteerClaimCreateNestedManyWithoutFamilyInput
   }
@@ -42548,6 +44815,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutFamilyInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutFamilyInput
     volunteerDeposits?: VolunteerDepositUncheckedCreateNestedManyWithoutFamilyInput
     volunteerClaims?: VolunteerClaimUncheckedCreateNestedManyWithoutFamilyInput
   }
@@ -42725,6 +44993,48 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CartItemCreateWithoutStudentInput = {
+    id?: string
+    type: $Enums.CartItemType
+    classId?: string | null
+    textbookId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+    family: FamilyCreateNestedOneWithoutCartItemsInput
+    examSession?: ExamSessionCreateNestedOneWithoutCartItemsInput
+    childItems?: CartItemCreateNestedManyWithoutParentItemInput
+    parentItem?: CartItemCreateNestedOneWithoutChildItemsInput
+  }
+
+  export type CartItemUncheckedCreateWithoutStudentInput = {
+    id?: string
+    familyId: string
+    type: $Enums.CartItemType
+    classId?: string | null
+    examSessionId?: string | null
+    textbookId?: string | null
+    parentCartItemId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+    childItems?: CartItemUncheckedCreateNestedManyWithoutParentItemInput
+  }
+
+  export type CartItemCreateOrConnectWithoutStudentInput = {
+    where: CartItemWhereUniqueInput
+    create: XOR<CartItemCreateWithoutStudentInput, CartItemUncheckedCreateWithoutStudentInput>
+  }
+
+  export type CartItemCreateManyStudentInputEnvelope = {
+    data: CartItemCreateManyStudentInput | CartItemCreateManyStudentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type FamilyUpsertWithoutStudentsInput = {
     update: XOR<FamilyUpdateWithoutStudentsInput, FamilyUncheckedUpdateWithoutStudentsInput>
     create: XOR<FamilyCreateWithoutStudentsInput, FamilyUncheckedCreateWithoutStudentsInput>
@@ -42746,6 +45056,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutFamilyNestedInput
+    cartItems?: CartItemUpdateManyWithoutFamilyNestedInput
     volunteerDeposits?: VolunteerDepositUpdateManyWithoutFamilyNestedInput
     volunteerClaims?: VolunteerClaimUpdateManyWithoutFamilyNestedInput
   }
@@ -42760,6 +45071,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutFamilyNestedInput
     volunteerDeposits?: VolunteerDepositUncheckedUpdateManyWithoutFamilyNestedInput
     volunteerClaims?: VolunteerClaimUncheckedUpdateManyWithoutFamilyNestedInput
   }
@@ -42919,6 +45231,22 @@ export namespace Prisma {
     enteredBy?: StringFilter<"ClassExamResult"> | string
     enteredAt?: DateTimeFilter<"ClassExamResult"> | Date | string
     updatedAt?: DateTimeFilter<"ClassExamResult"> | Date | string
+  }
+
+  export type CartItemUpsertWithWhereUniqueWithoutStudentInput = {
+    where: CartItemWhereUniqueInput
+    update: XOR<CartItemUpdateWithoutStudentInput, CartItemUncheckedUpdateWithoutStudentInput>
+    create: XOR<CartItemCreateWithoutStudentInput, CartItemUncheckedCreateWithoutStudentInput>
+  }
+
+  export type CartItemUpdateWithWhereUniqueWithoutStudentInput = {
+    where: CartItemWhereUniqueInput
+    data: XOR<CartItemUpdateWithoutStudentInput, CartItemUncheckedUpdateWithoutStudentInput>
+  }
+
+  export type CartItemUpdateManyWithWhereWithoutStudentInput = {
+    where: CartItemScalarWhereInput
+    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyWithoutStudentInput>
   }
 
   export type UserCreateWithoutTeacherProfileInput = {
@@ -43734,6 +46062,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutEnrollmentsInput = {
@@ -43751,6 +46080,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationUncheckedCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultUncheckedCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutEnrollmentsInput = {
@@ -43891,6 +46221,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutEnrollmentsInput = {
@@ -43908,6 +46239,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUncheckedUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUncheckedUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type ClassUpsertWithoutEnrollmentsInput = {
@@ -44084,6 +46416,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutWaitlistsInput = {
@@ -44101,6 +46434,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationUncheckedCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultUncheckedCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutWaitlistsInput = {
@@ -44183,6 +46517,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutWaitlistsInput = {
@@ -44200,6 +46535,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUncheckedUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUncheckedUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type ClassUpsertWithoutWaitlistsInput = {
@@ -44272,6 +46608,7 @@ export namespace Prisma {
     waitlists?: WaitlistCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutNextClassOverridesInput = {
@@ -44289,6 +46626,7 @@ export namespace Prisma {
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationUncheckedCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultUncheckedCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutNextClassOverridesInput = {
@@ -44371,6 +46709,7 @@ export namespace Prisma {
     waitlists?: WaitlistUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutNextClassOverridesInput = {
@@ -44388,6 +46727,7 @@ export namespace Prisma {
     waitlists?: WaitlistUncheckedUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUncheckedUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUncheckedUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type ClassUpsertWithoutNextClassOverridesInput = {
@@ -44499,6 +46839,48 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CartItemCreateWithoutExamSessionInput = {
+    id?: string
+    type: $Enums.CartItemType
+    classId?: string | null
+    textbookId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+    family: FamilyCreateNestedOneWithoutCartItemsInput
+    student?: StudentCreateNestedOneWithoutCartItemsInput
+    childItems?: CartItemCreateNestedManyWithoutParentItemInput
+    parentItem?: CartItemCreateNestedOneWithoutChildItemsInput
+  }
+
+  export type CartItemUncheckedCreateWithoutExamSessionInput = {
+    id?: string
+    familyId: string
+    type: $Enums.CartItemType
+    studentId?: string | null
+    classId?: string | null
+    textbookId?: string | null
+    parentCartItemId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+    childItems?: CartItemUncheckedCreateNestedManyWithoutParentItemInput
+  }
+
+  export type CartItemCreateOrConnectWithoutExamSessionInput = {
+    where: CartItemWhereUniqueInput
+    create: XOR<CartItemCreateWithoutExamSessionInput, CartItemUncheckedCreateWithoutExamSessionInput>
+  }
+
+  export type CartItemCreateManyExamSessionInputEnvelope = {
+    data: CartItemCreateManyExamSessionInput | CartItemCreateManyExamSessionInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ExamRegistrationUpsertWithWhereUniqueWithoutExamSessionInput = {
     where: ExamRegistrationWhereUniqueInput
     update: XOR<ExamRegistrationUpdateWithoutExamSessionInput, ExamRegistrationUncheckedUpdateWithoutExamSessionInput>
@@ -44513,6 +46895,22 @@ export namespace Prisma {
   export type ExamRegistrationUpdateManyWithWhereWithoutExamSessionInput = {
     where: ExamRegistrationScalarWhereInput
     data: XOR<ExamRegistrationUpdateManyMutationInput, ExamRegistrationUncheckedUpdateManyWithoutExamSessionInput>
+  }
+
+  export type CartItemUpsertWithWhereUniqueWithoutExamSessionInput = {
+    where: CartItemWhereUniqueInput
+    update: XOR<CartItemUpdateWithoutExamSessionInput, CartItemUncheckedUpdateWithoutExamSessionInput>
+    create: XOR<CartItemCreateWithoutExamSessionInput, CartItemUncheckedCreateWithoutExamSessionInput>
+  }
+
+  export type CartItemUpdateWithWhereUniqueWithoutExamSessionInput = {
+    where: CartItemWhereUniqueInput
+    data: XOR<CartItemUpdateWithoutExamSessionInput, CartItemUncheckedUpdateWithoutExamSessionInput>
+  }
+
+  export type CartItemUpdateManyWithWhereWithoutExamSessionInput = {
+    where: CartItemScalarWhereInput
+    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyWithoutExamSessionInput>
   }
 
   export type ExamSessionCreateWithoutRegistrationsInput = {
@@ -44531,6 +46929,7 @@ export namespace Prisma {
     notesZh?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    cartItems?: CartItemCreateNestedManyWithoutExamSessionInput
   }
 
   export type ExamSessionUncheckedCreateWithoutRegistrationsInput = {
@@ -44549,6 +46948,7 @@ export namespace Prisma {
     notesZh?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutExamSessionInput
   }
 
   export type ExamSessionCreateOrConnectWithoutRegistrationsInput = {
@@ -44571,6 +46971,7 @@ export namespace Prisma {
     waitlists?: WaitlistCreateNestedManyWithoutStudentInput
     nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutExamRegistrationsInput = {
@@ -44588,6 +46989,7 @@ export namespace Prisma {
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutStudentInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput
     classExamResults?: ClassExamResultUncheckedCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutExamRegistrationsInput = {
@@ -44622,6 +47024,7 @@ export namespace Prisma {
     notesZh?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cartItems?: CartItemUpdateManyWithoutExamSessionNestedInput
   }
 
   export type ExamSessionUncheckedUpdateWithoutRegistrationsInput = {
@@ -44640,6 +47043,7 @@ export namespace Prisma {
     notesZh?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cartItems?: CartItemUncheckedUpdateManyWithoutExamSessionNestedInput
   }
 
   export type StudentUpsertWithoutExamRegistrationsInput = {
@@ -44668,6 +47072,7 @@ export namespace Prisma {
     waitlists?: WaitlistUpdateManyWithoutStudentNestedInput
     nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutExamRegistrationsInput = {
@@ -44685,6 +47090,7 @@ export namespace Prisma {
     waitlists?: WaitlistUncheckedUpdateManyWithoutStudentNestedInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUncheckedUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type VolunteerClaimCreateWithoutServiceInput = {
@@ -44757,6 +47163,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutFamilyInput
+    cartItems?: CartItemCreateNestedManyWithoutFamilyInput
     students?: StudentCreateNestedManyWithoutFamilyInput
     volunteerClaims?: VolunteerClaimCreateNestedManyWithoutFamilyInput
   }
@@ -44771,6 +47178,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutFamilyInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutFamilyInput
     students?: StudentUncheckedCreateNestedManyWithoutFamilyInput
     volunteerClaims?: VolunteerClaimUncheckedCreateNestedManyWithoutFamilyInput
   }
@@ -44845,6 +47253,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutFamilyNestedInput
+    cartItems?: CartItemUpdateManyWithoutFamilyNestedInput
     students?: StudentUpdateManyWithoutFamilyNestedInput
     volunteerClaims?: VolunteerClaimUpdateManyWithoutFamilyNestedInput
   }
@@ -44859,6 +47268,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutFamilyNestedInput
     students?: StudentUncheckedUpdateManyWithoutFamilyNestedInput
     volunteerClaims?: VolunteerClaimUncheckedUpdateManyWithoutFamilyNestedInput
   }
@@ -44940,6 +47350,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutFamilyInput
+    cartItems?: CartItemCreateNestedManyWithoutFamilyInput
     students?: StudentCreateNestedManyWithoutFamilyInput
     volunteerDeposits?: VolunteerDepositCreateNestedManyWithoutFamilyInput
   }
@@ -44954,6 +47365,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutFamilyInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutFamilyInput
     students?: StudentUncheckedCreateNestedManyWithoutFamilyInput
     volunteerDeposits?: VolunteerDepositUncheckedCreateNestedManyWithoutFamilyInput
   }
@@ -45070,6 +47482,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutFamilyNestedInput
+    cartItems?: CartItemUpdateManyWithoutFamilyNestedInput
     students?: StudentUpdateManyWithoutFamilyNestedInput
     volunteerDeposits?: VolunteerDepositUpdateManyWithoutFamilyNestedInput
   }
@@ -45084,6 +47497,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutFamilyNestedInput
     students?: StudentUncheckedUpdateManyWithoutFamilyNestedInput
     volunteerDeposits?: VolunteerDepositUncheckedUpdateManyWithoutFamilyNestedInput
   }
@@ -45325,6 +47739,7 @@ export namespace Prisma {
     waitlists?: WaitlistCreateNestedManyWithoutStudentInput
     nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutClassExamResultsInput = {
@@ -45342,6 +47757,7 @@ export namespace Prisma {
     waitlists?: WaitlistUncheckedCreateNestedManyWithoutStudentInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput
     examRegistrations?: ExamRegistrationUncheckedCreateNestedManyWithoutStudentInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutClassExamResultsInput = {
@@ -45416,6 +47832,7 @@ export namespace Prisma {
     waitlists?: WaitlistUpdateManyWithoutStudentNestedInput
     nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutClassExamResultsInput = {
@@ -45433,6 +47850,401 @@ export namespace Prisma {
     waitlists?: WaitlistUncheckedUpdateManyWithoutStudentNestedInput
     nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUncheckedUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutStudentNestedInput
+  }
+
+  export type FamilyCreateWithoutCartItemsInput = {
+    id?: string
+    phone?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutFamilyInput
+    students?: StudentCreateNestedManyWithoutFamilyInput
+    volunteerDeposits?: VolunteerDepositCreateNestedManyWithoutFamilyInput
+    volunteerClaims?: VolunteerClaimCreateNestedManyWithoutFamilyInput
+  }
+
+  export type FamilyUncheckedCreateWithoutCartItemsInput = {
+    id?: string
+    phone?: string | null
+    address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutFamilyInput
+    students?: StudentUncheckedCreateNestedManyWithoutFamilyInput
+    volunteerDeposits?: VolunteerDepositUncheckedCreateNestedManyWithoutFamilyInput
+    volunteerClaims?: VolunteerClaimUncheckedCreateNestedManyWithoutFamilyInput
+  }
+
+  export type FamilyCreateOrConnectWithoutCartItemsInput = {
+    where: FamilyWhereUniqueInput
+    create: XOR<FamilyCreateWithoutCartItemsInput, FamilyUncheckedCreateWithoutCartItemsInput>
+  }
+
+  export type StudentCreateWithoutCartItemsInput = {
+    id?: string
+    name: string
+    nameEn?: string | null
+    birthDate?: Date | string | null
+    grade?: string | null
+    gender?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    family: FamilyCreateNestedOneWithoutStudentsInput
+    enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
+    waitlists?: WaitlistCreateNestedManyWithoutStudentInput
+    nextClassOverrides?: StudentNextClassOverrideCreateNestedManyWithoutStudentInput
+    examRegistrations?: ExamRegistrationCreateNestedManyWithoutStudentInput
+    classExamResults?: ClassExamResultCreateNestedManyWithoutStudentInput
+  }
+
+  export type StudentUncheckedCreateWithoutCartItemsInput = {
+    id?: string
+    name: string
+    nameEn?: string | null
+    birthDate?: Date | string | null
+    grade?: string | null
+    gender?: string | null
+    notes?: string | null
+    familyId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
+    waitlists?: WaitlistUncheckedCreateNestedManyWithoutStudentInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedCreateNestedManyWithoutStudentInput
+    examRegistrations?: ExamRegistrationUncheckedCreateNestedManyWithoutStudentInput
+    classExamResults?: ClassExamResultUncheckedCreateNestedManyWithoutStudentInput
+  }
+
+  export type StudentCreateOrConnectWithoutCartItemsInput = {
+    where: StudentWhereUniqueInput
+    create: XOR<StudentCreateWithoutCartItemsInput, StudentUncheckedCreateWithoutCartItemsInput>
+  }
+
+  export type ExamSessionCreateWithoutCartItemsInput = {
+    id?: string
+    examType: $Enums.ExamType
+    level: number
+    examDate: Date | string
+    registrationDeadline: Date | string
+    location: string
+    locationZh: string
+    fee: Decimal | DecimalJsLike | number | string
+    capacity: number
+    academicYear: string
+    isActive?: boolean
+    notes?: string | null
+    notesZh?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    registrations?: ExamRegistrationCreateNestedManyWithoutExamSessionInput
+  }
+
+  export type ExamSessionUncheckedCreateWithoutCartItemsInput = {
+    id?: string
+    examType: $Enums.ExamType
+    level: number
+    examDate: Date | string
+    registrationDeadline: Date | string
+    location: string
+    locationZh: string
+    fee: Decimal | DecimalJsLike | number | string
+    capacity: number
+    academicYear: string
+    isActive?: boolean
+    notes?: string | null
+    notesZh?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    registrations?: ExamRegistrationUncheckedCreateNestedManyWithoutExamSessionInput
+  }
+
+  export type ExamSessionCreateOrConnectWithoutCartItemsInput = {
+    where: ExamSessionWhereUniqueInput
+    create: XOR<ExamSessionCreateWithoutCartItemsInput, ExamSessionUncheckedCreateWithoutCartItemsInput>
+  }
+
+  export type CartItemCreateWithoutParentItemInput = {
+    id?: string
+    type: $Enums.CartItemType
+    classId?: string | null
+    textbookId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+    family: FamilyCreateNestedOneWithoutCartItemsInput
+    student?: StudentCreateNestedOneWithoutCartItemsInput
+    examSession?: ExamSessionCreateNestedOneWithoutCartItemsInput
+    childItems?: CartItemCreateNestedManyWithoutParentItemInput
+  }
+
+  export type CartItemUncheckedCreateWithoutParentItemInput = {
+    id?: string
+    familyId: string
+    type: $Enums.CartItemType
+    studentId?: string | null
+    classId?: string | null
+    examSessionId?: string | null
+    textbookId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+    childItems?: CartItemUncheckedCreateNestedManyWithoutParentItemInput
+  }
+
+  export type CartItemCreateOrConnectWithoutParentItemInput = {
+    where: CartItemWhereUniqueInput
+    create: XOR<CartItemCreateWithoutParentItemInput, CartItemUncheckedCreateWithoutParentItemInput>
+  }
+
+  export type CartItemCreateManyParentItemInputEnvelope = {
+    data: CartItemCreateManyParentItemInput | CartItemCreateManyParentItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CartItemCreateWithoutChildItemsInput = {
+    id?: string
+    type: $Enums.CartItemType
+    classId?: string | null
+    textbookId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+    family: FamilyCreateNestedOneWithoutCartItemsInput
+    student?: StudentCreateNestedOneWithoutCartItemsInput
+    examSession?: ExamSessionCreateNestedOneWithoutCartItemsInput
+    parentItem?: CartItemCreateNestedOneWithoutChildItemsInput
+  }
+
+  export type CartItemUncheckedCreateWithoutChildItemsInput = {
+    id?: string
+    familyId: string
+    type: $Enums.CartItemType
+    studentId?: string | null
+    classId?: string | null
+    examSessionId?: string | null
+    textbookId?: string | null
+    parentCartItemId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CartItemCreateOrConnectWithoutChildItemsInput = {
+    where: CartItemWhereUniqueInput
+    create: XOR<CartItemCreateWithoutChildItemsInput, CartItemUncheckedCreateWithoutChildItemsInput>
+  }
+
+  export type FamilyUpsertWithoutCartItemsInput = {
+    update: XOR<FamilyUpdateWithoutCartItemsInput, FamilyUncheckedUpdateWithoutCartItemsInput>
+    create: XOR<FamilyCreateWithoutCartItemsInput, FamilyUncheckedCreateWithoutCartItemsInput>
+    where?: FamilyWhereInput
+  }
+
+  export type FamilyUpdateToOneWithWhereWithoutCartItemsInput = {
+    where?: FamilyWhereInput
+    data: XOR<FamilyUpdateWithoutCartItemsInput, FamilyUncheckedUpdateWithoutCartItemsInput>
+  }
+
+  export type FamilyUpdateWithoutCartItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutFamilyNestedInput
+    students?: StudentUpdateManyWithoutFamilyNestedInput
+    volunteerDeposits?: VolunteerDepositUpdateManyWithoutFamilyNestedInput
+    volunteerClaims?: VolunteerClaimUpdateManyWithoutFamilyNestedInput
+  }
+
+  export type FamilyUncheckedUpdateWithoutCartItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
+    students?: StudentUncheckedUpdateManyWithoutFamilyNestedInput
+    volunteerDeposits?: VolunteerDepositUncheckedUpdateManyWithoutFamilyNestedInput
+    volunteerClaims?: VolunteerClaimUncheckedUpdateManyWithoutFamilyNestedInput
+  }
+
+  export type StudentUpsertWithoutCartItemsInput = {
+    update: XOR<StudentUpdateWithoutCartItemsInput, StudentUncheckedUpdateWithoutCartItemsInput>
+    create: XOR<StudentCreateWithoutCartItemsInput, StudentUncheckedCreateWithoutCartItemsInput>
+    where?: StudentWhereInput
+  }
+
+  export type StudentUpdateToOneWithWhereWithoutCartItemsInput = {
+    where?: StudentWhereInput
+    data: XOR<StudentUpdateWithoutCartItemsInput, StudentUncheckedUpdateWithoutCartItemsInput>
+  }
+
+  export type StudentUpdateWithoutCartItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameEn?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    family?: FamilyUpdateOneRequiredWithoutStudentsNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
+    waitlists?: WaitlistUpdateManyWithoutStudentNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutStudentNestedInput
+    examRegistrations?: ExamRegistrationUpdateManyWithoutStudentNestedInput
+    classExamResults?: ClassExamResultUpdateManyWithoutStudentNestedInput
+  }
+
+  export type StudentUncheckedUpdateWithoutCartItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameEn?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    grade?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    familyId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
+    waitlists?: WaitlistUncheckedUpdateManyWithoutStudentNestedInput
+    nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
+    examRegistrations?: ExamRegistrationUncheckedUpdateManyWithoutStudentNestedInput
+    classExamResults?: ClassExamResultUncheckedUpdateManyWithoutStudentNestedInput
+  }
+
+  export type ExamSessionUpsertWithoutCartItemsInput = {
+    update: XOR<ExamSessionUpdateWithoutCartItemsInput, ExamSessionUncheckedUpdateWithoutCartItemsInput>
+    create: XOR<ExamSessionCreateWithoutCartItemsInput, ExamSessionUncheckedCreateWithoutCartItemsInput>
+    where?: ExamSessionWhereInput
+  }
+
+  export type ExamSessionUpdateToOneWithWhereWithoutCartItemsInput = {
+    where?: ExamSessionWhereInput
+    data: XOR<ExamSessionUpdateWithoutCartItemsInput, ExamSessionUncheckedUpdateWithoutCartItemsInput>
+  }
+
+  export type ExamSessionUpdateWithoutCartItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    examType?: EnumExamTypeFieldUpdateOperationsInput | $Enums.ExamType
+    level?: IntFieldUpdateOperationsInput | number
+    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    registrationDeadline?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: StringFieldUpdateOperationsInput | string
+    locationZh?: StringFieldUpdateOperationsInput | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    academicYear?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    notesZh?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    registrations?: ExamRegistrationUpdateManyWithoutExamSessionNestedInput
+  }
+
+  export type ExamSessionUncheckedUpdateWithoutCartItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    examType?: EnumExamTypeFieldUpdateOperationsInput | $Enums.ExamType
+    level?: IntFieldUpdateOperationsInput | number
+    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    registrationDeadline?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: StringFieldUpdateOperationsInput | string
+    locationZh?: StringFieldUpdateOperationsInput | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    academicYear?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    notesZh?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    registrations?: ExamRegistrationUncheckedUpdateManyWithoutExamSessionNestedInput
+  }
+
+  export type CartItemUpsertWithWhereUniqueWithoutParentItemInput = {
+    where: CartItemWhereUniqueInput
+    update: XOR<CartItemUpdateWithoutParentItemInput, CartItemUncheckedUpdateWithoutParentItemInput>
+    create: XOR<CartItemCreateWithoutParentItemInput, CartItemUncheckedCreateWithoutParentItemInput>
+  }
+
+  export type CartItemUpdateWithWhereUniqueWithoutParentItemInput = {
+    where: CartItemWhereUniqueInput
+    data: XOR<CartItemUpdateWithoutParentItemInput, CartItemUncheckedUpdateWithoutParentItemInput>
+  }
+
+  export type CartItemUpdateManyWithWhereWithoutParentItemInput = {
+    where: CartItemScalarWhereInput
+    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyWithoutParentItemInput>
+  }
+
+  export type CartItemUpsertWithoutChildItemsInput = {
+    update: XOR<CartItemUpdateWithoutChildItemsInput, CartItemUncheckedUpdateWithoutChildItemsInput>
+    create: XOR<CartItemCreateWithoutChildItemsInput, CartItemUncheckedCreateWithoutChildItemsInput>
+    where?: CartItemWhereInput
+  }
+
+  export type CartItemUpdateToOneWithWhereWithoutChildItemsInput = {
+    where?: CartItemWhereInput
+    data: XOR<CartItemUpdateWithoutChildItemsInput, CartItemUncheckedUpdateWithoutChildItemsInput>
+  }
+
+  export type CartItemUpdateWithoutChildItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    family?: FamilyUpdateOneRequiredWithoutCartItemsNestedInput
+    student?: StudentUpdateOneWithoutCartItemsNestedInput
+    examSession?: ExamSessionUpdateOneWithoutCartItemsNestedInput
+    parentItem?: CartItemUpdateOneWithoutChildItemsNestedInput
+  }
+
+  export type CartItemUncheckedUpdateWithoutChildItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    examSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateManyFamilyInput = {
@@ -45447,6 +48259,21 @@ export namespace Prisma {
     preferredLanguage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type CartItemCreateManyFamilyInput = {
+    id?: string
+    type: $Enums.CartItemType
+    studentId?: string | null
+    classId?: string | null
+    examSessionId?: string | null
+    textbookId?: string | null
+    parentCartItemId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
   }
 
   export type StudentCreateManyFamilyInput = {
@@ -45548,6 +48375,53 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CartItemUpdateWithoutFamilyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentUpdateOneWithoutCartItemsNestedInput
+    examSession?: ExamSessionUpdateOneWithoutCartItemsNestedInput
+    childItems?: CartItemUpdateManyWithoutParentItemNestedInput
+    parentItem?: CartItemUpdateOneWithoutChildItemsNestedInput
+  }
+
+  export type CartItemUncheckedUpdateWithoutFamilyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    examSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    childItems?: CartItemUncheckedUpdateManyWithoutParentItemNestedInput
+  }
+
+  export type CartItemUncheckedUpdateManyWithoutFamilyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    examSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StudentUpdateWithoutFamilyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -45563,6 +48437,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutFamilyInput = {
@@ -45580,6 +48455,7 @@ export namespace Prisma {
     nextClassOverrides?: StudentNextClassOverrideUncheckedUpdateManyWithoutStudentNestedInput
     examRegistrations?: ExamRegistrationUncheckedUpdateManyWithoutStudentNestedInput
     classExamResults?: ClassExamResultUncheckedUpdateManyWithoutStudentNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateManyWithoutFamilyInput = {
@@ -45850,6 +48726,21 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type CartItemCreateManyStudentInput = {
+    id?: string
+    familyId: string
+    type: $Enums.CartItemType
+    classId?: string | null
+    examSessionId?: string | null
+    textbookId?: string | null
+    parentCartItemId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+  }
+
   export type EnrollmentUpdateWithoutStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
@@ -46023,6 +48914,53 @@ export namespace Prisma {
     enteredBy?: StringFieldUpdateOperationsInput | string
     enteredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CartItemUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    family?: FamilyUpdateOneRequiredWithoutCartItemsNestedInput
+    examSession?: ExamSessionUpdateOneWithoutCartItemsNestedInput
+    childItems?: CartItemUpdateManyWithoutParentItemNestedInput
+    parentItem?: CartItemUpdateOneWithoutChildItemsNestedInput
+  }
+
+  export type CartItemUncheckedUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    examSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    childItems?: CartItemUncheckedUpdateManyWithoutParentItemNestedInput
+  }
+
+  export type CartItemUncheckedUpdateManyWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    examSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ClassCreateManyTeacherInput = {
@@ -46437,6 +49375,21 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type CartItemCreateManyExamSessionInput = {
+    id?: string
+    familyId: string
+    type: $Enums.CartItemType
+    studentId?: string | null
+    classId?: string | null
+    textbookId?: string | null
+    parentCartItemId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+  }
+
   export type ExamRegistrationUpdateWithoutExamSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumExamRegistrationStatusFieldUpdateOperationsInput | $Enums.ExamRegistrationStatus
@@ -46501,6 +49454,53 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CartItemUpdateWithoutExamSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    family?: FamilyUpdateOneRequiredWithoutCartItemsNestedInput
+    student?: StudentUpdateOneWithoutCartItemsNestedInput
+    childItems?: CartItemUpdateManyWithoutParentItemNestedInput
+    parentItem?: CartItemUpdateOneWithoutChildItemsNestedInput
+  }
+
+  export type CartItemUncheckedUpdateWithoutExamSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    childItems?: CartItemUncheckedUpdateManyWithoutParentItemNestedInput
+  }
+
+  export type CartItemUncheckedUpdateManyWithoutExamSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VolunteerClaimCreateManyServiceInput = {
@@ -46681,6 +49681,68 @@ export namespace Prisma {
     enteredBy?: StringFieldUpdateOperationsInput | string
     enteredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CartItemCreateManyParentItemInput = {
+    id?: string
+    familyId: string
+    type: $Enums.CartItemType
+    studentId?: string | null
+    classId?: string | null
+    examSessionId?: string | null
+    textbookId?: string | null
+    enrollmentId?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    description: string
+    descriptionEn?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CartItemUpdateWithoutParentItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    family?: FamilyUpdateOneRequiredWithoutCartItemsNestedInput
+    student?: StudentUpdateOneWithoutCartItemsNestedInput
+    examSession?: ExamSessionUpdateOneWithoutCartItemsNestedInput
+    childItems?: CartItemUpdateManyWithoutParentItemNestedInput
+  }
+
+  export type CartItemUncheckedUpdateWithoutParentItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    examSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    childItems?: CartItemUncheckedUpdateManyWithoutParentItemNestedInput
+  }
+
+  export type CartItemUncheckedUpdateManyWithoutParentItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyId?: StringFieldUpdateOperationsInput | string
+    type?: EnumCartItemTypeFieldUpdateOperationsInput | $Enums.CartItemType
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    classId?: NullableStringFieldUpdateOperationsInput | string | null
+    examSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    textbookId?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
