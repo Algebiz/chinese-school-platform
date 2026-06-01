@@ -4,6 +4,14 @@ import { ContactFormClient } from './ContactFormClient'
 import { LegalFooter } from '@/components/LegalFooter'
 import { LanguageToggle } from '@/components/LanguageToggle'
 import { LanguageText } from '@/components/LanguageText'
+import { PortalNavLinks, PortalHamburger } from '@/components/PortalNavLinks'
+import { AvatarMenu } from '@/components/AvatarMenu'
+
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/)
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+  return name.substring(0, 2).toUpperCase()
+}
 
 export default async function ContactPage() {
   const session = await auth()
@@ -11,22 +19,44 @@ export default async function ContactPage() {
     ? { name: session.user.name ?? '', email: session.user.email ?? '' }
     : null
 
+  const userName = session?.user?.name ?? session?.user?.email ?? ''
+  const initials = userName ? getInitials(userName) : ''
+  const isAdmin = session?.user?.role === 'ADMIN' || session?.user?.role === 'SUPER_ADMIN'
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <nav style={{ position: 'sticky', top: 0, zIndex: 40, background: 'white', borderBottom: '0.5px solid #E5E7EB', padding: '0 16px' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto', height: 52, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href={session ? '/dashboard' : '/'} style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
-            <img src="/logo.png" alt="CCA Logo" style={{ height: 32, width: 32, objectFit: 'contain' }} />
-            <LanguageText zh="夏洛特中文学校" en="Charlotte Chinese Academy" className="font-bold text-red-700 text-sm" />
-          </Link>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      {/* Full portal navbar — same structure as portal layout */}
+      <nav className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm relative">
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', height: 54, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          {/* Left: logo + nav links (links only shown when logged in) */}
+          <div className="flex items-center gap-4">
+            <Link href={session ? '/dashboard' : '/'} className="flex shrink-0 items-center gap-2">
+              <img src="/logo.png" alt="CCA Logo" className="h-9 w-9 object-contain" />
+              <LanguageText
+                zh="夏洛特中文学校"
+                en="Charlotte Chinese Academy"
+                className="hidden md:block font-bold text-red-700 text-sm"
+              />
+            </Link>
+            {session && <PortalNavLinks />}
+          </div>
+
+          {/* Right: hamburger (mobile, logged-in only) + toggle + divider + avatar/login */}
+          <div className="flex items-center gap-2">
+            {session && <PortalHamburger />}
             <LanguageToggle />
+            <div className="hidden sm:block w-px h-5 bg-gray-200" />
             {session ? (
-              <Link href="/dashboard" style={{ fontSize: 13, color: '#6b7280', textDecoration: 'none' }}>
-                ← <LanguageText zh="返回首页" en="Dashboard" />
-              </Link>
+              <AvatarMenu
+                userName={userName}
+                initials={initials}
+                portalLink={isAdmin ? { href: '/admin', labelZh: '管理后台', labelEn: 'Admin Portal' } : undefined}
+              />
             ) : (
-              <Link href="/login" style={{ fontSize: 13, color: '#CC0000', textDecoration: 'none' }}>
+              <Link
+                href="/login"
+                style={{ fontSize: 13, color: '#CC0000', textDecoration: 'none', fontWeight: 500 }}
+              >
                 <LanguageText zh="登录" en="Log in" /> →
               </Link>
             )}
@@ -34,7 +64,7 @@ export default async function ContactPage() {
         </div>
       </nav>
 
-      <main style={{ flex: 1, maxWidth: 900, margin: '0 auto', width: '100%', padding: '24px 16px' }}>
+      <main style={{ flex: 1, maxWidth: 900, margin: '0 auto', width: '100%', padding: '24px' }}>
         <div style={{ marginBottom: 24 }}>
           <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
             <LanguageText zh="联系我们" en="Contact Us" />
@@ -48,6 +78,7 @@ export default async function ContactPage() {
         </div>
         <ContactFormClient prefill={prefill} />
       </main>
+
       <LegalFooter />
     </div>
   )
