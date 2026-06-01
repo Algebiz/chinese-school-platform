@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Noto_Sans_SC } from "next/font/google";
 import "./globals.css";
 import { cookies } from 'next/headers'
 import { auth } from '@/lib/auth'
@@ -7,15 +7,19 @@ import { prisma } from '@/lib/db'
 import { LanguageProvider, type Language } from '@/lib/i18n/LanguageContext'
 import { SessionProviderWrapper } from '@/components/SessionProviderWrapper'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  display: 'swap',
+  variable: '--font-inter',
+})
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const notoSansSC = Noto_Sans_SC({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  display: 'swap',
+  variable: '--font-noto-sans-sc',
+})
 
 export const metadata: Metadata = {
   title: "Charlotte Chinese Academy — Student Registration",
@@ -51,7 +55,7 @@ export default async function RootLayout({
   return (
     <html
       lang={initialLang === 'en' ? 'en' : 'zh'}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${notoSansSC.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <SessionProviderWrapper>
