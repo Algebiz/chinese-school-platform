@@ -75,7 +75,8 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
       </div>
 
       {/* 3-tab bar */}
-      <div style={{ borderBottom: '0.5px solid #E5E7EB', marginBottom: 16, display: 'flex', overflowX: 'auto' }}>
+      <style>{`.tabs-no-scroll::-webkit-scrollbar{display:none}`}</style>
+      <div className="tabs-no-scroll" style={{ borderBottom: '0.5px solid #E5E7EB', marginBottom: 16, display: 'flex', overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}>
         <button style={TAB_STYLE(activeTab === 'CHL')} onClick={() => setActiveTab('CHL')}>
           {t('中文母语班', 'CHL — Chinese Home Language')} ({chlClasses.length})
         </button>
