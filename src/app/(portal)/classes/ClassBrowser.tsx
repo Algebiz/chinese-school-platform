@@ -7,7 +7,14 @@ import type { ClassData } from '@/components/ClassCard'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { CARD } from '@/lib/design'
 
-type Tab = 'CHINESE' | 'ARTS'
+type Tab = 'CHL' | 'CSL' | 'ARTS'
+
+function isCHL(cls: ClassData) {
+  return cls.type === 'CHINESE' && !cls.name.includes('第二语言') && !(cls.nameEn?.startsWith('CSL'))
+}
+function isCSL(cls: ClassData) {
+  return cls.type === 'CHINESE' && (cls.name.includes('第二语言') || cls.nameEn?.startsWith('CSL'))
+}
 
 interface ClassBrowserProps {
   chineseClasses: ClassData[]
@@ -17,11 +24,17 @@ interface ClassBrowserProps {
 export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps) {
   const router = useRouter()
   const { t } = useLanguage()
-  const [activeTab, setActiveTab] = useState<Tab>('CHINESE')
+  const [activeTab, setActiveTab] = useState<Tab>('CHL')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
 
-  const visibleClasses = activeTab === 'CHINESE' ? chineseClasses : artsClasses
+  const chlClasses  = chineseClasses.filter(isCHL)
+  const cslClasses  = chineseClasses.filter(isCSL)
   const selectedCount = selectedIds.size
+
+  const visibleClasses =
+    activeTab === 'CHL'  ? chlClasses  :
+    activeTab === 'CSL'  ? cslClasses  :
+    artsClasses
 
   function handleToggle(cls: ClassData) {
     if (cls.spotsRemaining === 0) {
@@ -46,6 +59,7 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
     cursor: 'pointer',
     transition: 'color 0.15s',
     marginBottom: -1,
+    whiteSpace: 'nowrap' as const,
   })
 
   return (
@@ -60,13 +74,16 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
         </p>
       </div>
 
-      {/* Tabs */}
-      <div style={{ borderBottom: '0.5px solid #E5E7EB', marginBottom: 16, display: 'flex' }}>
-        <button style={TAB_STYLE(activeTab === 'CHINESE')} onClick={() => setActiveTab('CHINESE')}>
-          {t('中文班', 'Chinese Classes')} ({chineseClasses.length})
+      {/* 3-tab bar */}
+      <div style={{ borderBottom: '0.5px solid #E5E7EB', marginBottom: 16, display: 'flex', overflowX: 'auto' }}>
+        <button style={TAB_STYLE(activeTab === 'CHL')} onClick={() => setActiveTab('CHL')}>
+          {t('中文母语班', 'CHL — Chinese Home Language')} ({chlClasses.length})
+        </button>
+        <button style={TAB_STYLE(activeTab === 'CSL')} onClick={() => setActiveTab('CSL')}>
+          {t('中文第二语言班', 'CSL — Chinese Second Language')} ({cslClasses.length})
         </button>
         <button style={TAB_STYLE(activeTab === 'ARTS')} onClick={() => setActiveTab('ARTS')}>
-          {t('才艺班', 'Arts Classes')} ({artsClasses.length})
+          {t('才艺班', 'Arts')} ({artsClasses.length})
         </button>
       </div>
 
@@ -85,8 +102,6 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
               onClick={() => handleToggle(cls)}
             />
           ))}
-          {/* Remove border-bottom on last item */}
-          <style>{`.class-last-row { border-bottom: none !important; }`}</style>
         </div>
       )}
 
