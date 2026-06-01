@@ -494,20 +494,21 @@ enum CartItemType {
 }
 
 model CartItem {
-  id               String       @id @default(cuid())
-  familyId         String
-  type             CartItemType
-  studentId        String?
-  classId          String?
-  examSessionId    String?
-  textbookId       String?
-  parentCartItemId String?
+  id                 String       @id @default(cuid())
+  familyId           String
+  type               CartItemType
+  studentId          String?
+  classId            String?
+  examSessionId      String?
+  textbookId         String?
+  parentCartItemId   String?
   // References to actual records created when adding to cart
-  enrollmentId     String?
-  price            Decimal      @db.Decimal(10, 2)
-  description      String
-  descriptionEn    String?
-  createdAt        DateTime     @default(now())
+  enrollmentId       String?
+  examRegistrationId String?
+  price              Decimal      @db.Decimal(10, 2)
+  description        String
+  descriptionEn      String?
+  createdAt          DateTime     @default(now())
 
   family      Family       @relation(fields: [familyId], references: [id], onDelete: Cascade)
   student     Student?     @relation(fields: [studentId], references: [id])

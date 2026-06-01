@@ -49,12 +49,15 @@ export async function POST(req: NextRequest) {
   const familyId = user.familyId
   const CURRENT_YEAR = await getCurrentAcademicYear()
   const body = await req.json()
-  const { type, studentId, classIds, textbookIds = [], examSessionId } = body as {
+  const { type, studentId, classIds, textbookIds = [], examSessionId, examRegistrationId, description: bodyDesc, descriptionEn: bodyDescEn } = body as {
     type: 'ENROLLMENT' | 'EXAM_REGISTRATION'
     studentId?: string
     classIds?: string[]
     textbookIds?: string[]
     examSessionId?: string
+    examRegistrationId?: string
+    description?: string
+    descriptionEn?: string
   }
 
   if (type === 'ENROLLMENT') {
@@ -171,12 +174,14 @@ export async function POST(req: NextRequest) {
     }
 
     const examDate = examSession.examDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    const defaultDesc = `${examSession.examType} Level ${examSession.level} — ${student.name} (${examDate})`
     await prisma.cartItem.create({
       data: {
         familyId, type: 'EXAM_REGISTRATION', studentId, examSessionId,
+        examRegistrationId: examRegistrationId ?? null,
         price: examSession.fee,
-        description: `${examSession.examType} Level ${examSession.level} — ${student.name} (${examDate})`,
-        descriptionEn: `${examSession.examType} Level ${examSession.level} — ${student.name} (${examDate})`,
+        description: bodyDesc ?? defaultDesc,
+        descriptionEn: bodyDescEn ?? defaultDesc,
       },
     })
   } else {

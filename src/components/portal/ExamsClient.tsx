@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useLanguage, useLocalizedField } from '@/lib/i18n/LanguageContext'
 import { badge } from '@/lib/design'
-import { useLocalizedField } from '@/lib/i18n/LanguageContext'
+import { useCart } from '@/lib/cart/CartContext'
 
 export interface ExamSessionData {
   id: string; examType: string; level: number; examDate: string
@@ -38,7 +38,32 @@ const ROW_LAST: React.CSSProperties = { display: 'flex', alignItems: 'center', p
 export function ExamsClient({ currentYear, sessions, myStudents }: Props) {
   const { t } = useLanguage()
   const { field } = useLocalizedField()
+  const { items: cartItems, removeItem: removeCartItem, refreshCart } = useCart()
   const [activeTab, setActiveTab] = useState<'YCT' | 'HSK'>('YCT')
+  const [cancellingId, setCancellingId] = useState<string | null>(null)
+  const [confirmCancel, setConfirmCancel] = useState<{ regId: string; name: string } | null>(null)
+  const [confirmRemoveCart, setConfirmRemoveCart] = useState<{ cartItemId: string; name: string } | null>(null)
+
+  function getCartItemForSession(sessionId: string) {
+    return cartItems.find(i => i.type === 'EXAM_REGISTRATION' && i.examSessionId === sessionId)
+  }
+
+  async function handleCancelRegistration(regId: string) {
+    setCancellingId(regId)
+    setConfirmCancel(null)
+    try {
+      await fetch(`/api/exams/registrations/${regId}/cancel`, { method: 'DELETE' })
+      await refreshCart()
+      // Force page refresh to update myStudents data
+      window.location.reload()
+    } catch { /* silent */ }
+    finally { setCancellingId(null) }
+  }
+
+  async function handleRemoveFromCart(cartItemId: string) {
+    setConfirmRemoveCart(null)
+    await removeCartItem(cartItemId)
+  }
   const now = new Date()
 
   function isRegistered(sessionId: string) {
@@ -104,6 +129,8 @@ export function ExamsClient({ currentYear, sessions, myStudents }: Props) {
               const isFull = spotsLeft === 0
               const registered = isRegistered(s.id)
               const myReg = getMyReg(s.id)
+              const cartItem = getCartItemForSession(s.id)
+              const isInCart = !!cartItem
               const deadlineDays = Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
 
               return (
@@ -137,7 +164,20 @@ export function ExamsClient({ currentYear, sessions, myStudents }: Props) {
 
                     {/* Action */}
                     <div style={{ marginTop: 4 }}>
-                      {registered && myReg ? (
+                      {isInCart && cartItem ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontSize: 12, color: '#6b7280' }}>{myReg?.student.name}</span>
+                            <span style={badge('amber')}>{t('在购物车', 'In Cart')}</span>
+                          </div>
+                          <button
+                            onClick={() => setConfirmRemoveCart({ cartItemId: cartItem.id, name: `${s.examType} Level ${s.level}` })}
+                            style={{ padding: '7px', borderRadius: 6, background: '#FCEBEB', color: '#A32D2D', border: 'none', fontSize: 12, cursor: 'pointer' }}
+                          >
+                            ✕ {t('从购物车移除', 'Remove from Cart')}
+                          </button>
+                        </div>
+                      ) : registered && myReg ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                           {(() => {
                             const cfg = STATUS[myReg.reg.status]
@@ -149,9 +189,23 @@ export function ExamsClient({ currentYear, sessions, myStudents }: Props) {
                             ) : null
                           })()}
                           {myReg.reg.status === 'PENDING_PAYMENT' && (
-                            <Link href={`/exam-checkout?registrationId=${myReg.reg.id}`} style={{ display: 'block', padding: '7px', borderRadius: 6, background: '#FAEEDA', color: '#BA7517', fontSize: 13, fontWeight: 500, textDecoration: 'none', textAlign: 'center' }}>
-                              {t('完成支付', 'Pay Now')} →
-                            </Link>
+                            <div style={{ display: 'flex', gap: 6 }}>
+                              <Link href="/cart" style={{ flex: 1, display: 'block', padding: '7px', borderRadius: 6, background: '#FAEEDA', color: '#BA7517', fontSize: 12, fontWeight: 500, textDecoration: 'none', textAlign: 'center' }}>
+                                {t('前往购物车支付', 'Pay in Cart')} →
+                              </Link>
+                              <button
+                                onClick={() => setConfirmCancel({ regId: myReg.reg.id, name: `${s.examType} Level ${s.level}` })}
+                                disabled={cancellingId === myReg.reg.id}
+                                style={{ padding: '7px 10px', borderRadius: 6, background: 'transparent', color: '#A32D2D', border: '0.5px solid #FCA5A5', fontSize: 11, cursor: 'pointer' }}
+                              >
+                                {t('取消', 'Cancel')}
+                              </button>
+                            </div>
+                          )}
+                          {myReg.reg.status === 'CONFIRMED' && (
+                            <p style={{ fontSize: 11, color: '#9ca3af', textAlign: 'center' }}>
+                              {t('如需取消请联系管理员', 'Contact admin to cancel')}
+                            </p>
                           )}
                         </div>
                       ) : isOpen && !isFull ? (
@@ -186,7 +240,7 @@ export function ExamsClient({ currentYear, sessions, myStudents }: Props) {
                   </div>
                   {cfg && <span style={{ ...badge(cfg.color), marginRight: 10 }}>{t(cfg.zh, cfg.en)}</span>}
                   {r.status === 'PENDING_PAYMENT' && (
-                    <Link href={`/exam-checkout?registrationId=${r.id}`} style={{ fontSize: 12, color: '#CC0000', textDecoration: 'none', fontWeight: 500 }}>{t('支付', 'Pay')} →</Link>
+                    <Link href="/cart" style={{ fontSize: 12, color: '#CC0000', textDecoration: 'none', fontWeight: 500 }}>{t('购物车支付', 'Pay in Cart')} →</Link>
                   )}
                 </div>
               )
@@ -196,6 +250,38 @@ export function ExamsClient({ currentYear, sessions, myStudents }: Props) {
       )}
 
       <style>{`@media (max-width: 600px) { .exams-grid { grid-template-columns: 1fr !important; } }`}</style>
+
+      {/* Confirm remove from cart dialog */}
+      {confirmRemoveCart && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.4)', padding: 16 }}>
+          <div style={{ width: '100%', maxWidth: 400, borderRadius: 12, background: 'white', padding: 24, boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
+            <p style={{ fontSize: 15, fontWeight: 600, color: '#111827', marginBottom: 8 }}>{t('移除考试报名', 'Remove Exam Registration')}</p>
+            <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 20 }}>{t('确定要移除此考试报名吗？', 'Remove this exam registration from cart?')}</p>
+            <p style={{ fontSize: 13, fontWeight: 500, color: '#374151', marginBottom: 20 }}>{confirmRemoveCart.name}</p>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={() => setConfirmRemoveCart(null)} style={{ flex: 1, padding: '9px', borderRadius: 6, border: '0.5px solid #E5E7EB', background: 'white', fontSize: 13, cursor: 'pointer' }}>{t('取消', 'Cancel')}</button>
+              <button onClick={() => handleRemoveFromCart(confirmRemoveCart.cartItemId)} style={{ flex: 1, padding: '9px', borderRadius: 6, border: 'none', background: '#CC0000', color: 'white', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>{t('确认移除', 'Confirm Remove')}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm cancel registration dialog */}
+      {confirmCancel && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.4)', padding: 16 }}>
+          <div style={{ width: '100%', maxWidth: 400, borderRadius: 12, background: 'white', padding: 24, boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
+            <p style={{ fontSize: 15, fontWeight: 600, color: '#111827', marginBottom: 8 }}>{t('取消考试报名', 'Cancel Exam Registration')}</p>
+            <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 20 }}>{t('确定要取消此考试报名吗？', 'Are you sure you want to cancel this exam registration?')}</p>
+            <p style={{ fontSize: 13, fontWeight: 500, color: '#374151', marginBottom: 20 }}>{confirmCancel.name}</p>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={() => setConfirmCancel(null)} style={{ flex: 1, padding: '9px', borderRadius: 6, border: '0.5px solid #E5E7EB', background: 'white', fontSize: 13, cursor: 'pointer' }}>{t('返回', 'Go Back')}</button>
+              <button onClick={() => handleCancelRegistration(confirmCancel.regId)} disabled={!!cancellingId} style={{ flex: 1, padding: '9px', borderRadius: 6, border: 'none', background: '#CC0000', color: 'white', fontSize: 13, fontWeight: 500, cursor: 'pointer', opacity: cancellingId ? 0.6 : 1 }}>
+                {cancellingId ? t('取消中…', 'Cancelling…') : t('确认取消', 'Confirm Cancel')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

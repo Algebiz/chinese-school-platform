@@ -33041,6 +33041,7 @@ export namespace Prisma {
     textbookId: string | null
     parentCartItemId: string | null
     enrollmentId: string | null
+    examRegistrationId: string | null
     price: Decimal | null
     description: string | null
     descriptionEn: string | null
@@ -33057,6 +33058,7 @@ export namespace Prisma {
     textbookId: string | null
     parentCartItemId: string | null
     enrollmentId: string | null
+    examRegistrationId: string | null
     price: Decimal | null
     description: string | null
     descriptionEn: string | null
@@ -33073,6 +33075,7 @@ export namespace Prisma {
     textbookId: number
     parentCartItemId: number
     enrollmentId: number
+    examRegistrationId: number
     price: number
     description: number
     descriptionEn: number
@@ -33099,6 +33102,7 @@ export namespace Prisma {
     textbookId?: true
     parentCartItemId?: true
     enrollmentId?: true
+    examRegistrationId?: true
     price?: true
     description?: true
     descriptionEn?: true
@@ -33115,6 +33119,7 @@ export namespace Prisma {
     textbookId?: true
     parentCartItemId?: true
     enrollmentId?: true
+    examRegistrationId?: true
     price?: true
     description?: true
     descriptionEn?: true
@@ -33131,6 +33136,7 @@ export namespace Prisma {
     textbookId?: true
     parentCartItemId?: true
     enrollmentId?: true
+    examRegistrationId?: true
     price?: true
     description?: true
     descriptionEn?: true
@@ -33234,6 +33240,7 @@ export namespace Prisma {
     textbookId: string | null
     parentCartItemId: string | null
     enrollmentId: string | null
+    examRegistrationId: string | null
     price: Decimal
     description: string
     descriptionEn: string | null
@@ -33269,6 +33276,7 @@ export namespace Prisma {
     textbookId?: boolean
     parentCartItemId?: boolean
     enrollmentId?: boolean
+    examRegistrationId?: boolean
     price?: boolean
     description?: boolean
     descriptionEn?: boolean
@@ -33291,6 +33299,7 @@ export namespace Prisma {
     textbookId?: boolean
     parentCartItemId?: boolean
     enrollmentId?: boolean
+    examRegistrationId?: boolean
     price?: boolean
     description?: boolean
     descriptionEn?: boolean
@@ -33311,6 +33320,7 @@ export namespace Prisma {
     textbookId?: boolean
     parentCartItemId?: boolean
     enrollmentId?: boolean
+    examRegistrationId?: boolean
     price?: boolean
     description?: boolean
     descriptionEn?: boolean
@@ -33331,13 +33341,14 @@ export namespace Prisma {
     textbookId?: boolean
     parentCartItemId?: boolean
     enrollmentId?: boolean
+    examRegistrationId?: boolean
     price?: boolean
     description?: boolean
     descriptionEn?: boolean
     createdAt?: boolean
   }
 
-  export type CartItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "familyId" | "type" | "studentId" | "classId" | "examSessionId" | "textbookId" | "parentCartItemId" | "enrollmentId" | "price" | "description" | "descriptionEn" | "createdAt", ExtArgs["result"]["cartItem"]>
+  export type CartItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "familyId" | "type" | "studentId" | "classId" | "examSessionId" | "textbookId" | "parentCartItemId" | "enrollmentId" | "examRegistrationId" | "price" | "description" | "descriptionEn" | "createdAt", ExtArgs["result"]["cartItem"]>
   export type CartItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     family?: boolean | FamilyDefaultArgs<ExtArgs>
     student?: boolean | CartItem$studentArgs<ExtArgs>
@@ -33378,6 +33389,7 @@ export namespace Prisma {
       textbookId: string | null
       parentCartItemId: string | null
       enrollmentId: string | null
+      examRegistrationId: string | null
       price: Prisma.Decimal
       description: string
       descriptionEn: string | null
@@ -33819,6 +33831,7 @@ export namespace Prisma {
     readonly textbookId: FieldRef<"CartItem", 'String'>
     readonly parentCartItemId: FieldRef<"CartItem", 'String'>
     readonly enrollmentId: FieldRef<"CartItem", 'String'>
+    readonly examRegistrationId: FieldRef<"CartItem", 'String'>
     readonly price: FieldRef<"CartItem", 'Decimal'>
     readonly description: FieldRef<"CartItem", 'String'>
     readonly descriptionEn: FieldRef<"CartItem", 'String'>
@@ -34749,6 +34762,7 @@ export namespace Prisma {
     textbookId: 'textbookId',
     parentCartItemId: 'parentCartItemId',
     enrollmentId: 'enrollmentId',
+    examRegistrationId: 'examRegistrationId',
     price: 'price',
     description: 'description',
     descriptionEn: 'descriptionEn',
@@ -37191,6 +37205,7 @@ export namespace Prisma {
     textbookId?: StringNullableFilter<"CartItem"> | string | null
     parentCartItemId?: StringNullableFilter<"CartItem"> | string | null
     enrollmentId?: StringNullableFilter<"CartItem"> | string | null
+    examRegistrationId?: StringNullableFilter<"CartItem"> | string | null
     price?: DecimalFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
     description?: StringFilter<"CartItem"> | string
     descriptionEn?: StringNullableFilter<"CartItem"> | string | null
@@ -37212,6 +37227,7 @@ export namespace Prisma {
     textbookId?: SortOrderInput | SortOrder
     parentCartItemId?: SortOrderInput | SortOrder
     enrollmentId?: SortOrderInput | SortOrder
+    examRegistrationId?: SortOrderInput | SortOrder
     price?: SortOrder
     description?: SortOrder
     descriptionEn?: SortOrderInput | SortOrder
@@ -37236,6 +37252,7 @@ export namespace Prisma {
     textbookId?: StringNullableFilter<"CartItem"> | string | null
     parentCartItemId?: StringNullableFilter<"CartItem"> | string | null
     enrollmentId?: StringNullableFilter<"CartItem"> | string | null
+    examRegistrationId?: StringNullableFilter<"CartItem"> | string | null
     price?: DecimalFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
     description?: StringFilter<"CartItem"> | string
     descriptionEn?: StringNullableFilter<"CartItem"> | string | null
@@ -37257,6 +37274,7 @@ export namespace Prisma {
     textbookId?: SortOrderInput | SortOrder
     parentCartItemId?: SortOrderInput | SortOrder
     enrollmentId?: SortOrderInput | SortOrder
+    examRegistrationId?: SortOrderInput | SortOrder
     price?: SortOrder
     description?: SortOrder
     descriptionEn?: SortOrderInput | SortOrder
@@ -37281,6 +37299,7 @@ export namespace Prisma {
     textbookId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
     parentCartItemId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
     enrollmentId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
+    examRegistrationId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
     price?: DecimalWithAggregatesFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
     description?: StringWithAggregatesFilter<"CartItem"> | string
     descriptionEn?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
@@ -39669,6 +39688,7 @@ export namespace Prisma {
     classId?: string | null
     textbookId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -39690,6 +39710,7 @@ export namespace Prisma {
     textbookId?: string | null
     parentCartItemId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -39703,6 +39724,7 @@ export namespace Prisma {
     classId?: NullableStringFieldUpdateOperationsInput | string | null
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39724,6 +39746,7 @@ export namespace Prisma {
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39741,6 +39764,7 @@ export namespace Prisma {
     textbookId?: string | null
     parentCartItemId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -39753,6 +39777,7 @@ export namespace Prisma {
     classId?: NullableStringFieldUpdateOperationsInput | string | null
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39769,6 +39794,7 @@ export namespace Prisma {
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41661,6 +41687,7 @@ export namespace Prisma {
     textbookId?: SortOrder
     parentCartItemId?: SortOrder
     enrollmentId?: SortOrder
+    examRegistrationId?: SortOrder
     price?: SortOrder
     description?: SortOrder
     descriptionEn?: SortOrder
@@ -41681,6 +41708,7 @@ export namespace Prisma {
     textbookId?: SortOrder
     parentCartItemId?: SortOrder
     enrollmentId?: SortOrder
+    examRegistrationId?: SortOrder
     price?: SortOrder
     description?: SortOrder
     descriptionEn?: SortOrder
@@ -41697,6 +41725,7 @@ export namespace Prisma {
     textbookId?: SortOrder
     parentCartItemId?: SortOrder
     enrollmentId?: SortOrder
+    examRegistrationId?: SortOrder
     price?: SortOrder
     description?: SortOrder
     descriptionEn?: SortOrder
@@ -44160,6 +44189,7 @@ export namespace Prisma {
     classId?: string | null
     textbookId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -44179,6 +44209,7 @@ export namespace Prisma {
     textbookId?: string | null
     parentCartItemId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -44405,6 +44436,7 @@ export namespace Prisma {
     textbookId?: StringNullableFilter<"CartItem"> | string | null
     parentCartItemId?: StringNullableFilter<"CartItem"> | string | null
     enrollmentId?: StringNullableFilter<"CartItem"> | string | null
+    examRegistrationId?: StringNullableFilter<"CartItem"> | string | null
     price?: DecimalFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
     description?: StringFilter<"CartItem"> | string
     descriptionEn?: StringNullableFilter<"CartItem"> | string | null
@@ -44999,6 +45031,7 @@ export namespace Prisma {
     classId?: string | null
     textbookId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -45018,6 +45051,7 @@ export namespace Prisma {
     textbookId?: string | null
     parentCartItemId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -46845,6 +46879,7 @@ export namespace Prisma {
     classId?: string | null
     textbookId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -46864,6 +46899,7 @@ export namespace Prisma {
     textbookId?: string | null
     parentCartItemId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -47978,6 +48014,7 @@ export namespace Prisma {
     classId?: string | null
     textbookId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -47997,6 +48034,7 @@ export namespace Prisma {
     examSessionId?: string | null
     textbookId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -48020,6 +48058,7 @@ export namespace Prisma {
     classId?: string | null
     textbookId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -48040,6 +48079,7 @@ export namespace Prisma {
     textbookId?: string | null
     parentCartItemId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -48221,6 +48261,7 @@ export namespace Prisma {
     classId?: NullableStringFieldUpdateOperationsInput | string | null
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48241,6 +48282,7 @@ export namespace Prisma {
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48270,6 +48312,7 @@ export namespace Prisma {
     textbookId?: string | null
     parentCartItemId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -48381,6 +48424,7 @@ export namespace Prisma {
     classId?: NullableStringFieldUpdateOperationsInput | string | null
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48400,6 +48444,7 @@ export namespace Prisma {
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48416,6 +48461,7 @@ export namespace Prisma {
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48735,6 +48781,7 @@ export namespace Prisma {
     textbookId?: string | null
     parentCartItemId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -48922,6 +48969,7 @@ export namespace Prisma {
     classId?: NullableStringFieldUpdateOperationsInput | string | null
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48941,6 +48989,7 @@ export namespace Prisma {
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48957,6 +49006,7 @@ export namespace Prisma {
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49384,6 +49434,7 @@ export namespace Prisma {
     textbookId?: string | null
     parentCartItemId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -49462,6 +49513,7 @@ export namespace Prisma {
     classId?: NullableStringFieldUpdateOperationsInput | string | null
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49481,6 +49533,7 @@ export namespace Prisma {
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49497,6 +49550,7 @@ export namespace Prisma {
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     parentCartItemId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49692,6 +49746,7 @@ export namespace Prisma {
     examSessionId?: string | null
     textbookId?: string | null
     enrollmentId?: string | null
+    examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
     description: string
     descriptionEn?: string | null
@@ -49704,6 +49759,7 @@ export namespace Prisma {
     classId?: NullableStringFieldUpdateOperationsInput | string | null
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49723,6 +49779,7 @@ export namespace Prisma {
     examSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49739,6 +49796,7 @@ export namespace Prisma {
     examSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     textbookId?: NullableStringFieldUpdateOperationsInput | string | null
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null

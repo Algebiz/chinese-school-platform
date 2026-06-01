@@ -457,6 +457,7 @@ exports.Prisma.CartItemScalarFieldEnum = {
   textbookId: 'textbookId',
   parentCartItemId: 'parentCartItemId',
   enrollmentId: 'enrollmentId',
+  examRegistrationId: 'examRegistrationId',
   price: 'price',
   description: 'description',
   descriptionEn: 'descriptionEn',

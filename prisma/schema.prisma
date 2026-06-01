@@ -503,8 +503,9 @@ model CartItem {
   textbookId       String?
   parentCartItemId String?
   // References to actual records created when adding to cart
-  enrollmentId     String?
-  price            Decimal      @db.Decimal(10, 2)
+  enrollmentId         String?
+  examRegistrationId   String?
+  price                Decimal      @db.Decimal(10, 2)
   description      String
   descriptionEn    String?
   createdAt        DateTime     @default(now())
