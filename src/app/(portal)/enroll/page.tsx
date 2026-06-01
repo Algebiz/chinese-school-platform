@@ -60,7 +60,6 @@ export default async function EnrollPage({
     id: string; name: string; nameEn: string | null; teacherName: string | null; schedule: string
   } | null = null
   let initialStudentId: string | null = null
-  let initialStep: 1 | 3 = 1
 
   if (wantsArtsOnly && studentIdParam) {
     const studentBelongsToFamily = students.some((s) => s.id === studentIdParam)
@@ -89,7 +88,6 @@ export default async function EnrollPage({
             : '',
         }
         initialStudentId = studentIdParam
-        initialStep = 3
       }
     }
   }
@@ -123,7 +121,6 @@ export default async function EnrollPage({
           preselectedClassIds={preselectedClassIds}
           returningStudentData={returningStudentData}
           initialStudentId={initialStudentId}
-          initialStep={initialStep}
           artsOnly={confirmedLanguageClass !== null}
           confirmedLanguageClass={confirmedLanguageClass}
         />
