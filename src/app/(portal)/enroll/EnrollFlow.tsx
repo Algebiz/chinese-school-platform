@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { clsx } from 'clsx'
@@ -26,7 +26,7 @@ interface ReturningStudentInfo {
   isGraduation: boolean
 }
 
-type Step = 1 | 2
+type Step = 1 | 2 | 3 | 4
 
 export interface ConfirmedLanguageClass {
   id: string
@@ -36,15 +36,6 @@ export interface ConfirmedLanguageClass {
   schedule: string
 }
 
-interface StudentSel {
-  languageClassId: string | null
-  artClassIds: string[]
-  textbookIds: string[]
-  skip: boolean
-  error: string | null
-  errorCode: string | null
-}
-
 interface Props {
   initialStudents: StudentData[]
   chineseClasses: ClassData[]
@@ -52,11 +43,12 @@ interface Props {
   preselectedClassIds: string[]
   returningStudentData: Record<string, ReturningStudentInfo>
   initialStudentId?: string | null
+  initialStep?: Step
   artsOnly?: boolean
   confirmedLanguageClass?: ConfirmedLanguageClass | null
 }
 
-// ── Schedule helpers ──────────────────────────────────────────────────────────
+// ── Schedule conflict (client-side mirror of enrollment-logic.ts) ─────────────
 
 function parseTime(t: string): number {
   const upper = t.trim().toUpperCase()
@@ -69,7 +61,7 @@ function parseTime(t: string): number {
   return hours * 60 + (m || 0)
 }
 
-function hasConflict(a: ClassData, b: ClassData): boolean {
+function hasScheduleConflict(a: ClassData, b: ClassData): boolean {
   const sa = a.schedule as Record<string, string>
   const sb = b.schedule as Record<string, string>
   if (!sa?.dayOfWeek || !sb?.dayOfWeek) return false
@@ -81,16 +73,17 @@ function hasConflict(a: ClassData, b: ClassData): boolean {
 function fmtSchedule(schedule: unknown): string {
   const s = schedule as Record<string, string>
   if (!s?.dayOfWeek) return '待定'
-  return `${s.dayOfWeek} ${s.startTime ?? ''}–${s.endTime ?? ''}${s.room ? ` · ${s.room}` : ''}`
+  return `${s.dayOfWeek} ${s.startTime ?? ''}–${s.endTime ?? ''}${s.room ? ` | ${s.room}` : ''}`
 }
 
-// ── Step indicator (3 steps) ──────────────────────────────────────────────────
+// ── Step indicator ────────────────────────────────────────────────────────────
+
+const STEP_LABELS = ['选择学生', '中文班', '才艺班', '确认']
 
 function StepIndicator({ step }: { step: Step }) {
-  const labels = ['选择课程', '确认 & 付款']
   return (
     <div className="flex items-center gap-0 mb-8">
-      {labels.map((label, i) => {
+      {STEP_LABELS.map((label, i) => {
         const n = (i + 1) as Step
         const done = n < step
         const active = n === step
@@ -105,11 +98,12 @@ function StepIndicator({ step }: { step: Step }) {
               )}>
                 {done ? '✓' : n}
               </div>
-              <span className={clsx('mt-1 text-xs', active ? 'font-medium text-red-600' : 'text-gray-400')}>
-                {label}
-              </span>
+              <span className={clsx(
+                'mt-1 text-xs',
+                active ? 'font-medium text-red-600' : 'text-gray-400'
+              )}>{label}</span>
             </div>
-            {i < labels.length - 1 && (
+            {i < STEP_LABELS.length - 1 && (
               <div className={clsx('mx-2 mb-4 h-px w-12 sm:w-20', n < step ? 'bg-red-600' : 'bg-gray-200')} />
             )}
           </div>
@@ -121,7 +115,13 @@ function StepIndicator({ step }: { step: Step }) {
 
 // ── Add Student Modal ─────────────────────────────────────────────────────────
 
-function AddStudentModal({ onClose, onAdded }: { onClose: () => void; onAdded: (s: StudentData) => void }) {
+function AddStudentModal({
+  onClose,
+  onAdded,
+}: {
+  onClose: () => void
+  onAdded: (student: StudentData) => void
+}) {
   const [form, setForm] = useState({ name: '', nameEn: '', birthDate: '', grade: '' })
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -129,14 +129,22 @@ function AddStudentModal({ onClose, onAdded }: { onClose: () => void; onAdded: (
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!form.name.trim()) { setError('请输入学生姓名'); return }
-    setLoading(true); setError(null)
+    setLoading(true)
+    setError(null)
     try {
-      const res = await fetch('/api/students', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
+      const res = await fetch('/api/students', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
       const json = await res.json()
       if (!json.success) { setError('添加失败，请重试'); return }
       onAdded(json.data)
-    } catch { setError('网络错误，请重试') }
-    finally { setLoading(false) }
+    } catch {
+      setError('网络错误，请重试')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -146,22 +154,29 @@ function AddStudentModal({ onClose, onAdded }: { onClose: () => void; onAdded: (
         <p className="text-sm text-gray-400 mb-5">Add Student</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && <p className="rounded bg-red-50 p-2 text-sm text-red-700">{error}</p>}
-          {[
-            { label: '中文姓名 / Chinese Name *', key: 'name', required: true },
-            { label: '英文姓名 / English Name',   key: 'nameEn' },
-            { label: '年级 / Grade',               key: 'grade', placeholder: 'e.g. 3rd Grade' },
-          ].map(({ label, key, required, placeholder }) => (
-            <div key={key}>
-              <label className="mb-1 block text-sm font-medium text-gray-700">{label}</label>
-              <input required={required} placeholder={placeholder}
-                value={form[key as keyof typeof form]}
-                onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none" />
-            </div>
-          ))}
+          <Field label="中文姓名 / Chinese Name *">
+            <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+              className="input" />
+          </Field>
+          <Field label="英文姓名 / English Name">
+            <input value={form.nameEn} onChange={e => setForm(f => ({ ...f, nameEn: e.target.value }))}
+              className="input" />
+          </Field>
+          <Field label="出生日期 / Date of Birth">
+            <input type="date" value={form.birthDate} onChange={e => setForm(f => ({ ...f, birthDate: e.target.value }))}
+              className="input" />
+          </Field>
+          <Field label="年级 / Grade">
+            <input placeholder="e.g. 3rd Grade" value={form.grade} onChange={e => setForm(f => ({ ...f, grade: e.target.value }))}
+              className="input" />
+          </Field>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 rounded-md border border-gray-300 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">取消 / Cancel</button>
-            <button type="submit" disabled={loading} className="flex-1 rounded-md bg-red-600 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50">
+            <button type="button" onClick={onClose}
+              className="flex-1 rounded-md border border-gray-300 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+              取消 / Cancel
+            </button>
+            <button type="submit" disabled={loading}
+              className="flex-1 rounded-md bg-red-600 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50">
               {loading ? '保存中…' : '保存 / Save'}
             </button>
           </div>
@@ -171,266 +186,124 @@ function AddStudentModal({ onClose, onAdded }: { onClose: () => void; onAdded: (
   )
 }
 
-// ── Student enrollment card (Step 1) ─────────────────────────────────────────
-
-function StudentCard({
-  student,
-  sel,
-  returningInfo,
-  chineseClasses,
-  artsClasses,
-  artsOnly,
-  confirmedLanguageClass,
-  onUpdate,
-}: {
-  student: StudentData
-  sel: StudentSel
-  returningInfo?: ReturningStudentInfo
-  chineseClasses: ClassData[]
-  artsClasses: ClassData[]
-  artsOnly?: boolean
-  confirmedLanguageClass?: ConfirmedLanguageClass | null
-  onUpdate: (patch: Partial<StudentSel>) => void
-}) {
-  const isReturning = returningInfo?.isReturning
-
-  // When language class changes, auto-populate textbooks
-  function selectLanguage(classId: string | null) {
-    const cls = classId ? chineseClasses.find(c => c.id === classId) : null
-    onUpdate({
-      languageClassId: classId,
-      textbookIds: cls?.textbooks.map(t => t.id) ?? [],
-      error: null,
-      errorCode: null,
-    })
-  }
-
-  function toggleArt(classId: string) {
-    const langCls = sel.languageClassId ? chineseClasses.find(c => c.id === sel.languageClassId) : null
-    const artCls = artsClasses.find(c => c.id === classId)
-    if (!artCls) return
-    if (!sel.artClassIds.includes(classId) && langCls && hasConflict(artCls, langCls)) return
-    const newIds = sel.artClassIds.includes(classId)
-      ? sel.artClassIds.filter(id => id !== classId)
-      : [...sel.artClassIds, classId]
-    onUpdate({ artClassIds: newIds, error: null, errorCode: null })
-  }
-
-  function toggleTextbook(tbId: string) {
-    const newIds = sel.textbookIds.includes(tbId)
-      ? sel.textbookIds.filter(id => id !== tbId)
-      : [...sel.textbookIds, tbId]
-    onUpdate({ textbookIds: newIds })
-  }
-
-  const langCls = sel.languageClassId ? chineseClasses.find(c => c.id === sel.languageClassId) : null
-  const artClasses = artsClasses.filter(c => sel.artClassIds.includes(c.id))
-  const selectedTextbooks = langCls?.textbooks.filter(t => sel.textbookIds.includes(t.id)) ?? []
-
-  const tuition = (langCls ? parseFloat(langCls.fee) : 0) + artClasses.reduce((s, c) => s + parseFloat(c.fee), 0)
-  const textbookTotal = selectedTextbooks.reduce((s, t) => s + parseFloat(t.price), 0)
-  const subtotal = tuition + textbookTotal
-
-  const BADGE_MAP: Record<string, string> = {
-    recommended:    'bg-blue-100 text-blue-700',
-    sameAsLastYear: 'bg-green-100 text-green-700',
-    adminOverride:  'bg-yellow-100 text-yellow-700',
-  }
-  const BADGE_TEXT: Record<string, string> = {
-    recommended:    '推荐升级',
-    sameAsLastYear: '去年同款',
-    adminOverride:  '管理员推荐',
-  }
-
-  function languageBadge(cls: ClassData): string | null {
-    if (!returningInfo?.isReturning) return null
-    if (returningInfo.adminOverrideClassId === cls.id) return 'adminOverride'
-    if (returningInfo.suggestedNextChineseClassIds.includes(cls.id)) return 'recommended'
-    return null
-  }
-  function artsBadge(cls: ClassData): string | null {
-    if (returningInfo?.isReturning && returningInfo.suggestedArtsClassIds.includes(cls.id)) return 'sameAsLastYear'
-    return null
-  }
-
-  if (sel.skip) {
-    return (
-      <div style={{ border: '0.5px solid #E5E7EB', borderRadius: 12, overflow: 'hidden', background: '#F9FAFB', opacity: 0.7 }}>
-        <div style={{ padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#9CA3AF', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 600 }}>
-              {student.name.substring(0, 1)}
-            </div>
-            <div>
-              <span style={{ fontSize: 14, fontWeight: 500, color: '#6b7280' }}>{student.name}</span>
-              {student.nameEn && <span style={{ fontSize: 12, color: '#9ca3af', marginLeft: 6 }}>{student.nameEn}</span>}
-            </div>
-          </div>
-          <button onClick={() => onUpdate({ skip: false })} style={{ fontSize: 12, color: '#CC0000', background: 'none', border: 'none', cursor: 'pointer' }}>
-            取消跳过 / Undo skip
-          </button>
-        </div>
-        <div style={{ padding: '8px 16px 12px', fontSize: 12, color: '#9ca3af' }}>
-          此学生将不参与本次报名 / This student is skipped for this enrollment
-        </div>
-      </div>
-    )
-  }
-
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div style={{ border: sel.error ? '0.5px solid #FCA5A5' : '0.5px solid #E5E7EB', borderRadius: 12, overflow: 'hidden', background: 'white' }}>
-      {/* Student header */}
-      <div style={{ padding: '12px 16px', background: '#F9FAFB', borderBottom: '0.5px solid #E5E7EB', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#CC0000', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 600, flexShrink: 0 }}>
-            {student.name.substring(0, 1)}
-          </div>
-          <div>
-            <span style={{ fontSize: 14, fontWeight: 500, color: '#111827' }}>{student.name}</span>
-            {student.nameEn && <span style={{ fontSize: 12, color: '#9ca3af', marginLeft: 6 }}>{student.nameEn}</span>}
-            {isReturning && <span style={{ marginLeft: 6, fontSize: 11, padding: '1px 6px', borderRadius: 4, background: '#FAEEDA', color: '#BA7517', fontWeight: 500 }}>老生</span>}
-            {!isReturning && <span style={{ marginLeft: 6, fontSize: 11, padding: '1px 6px', borderRadius: 4, background: '#EAF3DE', color: '#3B6D11', fontWeight: 500 }}>新生</span>}
-          </div>
-        </div>
-        {!artsOnly && (
-          <button onClick={() => onUpdate({ skip: true })} style={{ fontSize: 12, color: '#9ca3af', background: 'none', border: 'none', cursor: 'pointer' }}>
-            跳过 / Skip
-          </button>
-        )}
-      </div>
-
-      {/* Per-student error */}
-      {sel.error && (
-        <div style={{ background: '#FCEBEB', padding: '10px 16px', borderBottom: '0.5px solid #FCA5A5', fontSize: 13, color: '#A32D2D' }}>
-          {sel.error}
-        </div>
-      )}
-
-      <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 16 }}>
-
-        {/* Language class section */}
-        {artsOnly && confirmedLanguageClass ? (
-          <div>
-            <p style={{ fontSize: 12, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
-              中文班（已注册） / Language Class (Enrolled)
-            </p>
-            <div style={{ padding: '10px 12px', borderRadius: 8, background: '#EAF3DE', border: '0.5px solid #BBF7D0', fontSize: 13, color: '#374151' }}>
-              <span style={{ fontWeight: 500 }}>{confirmedLanguageClass.name}</span>
-              {confirmedLanguageClass.nameEn && <span style={{ color: '#6b7280', marginLeft: 6 }}>{confirmedLanguageClass.nameEn}</span>}
-            </div>
-          </div>
-        ) : (
-          <div>
-            <p style={{ fontSize: 12, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
-              中文班（必选） / Language Class (required)
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 220, overflowY: 'auto' }}>
-              {chineseClasses.map(cls => {
-                const isSelected = sel.languageClassId === cls.id
-                const badgeKey = languageBadge(cls)
-                return (
-                  <label key={cls.id} style={{
-                    display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 7,
-                    border: isSelected ? '0.5px solid #CC0000' : '0.5px solid #E5E7EB',
-                    background: isSelected ? '#FFF5F5' : 'white',
-                    cursor: 'pointer', transition: 'background 0.1s',
-                  }}>
-                    <input type="radio" name={`lang-${student.id}`} checked={isSelected}
-                      onChange={() => selectLanguage(isSelected ? null : cls.id)}
-                      style={{ accentColor: '#CC0000', flexShrink: 0 }} />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: 13, fontWeight: 500, color: '#111827' }}>{cls.name}</span>
-                        {badgeKey && (
-                          <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 4, fontWeight: 500 }} className={BADGE_MAP[badgeKey]}>
-                            {BADGE_TEXT[badgeKey]}
-                          </span>
-                        )}
-                      </div>
-                      <span style={{ fontSize: 11, color: '#6b7280' }}>{fmtSchedule(cls.schedule)}</span>
-                      {cls.spotsRemaining === 0 && <span style={{ fontSize: 11, color: '#A32D2D', marginLeft: 6 }}>已满</span>}
-                    </div>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: '#111827', flexShrink: 0 }}>${parseFloat(cls.fee).toFixed(0)}</span>
-                  </label>
-                )
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Textbooks */}
-        {langCls && langCls.textbooks.length > 0 && (
-          <div>
-            <p style={{ fontSize: 12, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
-              教材 / Textbooks
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              {langCls.textbooks.map(tb => (
-                <label key={tb.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 6, border: '0.5px solid #E5E7EB', cursor: 'pointer' }}>
-                  <input type="checkbox" checked={sel.textbookIds.includes(tb.id)} onChange={() => toggleTextbook(tb.id)} style={{ accentColor: '#CC0000' }} />
-                  <span style={{ flex: 1, fontSize: 13, color: '#374151' }}>{tb.name}<span style={{ color: '#9ca3af', marginLeft: 4 }}>{tb.nameZh}</span></span>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: '#111827' }}>${parseFloat(tb.price).toFixed(2)}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Arts classes */}
-        <div>
-          <p style={{ fontSize: 12, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
-            才艺班（可选） / Arts Classes (optional)
-          </p>
-          {artsClasses.length === 0 ? (
-            <p style={{ fontSize: 13, color: '#9ca3af' }}>暂无才艺班 / None available</p>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-              {artsClasses.map(cls => {
-                const isSelected = sel.artClassIds.includes(cls.id)
-                const conflicted = !isSelected && langCls ? hasConflict(cls, langCls) : false
-                const badgeKey = artsBadge(cls)
-                return (
-                  <label key={cls.id} style={{
-                    display: 'flex', alignItems: 'center', gap: 8, padding: '7px 10px', borderRadius: 6,
-                    border: isSelected ? '0.5px solid #CC0000' : conflicted ? '0.5px solid #FCA5A5' : '0.5px solid #E5E7EB',
-                    background: isSelected ? '#FFF5F5' : conflicted ? '#FCEBEB' : 'white',
-                    cursor: conflicted && !isSelected ? 'not-allowed' : 'pointer', opacity: conflicted && !isSelected ? 0.6 : 1,
-                  }}>
-                    <input type="checkbox" checked={isSelected} disabled={conflicted && !isSelected}
-                      onChange={() => toggleArt(cls.id)} style={{ accentColor: '#CC0000', flexShrink: 0 }} />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: 13, color: '#111827', fontWeight: 500 }}>{cls.name}</span>
-                        {badgeKey && (
-                          <span style={{ fontSize: 10, padding: '1px 5px', borderRadius: 4, background: '#EAF3DE', color: '#3B6D11', fontWeight: 500 }}>
-                            {BADGE_TEXT[badgeKey]}
-                          </span>
-                        )}
-                        {conflicted && <span style={{ fontSize: 10, color: '#A32D2D' }}>时间冲突</span>}
-                      </div>
-                      <span style={{ fontSize: 11, color: '#6b7280' }}>{fmtSchedule(cls.schedule)}</span>
-                    </div>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: '#111827', flexShrink: 0 }}>${parseFloat(cls.fee).toFixed(0)}</span>
-                  </label>
-                )
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Student subtotal */}
-        <div style={{ borderTop: '0.5px solid #E5E7EB', paddingTop: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: 13, color: '#6b7280' }}>
-            {langCls ? (1 + artClasses.length) : artClasses.length} 门课{selectedTextbooks.length > 0 ? ` + ${selectedTextbooks.length} 本教材` : ''}
-          </span>
-          <span style={{ fontSize: 15, fontWeight: 700, color: '#CC0000' }}>${subtotal.toFixed(2)}</span>
-        </div>
-      </div>
+    <div>
+      <label className="mb-1 block text-sm font-medium text-gray-700">{label}</label>
+      {children}
     </div>
   )
 }
 
-// ── Main EnrollFlow ───────────────────────────────────────────────────────────
+// ── Mini class card ───────────────────────────────────────────────────────────
+
+type BadgeVariant = 'recommended' | 'sameAsLastYear' | 'adminOverride' | 'gradeMatch'
+
+const BADGE_CONFIG: Record<BadgeVariant, { text: string; badgeCls: string; borderCls: string; bgCls: string }> = {
+  recommended:   { text: '推荐升级',   badgeCls: 'bg-blue-100 text-blue-700',    borderCls: 'border-blue-300',  bgCls: 'bg-blue-50' },
+  sameAsLastYear:{ text: '去年同款',   badgeCls: 'bg-green-100 text-green-700',  borderCls: 'border-green-300', bgCls: 'bg-green-50' },
+  adminOverride: { text: '管理员推荐', badgeCls: 'bg-yellow-100 text-yellow-700',borderCls: 'border-yellow-300',bgCls: 'bg-yellow-50' },
+  gradeMatch:    { text: '推荐',       badgeCls: 'bg-blue-100 text-blue-700',    borderCls: 'border-blue-200',  bgCls: 'bg-blue-50' },
+}
+
+function MiniClassCard({
+  cls,
+  selected,
+  disabled,
+  conflicted,
+  badgeVariant,
+  onClick,
+}: {
+  cls: ClassData
+  selected: boolean
+  disabled?: boolean
+  conflicted?: boolean
+  badgeVariant?: BadgeVariant
+  onClick: () => void
+}) {
+  const badge = badgeVariant ? BADGE_CONFIG[badgeVariant] : null
+
+  return (
+    <div className={clsx(
+      'relative rounded-lg border p-4 transition-all',
+      selected && 'border-red-500 bg-red-50 ring-2 ring-red-500',
+      conflicted && !selected && 'border-orange-300 bg-orange-50',
+      badge && !selected && !conflicted && `${badge.borderCls} ${badge.bgCls}`,
+      !selected && !conflicted && !badge && 'border-gray-200 bg-white hover:border-gray-300',
+      disabled && 'opacity-60'
+    )}>
+      {conflicted && (
+        <span className="absolute right-2 top-2 rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700">
+          时间冲突
+        </span>
+      )}
+      {badge && !conflicted && (
+        <span className={`absolute right-2 top-2 rounded-full px-2 py-0.5 text-xs font-medium ${badge.badgeCls}`}>
+          {badge.text}
+        </span>
+      )}
+      <h4 className="text-sm font-semibold text-gray-900 pr-20">{cls.name}</h4>
+      {cls.nameEn && <p className="text-xs text-gray-400">{cls.nameEn}</p>}
+      <p className="mt-2 text-xs text-gray-500">{fmtSchedule(cls.schedule)}</p>
+      {cls.teacher && <p className="text-xs text-gray-500">老师：{cls.teacher.name}</p>}
+      <div className="mt-2 flex items-center justify-between">
+        <span className="text-sm font-medium text-gray-900">${cls.fee}</span>
+        {cls.spotsRemaining === 0 ? (
+          <span className="text-xs text-red-600">已满 · 可候补</span>
+        ) : (
+          <span className="text-xs text-green-600">余 {cls.spotsRemaining} 位</span>
+        )}
+      </div>
+      <button
+        onClick={onClick}
+        disabled={disabled && !selected}
+        className={clsx(
+          'mt-3 w-full rounded-md py-1.5 text-xs font-medium transition-colors',
+          selected ? 'bg-red-600 text-white hover:bg-red-700'
+            : conflicted ? 'cursor-not-allowed bg-gray-100 text-gray-400'
+            : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+        )}
+      >
+        {selected ? '已选 ✓' : conflicted ? '时间冲突' : cls.spotsRemaining === 0 ? '选择（加候补）' : '选择'}
+      </button>
+    </div>
+  )
+}
+
+// ── Returning student banner ──────────────────────────────────────────────────
+
+function ReturningBanner({ info }: { info: ReturningStudentInfo }) {
+  if (!info.isReturning) return null
+  return (
+    <div className="mb-5 rounded-lg border border-amber-200 bg-amber-50 p-4">
+      <p className="font-semibold text-amber-900">欢迎回来！/ Welcome Back!</p>
+      {info.isGraduation ? (
+        <p className="mt-1 text-sm text-amber-800">
+          恭喜！该学生已完成最高级别，请联系学校了解进一步安排。
+          <br />
+          <span className="text-xs text-amber-700">
+            Congratulations! This student has completed the highest level. Please contact the school.
+          </span>
+        </p>
+      ) : (
+        <p className="mt-1 text-sm text-amber-800">
+          根据去年的报名记录，我们已为您预选了推荐班级，您可以自由调整。
+          <br />
+          <span className="text-xs text-amber-700">
+            Based on last year's enrollment, we've pre-selected recommended classes. You may change them freely.
+          </span>
+        </p>
+      )}
+      {info.previousChineseClass && (
+        <p className="mt-2 text-xs text-amber-700">
+          去年中文班 / Last year's Chinese class：<span className="font-medium">{info.previousChineseClass.name}</span>
+        </p>
+      )}
+    </div>
+  )
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
 
 export function EnrollFlow({
   initialStudents,
@@ -439,306 +312,568 @@ export function EnrollFlow({
   preselectedClassIds,
   returningStudentData,
   initialStudentId = null,
+  initialStep = 1,
   artsOnly = false,
   confirmedLanguageClass = null,
 }: Props) {
   const router = useRouter()
-  const [step, setStep] = useState<Step>(1)
+  const [step, setStep] = useState<Step>(initialStep)
+  const [isArtsOnly, setIsArtsOnly] = useState(artsOnly)
   const [students, setStudents] = useState<StudentData[]>(initialStudents)
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [globalError, setGlobalError] = useState<string | null>(null)
-
-  // Init per-student selections
-  const initSel = useCallback((): Record<string, StudentSel> => {
-    const result: Record<string, StudentSel> = {}
-    for (const s of initialStudents) {
-      const info = returningStudentData[s.id]
-      let langId: string | null = null
-      let artIds: string[] = []
-      let tbIds: string[] = []
-
-      if (!artsOnly) {
-        if (info?.isReturning) {
-          langId = info.adminOverrideClassId ?? info.suggestedNextChineseClassIds[0] ?? null
-          artIds = [...info.suggestedArtsClassIds]
-        }
-        if (initialStudentId === s.id) {
-          const preLang = preselectedClassIds.find(id => chineseClasses.some(c => c.id === id))
-          if (preLang) langId = preLang
-          const preArts = preselectedClassIds.filter(id => artsClasses.some(c => c.id === id))
-          if (preArts.length > 0) artIds = preArts
-        }
-        if (langId) {
-          const cls = chineseClasses.find(c => c.id === langId)
-          tbIds = cls?.textbooks.map(t => t.id) ?? []
-        }
-      }
-
-      result[s.id] = {
-        languageClassId: langId,
-        artClassIds: artIds,
-        textbookIds: tbIds,
-        skip: artsOnly ? s.id !== initialStudentId : false,
-        error: null,
-        errorCode: null,
-      }
+  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(
+    initialStudentId ?? null
+  )
+  const [selectedChineseId, setSelectedChineseId] = useState<string | null>(
+    artsOnly ? null : (preselectedClassIds.find(id => chineseClasses.some(c => c.id === id)) ?? null)
+  )
+  const [selectedArtsIds, setSelectedArtsIds] = useState<Set<string>>(
+    new Set(preselectedClassIds.filter(id => artsClasses.some(c => c.id === id)))
+  )
+  const [selectedTextbookIds, setSelectedTextbookIds] = useState<Set<string>>(
+    () => {
+      if (artsOnly) return new Set<string>()
+      const preClass = chineseClasses.find(c => preselectedClassIds.includes(c.id))
+      return new Set(preClass?.textbooks.map(t => t.id) ?? [])
     }
-    return result
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  )
+  const [languageTab, setLanguageTab] = useState<'CHL' | 'CSL'>('CHL')
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<{ code: string; message: string } | null>(null)
 
-  const [selections, setSelections] = useState<Record<string, StudentSel>>(initSel)
+  const selectedStudent = students.find(s => s.id === selectedStudentId)
+  const selectedChineseClass = chineseClasses.find(c => c.id === selectedChineseId)
+  const selectedArtsClasses = artsClasses.filter(c => selectedArtsIds.has(c.id))
+  const currentReturningInfo = selectedStudentId ? returningStudentData[selectedStudentId] : undefined
 
-  function updateSel(studentId: string, patch: Partial<StudentSel>) {
-    setSelections(prev => ({ ...prev, [studentId]: { ...prev[studentId], ...patch } }))
+  // In arts-only mode the language class is already paid — don't re-enroll it
+  const allSelectedClassIds = [
+    ...(!isArtsOnly && selectedChineseId ? [selectedChineseId] : []),
+    ...Array.from(selectedArtsIds),
+  ]
+  const selectedTextbooks = (selectedChineseClass?.textbooks ?? []).filter(t => selectedTextbookIds.has(t.id))
+  const tuitionFee = [...(selectedChineseClass ? [selectedChineseClass] : []), ...selectedArtsClasses]
+    .reduce((sum, c) => sum + parseFloat(c.fee), 0)
+  const textbookFee = selectedTextbooks.reduce((sum, t) => sum + parseFloat(t.price), 0)
+  const totalFee = tuitionFee + textbookFee
+
+  function isConflictedWithSelections(cls: ClassData): boolean {
+    if (selectedChineseClass && cls.id !== selectedChineseId && hasScheduleConflict(cls, selectedChineseClass)) return true
+    for (const id of selectedArtsIds) {
+      if (id === cls.id) continue
+      const other = artsClasses.find(c => c.id === id)
+      if (other && hasScheduleConflict(cls, other)) return true
+    }
+    return false
   }
 
-  // Which students are active (not skipped)
-  const activeStudents = students.filter(s => !selections[s.id]?.skip)
+  function selectChineseClass(classId: string | null) {
+    setSelectedChineseId(classId)
+    setSubmitError(null)
+    if (classId) {
+      const cls = chineseClasses.find(c => c.id === classId)
+      setSelectedTextbookIds(new Set(cls?.textbooks.map(t => t.id) ?? []))
+    } else {
+      setSelectedTextbookIds(new Set())
+    }
+  }
 
-  // Can advance from step 1: each active student must have a language class (or artsOnly)
-  const readyStudents = activeStudents.filter(s => {
-    const sel = selections[s.id]
-    if (!sel) return false
-    if (artsOnly) return sel.artClassIds.length > 0
-    return !!sel.languageClassId
-  })
-  const pendingStudents = activeStudents.filter(s => !readyStudents.some(r => r.id === s.id))
-  const canAdvance = activeStudents.length > 0 && pendingStudents.length === 0
-
-  // Build combined fee breakdown for review
-  function buildBreakdown() {
-    return activeStudents.map(s => {
-      const sel = selections[s.id] ?? { languageClassId: null, artClassIds: [], textbookIds: [], skip: false, error: null, errorCode: null }
-      const langCls = sel.languageClassId ? chineseClasses.find(c => c.id === sel.languageClassId) : null
-      const artClasses = artsClasses.filter(c => sel.artClassIds.includes(c.id))
-      const textbooks = langCls?.textbooks.filter(t => sel.textbookIds.includes(t.id)) ?? []
-      const subtotal = (langCls ? parseFloat(langCls.fee) : 0)
-        + artClasses.reduce((sum, c) => sum + parseFloat(c.fee), 0)
-        + textbooks.reduce((sum, t) => sum + parseFloat(t.price), 0)
-      return { student: s, langCls, artClasses, textbooks, subtotal }
+  function toggleTextbook(textbookId: string) {
+    setSelectedTextbookIds(prev => {
+      const next = new Set(prev)
+      if (next.has(textbookId)) next.delete(textbookId)
+      else next.add(textbookId)
+      return next
     })
+  }
+
+  function handleSelectStudent(studentId: string) {
+    // If a different student is picked while in arts-only mode, exit arts-only
+    const exitingArtsOnly = isArtsOnly && studentId !== (initialStudentId ?? '')
+    if (exitingArtsOnly) setIsArtsOnly(false)
+
+    setSelectedStudentId(studentId)
+
+    // Only apply returning-student pre-selection in normal (non-arts-only) flow
+    if (!isArtsOnly || exitingArtsOnly) {
+      const info = returningStudentData[studentId]
+      if (info?.isReturning) {
+        const chineseId = info.adminOverrideClassId ?? info.suggestedNextChineseClassIds[0] ?? null
+        selectChineseClass(chineseId)
+        setSelectedArtsIds(new Set(info.suggestedArtsClassIds))
+      } else {
+        selectChineseClass(null)
+        setSelectedArtsIds(new Set())
+      }
+    }
+  }
+
+  function toggleArts(cls: ClassData) {
+    if (selectedArtsIds.has(cls.id)) {
+      setSelectedArtsIds(prev => { const n = new Set(prev); n.delete(cls.id); return n })
+    } else if (!isConflictedWithSelections(cls)) {
+      setSelectedArtsIds(prev => new Set([...prev, cls.id]))
+    }
   }
 
   async function handleSubmit() {
-    setSubmitting(true)
-    setGlobalError(null)
-    // Clear per-student errors
-    setSelections(prev => {
-      const next = { ...prev }
-      for (const id of Object.keys(next)) next[id] = { ...next[id], error: null, errorCode: null }
-      return next
-    })
-
-    const enrollPayload = activeStudents.map(s => {
-      const sel = selections[s.id]
-      const classIds = [
-        ...(!artsOnly && sel.languageClassId ? [sel.languageClassId] : []),
-        ...sel.artClassIds,
-      ]
-      return { studentId: s.id, classIds, textbookIds: sel.textbookIds }
-    }).filter(e => e.classIds.length > 0)
-
-    if (enrollPayload.length === 0) {
-      setGlobalError('请至少为一名学生选择课程 / Please select classes for at least one student')
-      setSubmitting(false)
+    if (!selectedStudentId) return
+    // In normal flow a language class is required; arts-only skips this
+    if (!isArtsOnly && !selectedChineseId) return
+    // Nothing to enroll
+    if (allSelectedClassIds.length === 0) {
+      setSubmitError({
+        code: 'NO_CLASSES',
+        message: '请至少选择一门才艺课程 / Please select at least one arts class',
+      })
       return
     }
-
+    setIsSubmitting(true)
+    setSubmitError(null)
     try {
       const res = await fetch('/api/enrollments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ enrollments: enrollPayload }),
+        body: JSON.stringify({
+          studentId: selectedStudentId,
+          classIds: allSelectedClassIds,
+          textbookIds: Array.from(selectedTextbookIds),
+        }),
       })
       const json = await res.json()
-
       if (!json.success) {
-        if (json.errors && Array.isArray(json.errors)) {
-          // Per-student errors — show them inline and go back to step 1
-          setSelections(prev => {
-            const next = { ...prev }
-            for (const err of json.errors) {
-              if (next[err.studentId]) {
-                next[err.studentId] = { ...next[err.studentId], error: err.error, errorCode: err.code }
-              }
-            }
-            return next
-          })
-          setStep(1)
-        } else {
-          setGlobalError(json.error ?? '报名失败，请重试 / Enrollment failed, please try again')
-        }
+        setSubmitError({
+          code: json.code ?? 'UNKNOWN',
+          message: json.error ?? '报名失败，请重试 / Enrollment failed, please try again',
+        })
         return
       }
-
-      const ids: string[] = json.enrollmentIds ?? []
-      router.push(`/checkout?enrollmentIds=${ids.join(',')}`)
+      const enrollmentIds = json.data.enrollments.map((e: { id: string }) => e.id).join(',')
+      router.push(`/checkout?enrollmentIds=${enrollmentIds}`)
     } catch {
-      setGlobalError('网络错误，请重试 / Network error, please try again')
+      setSubmitError({ code: 'NETWORK_ERROR', message: '网络错误，请重试' })
     } finally {
-      setSubmitting(false)
+      setIsSubmitting(false)
     }
   }
 
-  const breakdown = buildBreakdown()
-  const totalFee = breakdown.reduce((s, b) => s + b.subtotal, 0)
-
-  // ── Render Step 1 ───────────────────────────────────────────────────────────
+  // ── Step renders ────────────────────────────────────────────────────────────
 
   function renderStep1() {
     return (
       <div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
-          {students.map(s => (
-            <StudentCard
-              key={s.id}
-              student={s}
-              sel={selections[s.id] ?? { languageClassId: null, artClassIds: [], textbookIds: [], skip: false, error: null, errorCode: null }}
-              returningInfo={returningStudentData[s.id]}
-              chineseClasses={chineseClasses}
-              artsClasses={artsClasses}
-              artsOnly={artsOnly}
-              confirmedLanguageClass={artsOnly && s.id === initialStudentId ? confirmedLanguageClass : null}
-              onUpdate={patch => updateSel(s.id, patch)}
-            />
-          ))}
-          {/* Add student card */}
+        <h2 className="text-lg font-semibold text-gray-900 mb-1">选择学生</h2>
+        <p className="text-sm text-gray-400 mb-5">Select Student</p>
+        <div className="grid gap-3 sm:grid-cols-2 mb-4">
+          {students.map(s => {
+            const info = returningStudentData[s.id]
+            const isSelected = selectedStudentId === s.id
+            return (
+              <button key={s.id} onClick={() => handleSelectStudent(s.id)}
+                className={clsx(
+                  'rounded-lg border p-4 text-left transition-all',
+                  isSelected
+                    ? 'border-red-500 bg-red-50 ring-2 ring-red-500'
+                    : 'border-gray-200 bg-white hover:border-gray-300'
+                )}>
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="font-medium text-gray-900">{s.name}</p>
+                    {s.nameEn && <p className="text-sm text-gray-500">{s.nameEn}</p>}
+                    {s.grade && <p className="mt-1 text-xs text-gray-400">年级：{s.grade}</p>}
+                    {s.birthDate && (
+                      <p className="text-xs text-gray-400">
+                        生日：{new Date(s.birthDate).toLocaleDateString('zh-CN')}
+                      </p>
+                    )}
+                  </div>
+                  {info?.isReturning && (
+                    <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                      老生
+                    </span>
+                  )}
+                </div>
+              </button>
+            )
+          })}
           <button onClick={() => setShowAddModal(true)}
-            style={{ border: '0.5px dashed #E5E7EB', borderRadius: 12, padding: '24px 16px', background: 'transparent', cursor: 'pointer', color: '#9ca3af', fontSize: 13, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontSize: 24, color: '#D1D5DB' }}>+</span>
-            添加学生 / Add Student
+            className="rounded-lg border-2 border-dashed border-gray-300 p-4 text-center text-sm text-gray-500 hover:border-red-300 hover:text-red-600 transition-colors">
+            <span className="text-2xl">+</span>
+            <p className="mt-1">添加学生 / Add Student</p>
           </button>
-        </div>
-
-        {/* Status summary */}
-        <div style={{ marginTop: 16, fontSize: 13, color: '#6b7280' }}>
-          {pendingStudents.length > 0 ? (
-            <span style={{ color: '#BA7517' }}>
-              {readyStudents.length} 名学生已就绪，{pendingStudents.length} 名待选课
-              {' / '}
-              {readyStudents.length} ready, {pendingStudents.length} pending
-            </span>
-          ) : activeStudents.length > 0 ? (
-            <span style={{ color: '#3B6D11' }}>
-              全部 {readyStudents.length} 名学生已就绪 / All {readyStudents.length} students ready
-            </span>
-          ) : null}
         </div>
       </div>
     )
   }
 
-  // ── Render Step 2 (Review) ──────────────────────────────────────────────────
-
   function renderStep2() {
-    return (
-      <div style={{ maxWidth: 560 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 500, color: '#111827', marginBottom: 16 }}>
-          确认报名信息 / Confirm Enrollment
-        </h2>
-
-        <div style={{ border: '0.5px solid #E5E7EB', borderRadius: 12, overflow: 'hidden', background: 'white' }}>
-          {breakdown.map((b, i) => (
-            <div key={b.student.id} style={{ borderBottom: i < breakdown.length - 1 ? '0.5px solid #E5E7EB' : 'none', padding: '14px 20px' }}>
-              <p style={{ fontSize: 14, fontWeight: 500, color: '#111827', marginBottom: 10 }}>
-                {b.student.name}{b.student.nameEn ? ` (${b.student.nameEn})` : ''}
-              </p>
-              <table style={{ width: '100%', fontSize: 13 }}>
-                <tbody>
-                  {b.langCls && (
-                    <tr>
-                      <td style={{ color: '#374151', paddingBottom: 4 }}>{b.langCls.nameEn ?? b.langCls.name}</td>
-                      <td style={{ textAlign: 'right', fontWeight: 500, color: '#111827' }}>${parseFloat(b.langCls.fee).toFixed(2)}</td>
-                    </tr>
-                  )}
-                  {b.artClasses.map(c => (
-                    <tr key={c.id}>
-                      <td style={{ color: '#374151', paddingBottom: 4 }}>{c.nameEn ?? c.name}</td>
-                      <td style={{ textAlign: 'right', fontWeight: 500, color: '#111827' }}>${parseFloat(c.fee).toFixed(2)}</td>
-                    </tr>
-                  ))}
-                  {b.textbooks.map(tb => (
-                    <tr key={tb.id}>
-                      <td style={{ color: '#6b7280', paddingLeft: 12, paddingBottom: 4 }}>{tb.name}</td>
-                      <td style={{ textAlign: 'right', color: '#6b7280' }}>${parseFloat(tb.price).toFixed(2)}</td>
-                    </tr>
-                  ))}
-                  <tr>
-                    <td style={{ color: '#9ca3af', fontSize: 12, borderTop: '0.5px solid #F3F4F6', paddingTop: 6 }}>小计 / Subtotal</td>
-                    <td style={{ textAlign: 'right', fontWeight: 600, color: '#111827', borderTop: '0.5px solid #F3F4F6', paddingTop: 6 }}>${b.subtotal.toFixed(2)}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          ))}
-
-          {/* Total */}
-          <div style={{ background: '#F9FAFB', padding: '14px 20px', borderTop: '0.5px solid #E5E7EB' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 16, fontWeight: 700 }}>
-              <span style={{ color: '#111827' }}>合计 / Total</span>
-              <span style={{ color: '#CC0000' }}>${totalFee.toFixed(2)}</span>
-            </div>
-            <p style={{ fontSize: 11, color: '#9ca3af', marginTop: 4 }}>
-              * 含志愿服务押金 $100（首次报名收取，完成志愿服务后可申请退还）
-              {' / '}
-              Includes $100 volunteer deposit (refundable after volunteer service)
+    // Arts-only mode: language class already confirmed, no re-selection needed
+    if (isArtsOnly && confirmedLanguageClass) {
+      return (
+        <div>
+          <h2 className="text-lg font-semibold text-gray-900 mb-1">中文课程</h2>
+          <p className="text-sm text-gray-400 mb-5">Language Class</p>
+          <div className="rounded-lg border border-green-200 bg-green-50 p-5 space-y-1.5">
+            <p className="text-sm font-semibold text-green-800">✅ 已注册中文课程 / Language Class Already Enrolled</p>
+            <p className="text-base font-medium text-green-900">
+              {confirmedLanguageClass.name}
+              {confirmedLanguageClass.nameEn && (
+                <span className="ml-2 text-sm font-normal text-green-700">{confirmedLanguageClass.nameEn}</span>
+              )}
             </p>
+            {confirmedLanguageClass.teacherName && (
+              <p className="text-sm text-green-700">{confirmedLanguageClass.teacherName} 老师</p>
+            )}
+            {confirmedLanguageClass.schedule && (
+              <p className="text-sm text-green-700">{confirmedLanguageClass.schedule}</p>
+            )}
+            <p className="mt-3 text-sm text-gray-600">如需更改中文班级，请联系管理员。</p>
+            <p className="text-xs text-gray-500">To change your language class, please contact admin.</p>
           </div>
+          <button
+            onClick={() => setStep(3)}
+            className="mt-5 rounded-md bg-red-600 px-6 py-2 text-sm font-semibold text-white hover:bg-red-700 transition-colors"
+          >
+            继续选择才艺课程 / Continue to Arts Classes →
+          </button>
+        </div>
+      )
+    }
+
+    const info = currentReturningInfo
+    const chlClasses = chineseClasses.filter((c) => !c.nameEn?.startsWith('CSL'))
+    const cslClasses = chineseClasses.filter((c) => c.nameEn?.startsWith('CSL'))
+    const activeClasses = languageTab === 'CHL' ? chlClasses : cslClasses
+
+    return (
+      <div>
+        {info && <ReturningBanner info={info} />}
+        <h2 className="text-lg font-semibold text-gray-900 mb-1">选择中文课程</h2>
+        <p className="text-sm text-gray-400 mb-4">Select Language Class (choose 1 — required)</p>
+
+        {/* CHL / CSL tabs */}
+        <div className="flex gap-0 mb-5 border-b border-gray-200">
+          {(
+            [
+              { key: 'CHL', label: 'CHL 母语班', count: chlClasses.length },
+              { key: 'CSL', label: 'CSL 第二语言班', count: cslClasses.length },
+            ] as const
+          ).map(({ key, label, count }) => (
+            <button
+              key={key}
+              onClick={() => setLanguageTab(key)}
+              className={clsx(
+                'px-5 py-2 text-sm font-medium border-b-2 -mb-px transition-colors',
+                languageTab === key
+                  ? 'border-red-600 text-red-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              )}
+            >
+              {label} <span className="ml-1 text-xs opacity-70">({count})</span>
+            </button>
+          ))}
         </div>
 
-        {globalError && (
-          <div style={{ marginTop: 14, padding: '12px 16px', background: '#FCEBEB', border: '0.5px solid #FCA5A5', borderRadius: 8, fontSize: 13, color: '#A32D2D' }}>
-            {globalError}
+        {info?.isReturning && !info.isGraduation && info.suggestedNextChineseClassIds.length > 0 && (
+          <p className="text-xs text-blue-600 mb-4">蓝色高亮为推荐升级班级 / Blue = recommended next level</p>
+        )}
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {activeClasses.map((cls) => {
+            let badgeVariant: BadgeVariant | undefined
+            if (info?.isReturning) {
+              if (info.adminOverrideClassId === cls.id) {
+                badgeVariant = 'adminOverride'
+              } else if (info.suggestedNextChineseClassIds.includes(cls.id)) {
+                badgeVariant = 'recommended'
+              }
+            } else if (
+              selectedStudent?.grade &&
+              (cls.name.includes(selectedStudent.grade) || cls.nameEn?.includes(selectedStudent.grade))
+            ) {
+              badgeVariant = 'gradeMatch'
+            }
+            return (
+              <MiniClassCard
+                key={cls.id}
+                cls={cls}
+                selected={selectedChineseId === cls.id}
+                badgeVariant={badgeVariant}
+                onClick={() => selectChineseClass(selectedChineseId === cls.id ? null : cls.id)}
+              />
+            )
+          })}
+        </div>
+
+        {/* Textbook selection — shown when a class with textbooks is selected */}
+        {selectedChineseClass && selectedChineseClass.textbooks.length > 0 && (
+          <div className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
+            <p className="mb-3 text-sm font-semibold text-blue-900">
+              教材选择 / Textbooks for {selectedChineseClass.nameEn ?? selectedChineseClass.name}
+            </p>
+            <div className="space-y-2">
+              {selectedChineseClass.textbooks.map((tb) => (
+                <label key={tb.id} className="flex cursor-pointer items-center justify-between rounded-md border border-blue-200 bg-white px-4 py-3 hover:bg-blue-50">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={selectedTextbookIds.has(tb.id)}
+                      onChange={() => toggleTextbook(tb.id)}
+                      className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
+                    />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{tb.name}</p>
+                      <p className="text-xs text-gray-500">{tb.nameZh}</p>
+                    </div>
+                  </div>
+                  <span className="text-sm font-semibold text-gray-900">${parseFloat(tb.price).toFixed(2)}</span>
+                </label>
+              ))}
+            </div>
+            <p className="mt-3 text-xs text-gray-500">
+              默认全选 — 取消勾选可移除 / All selected by default — uncheck to remove
+            </p>
+            <p className="mt-1 text-xs text-blue-700">
+              教材将在上课当日在学校领取 / Books are picked up at school on class day
+            </p>
           </div>
         )}
       </div>
     )
   }
 
-  // ── Main render ─────────────────────────────────────────────────────────────
+  function renderStep3() {
+    const info = currentReturningInfo
+    return (
+      <div>
+        {/* Arts-only: show confirmed language class as read-only context */}
+        {isArtsOnly && confirmedLanguageClass ? (
+          <div className="mb-5 rounded-lg border border-green-200 bg-green-50 p-3 flex items-center gap-3">
+            <span className="text-green-600 text-lg">✅</span>
+            <div>
+              <p className="text-xs font-medium text-green-700 uppercase tracking-wide">已注册中文课 / Language Class Confirmed</p>
+              <p className="text-sm font-semibold text-green-900">{confirmedLanguageClass.name}</p>
+              {confirmedLanguageClass.teacherName && (
+                <p className="text-xs text-green-700">{confirmedLanguageClass.teacherName} 老师 · {confirmedLanguageClass.schedule}</p>
+              )}
+            </div>
+          </div>
+        ) : (
+          info && <ReturningBanner info={info} />
+        )}
+        <h2 className="text-lg font-semibold text-gray-900 mb-1">选择才艺课程</h2>
+        <p className="text-sm text-gray-400 mb-5">Select Arts Class (optional, Sunday 11:00 AM - 12:00 PM)</p>
+        {artsClasses.length === 0 ? (
+          <p className="text-sm text-gray-400">暂无才艺班 / No arts classes available</p>
+        ) : (
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {artsClasses.map(cls => {
+              const conflicted = isConflictedWithSelections(cls)
+              let badgeVariant: BadgeVariant | undefined
+              if (info?.isReturning && info.suggestedArtsClassIds.includes(cls.id)) {
+                badgeVariant = 'sameAsLastYear'
+              }
+              return (
+                <MiniClassCard key={cls.id} cls={cls}
+                  selected={selectedArtsIds.has(cls.id)}
+                  conflicted={conflicted && !selectedArtsIds.has(cls.id)}
+                  disabled={conflicted}
+                  badgeVariant={badgeVariant}
+                  onClick={() => toggleArts(cls)}
+                />
+              )
+            })}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  function renderStep4() {
+    const info = currentReturningInfo
+    return (
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900 mb-1">确认报名信息</h2>
+        <p className="text-sm text-gray-400 mb-5">Confirm Enrollment</p>
+        <div className="rounded-lg border border-gray-200 bg-white divide-y divide-gray-100">
+          {/* Student */}
+          <div className="p-4">
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-2">学生 / Student</p>
+            <div className="flex items-center gap-2">
+              <p className="font-medium text-gray-900">{selectedStudent?.name}</p>
+              {info?.isReturning && (
+                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                  老生续报
+                </span>
+              )}
+            </div>
+            {selectedStudent?.nameEn && <p className="text-sm text-gray-500">{selectedStudent.nameEn}</p>}
+            {selectedStudent?.grade && <p className="text-sm text-gray-500">年级：{selectedStudent.grade}</p>}
+          </div>
+          {/* Classes */}
+          <div className="p-4">
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-3">课程费用 / Tuition</p>
+            <table className="w-full text-sm">
+              <tbody className="divide-y divide-gray-50">
+                {/* Arts-only: show confirmed language class as already-paid, greyed out */}
+                {isArtsOnly && confirmedLanguageClass && (
+                  <tr>
+                    <td className="py-2 text-gray-400">
+                      {confirmedLanguageClass.nameEn ?? confirmedLanguageClass.name}
+                      <span className="ml-2 inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                        已注册 / Already Enrolled
+                      </span>
+                    </td>
+                    <td className="py-2 text-right text-gray-400">—</td>
+                  </tr>
+                )}
+                {!isArtsOnly && selectedChineseClass && (
+                  <tr>
+                    <td className="py-2 text-gray-900">{selectedChineseClass.nameEn ?? selectedChineseClass.name}</td>
+                    <td className="py-2 text-right font-medium">${parseFloat(selectedChineseClass.fee).toFixed(2)}</td>
+                  </tr>
+                )}
+                {selectedArtsClasses.map(cls => (
+                  <tr key={cls.id}>
+                    <td className="py-2 text-gray-900">{cls.nameEn ?? cls.name}</td>
+                    <td className="py-2 text-right font-medium">${parseFloat(cls.fee).toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* Textbooks */}
+          {selectedTextbooks.length > 0 && (
+            <div className="p-4 border-t border-gray-100">
+              <p className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-3">教材费用 / Textbooks</p>
+              <table className="w-full text-sm">
+                <tbody className="divide-y divide-gray-50">
+                  {selectedTextbooks.map(tb => (
+                    <tr key={tb.id}>
+                      <td className="py-2 text-gray-900">
+                        {tb.name}
+                        <span className="ml-2 text-xs text-gray-400">{tb.nameZh}</span>
+                      </td>
+                      <td className="py-2 text-right font-medium">${parseFloat(tb.price).toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="mt-2 text-xs text-gray-400">教材将在上课当日在学校领取 / Books are picked up at school on class day</p>
+            </div>
+          )}
+          {/* Total */}
+          <div className="p-4 border-t border-gray-200 bg-gray-50">
+            <div className="flex justify-between text-base font-bold">
+              <span className="text-gray-900">合计 / Total</span>
+              <span className="text-red-600">${totalFee.toFixed(2)}</span>
+            </div>
+          </div>
+        </div>
+        {submitError && (
+          <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-4 space-y-2">
+            {submitError.code === 'TIME_CONFLICT' ? (
+              <>
+                <p className="text-sm font-semibold text-red-800">⚠ 无法完成报名 / Enrollment Blocked</p>
+                <p className="text-sm text-red-700">
+                  该学生已注册同一时间段的课程（每周日上午9:00–10:50），无法再选择其他中文课程。每位学生每学年只能注册一门中文课。
+                </p>
+                <p className="text-sm text-red-600">
+                  This student already has a language class at this time (Sunday 9:00–10:50 AM). Each student can only enroll in one language class per academic year.
+                </p>
+                <button
+                  onClick={() => { setSubmitError(null); setStep(2) }}
+                  className="mt-1 rounded-md border border-red-300 bg-white px-4 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 transition-colors"
+                >
+                  返回选课 / Back to Class Selection
+                </button>
+              </>
+            ) : submitError.code === 'ALREADY_ENROLLED' ? (
+              <>
+                <p className="text-sm font-semibold text-red-800">⚠ 已报名 / Already Enrolled</p>
+                <p className="text-sm text-red-700">该学生已成功注册此课程。</p>
+                <p className="text-sm text-red-600">This student is already enrolled in this class.</p>
+                <Link
+                  href="/dashboard"
+                  className="mt-1 inline-block rounded-md border border-red-300 bg-white px-4 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 transition-colors"
+                >
+                  前往仪表盘 / Go to Dashboard →
+                </Link>
+              </>
+            ) : submitError.code === 'PENDING_EXISTS' ? (
+              <>
+                <p className="text-sm font-semibold text-red-800">⚠ 有待付款记录 / Pending Enrollment Exists</p>
+                <p className="text-sm text-red-700">
+                  该学生有一个待付款的注册记录，请先完成付款或取消后再重新报名。
+                </p>
+                <p className="text-sm text-red-600">
+                  This student has a pending enrollment. Please complete payment or cancel it before enrolling again.
+                </p>
+                <Link
+                  href="/dashboard"
+                  className="mt-1 inline-block rounded-md border border-red-300 bg-white px-4 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 transition-colors"
+                >
+                  前往仪表盘查看 / View Dashboard →
+                </Link>
+              </>
+            ) : (
+              <p className="text-sm text-red-700">{submitError.message}</p>
+            )}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // ── Navigation guards ────────────────────────────────────────────────────────
+
+  function canAdvance() {
+    if (step === 1) return !!selectedStudentId
+    if (step === 2) return isArtsOnly ? true : !!selectedChineseId
+    if (step === 3) return isArtsOnly ? selectedArtsIds.size > 0 : true
+    return false
+  }
+
+  // ── Render ───────────────────────────────────────────────────────────────────
 
   return (
-    <div>
-      <style>{`.enroll-input { display: block; width: 100%; border: 1px solid #d1d5db; border-radius: 6px; padding: 8px 12px; font-size: 14px; outline: none; } .enroll-input:focus { border-color: #dc2626; }`}</style>
+    <div className="mx-auto max-w-4xl">
+      {/* Global input style */}
+      <style>{`.input { display: block; width: 100%; border: 1px solid #d1d5db; border-radius: 6px; padding: 8px 12px; font-size: 14px; outline: none; } .input:focus { border-color: #dc2626; box-shadow: 0 0 0 1px #dc2626; }`}</style>
 
       <StepIndicator step={step} />
 
-      <div style={{ minHeight: 320 }}>
+      <div className="min-h-[320px]">
         {step === 1 && renderStep1()}
         {step === 2 && renderStep2()}
+        {step === 3 && renderStep3()}
+        {step === 4 && renderStep4()}
       </div>
 
       {/* Navigation */}
-      <div style={{ marginTop: 32, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '0.5px solid #E5E7EB', paddingTop: 20 }}>
+      <div className="mt-8 flex items-center justify-between border-t border-gray-200 pt-6">
         <button
-          onClick={() => step === 1 ? router.push('/dashboard') : setStep(1)}
-          style={{ padding: '8px 20px', borderRadius: 6, border: '0.5px solid #E5E7EB', background: 'white', fontSize: 13, fontWeight: 500, color: '#374151', cursor: 'pointer' }}
+          onClick={() => setStep(s => (s - 1) as Step)}
+          disabled={step === 1}
+          className="rounded-md border border-gray-300 px-6 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          {step === 1 ? '← 取消 / Cancel' : '← 返回修改 / Back'}
+          ← 上一步 / Back
         </button>
 
-        {step === 1 ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <span style={{ fontSize: 12, color: '#9ca3af' }}>
-              {readyStudents.length}/{activeStudents.length} 就绪 / ready
-            </span>
-            <button
-              onClick={() => setStep(2)}
-              disabled={!canAdvance}
-              style={{ padding: '8px 24px', borderRadius: 6, background: canAdvance ? '#CC0000' : '#E5E7EB', color: canAdvance ? 'white' : '#9ca3af', border: 'none', fontSize: 13, fontWeight: 600, cursor: canAdvance ? 'pointer' : 'not-allowed' }}
-            >
-              下一步：确认 / Next: Review →
-            </button>
-          </div>
+        {step < 4 ? (
+          <button
+            onClick={() => setStep(s => (s + 1) as Step)}
+            disabled={!canAdvance()}
+            className="rounded-md bg-red-600 px-6 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            下一步 / Next →
+          </button>
         ) : (
           <button
             onClick={handleSubmit}
-            disabled={submitting}
-            style={{ padding: '8px 28px', borderRadius: 6, background: submitting ? '#E5E7EB' : '#CC0000', color: submitting ? '#9ca3af' : 'white', border: 'none', fontSize: 13, fontWeight: 600, cursor: submitting ? 'not-allowed' : 'pointer' }}
+            disabled={isSubmitting}
+            className="rounded-md bg-red-600 px-8 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-50"
           >
-            {submitting ? '提交中…' : '确认并去支付 / Confirm & Pay →'}
+            {isSubmitting ? '提交中…' : '确认并去支付 / Confirm & Pay →'}
           </button>
         )}
       </div>
@@ -746,12 +881,9 @@ export function EnrollFlow({
       {showAddModal && (
         <AddStudentModal
           onClose={() => setShowAddModal(false)}
-          onAdded={s => {
+          onAdded={(s) => {
             setStudents(prev => [...prev, s])
-            setSelections(prev => ({
-              ...prev,
-              [s.id]: { languageClassId: null, artClassIds: [], textbookIds: [], skip: false, error: null, errorCode: null },
-            }))
+            handleSelectStudent(s.id)
             setShowAddModal(false)
           }}
         />
