@@ -91,12 +91,26 @@ export default async function DashboardPage() {
   const pendingCount = studentsThisYear.flatMap((s) => s.enrollments.filter((e) => e.status === 'PENDING')).length
   const hasMultiplePending = studentsThisYear.some((s) => s.enrollments.filter((e) => e.status === 'PENDING').length > 1)
 
+  // Fetch first confirmed enrollment year per student (for years-at-CCA badge)
+  const firstEnrollments = students.length > 0
+    ? await prisma.enrollment.findMany({
+        where: { studentId: { in: students.map(s => s.id) }, status: 'CONFIRMED' },
+        select: { studentId: true, class: { select: { year: true } } },
+        orderBy: { createdAt: 'asc' },
+      })
+    : []
+  const firstYearByStudent: Record<string, string> = {}
+  for (const e of firstEnrollments) {
+    if (!firstYearByStudent[e.studentId]) firstYearByStudent[e.studentId] = e.class.year
+  }
+
   // Serialize for client component
   const serializedStudents = studentsThisYear.map((s) => ({
     id: s.id,
     name: s.name,
     nameEn: s.nameEn,
     status: studentStatuses[s.id] ?? 'NEW',
+    firstEnrollmentYear: firstYearByStudent[s.id] ?? null,
     enrollments: s.enrollments.map((e) => ({
       id: e.id,
       status: e.status,

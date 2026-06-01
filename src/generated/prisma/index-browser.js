@@ -152,6 +152,9 @@ exports.Prisma.FamilyScalarFieldEnum = {
   id: 'id',
   phone: 'phone',
   address: 'address',
+  city: 'city',
+  state: 'state',
+  zipCode: 'zipCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

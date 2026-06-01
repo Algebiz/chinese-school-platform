@@ -69,6 +69,16 @@ export function AvatarMenu({ userName, initials, portalLink }: Props) {
             {userName}
           </div>
 
+          {/* Profile link */}
+          <Link
+            href="/profile"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 px-3 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            {t('个人资料', 'Profile')}
+          </Link>
+          <div className="border-t border-gray-100 mx-2" />
+
           {/* Portal switch */}
           {portalLink && (
             <>

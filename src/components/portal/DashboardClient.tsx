@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useLanguage, useLocalizedField } from '@/lib/i18n/LanguageContext'
+import { getYearsAtCCA, getYearsLabel } from '@/lib/student-utils'
 import { StudentStatusBadge } from '@/components/StudentStatusBadge'
 import { PendingEnrollmentCard } from '@/app/(portal)/dashboard/PendingEnrollmentCard'
 import { badge } from '@/lib/design'
@@ -11,6 +12,7 @@ export interface DashboardStudent {
   name: string
   nameEn: string | null
   status: string
+  firstEnrollmentYear?: string | null
   enrollments: Array<{
     id: string
     status: string
@@ -101,7 +103,7 @@ export function DashboardClient({
   currentYear, userName, hasFamily, studentCount, totalConfirmed, pendingCount,
   hasMultiplePending, students, volunteerDeposit, examRegistrations, classExamResults,
 }: DashboardProps) {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const { field } = useLocalizedField()
 
   const examResultsByStudent: Record<string, typeof classExamResults> = {}
@@ -116,7 +118,7 @@ export function DashboardClient({
       {/* ── Hero ── */}
       <div>
         <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
-          {t('你好', 'Hello')}, {userName ?? t('家长', 'Parent')}
+          {t('你好', 'Hello')}, {userName ?? t('家长', 'Parent')} 👋
         </h1>
         <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
           {currentYear} {t('学年注册状态', 'Academic Year Enrollment')}
@@ -162,6 +164,8 @@ export function DashboardClient({
               const confirmed = student.enrollments.filter(e => e.status === 'CONFIRMED')
               const hasConfirmedChinese = confirmed.some(e => e.class.type === 'CHINESE')
               const hasConfirmedArts    = confirmed.some(e => e.class.type === 'ARTS')
+              const yearsAtCCA = getYearsAtCCA(student.firstEnrollmentYear)
+              const yearsLabel = student.firstEnrollmentYear ? getYearsLabel(yearsAtCCA, lang) : null
 
               return (
                 <div key={student.id} style={CARD}>
@@ -175,6 +179,11 @@ export function DashboardClient({
                       <span style={{ fontSize: 14, fontWeight: 500, color: '#111827' }}>{student.name}</span>
                       {student.nameEn && <span style={{ fontSize: 12, color: '#9ca3af' }}>{student.nameEn}</span>}
                       <StudentStatusBadge status={student.status as 'NEW' | 'RETURNING'} />
+                      {yearsLabel && (
+                        <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, backgroundColor: '#FAEEDA', color: '#BA7517', fontWeight: 500 }}>
+                          {yearsLabel}
+                        </span>
+                      )}
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
                       {hasConfirmedChinese && !hasConfirmedArts && (

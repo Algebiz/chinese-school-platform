@@ -102,6 +102,9 @@ model Family {
   id                String             @id @default(cuid())
   phone             String?
   address           String?
+  city              String?
+  state             String?            @default("NC")
+  zipCode           String?
   users             User[]
   students          Student[]
   volunteerDeposits VolunteerDeposit[]

@@ -6875,6 +6875,9 @@ export namespace Prisma {
     id: string | null
     phone: string | null
     address: string | null
+    city: string | null
+    state: string | null
+    zipCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6883,6 +6886,9 @@ export namespace Prisma {
     id: string | null
     phone: string | null
     address: string | null
+    city: string | null
+    state: string | null
+    zipCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6891,6 +6897,9 @@ export namespace Prisma {
     id: number
     phone: number
     address: number
+    city: number
+    state: number
+    zipCode: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -6901,6 +6910,9 @@ export namespace Prisma {
     id?: true
     phone?: true
     address?: true
+    city?: true
+    state?: true
+    zipCode?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6909,6 +6921,9 @@ export namespace Prisma {
     id?: true
     phone?: true
     address?: true
+    city?: true
+    state?: true
+    zipCode?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6917,6 +6932,9 @@ export namespace Prisma {
     id?: true
     phone?: true
     address?: true
+    city?: true
+    state?: true
+    zipCode?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6998,6 +7016,9 @@ export namespace Prisma {
     id: string
     phone: string | null
     address: string | null
+    city: string | null
+    state: string | null
+    zipCode: string | null
     createdAt: Date
     updatedAt: Date
     _count: FamilyCountAggregateOutputType | null
@@ -7023,6 +7044,9 @@ export namespace Prisma {
     id?: boolean
     phone?: boolean
     address?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     users?: boolean | Family$usersArgs<ExtArgs>
@@ -7036,6 +7060,9 @@ export namespace Prisma {
     id?: boolean
     phone?: boolean
     address?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["family"]>
@@ -7044,6 +7071,9 @@ export namespace Prisma {
     id?: boolean
     phone?: boolean
     address?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["family"]>
@@ -7052,11 +7082,14 @@ export namespace Prisma {
     id?: boolean
     phone?: boolean
     address?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type FamilyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "phone" | "address" | "createdAt" | "updatedAt", ExtArgs["result"]["family"]>
+  export type FamilyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "phone" | "address" | "city" | "state" | "zipCode" | "createdAt" | "updatedAt", ExtArgs["result"]["family"]>
   export type FamilyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Family$usersArgs<ExtArgs>
     students?: boolean | Family$studentsArgs<ExtArgs>
@@ -7079,6 +7112,9 @@ export namespace Prisma {
       id: string
       phone: string | null
       address: string | null
+      city: string | null
+      state: string | null
+      zipCode: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["family"]>
@@ -7511,6 +7547,9 @@ export namespace Prisma {
     readonly id: FieldRef<"Family", 'String'>
     readonly phone: FieldRef<"Family", 'String'>
     readonly address: FieldRef<"Family", 'String'>
+    readonly city: FieldRef<"Family", 'String'>
+    readonly state: FieldRef<"Family", 'String'>
+    readonly zipCode: FieldRef<"Family", 'String'>
     readonly createdAt: FieldRef<"Family", 'DateTime'>
     readonly updatedAt: FieldRef<"Family", 'DateTime'>
   }
@@ -32780,6 +32819,9 @@ export namespace Prisma {
     id: 'id',
     phone: 'phone',
     address: 'address',
+    city: 'city',
+    state: 'state',
+    zipCode: 'zipCode',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -33610,6 +33652,9 @@ export namespace Prisma {
     id?: StringFilter<"Family"> | string
     phone?: StringNullableFilter<"Family"> | string | null
     address?: StringNullableFilter<"Family"> | string | null
+    city?: StringNullableFilter<"Family"> | string | null
+    state?: StringNullableFilter<"Family"> | string | null
+    zipCode?: StringNullableFilter<"Family"> | string | null
     createdAt?: DateTimeFilter<"Family"> | Date | string
     updatedAt?: DateTimeFilter<"Family"> | Date | string
     users?: UserListRelationFilter
@@ -33622,6 +33667,9 @@ export namespace Prisma {
     id?: SortOrder
     phone?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    zipCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     users?: UserOrderByRelationAggregateInput
@@ -33637,6 +33685,9 @@ export namespace Prisma {
     NOT?: FamilyWhereInput | FamilyWhereInput[]
     phone?: StringNullableFilter<"Family"> | string | null
     address?: StringNullableFilter<"Family"> | string | null
+    city?: StringNullableFilter<"Family"> | string | null
+    state?: StringNullableFilter<"Family"> | string | null
+    zipCode?: StringNullableFilter<"Family"> | string | null
     createdAt?: DateTimeFilter<"Family"> | Date | string
     updatedAt?: DateTimeFilter<"Family"> | Date | string
     users?: UserListRelationFilter
@@ -33649,6 +33700,9 @@ export namespace Prisma {
     id?: SortOrder
     phone?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    zipCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: FamilyCountOrderByAggregateInput
@@ -33663,6 +33717,9 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Family"> | string
     phone?: StringNullableWithAggregatesFilter<"Family"> | string | null
     address?: StringNullableWithAggregatesFilter<"Family"> | string | null
+    city?: StringNullableWithAggregatesFilter<"Family"> | string | null
+    state?: StringNullableWithAggregatesFilter<"Family"> | string | null
+    zipCode?: StringNullableWithAggregatesFilter<"Family"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Family"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Family"> | Date | string
   }
@@ -35718,6 +35775,9 @@ export namespace Prisma {
     id?: string
     phone?: string | null
     address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutFamilyInput
@@ -35730,6 +35790,9 @@ export namespace Prisma {
     id?: string
     phone?: string | null
     address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutFamilyInput
@@ -35742,6 +35805,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutFamilyNestedInput
@@ -35754,6 +35820,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
@@ -35766,6 +35835,9 @@ export namespace Prisma {
     id?: string
     phone?: string | null
     address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -35774,6 +35846,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35782,6 +35857,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -38137,6 +38215,9 @@ export namespace Prisma {
     id?: SortOrder
     phone?: SortOrder
     address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    zipCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -38145,6 +38226,9 @@ export namespace Prisma {
     id?: SortOrder
     phone?: SortOrder
     address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    zipCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -38153,6 +38237,9 @@ export namespace Prisma {
     id?: SortOrder
     phone?: SortOrder
     address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    zipCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -42177,6 +42264,9 @@ export namespace Prisma {
     id?: string
     phone?: string | null
     address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     students?: StudentCreateNestedManyWithoutFamilyInput
@@ -42188,6 +42278,9 @@ export namespace Prisma {
     id?: string
     phone?: string | null
     address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutFamilyInput
@@ -42308,6 +42401,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutFamilyNestedInput
@@ -42319,6 +42415,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutFamilyNestedInput
@@ -42429,6 +42528,9 @@ export namespace Prisma {
     id?: string
     phone?: string | null
     address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutFamilyInput
@@ -42440,6 +42542,9 @@ export namespace Prisma {
     id?: string
     phone?: string | null
     address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutFamilyInput
@@ -42635,6 +42740,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutFamilyNestedInput
@@ -42646,6 +42754,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
@@ -44640,6 +44751,9 @@ export namespace Prisma {
     id?: string
     phone?: string | null
     address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutFamilyInput
@@ -44651,6 +44765,9 @@ export namespace Prisma {
     id?: string
     phone?: string | null
     address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutFamilyInput
@@ -44722,6 +44839,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutFamilyNestedInput
@@ -44733,6 +44853,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
@@ -44811,6 +44934,9 @@ export namespace Prisma {
     id?: string
     phone?: string | null
     address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutFamilyInput
@@ -44822,6 +44948,9 @@ export namespace Prisma {
     id?: string
     phone?: string | null
     address?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutFamilyInput
@@ -44935,6 +45064,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutFamilyNestedInput
@@ -44946,6 +45078,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutFamilyNestedInput
