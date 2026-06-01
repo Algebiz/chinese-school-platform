@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useLanguage, useLocalizedField } from '@/lib/i18n/LanguageContext'
 import { StudentStatusBadge } from '@/components/StudentStatusBadge'
 import { PendingEnrollmentCard } from '@/app/(portal)/dashboard/PendingEnrollmentCard'
 import { badge } from '@/lib/design'
@@ -14,7 +14,7 @@ export interface DashboardStudent {
   enrollments: Array<{
     id: string
     status: string
-    class: { id: string; name: string; type: string; fee: string }
+    class: { id: string; name: string; nameEn?: string | null; type: string; fee: string }
     textbooks: Array<{ price: string; textbook: { name: string } }>
   }>
   waitlists: Array<{ id: string; position: number; class: { name: string; type: string } }>
@@ -102,6 +102,7 @@ export function DashboardClient({
   hasMultiplePending, students, volunteerDeposit, examRegistrations, classExamResults,
 }: DashboardProps) {
   const { t } = useLanguage()
+  const { field } = useLocalizedField()
 
   const examResultsByStudent: Record<string, typeof classExamResults> = {}
   for (const r of classExamResults) {
@@ -213,7 +214,7 @@ export function DashboardClient({
                         return (
                           <div key={e.id} style={isLast ? ROW_LAST : ROW}>
                             <div style={{ flex: 1 }}>
-                              <span style={{ fontSize: 14, fontWeight: 500, color: '#111827', marginRight: 8 }}>{e.class.name}</span>
+                              <span style={{ fontSize: 14, fontWeight: 500, color: '#111827', marginRight: 8 }}>{field(e.class.name, e.class.nameEn)}</span>
                               {classTypeBadge(e.class.type, e.class.name, t)}
                             </div>
                             <span style={badge('green')}>{t('已确认', 'Confirmed')}</span>

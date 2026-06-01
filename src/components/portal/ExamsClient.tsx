@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { badge } from '@/lib/design'
+import { useLocalizedField } from '@/lib/i18n/LanguageContext'
 
 export interface ExamSessionData {
   id: string; examType: string; level: number; examDate: string
@@ -36,6 +37,7 @@ const ROW_LAST: React.CSSProperties = { display: 'flex', alignItems: 'center', p
 
 export function ExamsClient({ currentYear, sessions, myStudents }: Props) {
   const { t } = useLanguage()
+  const { field } = useLocalizedField()
   const [activeTab, setActiveTab] = useState<'YCT' | 'HSK'>('YCT')
   const now = new Date()
 
@@ -123,7 +125,7 @@ export function ExamsClient({ currentYear, sessions, myStudents }: Props) {
                   <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {[
                       { label: t('考试日期', 'Date'), value: examDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) },
-                      { label: t('考场', 'Location'), value: s.locationZh },
+                      { label: t('考场', 'Location'), value: field(s.locationZh, s.location) },
                       { label: t('报名费', 'Fee'), value: `$${parseFloat(s.fee).toFixed(2)}` },
                       ...(isOpen ? [{ label: t('截止日期', 'Deadline'), value: `${deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}${deadlineDays > 0 && deadlineDays <= 7 ? ` (${deadlineDays}d)` : ''}` }] : []),
                     ].map(({ label, value }) => (

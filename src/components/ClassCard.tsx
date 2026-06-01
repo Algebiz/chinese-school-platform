@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useLanguage, useLocalizedField } from '@/lib/i18n/LanguageContext'
 import { badge } from '@/lib/design'
 
 export interface TextbookInfo {
@@ -34,6 +34,7 @@ function fmtSchedule(schedule: unknown): string {
 
 export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) {
   const { t, lang } = useLanguage()
+  const { field } = useLocalizedField()
   const [showBio, setShowBio] = useState(false)
   const isFull = cls.spotsRemaining === 0
   const hasBio = cls.teacher && (cls.teacher.bioEn || cls.teacher.bioZh)
@@ -64,11 +65,13 @@ export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) 
       {/* Class info */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 14, fontWeight: 500, color: '#111827' }}>{cls.name}</span>
+          <span style={{ fontSize: 14, fontWeight: 500, color: '#111827' }}>
+            {field(cls.name, cls.nameEn)}
+          </span>
           {typeBadge()}
         </div>
         <p style={{ fontSize: 12, color: '#6b7280', display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          {cls.teacher && <span>{cls.teacher.name}{cls.teacher.nameEn ? ` (${cls.teacher.nameEn})` : ''}</span>}
+          {cls.teacher && <span>{field(cls.teacher.name, cls.teacher.nameEn)}</span>}
           <span>{fmtSchedule(cls.schedule)}</span>
         </p>
 
@@ -81,8 +84,8 @@ export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) 
           </button>
         )}
         {showBio && cls.teacher && (
-          <p style={{ marginTop: 6, fontSize: 12, color: '#4B5563', lineHeight: 1.5, paddingLeft: 0 }}>
-            {lang === 'zh' ? (cls.teacher.bioZh || cls.teacher.bioEn) : (cls.teacher.bioEn || cls.teacher.bioZh)}
+          <p style={{ marginTop: 6, fontSize: 12, color: '#4B5563', lineHeight: 1.5 }}>
+            {field(cls.teacher.bioZh, cls.teacher.bioEn)}
           </p>
         )}
       </div>

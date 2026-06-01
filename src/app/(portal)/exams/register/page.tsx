@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { ExamRegisterClient } from './ExamRegisterClient'
+import { LanguageText } from '@/components/LanguageText'
 
 export default async function ExamRegisterPage({
   searchParams,
@@ -36,13 +37,17 @@ export default async function ExamRegisterPage({
   })
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
-      <div className="mb-8">
-        <Link href="/exams" className="text-sm text-gray-500 hover:text-gray-700">
-          ← 返回考试列表 / Back to Exams
+    <div style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
+      <div style={{ marginBottom: 28 }}>
+        <Link href="/exams" style={{ fontSize: 13, color: '#6b7280', textDecoration: 'none' }}>
+          ← <LanguageText zh="返回考试列表" en="Back to Exams" />
         </Link>
-        <h1 className="mt-3 text-2xl font-bold text-gray-900">考试报名 / Register for Exam</h1>
-        <p className="mt-1 text-sm text-gray-500">{examSession.academicYear} 学年</p>
+        <h1 style={{ marginTop: 12, fontSize: 22, fontWeight: 500, color: '#111827' }}>
+          <LanguageText zh="考试报名" en="Register for Exam" />
+        </h1>
+        <p style={{ marginTop: 4, fontSize: 13, color: '#6b7280' }}>
+          {examSession.academicYear}
+        </p>
       </div>
       <ExamRegisterClient
         session={{

@@ -69,3 +69,15 @@ export function LanguageProvider({
 }
 
 export const useLanguage = () => useContext(LanguageContext)
+
+/** Returns a field() helper that picks ZH or EN value from bilingual DB fields. */
+export function useLocalizedField() {
+  const { lang } = useContext(LanguageContext)
+  return {
+    field: (zh: string | null | undefined, en: string | null | undefined): string => {
+      if (lang === 'en') return en || zh || ''
+      return zh || en || ''
+    },
+    lang,
+  }
+}

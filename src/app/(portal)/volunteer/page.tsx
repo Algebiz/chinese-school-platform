@@ -3,6 +3,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { VolunteerClient } from './VolunteerClient'
+import { LanguageText } from '@/components/LanguageText'
 
 export default async function VolunteerPage() {
   const session = await auth()
@@ -52,9 +53,11 @@ export default async function VolunteerPage() {
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
       <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>志愿服务 / Volunteer Service</h1>
+        <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
+          <LanguageText zh="志愿服务" en="Volunteer Service" />
+        </h1>
         <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
-          {academicYear} · 完成1次志愿服务后可申请退还押金 / Complete 1 volunteer service to claim your deposit refund
+          {academicYear} · <LanguageText zh="完成1次志愿服务后可申请退还押金" en="Complete 1 volunteer service to claim your deposit refund" />
         </p>
       </div>
       <VolunteerClient deposit={depositForClient} services={services} academicYear={academicYear} />

@@ -58,7 +58,7 @@ export default async function DashboardPage() {
                 enrollments: {
                   where: { status: { in: ['PENDING', 'CONFIRMED'] } },
                   include: {
-                    class: { select: { id: true, name: true, type: true, year: true, fee: true } },
+                    class: { select: { id: true, name: true, nameEn: true, type: true, year: true, fee: true } },
                     textbooks: { include: { textbook: { select: { name: true } } } },
                   },
                   orderBy: { createdAt: 'asc' },
@@ -100,7 +100,7 @@ export default async function DashboardPage() {
     enrollments: s.enrollments.map((e) => ({
       id: e.id,
       status: e.status,
-      class: { id: e.class.id, name: e.class.name, type: e.class.type, fee: e.class.fee.toString() },
+      class: { id: e.class.id, name: e.class.name, nameEn: e.class.nameEn ?? null, type: e.class.type, fee: e.class.fee.toString() },
       textbooks: e.textbooks.map((et) => ({ price: et.price.toString(), textbook: { name: et.textbook.name } })),
     })),
     waitlists: s.waitlists.map((w) => ({
