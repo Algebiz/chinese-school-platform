@@ -50,6 +50,7 @@ export async function GET(req: NextRequest) {
       nameEn: c.nameEn,
       type: c.type,
       description: c.description,
+      descriptionZh: c.descriptionZh,
       teacher: c.teacher,
       schedule: c.schedule,
       capacity: c.capacity,
