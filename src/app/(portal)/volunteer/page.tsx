@@ -50,11 +50,11 @@ export default async function VolunteerPage() {
     : null
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">志愿服务 / Volunteer Service</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          {academicYear} 学年 · 完成1次志愿服务后可申请退还押金 / Complete 1 volunteer service to claim your deposit refund
+    <div style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
+      <div style={{ marginBottom: 24 }}>
+        <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>志愿服务 / Volunteer Service</h1>
+        <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
+          {academicYear} · 完成1次志愿服务后可申请退还押金 / Complete 1 volunteer service to claim your deposit refund
         </p>
       </div>
       <VolunteerClient deposit={depositForClient} services={services} academicYear={academicYear} />

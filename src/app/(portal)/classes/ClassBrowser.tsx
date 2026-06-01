@@ -49,7 +49,7 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
   })
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', paddingBottom: 100 }}>
+    <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px', paddingBottom: 100 }}>
       {/* Page hero */}
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>

@@ -25,13 +25,11 @@ export default async function ClassesPage() {
   const classes = sortClasses(await fetchClasses(CURRENT_YEAR))
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-5xl px-4 py-8">
-        <ClassBrowser
-          chineseClasses={classes.filter((c) => c.type === 'CHINESE')}
-          artsClasses={classes.filter((c) => c.type === 'ARTS')}
-        />
-      </div>
+    <div className="bg-gray-50">
+      <ClassBrowser
+        chineseClasses={classes.filter((c) => c.type === 'CHINESE')}
+        artsClasses={classes.filter((c) => c.type === 'ARTS')}
+      />
     </div>
   )
 }

@@ -69,7 +69,7 @@ export function ExamsClient({ currentYear, sessions, myStudents }: Props) {
   }
 
   return (
-    <div style={{ maxWidth: 860, margin: '0 auto', padding: '28px 20px', display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: 24 }}>
 
       {/* Hero */}
       <div>

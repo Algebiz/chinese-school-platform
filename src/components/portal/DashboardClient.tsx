@@ -60,9 +60,9 @@ const EXAM_META: Record<string, { zh: string; en: string; color: 'amber' | 'blue
 // ── Shared layout constants ──────────────────────────────────────────────────
 
 const PAGE: React.CSSProperties = {
-  maxWidth: 860,
+  maxWidth: 900,
   margin: '0 auto',
-  padding: '28px 20px',
+  padding: '24px',
   display: 'flex',
   flexDirection: 'column',
   gap: 24,
