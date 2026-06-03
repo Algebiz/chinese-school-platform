@@ -50,44 +50,37 @@ export function ExamRegisterClient({ session: examSession, students }: Props) {
     setError(null)
 
     try {
-      // Step 1: Create the exam registration record (PENDING_PAYMENT)
-      const regRes = await fetch('/api/exams/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ examSessionId: examSession.id, studentId: selectedStudentId, notes: notes || undefined }),
-      })
-      const regJson = await regRes.json()
-
-      if (!regJson.success) {
-        const msgs: Record<string, string> = {
-          CAPACITY_FULL:           t('该考试场次已满员', 'Exam session is full'),
-          ALREADY_REGISTERED:      t('该学生已报名此考试', 'Student already registered for this exam'),
-          DEADLINE_PASSED:         t('报名截止日期已过', 'Registration deadline has passed'),
-          NO_CONFIRMED_ENROLLMENT: t('学生需要先完成班级报名并付款', 'Student must have a confirmed class enrollment first'),
-        }
-        setError(msgs[regJson.code] ?? regJson.error ?? t('报名失败，请重试', 'Registration failed, please try again'))
-        return
-      }
-
-      // Step 2: Add to cart with the registration ID
+      // Add directly to cart — no ExamRegistration created yet.
+      // The actual ExamRegistration record is created only when payment succeeds.
       const student = students.find(s => s.id === selectedStudentId)!
       const examDateStr = new Date(examSession.examDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
       const desc = `${examSession.examType} Level ${examSession.level} — ${student.name} (${examDateStr})`
 
-      await fetch('/api/cart', {
+      const cartRes = await fetch('/api/cart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: 'EXAM_REGISTRATION',
           studentId: selectedStudentId,
           examSessionId: examSession.id,
-          examRegistrationId: regJson.data.registrationId,
           description: desc,
           descriptionEn: desc,
         }),
       })
-      await refreshCart()
+      const cartJson = await cartRes.json()
 
+      if (!cartJson.success) {
+        const msgs: Record<string, string> = {
+          CAPACITY_FULL:           t('该考试场次已满员', 'Exam session is full'),
+          ALREADY_IN_CART:         t('该学生已将此考试加入购物车', 'This exam is already in your cart'),
+          DEADLINE_PASSED:         t('报名截止日期已过', 'Registration deadline has passed'),
+          NO_CONFIRMED_ENROLLMENT: t('学生需要先完成班级报名并付款', 'Student must have a confirmed class enrollment first'),
+        }
+        setError(msgs[cartJson.code] ?? cartJson.error ?? t('加入购物车失败，请重试', 'Failed to add to cart, please try again'))
+        return
+      }
+
+      await refreshCart()
       setAddedStudent(student)
       setAddedToCart(true)
     } catch {
