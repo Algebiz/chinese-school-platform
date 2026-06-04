@@ -51,10 +51,12 @@ const CartContext = createContext<CartContextType>({
 export function CartProvider({ children }: { children: ReactNode }) {
   const { data: session } = useSession()
   const [items, setItems] = useState<CartItemData[]>([])
-  const [loading, setLoading] = useState(false)
+  // Start as true so CartClient shows skeleton until first fetch completes
+  const [loading, setLoading] = useState(true)
 
   const refreshCart = useCallback(async () => {
-    if (!session) return
+    if (!session) { setLoading(false); return }
+    setLoading(true)
     try {
       const res = await fetch('/api/cart')
       if (res.ok) {
@@ -62,10 +64,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
         if (json.success) setItems(json.data)
       }
     } catch { /* silent */ }
+    finally { setLoading(false) }
   }, [session])
 
   useEffect(() => {
     if (session) refreshCart()
+    else setLoading(false)
+  }, [session, refreshCart])
+
+  // Refresh when user switches back to this tab
+  useEffect(() => {
+    function onVisible() { if (!document.hidden && session) refreshCart() }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
   }, [session, refreshCart])
 
   async function addToCart(payload: AddToCartPayload): Promise<{ ok: boolean; error?: string }> {

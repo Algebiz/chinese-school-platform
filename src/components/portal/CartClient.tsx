@@ -1,20 +1,34 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { useCart, type CartItemData } from '@/lib/cart/CartContext'
 import { badge } from '@/lib/design'
 
+function CartSkeleton() {
+  return (
+    <div>
+      <div style={{ height: 20, background: '#F9FAFB', borderRadius: 4, marginBottom: 16, width: 200 }} />
+      {[1, 2, 3].map(i => (
+        <div key={i} style={{ height: 80, background: '#F9FAFB', borderRadius: 8, marginBottom: 12, animation: 'pulse 1.5s ease-in-out infinite' }} />
+      ))}
+    </div>
+  )
+}
+
 const CARD: React.CSSProperties = { border: '0.5px solid #E5E7EB', borderRadius: 12, overflow: 'hidden', background: 'white', marginBottom: 12 }
 const ROW: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 12, padding: '12px 20px', borderBottom: '0.5px solid #E5E7EB' }
 
 export function CartClient() {
   const { t, lang } = useLanguage()
-  const { rootItems, items, total, removeItem, clearCart, loading } = useCart()
+  const { rootItems, items, total, removeItem, clearCart, loading, refreshCart } = useCart()
   const router = useRouter()
   const [removingId, setRemovingId] = useState<string | null>(null)
+
+  // Refresh cart every time this component mounts (fixes stale-on-back-nav)
+  useEffect(() => { refreshCart() }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const [confirming, setConfirming] = useState<string | null>(null)
   const [checkingOut, setCheckingOut] = useState(false)
 
@@ -59,6 +73,8 @@ export function CartClient() {
       router.push('/dashboard')
     }
   }
+
+  if (loading) return <CartSkeleton />
 
   if (rootItems.length === 0) {
     return (
