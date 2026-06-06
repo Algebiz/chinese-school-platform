@@ -291,6 +291,9 @@ exports.Prisma.AcademicYearConfigScalarFieldEnum = {
   volunteerDepositAmount: 'volunteerDepositAmount',
   volunteerClaimDeadline: 'volunteerClaimDeadline',
   volunteerDepositRequired: 'volunteerDepositRequired',
+  earlyBirdEnabled: 'earlyBirdEnabled',
+  earlyBirdDiscount: 'earlyBirdDiscount',
+  earlyBirdDeadline: 'earlyBirdDeadline',
   createdAt: 'createdAt'
 };
 
@@ -459,6 +462,9 @@ exports.Prisma.CartItemScalarFieldEnum = {
   enrollmentId: 'enrollmentId',
   examRegistrationId: 'examRegistrationId',
   price: 'price',
+  originalPrice: 'originalPrice',
+  discountAmount: 'discountAmount',
+  discountLabel: 'discountLabel',
   description: 'description',
   descriptionEn: 'descriptionEn',
   createdAt: 'createdAt'

@@ -20139,10 +20139,12 @@ export namespace Prisma {
 
   export type AcademicYearConfigAvgAggregateOutputType = {
     volunteerDepositAmount: Decimal | null
+    earlyBirdDiscount: Decimal | null
   }
 
   export type AcademicYearConfigSumAggregateOutputType = {
     volunteerDepositAmount: Decimal | null
+    earlyBirdDiscount: Decimal | null
   }
 
   export type AcademicYearConfigMinAggregateOutputType = {
@@ -20155,6 +20157,9 @@ export namespace Prisma {
     volunteerDepositAmount: Decimal | null
     volunteerClaimDeadline: Date | null
     volunteerDepositRequired: boolean | null
+    earlyBirdEnabled: boolean | null
+    earlyBirdDiscount: Decimal | null
+    earlyBirdDeadline: Date | null
     createdAt: Date | null
   }
 
@@ -20168,6 +20173,9 @@ export namespace Prisma {
     volunteerDepositAmount: Decimal | null
     volunteerClaimDeadline: Date | null
     volunteerDepositRequired: boolean | null
+    earlyBirdEnabled: boolean | null
+    earlyBirdDiscount: Decimal | null
+    earlyBirdDeadline: Date | null
     createdAt: Date | null
   }
 
@@ -20181,6 +20189,9 @@ export namespace Prisma {
     volunteerDepositAmount: number
     volunteerClaimDeadline: number
     volunteerDepositRequired: number
+    earlyBirdEnabled: number
+    earlyBirdDiscount: number
+    earlyBirdDeadline: number
     createdAt: number
     _all: number
   }
@@ -20188,10 +20199,12 @@ export namespace Prisma {
 
   export type AcademicYearConfigAvgAggregateInputType = {
     volunteerDepositAmount?: true
+    earlyBirdDiscount?: true
   }
 
   export type AcademicYearConfigSumAggregateInputType = {
     volunteerDepositAmount?: true
+    earlyBirdDiscount?: true
   }
 
   export type AcademicYearConfigMinAggregateInputType = {
@@ -20204,6 +20217,9 @@ export namespace Prisma {
     volunteerDepositAmount?: true
     volunteerClaimDeadline?: true
     volunteerDepositRequired?: true
+    earlyBirdEnabled?: true
+    earlyBirdDiscount?: true
+    earlyBirdDeadline?: true
     createdAt?: true
   }
 
@@ -20217,6 +20233,9 @@ export namespace Prisma {
     volunteerDepositAmount?: true
     volunteerClaimDeadline?: true
     volunteerDepositRequired?: true
+    earlyBirdEnabled?: true
+    earlyBirdDiscount?: true
+    earlyBirdDeadline?: true
     createdAt?: true
   }
 
@@ -20230,6 +20249,9 @@ export namespace Prisma {
     volunteerDepositAmount?: true
     volunteerClaimDeadline?: true
     volunteerDepositRequired?: true
+    earlyBirdEnabled?: true
+    earlyBirdDiscount?: true
+    earlyBirdDeadline?: true
     createdAt?: true
     _all?: true
   }
@@ -20330,6 +20352,9 @@ export namespace Prisma {
     volunteerDepositAmount: Decimal | null
     volunteerClaimDeadline: Date | null
     volunteerDepositRequired: boolean
+    earlyBirdEnabled: boolean
+    earlyBirdDiscount: Decimal | null
+    earlyBirdDeadline: Date | null
     createdAt: Date
     _count: AcademicYearConfigCountAggregateOutputType | null
     _avg: AcademicYearConfigAvgAggregateOutputType | null
@@ -20362,6 +20387,9 @@ export namespace Prisma {
     volunteerDepositAmount?: boolean
     volunteerClaimDeadline?: boolean
     volunteerDepositRequired?: boolean
+    earlyBirdEnabled?: boolean
+    earlyBirdDiscount?: boolean
+    earlyBirdDeadline?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["academicYearConfig"]>
 
@@ -20375,6 +20403,9 @@ export namespace Prisma {
     volunteerDepositAmount?: boolean
     volunteerClaimDeadline?: boolean
     volunteerDepositRequired?: boolean
+    earlyBirdEnabled?: boolean
+    earlyBirdDiscount?: boolean
+    earlyBirdDeadline?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["academicYearConfig"]>
 
@@ -20388,6 +20419,9 @@ export namespace Prisma {
     volunteerDepositAmount?: boolean
     volunteerClaimDeadline?: boolean
     volunteerDepositRequired?: boolean
+    earlyBirdEnabled?: boolean
+    earlyBirdDiscount?: boolean
+    earlyBirdDeadline?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["academicYearConfig"]>
 
@@ -20401,10 +20435,13 @@ export namespace Prisma {
     volunteerDepositAmount?: boolean
     volunteerClaimDeadline?: boolean
     volunteerDepositRequired?: boolean
+    earlyBirdEnabled?: boolean
+    earlyBirdDiscount?: boolean
+    earlyBirdDeadline?: boolean
     createdAt?: boolean
   }
 
-  export type AcademicYearConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicYear" | "nextYear" | "reEnrollmentOpenDate" | "newEnrollmentOpenDate" | "isActive" | "volunteerDepositAmount" | "volunteerClaimDeadline" | "volunteerDepositRequired" | "createdAt", ExtArgs["result"]["academicYearConfig"]>
+  export type AcademicYearConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicYear" | "nextYear" | "reEnrollmentOpenDate" | "newEnrollmentOpenDate" | "isActive" | "volunteerDepositAmount" | "volunteerClaimDeadline" | "volunteerDepositRequired" | "earlyBirdEnabled" | "earlyBirdDiscount" | "earlyBirdDeadline" | "createdAt", ExtArgs["result"]["academicYearConfig"]>
 
   export type $AcademicYearConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AcademicYearConfig"
@@ -20419,6 +20456,9 @@ export namespace Prisma {
       volunteerDepositAmount: Prisma.Decimal | null
       volunteerClaimDeadline: Date | null
       volunteerDepositRequired: boolean
+      earlyBirdEnabled: boolean
+      earlyBirdDiscount: Prisma.Decimal | null
+      earlyBirdDeadline: Date | null
       createdAt: Date
     }, ExtArgs["result"]["academicYearConfig"]>
     composites: {}
@@ -20852,6 +20892,9 @@ export namespace Prisma {
     readonly volunteerDepositAmount: FieldRef<"AcademicYearConfig", 'Decimal'>
     readonly volunteerClaimDeadline: FieldRef<"AcademicYearConfig", 'DateTime'>
     readonly volunteerDepositRequired: FieldRef<"AcademicYearConfig", 'Boolean'>
+    readonly earlyBirdEnabled: FieldRef<"AcademicYearConfig", 'Boolean'>
+    readonly earlyBirdDiscount: FieldRef<"AcademicYearConfig", 'Decimal'>
+    readonly earlyBirdDeadline: FieldRef<"AcademicYearConfig", 'DateTime'>
     readonly createdAt: FieldRef<"AcademicYearConfig", 'DateTime'>
   }
     
@@ -33025,10 +33068,14 @@ export namespace Prisma {
 
   export type CartItemAvgAggregateOutputType = {
     price: Decimal | null
+    originalPrice: Decimal | null
+    discountAmount: Decimal | null
   }
 
   export type CartItemSumAggregateOutputType = {
     price: Decimal | null
+    originalPrice: Decimal | null
+    discountAmount: Decimal | null
   }
 
   export type CartItemMinAggregateOutputType = {
@@ -33043,6 +33090,9 @@ export namespace Prisma {
     enrollmentId: string | null
     examRegistrationId: string | null
     price: Decimal | null
+    originalPrice: Decimal | null
+    discountAmount: Decimal | null
+    discountLabel: string | null
     description: string | null
     descriptionEn: string | null
     createdAt: Date | null
@@ -33060,6 +33110,9 @@ export namespace Prisma {
     enrollmentId: string | null
     examRegistrationId: string | null
     price: Decimal | null
+    originalPrice: Decimal | null
+    discountAmount: Decimal | null
+    discountLabel: string | null
     description: string | null
     descriptionEn: string | null
     createdAt: Date | null
@@ -33077,6 +33130,9 @@ export namespace Prisma {
     enrollmentId: number
     examRegistrationId: number
     price: number
+    originalPrice: number
+    discountAmount: number
+    discountLabel: number
     description: number
     descriptionEn: number
     createdAt: number
@@ -33086,10 +33142,14 @@ export namespace Prisma {
 
   export type CartItemAvgAggregateInputType = {
     price?: true
+    originalPrice?: true
+    discountAmount?: true
   }
 
   export type CartItemSumAggregateInputType = {
     price?: true
+    originalPrice?: true
+    discountAmount?: true
   }
 
   export type CartItemMinAggregateInputType = {
@@ -33104,6 +33164,9 @@ export namespace Prisma {
     enrollmentId?: true
     examRegistrationId?: true
     price?: true
+    originalPrice?: true
+    discountAmount?: true
+    discountLabel?: true
     description?: true
     descriptionEn?: true
     createdAt?: true
@@ -33121,6 +33184,9 @@ export namespace Prisma {
     enrollmentId?: true
     examRegistrationId?: true
     price?: true
+    originalPrice?: true
+    discountAmount?: true
+    discountLabel?: true
     description?: true
     descriptionEn?: true
     createdAt?: true
@@ -33138,6 +33204,9 @@ export namespace Prisma {
     enrollmentId?: true
     examRegistrationId?: true
     price?: true
+    originalPrice?: true
+    discountAmount?: true
+    discountLabel?: true
     description?: true
     descriptionEn?: true
     createdAt?: true
@@ -33242,6 +33311,9 @@ export namespace Prisma {
     enrollmentId: string | null
     examRegistrationId: string | null
     price: Decimal
+    originalPrice: Decimal | null
+    discountAmount: Decimal | null
+    discountLabel: string | null
     description: string
     descriptionEn: string | null
     createdAt: Date
@@ -33278,6 +33350,9 @@ export namespace Prisma {
     enrollmentId?: boolean
     examRegistrationId?: boolean
     price?: boolean
+    originalPrice?: boolean
+    discountAmount?: boolean
+    discountLabel?: boolean
     description?: boolean
     descriptionEn?: boolean
     createdAt?: boolean
@@ -33301,6 +33376,9 @@ export namespace Prisma {
     enrollmentId?: boolean
     examRegistrationId?: boolean
     price?: boolean
+    originalPrice?: boolean
+    discountAmount?: boolean
+    discountLabel?: boolean
     description?: boolean
     descriptionEn?: boolean
     createdAt?: boolean
@@ -33322,6 +33400,9 @@ export namespace Prisma {
     enrollmentId?: boolean
     examRegistrationId?: boolean
     price?: boolean
+    originalPrice?: boolean
+    discountAmount?: boolean
+    discountLabel?: boolean
     description?: boolean
     descriptionEn?: boolean
     createdAt?: boolean
@@ -33343,12 +33424,15 @@ export namespace Prisma {
     enrollmentId?: boolean
     examRegistrationId?: boolean
     price?: boolean
+    originalPrice?: boolean
+    discountAmount?: boolean
+    discountLabel?: boolean
     description?: boolean
     descriptionEn?: boolean
     createdAt?: boolean
   }
 
-  export type CartItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "familyId" | "type" | "studentId" | "classId" | "examSessionId" | "textbookId" | "parentCartItemId" | "enrollmentId" | "examRegistrationId" | "price" | "description" | "descriptionEn" | "createdAt", ExtArgs["result"]["cartItem"]>
+  export type CartItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "familyId" | "type" | "studentId" | "classId" | "examSessionId" | "textbookId" | "parentCartItemId" | "enrollmentId" | "examRegistrationId" | "price" | "originalPrice" | "discountAmount" | "discountLabel" | "description" | "descriptionEn" | "createdAt", ExtArgs["result"]["cartItem"]>
   export type CartItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     family?: boolean | FamilyDefaultArgs<ExtArgs>
     student?: boolean | CartItem$studentArgs<ExtArgs>
@@ -33391,6 +33475,9 @@ export namespace Prisma {
       enrollmentId: string | null
       examRegistrationId: string | null
       price: Prisma.Decimal
+      originalPrice: Prisma.Decimal | null
+      discountAmount: Prisma.Decimal | null
+      discountLabel: string | null
       description: string
       descriptionEn: string | null
       createdAt: Date
@@ -33833,6 +33920,9 @@ export namespace Prisma {
     readonly enrollmentId: FieldRef<"CartItem", 'String'>
     readonly examRegistrationId: FieldRef<"CartItem", 'String'>
     readonly price: FieldRef<"CartItem", 'Decimal'>
+    readonly originalPrice: FieldRef<"CartItem", 'Decimal'>
+    readonly discountAmount: FieldRef<"CartItem", 'Decimal'>
+    readonly discountLabel: FieldRef<"CartItem", 'String'>
     readonly description: FieldRef<"CartItem", 'String'>
     readonly descriptionEn: FieldRef<"CartItem", 'String'>
     readonly createdAt: FieldRef<"CartItem", 'DateTime'>
@@ -34563,6 +34653,9 @@ export namespace Prisma {
     volunteerDepositAmount: 'volunteerDepositAmount',
     volunteerClaimDeadline: 'volunteerClaimDeadline',
     volunteerDepositRequired: 'volunteerDepositRequired',
+    earlyBirdEnabled: 'earlyBirdEnabled',
+    earlyBirdDiscount: 'earlyBirdDiscount',
+    earlyBirdDeadline: 'earlyBirdDeadline',
     createdAt: 'createdAt'
   };
 
@@ -34764,6 +34857,9 @@ export namespace Prisma {
     enrollmentId: 'enrollmentId',
     examRegistrationId: 'examRegistrationId',
     price: 'price',
+    originalPrice: 'originalPrice',
+    discountAmount: 'discountAmount',
+    discountLabel: 'discountLabel',
     description: 'description',
     descriptionEn: 'descriptionEn',
     createdAt: 'createdAt'
@@ -36179,6 +36275,9 @@ export namespace Prisma {
     volunteerDepositAmount?: DecimalNullableFilter<"AcademicYearConfig"> | Decimal | DecimalJsLike | number | string | null
     volunteerClaimDeadline?: DateTimeNullableFilter<"AcademicYearConfig"> | Date | string | null
     volunteerDepositRequired?: BoolFilter<"AcademicYearConfig"> | boolean
+    earlyBirdEnabled?: BoolFilter<"AcademicYearConfig"> | boolean
+    earlyBirdDiscount?: DecimalNullableFilter<"AcademicYearConfig"> | Decimal | DecimalJsLike | number | string | null
+    earlyBirdDeadline?: DateTimeNullableFilter<"AcademicYearConfig"> | Date | string | null
     createdAt?: DateTimeFilter<"AcademicYearConfig"> | Date | string
   }
 
@@ -36192,6 +36291,9 @@ export namespace Prisma {
     volunteerDepositAmount?: SortOrderInput | SortOrder
     volunteerClaimDeadline?: SortOrderInput | SortOrder
     volunteerDepositRequired?: SortOrder
+    earlyBirdEnabled?: SortOrder
+    earlyBirdDiscount?: SortOrderInput | SortOrder
+    earlyBirdDeadline?: SortOrderInput | SortOrder
     createdAt?: SortOrder
   }
 
@@ -36208,6 +36310,9 @@ export namespace Prisma {
     volunteerDepositAmount?: DecimalNullableFilter<"AcademicYearConfig"> | Decimal | DecimalJsLike | number | string | null
     volunteerClaimDeadline?: DateTimeNullableFilter<"AcademicYearConfig"> | Date | string | null
     volunteerDepositRequired?: BoolFilter<"AcademicYearConfig"> | boolean
+    earlyBirdEnabled?: BoolFilter<"AcademicYearConfig"> | boolean
+    earlyBirdDiscount?: DecimalNullableFilter<"AcademicYearConfig"> | Decimal | DecimalJsLike | number | string | null
+    earlyBirdDeadline?: DateTimeNullableFilter<"AcademicYearConfig"> | Date | string | null
     createdAt?: DateTimeFilter<"AcademicYearConfig"> | Date | string
   }, "id" | "academicYear">
 
@@ -36221,6 +36326,9 @@ export namespace Prisma {
     volunteerDepositAmount?: SortOrderInput | SortOrder
     volunteerClaimDeadline?: SortOrderInput | SortOrder
     volunteerDepositRequired?: SortOrder
+    earlyBirdEnabled?: SortOrder
+    earlyBirdDiscount?: SortOrderInput | SortOrder
+    earlyBirdDeadline?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: AcademicYearConfigCountOrderByAggregateInput
     _avg?: AcademicYearConfigAvgOrderByAggregateInput
@@ -36242,6 +36350,9 @@ export namespace Prisma {
     volunteerDepositAmount?: DecimalNullableWithAggregatesFilter<"AcademicYearConfig"> | Decimal | DecimalJsLike | number | string | null
     volunteerClaimDeadline?: DateTimeNullableWithAggregatesFilter<"AcademicYearConfig"> | Date | string | null
     volunteerDepositRequired?: BoolWithAggregatesFilter<"AcademicYearConfig"> | boolean
+    earlyBirdEnabled?: BoolWithAggregatesFilter<"AcademicYearConfig"> | boolean
+    earlyBirdDiscount?: DecimalNullableWithAggregatesFilter<"AcademicYearConfig"> | Decimal | DecimalJsLike | number | string | null
+    earlyBirdDeadline?: DateTimeNullableWithAggregatesFilter<"AcademicYearConfig"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"AcademicYearConfig"> | Date | string
   }
 
@@ -37207,6 +37318,9 @@ export namespace Prisma {
     enrollmentId?: StringNullableFilter<"CartItem"> | string | null
     examRegistrationId?: StringNullableFilter<"CartItem"> | string | null
     price?: DecimalFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
+    originalPrice?: DecimalNullableFilter<"CartItem"> | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: DecimalNullableFilter<"CartItem"> | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: StringNullableFilter<"CartItem"> | string | null
     description?: StringFilter<"CartItem"> | string
     descriptionEn?: StringNullableFilter<"CartItem"> | string | null
     createdAt?: DateTimeFilter<"CartItem"> | Date | string
@@ -37229,6 +37343,9 @@ export namespace Prisma {
     enrollmentId?: SortOrderInput | SortOrder
     examRegistrationId?: SortOrderInput | SortOrder
     price?: SortOrder
+    originalPrice?: SortOrderInput | SortOrder
+    discountAmount?: SortOrderInput | SortOrder
+    discountLabel?: SortOrderInput | SortOrder
     description?: SortOrder
     descriptionEn?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -37254,6 +37371,9 @@ export namespace Prisma {
     enrollmentId?: StringNullableFilter<"CartItem"> | string | null
     examRegistrationId?: StringNullableFilter<"CartItem"> | string | null
     price?: DecimalFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
+    originalPrice?: DecimalNullableFilter<"CartItem"> | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: DecimalNullableFilter<"CartItem"> | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: StringNullableFilter<"CartItem"> | string | null
     description?: StringFilter<"CartItem"> | string
     descriptionEn?: StringNullableFilter<"CartItem"> | string | null
     createdAt?: DateTimeFilter<"CartItem"> | Date | string
@@ -37276,6 +37396,9 @@ export namespace Prisma {
     enrollmentId?: SortOrderInput | SortOrder
     examRegistrationId?: SortOrderInput | SortOrder
     price?: SortOrder
+    originalPrice?: SortOrderInput | SortOrder
+    discountAmount?: SortOrderInput | SortOrder
+    discountLabel?: SortOrderInput | SortOrder
     description?: SortOrder
     descriptionEn?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -37301,6 +37424,9 @@ export namespace Prisma {
     enrollmentId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
     examRegistrationId?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
     price?: DecimalWithAggregatesFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
+    originalPrice?: DecimalNullableWithAggregatesFilter<"CartItem"> | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: DecimalNullableWithAggregatesFilter<"CartItem"> | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
     description?: StringWithAggregatesFilter<"CartItem"> | string
     descriptionEn?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"CartItem"> | Date | string
@@ -38521,6 +38647,9 @@ export namespace Prisma {
     volunteerDepositAmount?: Decimal | DecimalJsLike | number | string | null
     volunteerClaimDeadline?: Date | string | null
     volunteerDepositRequired?: boolean
+    earlyBirdEnabled?: boolean
+    earlyBirdDiscount?: Decimal | DecimalJsLike | number | string | null
+    earlyBirdDeadline?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -38534,6 +38663,9 @@ export namespace Prisma {
     volunteerDepositAmount?: Decimal | DecimalJsLike | number | string | null
     volunteerClaimDeadline?: Date | string | null
     volunteerDepositRequired?: boolean
+    earlyBirdEnabled?: boolean
+    earlyBirdDiscount?: Decimal | DecimalJsLike | number | string | null
+    earlyBirdDeadline?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -38547,6 +38679,9 @@ export namespace Prisma {
     volunteerDepositAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     volunteerClaimDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     volunteerDepositRequired?: BoolFieldUpdateOperationsInput | boolean
+    earlyBirdEnabled?: BoolFieldUpdateOperationsInput | boolean
+    earlyBirdDiscount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    earlyBirdDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38560,6 +38695,9 @@ export namespace Prisma {
     volunteerDepositAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     volunteerClaimDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     volunteerDepositRequired?: BoolFieldUpdateOperationsInput | boolean
+    earlyBirdEnabled?: BoolFieldUpdateOperationsInput | boolean
+    earlyBirdDiscount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    earlyBirdDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38573,6 +38711,9 @@ export namespace Prisma {
     volunteerDepositAmount?: Decimal | DecimalJsLike | number | string | null
     volunteerClaimDeadline?: Date | string | null
     volunteerDepositRequired?: boolean
+    earlyBirdEnabled?: boolean
+    earlyBirdDiscount?: Decimal | DecimalJsLike | number | string | null
+    earlyBirdDeadline?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -38586,6 +38727,9 @@ export namespace Prisma {
     volunteerDepositAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     volunteerClaimDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     volunteerDepositRequired?: BoolFieldUpdateOperationsInput | boolean
+    earlyBirdEnabled?: BoolFieldUpdateOperationsInput | boolean
+    earlyBirdDiscount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    earlyBirdDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38599,6 +38743,9 @@ export namespace Prisma {
     volunteerDepositAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     volunteerClaimDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     volunteerDepositRequired?: BoolFieldUpdateOperationsInput | boolean
+    earlyBirdEnabled?: BoolFieldUpdateOperationsInput | boolean
+    earlyBirdDiscount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    earlyBirdDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -39690,6 +39837,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -39712,6 +39862,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -39726,6 +39879,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39748,6 +39904,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39766,6 +39925,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -39779,6 +39941,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39796,6 +39961,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40942,11 +41110,15 @@ export namespace Prisma {
     volunteerDepositAmount?: SortOrder
     volunteerClaimDeadline?: SortOrder
     volunteerDepositRequired?: SortOrder
+    earlyBirdEnabled?: SortOrder
+    earlyBirdDiscount?: SortOrder
+    earlyBirdDeadline?: SortOrder
     createdAt?: SortOrder
   }
 
   export type AcademicYearConfigAvgOrderByAggregateInput = {
     volunteerDepositAmount?: SortOrder
+    earlyBirdDiscount?: SortOrder
   }
 
   export type AcademicYearConfigMaxOrderByAggregateInput = {
@@ -40959,6 +41131,9 @@ export namespace Prisma {
     volunteerDepositAmount?: SortOrder
     volunteerClaimDeadline?: SortOrder
     volunteerDepositRequired?: SortOrder
+    earlyBirdEnabled?: SortOrder
+    earlyBirdDiscount?: SortOrder
+    earlyBirdDeadline?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -40972,11 +41147,15 @@ export namespace Prisma {
     volunteerDepositAmount?: SortOrder
     volunteerClaimDeadline?: SortOrder
     volunteerDepositRequired?: SortOrder
+    earlyBirdEnabled?: SortOrder
+    earlyBirdDiscount?: SortOrder
+    earlyBirdDeadline?: SortOrder
     createdAt?: SortOrder
   }
 
   export type AcademicYearConfigSumOrderByAggregateInput = {
     volunteerDepositAmount?: SortOrder
+    earlyBirdDiscount?: SortOrder
   }
 
   export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -41689,6 +41868,9 @@ export namespace Prisma {
     enrollmentId?: SortOrder
     examRegistrationId?: SortOrder
     price?: SortOrder
+    originalPrice?: SortOrder
+    discountAmount?: SortOrder
+    discountLabel?: SortOrder
     description?: SortOrder
     descriptionEn?: SortOrder
     createdAt?: SortOrder
@@ -41696,6 +41878,8 @@ export namespace Prisma {
 
   export type CartItemAvgOrderByAggregateInput = {
     price?: SortOrder
+    originalPrice?: SortOrder
+    discountAmount?: SortOrder
   }
 
   export type CartItemMaxOrderByAggregateInput = {
@@ -41710,6 +41894,9 @@ export namespace Prisma {
     enrollmentId?: SortOrder
     examRegistrationId?: SortOrder
     price?: SortOrder
+    originalPrice?: SortOrder
+    discountAmount?: SortOrder
+    discountLabel?: SortOrder
     description?: SortOrder
     descriptionEn?: SortOrder
     createdAt?: SortOrder
@@ -41727,6 +41914,9 @@ export namespace Prisma {
     enrollmentId?: SortOrder
     examRegistrationId?: SortOrder
     price?: SortOrder
+    originalPrice?: SortOrder
+    discountAmount?: SortOrder
+    discountLabel?: SortOrder
     description?: SortOrder
     descriptionEn?: SortOrder
     createdAt?: SortOrder
@@ -41734,6 +41924,8 @@ export namespace Prisma {
 
   export type CartItemSumOrderByAggregateInput = {
     price?: SortOrder
+    originalPrice?: SortOrder
+    discountAmount?: SortOrder
   }
 
   export type EnumCartItemTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -44191,6 +44383,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -44211,6 +44406,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -44438,6 +44636,9 @@ export namespace Prisma {
     enrollmentId?: StringNullableFilter<"CartItem"> | string | null
     examRegistrationId?: StringNullableFilter<"CartItem"> | string | null
     price?: DecimalFilter<"CartItem"> | Decimal | DecimalJsLike | number | string
+    originalPrice?: DecimalNullableFilter<"CartItem"> | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: DecimalNullableFilter<"CartItem"> | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: StringNullableFilter<"CartItem"> | string | null
     description?: StringFilter<"CartItem"> | string
     descriptionEn?: StringNullableFilter<"CartItem"> | string | null
     createdAt?: DateTimeFilter<"CartItem"> | Date | string
@@ -45033,6 +45234,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -45053,6 +45257,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -46881,6 +47088,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -46901,6 +47111,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -48016,6 +48229,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -48036,6 +48252,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -48060,6 +48279,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -48081,6 +48303,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -48263,6 +48488,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48284,6 +48512,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48314,6 +48545,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -48426,6 +48660,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48446,6 +48683,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48463,6 +48703,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48783,6 +49026,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -48971,6 +49217,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48991,6 +49240,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49008,6 +49260,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49436,6 +49691,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -49515,6 +49773,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49535,6 +49796,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49552,6 +49816,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49748,6 +50015,9 @@ export namespace Prisma {
     enrollmentId?: string | null
     examRegistrationId?: string | null
     price: Decimal | DecimalJsLike | number | string
+    originalPrice?: Decimal | DecimalJsLike | number | string | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    discountLabel?: string | null
     description: string
     descriptionEn?: string | null
     createdAt?: Date | string
@@ -49761,6 +50031,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49781,6 +50054,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49798,6 +50074,9 @@ export namespace Prisma {
     enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
     examRegistrationId?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    originalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountLabel?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     descriptionEn?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

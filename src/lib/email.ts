@@ -294,7 +294,8 @@ export async function sendEnrollmentConfirmationByIds(
   textbookIds: string[],
   paymentMethod: 'STRIPE' | 'PAYPAL',
   transactionId: string,
-  academicYear: string
+  academicYear: string,
+  earlyBirdDiscount?: number
 ): Promise<void> {
   const [student, classes, textbooks] = await Promise.all([
     prisma.student.findUnique({
@@ -320,6 +321,7 @@ export async function sendEnrollmentConfirmationByIds(
 
   const tuitionTotal = classes.reduce((sum, c) => sum + parseFloat(c.fee.toString()), 0)
   const textbookTotal = textbooks.reduce((sum, t) => sum + parseFloat(t.price.toString()), 0)
+  const discount = earlyBirdDiscount ?? 0
 
   await sendEnrollmentConfirmation(parentUser.email, {
     parentName: parentUser.name ?? '家长',
@@ -335,7 +337,8 @@ export async function sendEnrollmentConfirmationByIds(
       nameZh: t.nameZh,
       price: t.price.toString(),
     })),
-    total: (tuitionTotal + textbookTotal).toFixed(2),
+    earlyBirdDiscount: discount > 0 ? discount.toFixed(2) : undefined,
+    total: (tuitionTotal + textbookTotal - discount).toFixed(2),
     paymentMethod,
     transactionId,
     academicYear,

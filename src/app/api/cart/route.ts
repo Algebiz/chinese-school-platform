@@ -3,6 +3,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { createEnrollments, checkTimeConflict } from '@/lib/enrollment-logic'
 import { getCurrentAcademicYear } from '@/lib/academic-year'
+import { getEarlyBirdConfig } from '@/lib/early-bird'
 
 async function getFamily(userId: string) {
   return prisma.user.findUnique({ where: { id: userId }, select: { familyId: true } })
@@ -20,6 +21,8 @@ function serialize(items: Awaited<ReturnType<typeof getCartItems>>) {
   return items.map(i => ({
     ...i,
     price: i.price.toString(),
+    originalPrice: i.originalPrice?.toString() ?? null,
+    discountAmount: i.discountAmount?.toString() ?? null,
     createdAt: i.createdAt.toISOString(),
   }))
 }
@@ -104,10 +107,11 @@ export async function POST(req: NextRequest) {
     const { enrollments } = await createEnrollments(studentId, classIds, textbookIds, CURRENT_YEAR)
 
     // Fetch class + textbook details for pricing
-    const classes = await prisma.class.findMany({ where: { id: { in: classIds } } })
-    const textbooks = textbookIds.length > 0
-      ? await prisma.textbook.findMany({ where: { id: { in: textbookIds } } })
-      : []
+    const [classes, textbooks, earlyBird] = await Promise.all([
+      prisma.class.findMany({ where: { id: { in: classIds } } }),
+      textbookIds.length > 0 ? prisma.textbook.findMany({ where: { id: { in: textbookIds } } }) : [],
+      getEarlyBirdConfig(),
+    ])
 
     const studentName = student.name
     // Map each classId to its created enrollment so each CartItem gets the correct enrollmentId
@@ -116,11 +120,21 @@ export async function POST(req: NextRequest) {
     // Create CartItems in a transaction
     await prisma.$transaction(async (tx) => {
       for (const cls of classes) {
+        const originalFee = Number(cls.fee)
+        const isLanguageClass = cls.type === 'CHINESE'
+        const discount = (earlyBird.isActive && isLanguageClass)
+          ? Math.min(earlyBird.discount, originalFee)
+          : 0
+        const discountedPrice = originalFee - discount
+
         const parentItem = await tx.cartItem.create({
           data: {
             familyId, type: 'ENROLLMENT', studentId, classId: cls.id,
             enrollmentId: enrollmentByClassId.get(cls.id) ?? null,
-            price: cls.fee,
+            price: discountedPrice,
+            originalPrice: discount > 0 ? originalFee : null,
+            discountAmount: discount > 0 ? discount : null,
+            discountLabel: discount > 0 ? '早鸟优惠' : null,
             description: `${cls.name} — ${studentName}`,
             descriptionEn: cls.nameEn ? `${cls.nameEn} — ${studentName}` : undefined,
           },

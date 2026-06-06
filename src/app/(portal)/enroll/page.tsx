@@ -5,6 +5,7 @@ import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { EnrollFlow } from './EnrollFlow'
 import { LanguageText } from '@/components/LanguageText'
 import { getReturningStudentData } from '@/lib/re-enrollment-logic'
+import { getEarlyBirdConfig, serializeEarlyBird } from '@/lib/early-bird'
 import type { ClassData } from '@/components/ClassCard'
 
 async function fetchClasses(year: string): Promise<ClassData[]> {
@@ -95,14 +96,17 @@ export default async function EnrollPage({
     }
   }
 
-  const [allClasses, ...returningInfoList] = await Promise.all([
+  const [allClassesResult, earlyBirdConfig, returningInfoList] = await Promise.all([
     fetchClasses(CURRENT_YEAR),
-    ...students.map((s) => getReturningStudentData(s.id, PREVIOUS_YEAR)),
+    getEarlyBirdConfig(),
+    Promise.all(students.map((s) => getReturningStudentData(s.id, PREVIOUS_YEAR))),
   ])
+  const allClasses = allClassesResult
+  const earlyBird = serializeEarlyBird(earlyBirdConfig)
 
   const returningStudentData: Record<string, ReturnType<typeof getReturningStudentData> extends Promise<infer T> ? T : never> = {}
   students.forEach((s, i) => {
-    returningStudentData[s.id] = returningInfoList[i] as Awaited<ReturnType<typeof getReturningStudentData>>
+    returningStudentData[s.id] = returningInfoList[i]
   })
 
   const chineseClasses = allClasses.filter((c) => c.type === 'CHINESE')
@@ -129,6 +133,7 @@ export default async function EnrollPage({
           initialStep={initialStep}
           artsOnly={confirmedLanguageClass !== null}
           confirmedLanguageClass={confirmedLanguageClass}
+          earlyBird={earlyBird}
         />
       </div>
     </div>

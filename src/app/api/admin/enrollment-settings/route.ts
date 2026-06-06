@@ -11,6 +11,9 @@ const schema = z.object({
   volunteerDepositAmount: z.number().positive().optional(),
   volunteerClaimDeadline: z.string().datetime().optional(),
   volunteerDepositRequired: z.boolean().optional(),
+  earlyBirdEnabled: z.boolean().optional(),
+  earlyBirdDiscount: z.number().min(0).optional(),
+  earlyBirdDeadline: z.string().datetime().optional().nullable(),
 })
 
 async function verifyAdmin() {
@@ -49,23 +52,45 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const { academicYear, nextYear, reEnrollmentOpenDate, newEnrollmentOpenDate, volunteerDepositAmount, volunteerClaimDeadline, volunteerDepositRequired } = result.data
+  const {
+    academicYear, nextYear, reEnrollmentOpenDate, newEnrollmentOpenDate,
+    volunteerDepositAmount, volunteerClaimDeadline, volunteerDepositRequired,
+    earlyBirdEnabled, earlyBirdDiscount, earlyBirdDeadline,
+  } = result.data
 
   await prisma.academicYearConfig.updateMany({
     where: { academicYear: { not: academicYear } },
     data: { isActive: false },
   })
 
-  const volunteerFields = {
+  const extraFields = {
     ...(volunteerDepositAmount !== undefined ? { volunteerDepositAmount } : {}),
     ...(volunteerClaimDeadline !== undefined ? { volunteerClaimDeadline: new Date(volunteerClaimDeadline) } : {}),
     ...(volunteerDepositRequired !== undefined ? { volunteerDepositRequired } : {}),
+    ...(earlyBirdEnabled !== undefined ? { earlyBirdEnabled } : {}),
+    ...(earlyBirdDiscount !== undefined ? { earlyBirdDiscount } : {}),
+    ...(earlyBirdDeadline !== undefined
+      ? { earlyBirdDeadline: earlyBirdDeadline ? new Date(earlyBirdDeadline) : null }
+      : {}),
   }
 
   const config = await prisma.academicYearConfig.upsert({
     where: { academicYear },
-    update: { nextYear, reEnrollmentOpenDate: new Date(reEnrollmentOpenDate), newEnrollmentOpenDate: new Date(newEnrollmentOpenDate), isActive: true, ...volunteerFields },
-    create: { academicYear, nextYear, reEnrollmentOpenDate: new Date(reEnrollmentOpenDate), newEnrollmentOpenDate: new Date(newEnrollmentOpenDate), isActive: true, ...volunteerFields },
+    update: {
+      nextYear,
+      reEnrollmentOpenDate: new Date(reEnrollmentOpenDate),
+      newEnrollmentOpenDate: new Date(newEnrollmentOpenDate),
+      isActive: true,
+      ...extraFields,
+    },
+    create: {
+      academicYear,
+      nextYear,
+      reEnrollmentOpenDate: new Date(reEnrollmentOpenDate),
+      newEnrollmentOpenDate: new Date(newEnrollmentOpenDate),
+      isActive: true,
+      ...extraFields,
+    },
   })
 
   return NextResponse.json({ success: true, data: config })

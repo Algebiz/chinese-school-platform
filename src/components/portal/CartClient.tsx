@@ -27,8 +27,8 @@ export function CartClient() {
   const router = useRouter()
   const [removingId, setRemovingId] = useState<string | null>(null)
 
-  // Refresh cart every time this component mounts (fixes stale-on-back-nav)
-  useEffect(() => { refreshCart() }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  // Force refresh on mount so cart page always shows fresh data (bypasses 30s cache)
+  useEffect(() => { refreshCart(true) }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const [confirming, setConfirming] = useState<string | null>(null)
   const [checkingOut, setCheckingOut] = useState(false)
 
@@ -151,7 +151,21 @@ export function CartClient() {
                         {item.type === 'EXAM_REGISTRATION' && <span style={badge('amber')}>{t('考试', 'Exam')}</span>}
                       </p>
                     </div>
-                    <span style={{ fontSize: 14, fontWeight: 600, color: '#111827' }}>${parseFloat(item.price).toFixed(2)}</span>
+                    <div style={{ textAlign: 'right' }}>
+                      {item.discountAmount && parseFloat(item.discountAmount) > 0 && item.originalPrice ? (
+                        <>
+                          <p style={{ fontSize: 11, color: '#9ca3af', textDecoration: 'line-through' }}>
+                            ${parseFloat(item.originalPrice).toFixed(2)}
+                          </p>
+                          <p style={{ fontSize: 14, fontWeight: 600, color: '#111827' }}>${parseFloat(item.price).toFixed(2)}</p>
+                          <span style={{ fontSize: 10, background: '#EAF3DE', color: '#3B6D11', borderRadius: 3, padding: '1px 5px', whiteSpace: 'nowrap' }}>
+                            -{item.discountLabel ?? t('优惠', 'Discount')} ${parseFloat(item.discountAmount).toFixed(0)}
+                          </span>
+                        </>
+                      ) : (
+                        <span style={{ fontSize: 14, fontWeight: 600, color: '#111827' }}>${parseFloat(item.price).toFixed(2)}</span>
+                      )}
+                    </div>
                     <button
                       onClick={() => handleRemove(item.id)}
                       disabled={removing}

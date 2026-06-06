@@ -11,6 +11,9 @@ interface Config {
   volunteerDepositAmount?: string | number | null
   volunteerClaimDeadline?: string | null
   volunteerDepositRequired?: boolean
+  earlyBirdEnabled?: boolean
+  earlyBirdDiscount?: string | number | null
+  earlyBirdDeadline?: string | null
 }
 
 function toDatetimeLocal(iso: string | null | undefined): string {
@@ -27,6 +30,9 @@ export default function EnrollmentSettingsPage() {
     volunteerDepositAmount: '100',
     volunteerClaimDeadline: '',
     volunteerDepositRequired: true,
+    earlyBirdEnabled: false,
+    earlyBirdDiscount: '',
+    earlyBirdDeadline: '',
   })
   const [loading, setLoading] = useState(false)
   const [fetching, setFetching] = useState(true)
@@ -47,6 +53,9 @@ export default function EnrollmentSettingsPage() {
             volunteerDepositAmount: d.volunteerDepositAmount != null ? String(d.volunteerDepositAmount) : '100',
             volunteerClaimDeadline: toDatetimeLocal(d.volunteerClaimDeadline),
             volunteerDepositRequired: d.volunteerDepositRequired ?? true,
+            earlyBirdEnabled: d.earlyBirdEnabled ?? false,
+            earlyBirdDiscount: d.earlyBirdDiscount != null ? String(d.earlyBirdDiscount) : '',
+            earlyBirdDeadline: toDatetimeLocal(d.earlyBirdDeadline),
           })
         }
       })
@@ -71,6 +80,9 @@ export default function EnrollmentSettingsPage() {
           volunteerDepositAmount: form.volunteerDepositAmount ? parseFloat(form.volunteerDepositAmount) : undefined,
           volunteerClaimDeadline: form.volunteerClaimDeadline ? new Date(form.volunteerClaimDeadline).toISOString() : undefined,
           volunteerDepositRequired: form.volunteerDepositRequired,
+          earlyBirdEnabled: form.earlyBirdEnabled,
+          earlyBirdDiscount: form.earlyBirdDiscount ? parseFloat(form.earlyBirdDiscount) : 0,
+          earlyBirdDeadline: form.earlyBirdDeadline ? new Date(form.earlyBirdDeadline).toISOString() : null,
         }),
       })
       const json = await res.json()
@@ -89,6 +101,11 @@ export default function EnrollmentSettingsPage() {
   if (fetching) {
     return <div className="text-sm text-gray-400 py-8 text-center">加载中…</div>
   }
+
+  const ebDeadlineFmt = form.earlyBirdDeadline
+    ? new Date(form.earlyBirdDeadline).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })
+    : null
+  const ebDiscount = parseFloat(form.earlyBirdDiscount || '0')
 
   return (
     <div className="max-w-2xl">
@@ -154,6 +171,7 @@ export default function EnrollmentSettingsPage() {
           />
         </Field>
 
+        {/* Volunteer settings */}
         <div className="border-t border-gray-100 pt-6">
           <h2 className="text-base font-semibold mb-4 text-gray-900">志愿服务设置 / Volunteer Settings</h2>
           <div className="grid gap-6 sm:grid-cols-2">
@@ -191,6 +209,72 @@ export default function EnrollmentSettingsPage() {
           </div>
         </div>
 
+        {/* Early bird settings */}
+        <div className="border-t border-gray-100 pt-6">
+          <h2 className="text-base font-semibold mb-1 text-gray-900">早鸟优惠设置 / Early Bird Discount</h2>
+          <p className="text-xs text-gray-400 mb-4">
+            适用范围：中文母语班（CHL）+ 中文第二语言班（CSL）· Arts classes are never discounted
+          </p>
+
+          <div className="flex items-center gap-3 mb-5">
+            <input
+              id="earlyBirdEnabled"
+              type="checkbox"
+              checked={form.earlyBirdEnabled}
+              onChange={(e) => setForm((f) => ({ ...f, earlyBirdEnabled: e.target.checked }))}
+              className="h-4 w-4 rounded border-gray-300 text-red-600"
+            />
+            <label htmlFor="earlyBirdEnabled" className="text-sm font-medium text-gray-700">
+              启用早鸟优惠 / Enable Early Bird Discount
+            </label>
+          </div>
+
+          {form.earlyBirdEnabled && (
+            <div className="grid gap-6 sm:grid-cols-2">
+              <Field label="优惠金额 / Discount Amount" hint="Deducted from each language class enrollment">
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={form.earlyBirdDiscount}
+                    onChange={(e) => setForm((f) => ({ ...f, earlyBirdDiscount: e.target.value }))}
+                    placeholder="50"
+                    className="input pl-7"
+                  />
+                </div>
+              </Field>
+              <Field label="截止日期 / Deadline" hint="Parents who enroll before this date receive the discount">
+                <input
+                  type="datetime-local"
+                  value={form.earlyBirdDeadline}
+                  onChange={(e) => setForm((f) => ({ ...f, earlyBirdDeadline: e.target.value }))}
+                  className="input"
+                />
+              </Field>
+            </div>
+          )}
+
+          {/* Preview */}
+          {form.earlyBirdEnabled && ebDiscount > 0 && ebDeadlineFmt && (
+            <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-3">
+              <p className="text-sm text-green-800">
+                <span className="font-semibold">当前设置：</span>在 {ebDeadlineFmt} 前报名中文课可享受 <strong>${ebDiscount.toFixed(2)}</strong> 优惠
+              </p>
+              <p className="text-xs text-green-600 mt-0.5">
+                Current: ${ebDiscount.toFixed(2)} off language class enrollments before {ebDeadlineFmt}
+              </p>
+            </div>
+          )}
+
+          {form.earlyBirdEnabled && (!ebDiscount || !form.earlyBirdDeadline) && (
+            <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3">
+              <p className="text-xs text-amber-700">请填写优惠金额和截止日期以激活早鸟优惠 / Enter both discount amount and deadline to activate</p>
+            </div>
+          )}
+        </div>
+
         <div className="pt-2 border-t border-gray-100">
           <button
             type="submit"
@@ -202,7 +286,7 @@ export default function EnrollmentSettingsPage() {
         </div>
       </form>
 
-      <style>{`.input { display:block;width:100%;border:1px solid #d1d5db;border-radius:6px;padding:8px 12px;font-size:14px;outline:none; } .input:focus{border-color:#dc2626;box-shadow:0 0 0 1px #dc2626;}`}</style>
+      <style>{`.input { display:block;width:100%;border:1px solid #d1d5db;border-radius:6px;padding:8px 12px;font-size:14px;outline:none; } .input:focus{border-color:#dc2626;box-shadow:0 0 0 1px #dc2626;} .pl-7{padding-left:1.75rem;}`}</style>
     </div>
   )
 }

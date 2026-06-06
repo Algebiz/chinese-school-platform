@@ -5,6 +5,7 @@ import { ClassBrowser } from './ClassBrowser'
 import type { ClassData } from '@/components/ClassCard'
 import { sortClasses } from '@/lib/class-order'
 import { getCurrentAcademicYear } from '@/lib/academic-year'
+import { getEarlyBirdConfig, serializeEarlyBird } from '@/lib/early-bird'
 
 export default async function ClassesPage() {
   // auth() and getCurrentAcademicYear() are independent — run in parallel
@@ -38,10 +39,11 @@ export default async function ClassesPage() {
     },
   } as const
 
-  let rawClasses = await prisma.class.findMany({
-    where: { year: CURRENT_YEAR },
-    include: includeSpec,
-  })
+  const [rawClassesResult, earlyBirdConfig] = await Promise.all([
+    prisma.class.findMany({ where: { year: CURRENT_YEAR }, include: includeSpec }),
+    getEarlyBirdConfig(),
+  ])
+  let rawClasses = rawClassesResult
 
   // Fallback: if no classes configured for this year, use the most recent year with data
   if (rawClasses.length === 0) {
@@ -82,11 +84,14 @@ export default async function ClassesPage() {
     }))
   )
 
+  const earlyBird = serializeEarlyBird(earlyBirdConfig)
+
   return (
     <div className="bg-gray-50">
       <ClassBrowser
         chineseClasses={classes.filter((c) => c.type === 'CHINESE')}
         artsClasses={classes.filter((c) => c.type === 'ARTS')}
+        earlyBird={earlyBird}
       />
     </div>
   )

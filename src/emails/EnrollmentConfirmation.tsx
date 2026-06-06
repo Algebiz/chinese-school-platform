@@ -29,6 +29,7 @@ export interface EnrollmentConfirmationProps {
     price: string
   }[]
   total: string
+  earlyBirdDiscount?: string
   paymentMethod: 'STRIPE' | 'PAYPAL'
   transactionId: string
   academicYear: string
@@ -40,6 +41,7 @@ export function EnrollmentConfirmation({
   classes,
   textbooks = [],
   total,
+  earlyBirdDiscount,
   paymentMethod,
   transactionId,
   academicYear,
@@ -91,6 +93,16 @@ export function EnrollmentConfirmation({
                   </Column>
                 </Row>
               ))}
+              {/* Early bird discount row */}
+              {earlyBirdDiscount && parseFloat(earlyBirdDiscount) > 0 && (
+                <Row style={{ backgroundColor: '#f0fdf4' }}>
+                  <Column style={{ ...cell, color: '#166534' }}>🏷️ 早鸟优惠 / Early Bird Discount</Column>
+                  <Column style={cell} />
+                  <Column style={{ ...cell, textAlign: 'right', color: '#166534', fontWeight: 'bold' }}>
+                    -${parseFloat(earlyBirdDiscount).toFixed(2)}
+                  </Column>
+                </Row>
+              )}
               {/* Total row */}
               <Row style={totalRow}>
                 <Column style={{ ...cell, fontWeight: 'bold' }}>合计 / Total</Column>

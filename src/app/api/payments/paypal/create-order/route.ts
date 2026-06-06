@@ -4,6 +4,7 @@ import { auth } from '@/lib/auth'
 import { createOrder } from '@/lib/paypal'
 import { prisma } from '@/lib/db'
 import { calculateTotalFee } from '@/lib/enrollment-logic'
+import { getEarlyBirdConfig } from '@/lib/early-bird'
 
 const schema = z.object({
   studentId: z.string().optional().default(''),
@@ -39,7 +40,24 @@ export async function POST(req: NextRequest) {
     console.log('[paypal/create-order] classIds:', classIds)
     console.log('[paypal/create-order] examRegistrationIds:', examRegistrationIds)
 
-    const { grandTotal } = await calculateTotalFee(classIds, textbookIds)
+    const [{ grandTotal }, earlyBird] = await Promise.all([
+      calculateTotalFee(classIds, textbookIds),
+      getEarlyBirdConfig(),
+    ])
+
+    // Apply early bird discount to CHINESE classes
+    let earlyBirdTotal = 0
+    if (earlyBird.isActive && classIds.length > 0) {
+      const classes = await prisma.class.findMany({
+        where: { id: { in: classIds } },
+        select: { id: true, type: true, fee: true },
+      })
+      for (const cls of classes) {
+        if (cls.type === 'CHINESE') {
+          earlyBirdTotal += Math.min(earlyBird.discount, cls.fee.toNumber())
+        }
+      }
+    }
 
     // Sum exam registration fees from DB
     let examTotal = 0
@@ -56,8 +74,8 @@ export async function POST(req: NextRequest) {
     }
 
     const depositAmt = includesDeposit ? 100 : 0
-    const amount = grandTotal.toNumber() + examTotal + depositAmt
-    console.log('[paypal/create-order] enrollmentTotal:', grandTotal.toNumber(), 'examTotal:', examTotal, 'deposit:', depositAmt, 'total:', amount)
+    const amount = grandTotal.toNumber() - earlyBirdTotal + examTotal + depositAmt
+    console.log('[paypal/create-order] enrollmentTotal:', grandTotal.toNumber(), 'earlyBirdDiscount:', earlyBirdTotal, 'examTotal:', examTotal, 'deposit:', depositAmt, 'total:', amount)
 
     if (amount <= 0) {
       return NextResponse.json(
@@ -75,6 +93,7 @@ export async function POST(req: NextRequest) {
       userId: session.user.id,
       familyId: familyId ?? '',
       includesDeposit: includesDeposit ? 'true' : 'false',
+      earlyBirdDiscount: earlyBirdTotal.toString(),
     })
 
     return NextResponse.json({ success: true, data: { orderId } })

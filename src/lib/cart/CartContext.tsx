@@ -13,6 +13,9 @@ export interface CartItemData {
   parentCartItemId: string | null
   enrollmentId: string | null
   price: string
+  originalPrice: string | null
+  discountAmount: string | null
+  discountLabel: string | null
   description: string
   descriptionEn: string | null
   createdAt: string

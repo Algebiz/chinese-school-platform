@@ -4,6 +4,7 @@ import { auth } from '@/lib/auth'
 import { stripe } from '@/lib/stripe'
 import { prisma } from '@/lib/db'
 import { calculateTotalFee } from '@/lib/enrollment-logic'
+import { getEarlyBirdConfig } from '@/lib/early-bird'
 
 const schema = z.object({
   studentId: z.string().optional().default(''),
@@ -40,7 +41,24 @@ export async function POST(req: NextRequest) {
     console.log('[create-intent] classIds:', classIds)
     console.log('[create-intent] examRegistrationIds:', examRegistrationIds)
 
-    const { grandTotal, breakdown } = await calculateTotalFee(classIds, textbookIds)
+    const [{ grandTotal, breakdown }, earlyBird] = await Promise.all([
+      calculateTotalFee(classIds, textbookIds),
+      getEarlyBirdConfig(),
+    ])
+
+    // Apply early bird discount to CHINESE classes
+    let earlyBirdTotal = 0
+    if (earlyBird.isActive && classIds.length > 0) {
+      const classes = await prisma.class.findMany({
+        where: { id: { in: classIds } },
+        select: { id: true, type: true, fee: true },
+      })
+      for (const cls of classes) {
+        if (cls.type === 'CHINESE') {
+          earlyBirdTotal += Math.min(earlyBird.discount, cls.fee.toNumber())
+        }
+      }
+    }
 
     // Sum exam registration fees from DB (source of truth)
     let examTotal = 0
@@ -57,9 +75,9 @@ export async function POST(req: NextRequest) {
     }
 
     const depositAmt = includesDeposit ? (clientDepositAmount ?? 100) : 0
-    const totalWithAll = grandTotal.toNumber() + examTotal + depositAmt
+    const totalWithAll = grandTotal.toNumber() - earlyBirdTotal + examTotal + depositAmt
     const amountCents = Math.round(totalWithAll * 100)
-    console.log('[create-intent] enrollmentTotal:', grandTotal.toNumber(), 'examTotal:', examTotal, 'deposit:', depositAmt, 'total:', totalWithAll)
+    console.log('[create-intent] enrollmentTotal:', grandTotal.toNumber(), 'earlyBirdDiscount:', earlyBirdTotal, 'examTotal:', examTotal, 'deposit:', depositAmt, 'total:', totalWithAll)
 
     if (amountCents <= 0) {
       return NextResponse.json(
@@ -81,6 +99,7 @@ export async function POST(req: NextRequest) {
         includesDeposit: includesDeposit ? 'true' : 'false',
         familyId: familyId ?? '',
         depositAmount: depositAmt.toString(),
+        earlyBirdDiscount: earlyBirdTotal.toString(),
       },
       automatic_payment_methods: { enabled: true },
     })

@@ -3,6 +3,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { sortClasses } from '@/lib/class-order'
 import { getCurrentAcademicYear } from '@/lib/academic-year'
+import { getEarlyBirdConfig } from '@/lib/early-bird'
 
 function StatCard({
   title,
@@ -42,7 +43,7 @@ export default async function AdminDashboard() {
   const YEAR = await getCurrentAcademicYear()
   const PREVIOUS_YEAR = YEAR.replace(/^(\d{4})-\d{4}$/, (_, a) => `${parseInt(a) - 1}-${a}`)
 
-  const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent, returningStudentCount, pendingExamCount, pendingVolunteerClaimsCount] = await Promise.all([
+  const [studentCount, enrollmentCount, pendingCount, revenue, classes, recent, returningStudentCount, pendingExamCount, pendingVolunteerClaimsCount, earlyBird] = await Promise.all([
     // Students who have at least one CONFIRMED enrollment this year
     prisma.student.count({
       where: { enrollments: { some: { status: 'CONFIRMED', class: { year: YEAR } } } },
@@ -84,6 +85,7 @@ export default async function AdminDashboard() {
     }),
     prisma.examRegistration.count({ where: { status: 'PAID' } }),
     prisma.volunteerClaim.count({ where: { status: 'PENDING_REVIEW' } }),
+    getEarlyBirdConfig(),
   ])
 
   const totalRevenue = revenue._sum.amount?.toNumber() ?? 0
@@ -95,6 +97,23 @@ export default async function AdminDashboard() {
         <h1 className="text-2xl font-bold text-gray-900">管理后台</h1>
         <p className="mt-1 text-sm text-gray-500">Admin Dashboard · {YEAR} 学年</p>
       </div>
+
+      {/* Early bird banner */}
+      {earlyBird.isActive && (
+        <div className="rounded-lg border border-green-300 bg-green-50 px-5 py-4 flex items-center gap-3">
+          <span className="text-xl">🏷️</span>
+          <div>
+            <p className="text-sm font-semibold text-green-800">
+              早鸟优惠进行中 / Early Bird Discount Active — 中文班减 ${earlyBird.discount.toFixed(0)}
+            </p>
+            {earlyBird.deadline && (
+              <p className="text-xs text-green-700 mt-0.5">
+                截止 / Ends: {new Date(earlyBird.deadline).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

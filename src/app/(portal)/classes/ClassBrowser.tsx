@@ -6,6 +6,7 @@ import { ClassCard } from '@/components/ClassCard'
 import type { ClassData } from '@/components/ClassCard'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { CARD } from '@/lib/design'
+import type { EarlyBirdInfo } from '@/lib/early-bird'
 
 type Tab = 'CHL' | 'CSL' | 'ARTS'
 
@@ -19,9 +20,10 @@ function isCSL(cls: ClassData) {
 interface ClassBrowserProps {
   chineseClasses: ClassData[]
   artsClasses: ClassData[]
+  earlyBird?: EarlyBirdInfo
 }
 
-export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps) {
+export function ClassBrowser({ chineseClasses, artsClasses, earlyBird }: ClassBrowserProps) {
   const router = useRouter()
   const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState<Tab>('CHL')
@@ -65,7 +67,7 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px', paddingBottom: 100 }}>
       {/* Page hero */}
-      <div style={{ marginBottom: 24 }}>
+      <div style={{ marginBottom: earlyBird?.isActive ? 12 : 24 }}>
         <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
           {t('班级', 'Classes')}
         </h1>
@@ -73,6 +75,23 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
           {t('浏览并选择您心仪的班级', 'Browse and select the classes you want to enroll in')}
         </p>
       </div>
+
+      {/* Early bird banner */}
+      {earlyBird?.isActive && (
+        <div style={{ background: '#EAF3DE', border: '0.5px solid #BBF7D0', borderRadius: 8, padding: '10px 16px', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ fontSize: 16 }}>🏷️</span>
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 600, color: '#3B6D11', margin: 0 }}>
+              {t('早鸟优惠进行中', 'Early Bird Discount Active')} — {t('中文班优惠', 'Language Classes')} ${earlyBird.discount.toFixed(0)} {t('折扣', 'off')}
+            </p>
+            {earlyBird.deadline && (
+              <p style={{ fontSize: 11, color: '#4a7d1e', margin: 0, marginTop: 1 }}>
+                {t('截止', 'Ends')} {new Date(earlyBird.deadline).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* 3-tab bar */}
       <style>{`.tabs-no-scroll::-webkit-scrollbar{display:none}`}</style>
@@ -101,6 +120,7 @@ export function ClassBrowser({ chineseClasses, artsClasses }: ClassBrowserProps)
               cls={cls}
               isSelected={selectedIds.has(cls.id)}
               onClick={() => handleToggle(cls)}
+              earlyBird={cls.type === 'CHINESE' ? earlyBird : undefined}
             />
           ))}
         </div>

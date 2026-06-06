@@ -7,6 +7,7 @@ import { clsx } from 'clsx'
 import type { ClassData } from '@/components/ClassCard'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { useCart } from '@/lib/cart/CartContext'
+import type { EarlyBirdInfo } from '@/lib/early-bird'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -48,6 +49,7 @@ interface Props {
   initialStep?: Step
   artsOnly?: boolean
   confirmedLanguageClass?: ConfirmedLanguageClass | null
+  earlyBird?: EarlyBirdInfo
 }
 
 // ── Schedule helpers ──────────────────────────────────────────────────────────
@@ -205,10 +207,10 @@ const BADGE_STYLE: Record<BadgeVariant, { badgeCls: string; borderCls: string; b
 }
 
 function MiniClassCard({
-  cls, selected, disabled, conflicted, badgeVariant, onClick,
+  cls, selected, disabled, conflicted, badgeVariant, onClick, earlyBird,
 }: {
   cls: ClassData; selected: boolean; disabled?: boolean; conflicted?: boolean
-  badgeVariant?: BadgeVariant; onClick: () => void
+  badgeVariant?: BadgeVariant; onClick: () => void; earlyBird?: EarlyBirdInfo
 }) {
   const { t, lang } = useLanguage()
 
@@ -224,6 +226,11 @@ function MiniClassCard({
   const teacherName = cls.teacher
     ? (lang === 'en' ? (cls.teacher.nameEn || cls.teacher.name) : cls.teacher.name)
     : null
+
+  const originalFee = parseFloat(cls.fee)
+  const ebActive = earlyBird?.isActive && cls.type === 'CHINESE'
+  const ebDiscount = ebActive ? Math.min(earlyBird!.discount, originalFee) : 0
+  const discountedFee = originalFee - ebDiscount
 
   return (
     <div className={clsx(
@@ -249,7 +256,15 @@ function MiniClassCard({
       <p className="mt-2 text-xs text-gray-500">{fmtSchedule(cls.schedule)}</p>
       {teacherName && <p className="text-xs text-gray-500">{t('老师', 'Teacher')}: {teacherName}</p>}
       <div className="mt-2 flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-900">${cls.fee}</span>
+        {ebActive ? (
+          <span className="flex items-center gap-1.5">
+            <span className="text-xs text-gray-400 line-through">${originalFee.toFixed(0)}</span>
+            <span className="text-sm font-semibold text-green-700">${discountedFee.toFixed(0)}</span>
+            <span className="text-xs bg-green-100 text-green-700 rounded px-1">-${ebDiscount.toFixed(0)}</span>
+          </span>
+        ) : (
+          <span className="text-sm font-medium text-gray-900">${cls.fee}</span>
+        )}
         {cls.spotsRemaining === 0 ? (
           <span className="text-xs text-red-600">{t('已满', 'Full')} · {t('可候补', 'waitlist')}</span>
         ) : (
@@ -319,7 +334,7 @@ function ReturningBanner({ info }: { info: ReturningStudentInfo }) {
 export function EnrollFlow({
   initialStudents, chineseClasses, artsClasses, preselectedClassIds,
   returningStudentData, initialStudentId = null, initialStep = 1,
-  artsOnly = false, confirmedLanguageClass = null,
+  artsOnly = false, confirmedLanguageClass = null, earlyBird,
 }: Props) {
   const router = useRouter()
   const { t, lang } = useLanguage()
@@ -360,7 +375,10 @@ export function EnrollFlow({
   const tuitionFee = [...(selectedChineseClass ? [selectedChineseClass] : []), ...selectedArtsClasses]
     .reduce((sum, c) => sum + parseFloat(c.fee), 0)
   const textbookFee = selectedTextbooks.reduce((sum, tb) => sum + parseFloat(tb.price), 0)
-  const totalFee = tuitionFee + textbookFee
+  const earlyBirdDiscount = (!isArtsOnly && selectedChineseClass && earlyBird?.isActive)
+    ? Math.min(earlyBird.discount, parseFloat(selectedChineseClass.fee))
+    : 0
+  const totalFee = tuitionFee + textbookFee - earlyBirdDiscount
 
   function isConflictedWithSelections(cls: ClassData): boolean {
     if (selectedChineseClass && cls.id !== selectedChineseId && hasScheduleConflict(cls, selectedChineseClass)) return true
@@ -577,7 +595,7 @@ export function EnrollFlow({
             }
             return (
               <MiniClassCard key={cls.id} cls={cls} selected={selectedChineseId === cls.id}
-                badgeVariant={badgeVariant}
+                badgeVariant={badgeVariant} earlyBird={earlyBird}
                 onClick={() => selectChineseClass(selectedChineseId === cls.id ? null : cls.id)} />
             )
           })}
@@ -706,6 +724,12 @@ export function EnrollFlow({
                   <tr>
                     <td className="py-2 text-gray-900">{lang === 'en' ? (selectedChineseClass.nameEn ?? selectedChineseClass.name) : selectedChineseClass.name}</td>
                     <td className="py-2 text-right font-medium">${parseFloat(selectedChineseClass.fee).toFixed(2)}</td>
+                  </tr>
+                )}
+                {earlyBirdDiscount > 0 && (
+                  <tr>
+                    <td className="py-2 text-green-700 text-sm">🏷️ {t('早鸟优惠折扣', 'Early Bird Discount')}</td>
+                    <td className="py-2 text-right font-medium text-green-700">-${earlyBirdDiscount.toFixed(2)}</td>
                   </tr>
                 )}
                 {selectedArtsClasses.map(cls => (

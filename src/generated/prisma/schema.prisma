@@ -284,6 +284,9 @@ model AcademicYearConfig {
   volunteerDepositAmount   Decimal?  @db.Decimal(10, 2)
   volunteerClaimDeadline   DateTime?
   volunteerDepositRequired Boolean   @default(true)
+  earlyBirdEnabled         Boolean   @default(false)
+  earlyBirdDiscount        Decimal?  @db.Decimal(10, 2)
+  earlyBirdDeadline        DateTime?
   createdAt                DateTime  @default(now())
 }
 
@@ -506,6 +509,9 @@ model CartItem {
   enrollmentId       String?
   examRegistrationId String?
   price              Decimal      @db.Decimal(10, 2)
+  originalPrice      Decimal?     @db.Decimal(10, 2)
+  discountAmount     Decimal?     @db.Decimal(10, 2)
+  discountLabel      String?
   description        String
   descriptionEn      String?
   createdAt          DateTime     @default(now())

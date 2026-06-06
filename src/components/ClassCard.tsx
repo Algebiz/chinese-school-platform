@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useLanguage, useLocalizedField } from '@/lib/i18n/LanguageContext'
 import { badge } from '@/lib/design'
+import type { EarlyBirdInfo } from '@/lib/early-bird'
 
 export interface TextbookInfo {
   id: string; name: string; nameZh: string; price: string; description?: string | null
@@ -25,6 +26,7 @@ interface ClassCardProps {
   cls: ClassData
   isSelected?: boolean
   onClick: () => void
+  earlyBird?: EarlyBirdInfo
 }
 
 function fmtSchedule(schedule: unknown): string {
@@ -33,12 +35,19 @@ function fmtSchedule(schedule: unknown): string {
   return [s.dayOfWeek, s.startTime && s.endTime ? `${s.startTime}–${s.endTime}` : ''].filter(Boolean).join(' ')
 }
 
-export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) {
+export function ClassCard({ cls, isSelected = false, onClick, earlyBird }: ClassCardProps) {
   const { t, lang } = useLanguage()
   const { field } = useLocalizedField()
   const [showBio, setShowBio] = useState(false)
   const [showClassInfo, setShowClassInfo] = useState(false)
   const isFull = cls.spotsRemaining === 0
+  const originalFee = parseFloat(cls.fee)
+  const ebActive = earlyBird?.isActive && cls.type === 'CHINESE'
+  const ebDiscount = ebActive ? earlyBird!.discount : 0
+  const discountedFee = originalFee - ebDiscount
+  const ebDeadlineFmt = earlyBird?.deadline
+    ? new Date(earlyBird.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    : null
   const hasBio = cls.teacher && (cls.teacher.bioEn || cls.teacher.bioZh)
   const hasDesc = cls.description || cls.descriptionZh
   const enrolled = cls.capacity - cls.spotsRemaining
@@ -120,7 +129,17 @@ export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) 
 
         {/* Fee + capacity */}
         <div style={{ textAlign: 'right', flexShrink: 0, minWidth: 80 }}>
-          <p style={{ fontSize: 14, fontWeight: 600, color: '#111827' }}>${parseFloat(cls.fee).toFixed(0)}</p>
+          {ebActive ? (
+            <>
+              <p style={{ fontSize: 11, color: '#9ca3af', textDecoration: 'line-through' }}>${originalFee.toFixed(0)}</p>
+              <p style={{ fontSize: 14, fontWeight: 600, color: '#3B6D11' }}>${discountedFee.toFixed(0)}</p>
+              <span style={{ fontSize: 10, background: '#EAF3DE', color: '#3B6D11', borderRadius: 3, padding: '1px 5px', whiteSpace: 'nowrap' }}>
+                {t('节省', 'Save')} ${ebDiscount.toFixed(0)}
+              </span>
+            </>
+          ) : (
+            <p style={{ fontSize: 14, fontWeight: 600, color: '#111827' }}>${originalFee.toFixed(0)}</p>
+          )}
           <p style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>{enrolled}/{cls.capacity}</p>
           <div style={{ width: 64, height: 3, backgroundColor: '#E5E7EB', borderRadius: 2, marginTop: 4, marginLeft: 'auto' }}>
             <div style={{ width: `${pct}%`, height: '100%', backgroundColor: pct >= 80 ? '#CC0000' : '#9CA3AF', borderRadius: 2 }} />
@@ -168,7 +187,20 @@ export function ClassCard({ cls, isSelected = false, onClick }: ClassCardProps) 
               </p>
               <div><span style={{ color: 'var(--color-text-secondary)' }}>{t('类型', 'Type')}:</span> <span style={{ color: 'var(--color-text-primary)' }}>{typeLabel()}</span></div>
               <div><span style={{ color: 'var(--color-text-secondary)' }}>{t('上课时间', 'Schedule')}:</span> <span style={{ color: 'var(--color-text-primary)' }}>{fmtSchedule(cls.schedule)}</span></div>
-              <div><span style={{ color: 'var(--color-text-secondary)' }}>{t('学费', 'Tuition')}:</span> <span style={{ color: 'var(--color-text-primary)', fontWeight: 500 }}>${parseFloat(cls.fee).toFixed(0)}{t('/年', '/yr')}</span></div>
+              <div>
+                <span style={{ color: 'var(--color-text-secondary)' }}>{t('学费', 'Tuition')}:</span>{' '}
+                {ebActive ? (
+                  <>
+                    <span style={{ color: 'var(--color-text-secondary)', textDecoration: 'line-through', marginRight: 4 }}>${originalFee.toFixed(0)}</span>
+                    <span style={{ color: '#3B6D11', fontWeight: 500 }}>${discountedFee.toFixed(0)}{t('/年', '/yr')}</span>
+                    {ebDeadlineFmt && (
+                      <span style={{ fontSize: 11, color: '#6b7280', display: 'block', marginTop: 2 }}>⏰ {t('截止', 'Ends')} {ebDeadlineFmt}</span>
+                    )}
+                  </>
+                ) : (
+                  <span style={{ color: 'var(--color-text-primary)', fontWeight: 500 }}>${originalFee.toFixed(0)}{t('/年', '/yr')}</span>
+                )}
+              </div>
               <div>
                 <span style={{ color: 'var(--color-text-secondary)' }}>{t('班级容量', 'Capacity')}:</span>{' '}
                 <span style={{ color: 'var(--color-text-primary)' }}>{enrolled}/{cls.capacity} {t('人', 'students')}</span>
