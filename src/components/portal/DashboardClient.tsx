@@ -293,7 +293,7 @@ export function DashboardClient({
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
                     {meta && <span style={badge(meta.color)}>{t(meta.zh, meta.en)}</span>}
                     {r.status === 'PENDING_PAYMENT' && (
-                      <Link href={`/exam-checkout?registrationId=${r.id}`} style={{ fontSize: 11, color: '#CC0000', textDecoration: 'none', fontWeight: 500 }}>{t('支付', 'Pay')} →</Link>
+                      <Link href="/cart" style={{ fontSize: 11, color: '#CC0000', textDecoration: 'none', fontWeight: 500 }}>{t('支付', 'Pay')} →</Link>
                     )}
                   </div>
                 </div>

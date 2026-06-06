@@ -64,7 +64,7 @@ export function PendingEnrollmentCard({ enrollmentId, className, total, textbook
         </div>
         <div className="flex gap-2 flex-wrap">
           <Link
-            href={`/checkout?enrollmentIds=${enrollmentId}`}
+            href="/cart"
             className="rounded-md bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-700 transition-colors"
           >
             {t('完成付款', 'Complete Payment')}
