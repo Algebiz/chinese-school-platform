@@ -19,6 +19,15 @@ export interface BreakdownItem {
   textbookNameZh?: string
 }
 
+export interface ExamItem {
+  id: string
+  examType: string
+  level: number
+  examDate: string
+  studentName: string
+  fee: string
+}
+
 export interface CheckoutData {
   studentId: string
   studentName: string
@@ -29,6 +38,8 @@ export interface CheckoutData {
   breakdown: BreakdownItem[]
   includesDeposit: boolean
   depositAmount: number
+  examItems: ExamItem[]
+  examRegistrationIds: string[]
 }
 
 interface Props { data: CheckoutData }
@@ -39,20 +50,28 @@ export function CheckoutClient({ data }: Props) {
   const [tab, setTab] = useState<PaymentTab>('stripe')
   const [paid, setPaid] = useState(false)
 
-  const { studentId, studentName, familyId, academicYear, classIds, textbookIds, breakdown, includesDeposit, depositAmount } = data
+  const {
+    studentId, studentName, familyId, academicYear,
+    classIds, textbookIds, breakdown, includesDeposit, depositAmount,
+    examItems, examRegistrationIds,
+  } = data
 
   const tuition = breakdown.filter(b => b.type === 'tuition')
   const textbooks = breakdown.filter(b => b.type === 'textbook')
-  const total = breakdown.reduce((sum, b) => sum + parseFloat(b.fee), 0) + (includesDeposit ? depositAmount : 0)
+  const enrollmentTotal = breakdown.reduce((sum, b) => sum + parseFloat(b.fee), 0)
+  const examTotal = examItems.reduce((sum, e) => sum + parseFloat(e.fee), 0)
+  const total = enrollmentTotal + examTotal + (includesDeposit ? depositAmount : 0)
 
   if (paid) {
     return (
       <div className="mx-auto max-w-md py-16 text-center">
         <h2 className="text-xl font-bold text-gray-900">{t('支付成功', 'Payment Successful')}</h2>
         <p className="mt-1 text-sm text-gray-500">{t('确认邮件已发送。', 'Confirmation email has been sent.')}</p>
-        <p className="mt-3 text-sm text-gray-600">
-          {t('我们期待在课堂上见到', "We look forward to seeing")}{' '}<span className="font-medium">{studentName}</span>！
-        </p>
+        {studentName && (
+          <p className="mt-3 text-sm text-gray-600">
+            {t('我们期待在课堂上见到', "We look forward to seeing")}{' '}<span className="font-medium">{studentName}</span>！
+          </p>
+        )}
         <button onClick={() => router.push('/dashboard')}
           className="mt-6 rounded-md bg-red-600 px-6 py-2 text-sm font-semibold text-white hover:bg-red-700">
           {t('返回仪表盘', 'Go to Dashboard')}
@@ -70,9 +89,11 @@ export function CheckoutClient({ data }: Props) {
       {/* Hero */}
       <div>
         <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>{t('结账', 'Checkout')}</h1>
-        <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
-          {t('学生', 'Student')}: <strong>{studentName}</strong> · {academicYear}
-        </p>
+        {studentName && (
+          <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
+            {t('学生', 'Student')}: <strong>{studentName}</strong> · {academicYear}
+          </p>
+        )}
       </div>
 
       {/* Order summary */}
@@ -82,13 +103,17 @@ export function CheckoutClient({ data }: Props) {
         </div>
         <div style={{ padding: '4px 16px 0' }}>
           {/* Tuition */}
-          <p style={SECTION_LABEL}>{t('课程费用', 'Tuition')}</p>
-          {tuition.map(b => (
-            <div key={b.classId} style={ROW_ITEM}>
-              <span style={{ color: '#374151' }}>{lang === 'en' ? (b.classNameEn ?? b.className) : b.className}</span>
-              <span style={{ fontWeight: 600 }}>${parseFloat(b.fee).toFixed(2)}</span>
-            </div>
-          ))}
+          {tuition.length > 0 && (
+            <>
+              <p style={SECTION_LABEL}>{t('课程费用', 'Tuition')}</p>
+              {tuition.map(b => (
+                <div key={b.classId} style={ROW_ITEM}>
+                  <span style={{ color: '#374151' }}>{lang === 'en' ? (b.classNameEn ?? b.className) : b.className}</span>
+                  <span style={{ fontWeight: 600 }}>${parseFloat(b.fee).toFixed(2)}</span>
+                </div>
+              ))}
+            </>
+          )}
 
           {/* Textbooks */}
           {textbooks.length > 0 && (
@@ -108,6 +133,22 @@ export function CheckoutClient({ data }: Props) {
               <p style={{ fontSize: 11, color: '#9ca3af', paddingBottom: 8 }}>
                 {t('教材将在上课当日在学校领取', 'Books are picked up at school on class day')}
               </p>
+            </>
+          )}
+
+          {/* Exam registrations */}
+          {examItems.length > 0 && (
+            <>
+              <p style={SECTION_LABEL}>{t('考试报名费', 'Exam Registration')}</p>
+              {examItems.map(e => (
+                <div key={e.id} style={ROW_ITEM}>
+                  <div>
+                    <span style={{ color: '#374151' }}>{e.examType} Level {e.level}</span>
+                    <p style={{ fontSize: 11, color: '#9ca3af', marginTop: 2 }}>{e.studentName} · {e.examDate}</p>
+                  </div>
+                  <span style={{ fontWeight: 600 }}>${parseFloat(e.fee).toFixed(2)}</span>
+                </div>
+              ))}
             </>
           )}
 
@@ -152,14 +193,30 @@ export function CheckoutClient({ data }: Props) {
         </div>
         <div style={{ padding: '20px 16px' }}>
           {tab === 'stripe' && (
-            <StripePaymentForm studentId={studentId} classIds={classIds} textbookIds={textbookIds}
-              academicYear={academicYear} breakdown={breakdown} familyId={familyId}
-              includesDeposit={includesDeposit} depositAmount={depositAmount} onSuccess={() => setPaid(true)} />
+            <StripePaymentForm
+              studentId={studentId}
+              classIds={classIds}
+              textbookIds={textbookIds}
+              academicYear={academicYear}
+              breakdown={breakdown}
+              familyId={familyId}
+              includesDeposit={includesDeposit}
+              depositAmount={depositAmount}
+              examRegistrationIds={examRegistrationIds}
+              onSuccess={() => setPaid(true)}
+            />
           )}
           {tab === 'paypal' && (
-            <PayPalButton studentId={studentId} classIds={classIds} textbookIds={textbookIds}
-              academicYear={academicYear} familyId={familyId}
-              includesDeposit={includesDeposit} onSuccess={() => setPaid(true)} />
+            <PayPalButton
+              studentId={studentId}
+              classIds={classIds}
+              textbookIds={textbookIds}
+              academicYear={academicYear}
+              familyId={familyId}
+              includesDeposit={includesDeposit}
+              examRegistrationIds={examRegistrationIds}
+              onSuccess={() => setPaid(true)}
+            />
           )}
         </div>
       </div>

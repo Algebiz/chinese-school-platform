@@ -103,6 +103,7 @@ interface StripePaymentFormProps {
   familyId?: string
   includesDeposit?: boolean
   depositAmount?: number
+  examRegistrationIds?: string[]
   onSuccess: () => void
 }
 
@@ -115,6 +116,7 @@ export function StripePaymentForm({
   familyId,
   includesDeposit = false,
   depositAmount = 0,
+  examRegistrationIds = [],
   onSuccess,
 }: StripePaymentFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null)
@@ -128,7 +130,7 @@ export function StripePaymentForm({
     fetch('/api/payments/stripe/create-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ studentId, classIds, textbookIds, academicYear, familyId, includesDeposit, depositAmount }),
+      body: JSON.stringify({ studentId, classIds, textbookIds, academicYear, familyId, includesDeposit, depositAmount, examRegistrationIds }),
     })
       .then((r) => r.json())
       .then((json) => {
@@ -141,7 +143,7 @@ export function StripePaymentForm({
       .catch(() => setLoadError('网络错误，请刷新重试'))
       .finally(() => setLoading(false))
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [studentId, academicYear, classIds.join(','), textbookIds.join(','), includesDeposit, depositAmount])
+  }, [studentId, academicYear, classIds.join(','), textbookIds.join(','), includesDeposit, depositAmount, examRegistrationIds.join(',')])
 
   if (loading) {
     return (

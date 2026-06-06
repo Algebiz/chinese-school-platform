@@ -42,44 +42,48 @@ export async function POST(request: NextRequest) {
 }
 
 async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
-  const { studentId, classIds: classIdsJson, textbookIds: textbookIdsJson, academicYear } = paymentIntent.metadata
-  if (!studentId || !classIdsJson || !academicYear) return
+  const { studentId, classIds: classIdsJson, textbookIds: textbookIdsJson, academicYear, examRegistrationIds: examIdsJson } = paymentIntent.metadata
+  if (!academicYear) return
 
-  const classIds = JSON.parse(classIdsJson) as string[]
+  const classIds = classIdsJson ? (JSON.parse(classIdsJson) as string[]) : []
   const textbookIds = textbookIdsJson ? (JSON.parse(textbookIdsJson) as string[]) : []
+  const examIds = examIdsJson ? (JSON.parse(examIdsJson) as string[]) : []
 
-  await prisma.$transaction(async (tx) => {
-    // Promote PENDING → CONFIRMED
-    await tx.enrollment.updateMany({
-      where: { studentId, classId: { in: classIds }, status: 'PENDING' },
-      data: { status: 'CONFIRMED' },
-    })
-
-    // Fetch confirmed enrollments with fees
-    const enrollments = await tx.enrollment.findMany({
-      where: { studentId, classId: { in: classIds }, status: 'CONFIRMED' },
-      include: { class: { select: { fee: true } } },
-    })
-
-    // Create one Payment record per enrollment (idempotent)
-    for (const enrollment of enrollments) {
-      const exists = await tx.payment.findFirst({
-        where: { enrollmentId: enrollment.id, stripeIntentId: paymentIntent.id },
+  // Handle enrollment items
+  if (studentId && classIds.length > 0) {
+    await prisma.$transaction(async (tx) => {
+      // Promote PENDING → CONFIRMED
+      await tx.enrollment.updateMany({
+        where: { studentId, classId: { in: classIds }, status: 'PENDING' },
+        data: { status: 'CONFIRMED' },
       })
-      if (!exists) {
-        await tx.payment.create({
-          data: {
-            enrollmentId: enrollment.id,
-            amount: enrollment.class.fee,
-            method: 'STRIPE',
-            status: 'COMPLETED',
-            stripeIntentId: paymentIntent.id,
-            paidAt: new Date(),
-          },
+
+      // Fetch confirmed enrollments with fees
+      const enrollments = await tx.enrollment.findMany({
+        where: { studentId, classId: { in: classIds }, status: 'CONFIRMED' },
+        include: { class: { select: { fee: true } } },
+      })
+
+      // Create one Payment record per enrollment (idempotent)
+      for (const enrollment of enrollments) {
+        const exists = await tx.payment.findFirst({
+          where: { enrollmentId: enrollment.id, stripeIntentId: paymentIntent.id },
         })
+        if (!exists) {
+          await tx.payment.create({
+            data: {
+              enrollmentId: enrollment.id,
+              amount: enrollment.class.fee,
+              method: 'STRIPE',
+              status: 'COMPLETED',
+              stripeIntentId: paymentIntent.id,
+              paidAt: new Date(),
+            },
+          })
+        }
       }
-    }
-  })
+    })
+  }
 
   // Handle volunteer deposit — non-fatal
   if (paymentIntent.metadata.includesDeposit === 'true' && paymentIntent.metadata.familyId) {
@@ -109,6 +113,56 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     }
   }
 
+  // Handle exam registrations included in this payment — non-fatal
+  if (examIds.length > 0) {
+    try {
+      await prisma.examRegistration.updateMany({
+        where: { id: { in: examIds }, status: 'PENDING_PAYMENT' },
+        data: {
+          status: 'PAID',
+          paymentMethod: 'STRIPE',
+          stripePaymentIntentId: paymentIntent.id,
+          paidAt: new Date(),
+        },
+      })
+      for (const examRegId of examIds) {
+        try {
+          const reg = await prisma.examRegistration.findUnique({
+            where: { id: examRegId },
+            include: {
+              examSession: true,
+              student: {
+                include: { family: { include: { users: { select: { email: true, name: true } } } } },
+              },
+            },
+          })
+          if (reg) {
+            const parentUser = reg.student.family?.users[0]
+            if (parentUser?.email) {
+              const s = reg.examSession
+              await sendExamRegistrationReceived(parentUser.email, {
+                parentName: parentUser.name ?? '家长',
+                studentName: reg.studentNameZh,
+                examType: s.examType,
+                level: s.level,
+                examDate: s.examDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                location: s.location,
+                locationZh: s.locationZh,
+                fee: s.fee.toString(),
+                registrationId: examRegId,
+                academicYear: s.academicYear,
+              })
+            }
+          }
+        } catch (err) {
+          console.error('Failed to send exam confirmation email for', examRegId, err)
+        }
+      }
+    } catch (err) {
+      console.error('Failed to handle exam registrations in payment:', err)
+    }
+  }
+
   // Clear cart items now that payment is confirmed — non-fatal
   if (paymentIntent.metadata.familyId) {
     try {
@@ -118,11 +172,13 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     }
   }
 
-  // Send confirmation email — non-fatal if it fails
-  try {
-    await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'STRIPE', paymentIntent.id, academicYear)
-  } catch (err) {
-    console.error('Failed to send confirmation email:', err)
+  // Send enrollment confirmation email — non-fatal if it fails
+  if (classIds.length > 0) {
+    try {
+      await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'STRIPE', paymentIntent.id, academicYear)
+    } catch (err) {
+      console.error('Failed to send confirmation email:', err)
+    }
   }
 }
 

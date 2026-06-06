@@ -2,15 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { auth } from '@/lib/auth'
 import { createOrder } from '@/lib/paypal'
+import { prisma } from '@/lib/db'
 import { calculateTotalFee } from '@/lib/enrollment-logic'
 
 const schema = z.object({
-  studentId: z.string().min(1),
-  classIds: z.array(z.string().min(1)).min(1),
+  studentId: z.string().optional().default(''),
+  classIds: z.array(z.string()).optional().default([]),
   textbookIds: z.array(z.string()).optional().default([]),
   academicYear: z.string().min(1),
   familyId: z.string().optional(),
   includesDeposit: z.boolean().optional().default(false),
+  examRegistrationIds: z.array(z.string()).optional().default([]),
 })
 
 export async function POST(req: NextRequest) {
@@ -32,12 +34,21 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { studentId, classIds, textbookIds, academicYear, familyId, includesDeposit } = result.data
+    const { studentId, classIds, textbookIds, academicYear, familyId, includesDeposit, examRegistrationIds } = result.data
     const { grandTotal } = await calculateTotalFee(classIds, textbookIds)
 
-    // Read deposit amount from config or default 100
+    // Sum exam registration fees from DB
+    let examTotal = 0
+    if (examRegistrationIds.length > 0) {
+      const examRegs = await prisma.examRegistration.findMany({
+        where: { id: { in: examRegistrationIds }, status: 'PENDING_PAYMENT' },
+        select: { amount: true, examSession: { select: { fee: true } } },
+      })
+      examTotal = examRegs.reduce((sum, r) => sum + (r.amount ?? r.examSession.fee).toNumber(), 0)
+    }
+
     const depositAmt = includesDeposit ? 100 : 0
-    const amount = grandTotal.toNumber() + depositAmt
+    const amount = grandTotal.toNumber() + examTotal + depositAmt
 
     if (amount <= 0) {
       return NextResponse.json(
@@ -50,6 +61,7 @@ export async function POST(req: NextRequest) {
       studentId,
       classIds,
       textbookIds,
+      examRegistrationIds,
       academicYear,
       userId: session.user.id,
       familyId: familyId ?? '',

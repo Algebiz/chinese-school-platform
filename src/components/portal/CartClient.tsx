@@ -87,19 +87,19 @@ export function CartClient() {
       }
 
       const enrollmentIds: string[] = json.data?.enrollmentIds ?? []
-      console.log('Enrollment IDs:', enrollmentIds)
+      const examRegistrationIds: string[] = json.data?.examRegistrationIds ?? []
+      console.log('Enrollment IDs:', enrollmentIds, 'Exam Registration IDs:', examRegistrationIds)
 
-      if (enrollmentIds.length === 0) {
-        console.error('No enrollment IDs returned — possible causes: enrollments already CONFIRMED (stale cart), or class at capacity (waitlisted)')
-      }
-
-      if (enrollmentIds.length > 0) {
-        const checkoutUrl = `/checkout?enrollmentIds=${enrollmentIds.join(',')}`
+      if (enrollmentIds.length === 0 && examRegistrationIds.length === 0) {
+        console.error('No IDs returned — possible causes: items already paid (stale cart), or class at capacity (waitlisted)')
+        router.push('/dashboard')
+      } else {
+        const params = new URLSearchParams()
+        if (enrollmentIds.length > 0) params.set('enrollmentIds', enrollmentIds.join(','))
+        if (examRegistrationIds.length > 0) params.set('examRegistrationIds', examRegistrationIds.join(','))
+        const checkoutUrl = `/checkout?${params.toString()}`
         console.log('Redirecting to:', checkoutUrl)
         router.push(checkoutUrl)
-      } else {
-        console.log('No enrollmentIds, redirecting to dashboard')
-        router.push('/dashboard')
       }
     } catch (e) {
       console.error('Checkout error:', e)

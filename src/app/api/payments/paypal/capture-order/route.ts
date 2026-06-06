@@ -4,16 +4,17 @@ import { auth } from '@/lib/auth'
 import { captureOrder } from '@/lib/paypal'
 import { prisma } from '@/lib/db'
 import { createEnrollments } from '@/lib/enrollment-logic'
-import { sendEnrollmentConfirmationByIds } from '@/lib/email'
+import { sendEnrollmentConfirmationByIds, sendExamRegistrationReceived } from '@/lib/email'
 
 const schema = z.object({
   orderId: z.string().min(1),
-  studentId: z.string().min(1),
-  classIds: z.array(z.string().min(1)).min(1),
+  studentId: z.string().optional().default(''),
+  classIds: z.array(z.string()).optional().default([]),
   textbookIds: z.array(z.string()).optional().default([]),
   academicYear: z.string().min(1),
   familyId: z.string().optional(),
   includesDeposit: z.boolean().optional().default(false),
+  examRegistrationIds: z.array(z.string()).optional().default([]),
 })
 
 export async function POST(req: NextRequest) {
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { orderId, studentId, classIds, textbookIds, academicYear, familyId, includesDeposit } = result.data
+    const { orderId, studentId, classIds, textbookIds, academicYear, familyId, includesDeposit, examRegistrationIds } = result.data
 
     // Capture the PayPal order
     const captureResult = await captureOrder(orderId)
@@ -48,41 +49,88 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Ensure enrollment records exist (skips duplicates automatically)
-    await createEnrollments(studentId, classIds, textbookIds, academicYear)
+    // Handle enrollment items
+    if (classIds.length > 0 && studentId) {
+      await createEnrollments(studentId, classIds, textbookIds, academicYear)
 
-    await prisma.$transaction(async (tx) => {
-      // Promote PENDING → CONFIRMED
-      await tx.enrollment.updateMany({
-        where: { studentId, classId: { in: classIds }, status: 'PENDING' },
-        data: { status: 'CONFIRMED' },
-      })
-
-      // Fetch confirmed enrollments with class fees
-      const enrollments = await tx.enrollment.findMany({
-        where: { studentId, classId: { in: classIds }, status: 'CONFIRMED' },
-        include: { class: { select: { fee: true } } },
-      })
-
-      // Create one Payment record per enrollment (idempotent)
-      for (const enrollment of enrollments) {
-        const exists = await tx.payment.findFirst({
-          where: { enrollmentId: enrollment.id, paypalOrderId: orderId },
+      await prisma.$transaction(async (tx) => {
+        await tx.enrollment.updateMany({
+          where: { studentId, classId: { in: classIds }, status: 'PENDING' },
+          data: { status: 'CONFIRMED' },
         })
-        if (!exists) {
-          await tx.payment.create({
-            data: {
-              enrollmentId: enrollment.id,
-              amount: enrollment.class.fee,
-              method: 'PAYPAL',
-              status: 'COMPLETED',
-              paypalOrderId: orderId,
-              paidAt: new Date(),
+
+        const enrollments = await tx.enrollment.findMany({
+          where: { studentId, classId: { in: classIds }, status: 'CONFIRMED' },
+          include: { class: { select: { fee: true } } },
+        })
+
+        for (const enrollment of enrollments) {
+          const exists = await tx.payment.findFirst({
+            where: { enrollmentId: enrollment.id, paypalOrderId: orderId },
+          })
+          if (!exists) {
+            await tx.payment.create({
+              data: {
+                enrollmentId: enrollment.id,
+                amount: enrollment.class.fee,
+                method: 'PAYPAL',
+                status: 'COMPLETED',
+                paypalOrderId: orderId,
+                paidAt: new Date(),
+              },
+            })
+          }
+        }
+      })
+    }
+
+    // Handle exam registration items
+    if (examRegistrationIds.length > 0) {
+      await prisma.examRegistration.updateMany({
+        where: { id: { in: examRegistrationIds }, status: 'PENDING_PAYMENT' },
+        data: {
+          status: 'PAID',
+          paymentMethod: 'PAYPAL',
+          paypalOrderId: orderId,
+          paidAt: new Date(),
+        },
+      })
+
+      // Send confirmation emails for each exam registration — non-fatal
+      for (const examRegId of examRegistrationIds) {
+        try {
+          const reg = await prisma.examRegistration.findUnique({
+            where: { id: examRegId },
+            include: {
+              examSession: true,
+              student: {
+                include: { family: { include: { users: { select: { email: true, name: true } } } } },
+              },
             },
           })
+          if (reg) {
+            const parentUser = reg.student.family?.users[0]
+            if (parentUser?.email) {
+              const s = reg.examSession
+              await sendExamRegistrationReceived(parentUser.email, {
+                parentName: parentUser.name ?? '家长',
+                studentName: reg.studentNameZh,
+                examType: s.examType,
+                level: s.level,
+                examDate: s.examDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                location: s.location,
+                locationZh: s.locationZh,
+                fee: s.fee.toString(),
+                registrationId: examRegId,
+                academicYear: s.academicYear,
+              })
+            }
+          }
+        } catch (err) {
+          console.error('Failed to send exam confirmation email for', examRegId, err)
         }
       }
-    })
+    }
 
     // Handle volunteer deposit — non-fatal
     if (includesDeposit && familyId) {
@@ -119,11 +167,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Non-fatal email
-    try {
-      await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'PAYPAL', orderId, academicYear)
-    } catch (err) {
-      console.error('Failed to send confirmation email:', err)
+    // Enrollment confirmation email — non-fatal
+    if (classIds.length > 0 && studentId) {
+      try {
+        await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'PAYPAL', orderId, academicYear)
+      } catch (err) {
+        console.error('Failed to send enrollment confirmation email:', err)
+      }
     }
 
     return NextResponse.json({

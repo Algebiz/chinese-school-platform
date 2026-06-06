@@ -2,16 +2,18 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { auth } from '@/lib/auth'
 import { stripe } from '@/lib/stripe'
+import { prisma } from '@/lib/db'
 import { calculateTotalFee } from '@/lib/enrollment-logic'
 
 const schema = z.object({
-  studentId: z.string().min(1),
-  classIds: z.array(z.string().min(1)).min(1),
+  studentId: z.string().optional().default(''),
+  classIds: z.array(z.string()).optional().default([]),
   textbookIds: z.array(z.string()).optional().default([]),
   academicYear: z.string().min(1),
   familyId: z.string().optional(),
   includesDeposit: z.boolean().optional().default(false),
   depositAmount: z.number().optional(),
+  examRegistrationIds: z.array(z.string()).optional().default([]),
 })
 
 export async function POST(req: NextRequest) {
@@ -33,12 +35,23 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { studentId, classIds, textbookIds, academicYear, familyId, includesDeposit, depositAmount: clientDepositAmount } = result.data
+    const { studentId, classIds, textbookIds, academicYear, familyId, includesDeposit, depositAmount: clientDepositAmount, examRegistrationIds } = result.data
+
     const { grandTotal, breakdown } = await calculateTotalFee(classIds, textbookIds)
 
+    // Sum exam registration fees from DB (source of truth)
+    let examTotal = 0
+    if (examRegistrationIds.length > 0) {
+      const examRegs = await prisma.examRegistration.findMany({
+        where: { id: { in: examRegistrationIds }, status: 'PENDING_PAYMENT' },
+        select: { amount: true, examSession: { select: { fee: true } } },
+      })
+      examTotal = examRegs.reduce((sum, r) => sum + (r.amount ?? r.examSession.fee).toNumber(), 0)
+    }
+
     const depositAmt = includesDeposit ? (clientDepositAmount ?? 100) : 0
-    const totalWithDeposit = grandTotal.toNumber() + depositAmt
-    const amountCents = Math.round(totalWithDeposit * 100)
+    const totalWithAll = grandTotal.toNumber() + examTotal + depositAmt
+    const amountCents = Math.round(totalWithAll * 100)
 
     if (amountCents <= 0) {
       return NextResponse.json(
@@ -54,6 +67,7 @@ export async function POST(req: NextRequest) {
         studentId,
         classIds: JSON.stringify(classIds),
         textbookIds: JSON.stringify(textbookIds),
+        examRegistrationIds: JSON.stringify(examRegistrationIds),
         academicYear,
         userId: session.user.id,
         includesDeposit: includesDeposit ? 'true' : 'false',
