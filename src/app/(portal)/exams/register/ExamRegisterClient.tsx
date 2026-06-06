@@ -80,7 +80,7 @@ export function ExamRegisterClient({ session: examSession, students }: Props) {
         return
       }
 
-      await refreshCart()
+      await refreshCart(true)
       setAddedStudent(student)
       setAddedToCart(true)
     } catch {
