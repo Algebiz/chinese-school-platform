@@ -98,7 +98,8 @@ export async function POST(req: NextRequest) {
       : []
 
     const studentName = student.name
-    const enrollmentId = enrollments[0]?.id ?? null
+    // Map each classId to its created enrollment so each CartItem gets the correct enrollmentId
+    const enrollmentByClassId = new Map(enrollments.map(e => [e.classId, e.id]))
 
     // Create CartItems in a transaction
     await prisma.$transaction(async (tx) => {
@@ -106,7 +107,7 @@ export async function POST(req: NextRequest) {
         const parentItem = await tx.cartItem.create({
           data: {
             familyId, type: 'ENROLLMENT', studentId, classId: cls.id,
-            enrollmentId,
+            enrollmentId: enrollmentByClassId.get(cls.id) ?? null,
             price: cls.fee,
             description: `${cls.name} — ${studentName}`,
             descriptionEn: cls.nameEn ? `${cls.nameEn} — ${studentName}` : undefined,

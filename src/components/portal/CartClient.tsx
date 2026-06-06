@@ -55,22 +55,37 @@ export function CartClient() {
   }
 
   async function handleCheckout() {
-    // Collect all enrollment IDs from ENROLLMENT cart items
-    const enrollmentIds = items
-      .filter(i => i.type === 'ENROLLMENT' && i.enrollmentId)
-      .map(i => i.enrollmentId!)
+    const enrollmentItems = items.filter(i => i.type === 'ENROLLMENT' && !i.parentCartItemId)
+    const examItems = items.filter(i => i.type === 'EXAM_REGISTRATION')
 
-    if (enrollmentIds.length === 0 && items.filter(i => i.type === 'EXAM_REGISTRATION').length === 0) {
-      return
-    }
+    console.log('Checkout clicked, cart items:', items)
+
+    if (enrollmentItems.length === 0 && examItems.length === 0) return
 
     setCheckingOut(true)
-    // Clear cart then redirect to checkout with enrollment IDs
-    await clearCart()
-    if (enrollmentIds.length > 0) {
-      router.push(`/checkout?enrollmentIds=${enrollmentIds.join(',')}`)
-    } else {
-      router.push('/dashboard')
+    try {
+      // POST /api/cart/checkout — verifies/creates Enrollment records and returns their IDs
+      const res = await fetch('/api/cart/checkout', { method: 'POST' })
+      const json = await res.json()
+
+      const enrollmentIds: string[] = json.data?.enrollmentIds ?? []
+      console.log('Enrollment IDs:', enrollmentIds)
+
+      if (!json.success) {
+        setCheckingOut(false)
+        return
+      }
+
+      await clearCart()
+
+      if (enrollmentIds.length > 0) {
+        router.push(`/checkout?enrollmentIds=${enrollmentIds.join(',')}`)
+      } else {
+        router.push('/dashboard')
+      }
+    } catch (e) {
+      console.error('Checkout error:', e)
+      setCheckingOut(false)
     }
   }
 
