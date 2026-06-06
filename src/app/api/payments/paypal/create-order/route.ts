@@ -35,6 +35,10 @@ export async function POST(req: NextRequest) {
     }
 
     const { studentId, classIds, textbookIds, academicYear, familyId, includesDeposit, examRegistrationIds } = result.data
+
+    console.log('[paypal/create-order] classIds:', classIds)
+    console.log('[paypal/create-order] examRegistrationIds:', examRegistrationIds)
+
     const { grandTotal } = await calculateTotalFee(classIds, textbookIds)
 
     // Sum exam registration fees from DB
@@ -42,13 +46,18 @@ export async function POST(req: NextRequest) {
     if (examRegistrationIds.length > 0) {
       const examRegs = await prisma.examRegistration.findMany({
         where: { id: { in: examRegistrationIds }, status: 'PENDING_PAYMENT' },
-        select: { amount: true, examSession: { select: { fee: true } } },
+        select: { amount: true, examSession: { select: { examType: true, level: true, fee: true } } },
       })
-      examTotal = examRegs.reduce((sum, r) => sum + (r.amount ?? r.examSession.fee).toNumber(), 0)
+      for (const r of examRegs) {
+        const fee = (r.amount ?? r.examSession.fee).toNumber()
+        console.log('[paypal/create-order] exam fee:', r.examSession.examType, r.examSession.level, fee)
+        examTotal += fee
+      }
     }
 
     const depositAmt = includesDeposit ? 100 : 0
     const amount = grandTotal.toNumber() + examTotal + depositAmt
+    console.log('[paypal/create-order] enrollmentTotal:', grandTotal.toNumber(), 'examTotal:', examTotal, 'deposit:', depositAmt, 'total:', amount)
 
     if (amount <= 0) {
       return NextResponse.json(

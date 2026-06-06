@@ -94,6 +94,13 @@ export interface PaymentBreakdownItem {
   textbookName?: string
 }
 
+export interface ExamBreakdownItem {
+  id: string
+  examType: string
+  level: number
+  fee: string
+}
+
 interface StripePaymentFormProps {
   studentId: string
   classIds: string[]
@@ -104,6 +111,7 @@ interface StripePaymentFormProps {
   includesDeposit?: boolean
   depositAmount?: number
   examRegistrationIds?: string[]
+  examItems?: ExamBreakdownItem[]
   onSuccess: () => void
 }
 
@@ -117,6 +125,7 @@ export function StripePaymentForm({
   includesDeposit = false,
   depositAmount = 0,
   examRegistrationIds = [],
+  examItems = [],
   onSuccess,
 }: StripePaymentFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null)
@@ -124,7 +133,8 @@ export function StripePaymentForm({
   const [loading, setLoading] = useState(true)
 
   const tuitionTotal = breakdown.reduce((sum, b) => sum + parseFloat(b.fee), 0)
-  const total = tuitionTotal + (includesDeposit ? depositAmount : 0)
+  const examTotal = examItems.reduce((sum, e) => sum + parseFloat(e.fee), 0)
+  const total = tuitionTotal + examTotal + (includesDeposit ? depositAmount : 0)
 
   useEffect(() => {
     fetch('/api/payments/stripe/create-intent', {
@@ -173,6 +183,12 @@ export function StripePaymentForm({
             <div key={b.textbookId ?? `${b.classId}-${i}`} className="flex justify-between text-sm">
               <span className="text-gray-600">{b.className}</span>
               <span className="font-medium">${parseFloat(b.fee).toFixed(2)}</span>
+            </div>
+          ))}
+          {examItems.map((e) => (
+            <div key={e.id} className="flex justify-between text-sm">
+              <span className="text-gray-600">{e.examType} Level {e.level}</span>
+              <span className="font-medium">${parseFloat(e.fee).toFixed(2)}</span>
             </div>
           ))}
         </div>

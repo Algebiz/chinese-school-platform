@@ -37,6 +37,9 @@ export async function POST(req: NextRequest) {
 
     const { studentId, classIds, textbookIds, academicYear, familyId, includesDeposit, depositAmount: clientDepositAmount, examRegistrationIds } = result.data
 
+    console.log('[create-intent] classIds:', classIds)
+    console.log('[create-intent] examRegistrationIds:', examRegistrationIds)
+
     const { grandTotal, breakdown } = await calculateTotalFee(classIds, textbookIds)
 
     // Sum exam registration fees from DB (source of truth)
@@ -44,14 +47,19 @@ export async function POST(req: NextRequest) {
     if (examRegistrationIds.length > 0) {
       const examRegs = await prisma.examRegistration.findMany({
         where: { id: { in: examRegistrationIds }, status: 'PENDING_PAYMENT' },
-        select: { amount: true, examSession: { select: { fee: true } } },
+        select: { amount: true, examSession: { select: { examType: true, level: true, fee: true } } },
       })
-      examTotal = examRegs.reduce((sum, r) => sum + (r.amount ?? r.examSession.fee).toNumber(), 0)
+      for (const r of examRegs) {
+        const fee = (r.amount ?? r.examSession.fee).toNumber()
+        console.log('[create-intent] exam fee:', r.examSession.examType, r.examSession.level, fee)
+        examTotal += fee
+      }
     }
 
     const depositAmt = includesDeposit ? (clientDepositAmount ?? 100) : 0
     const totalWithAll = grandTotal.toNumber() + examTotal + depositAmt
     const amountCents = Math.round(totalWithAll * 100)
+    console.log('[create-intent] enrollmentTotal:', grandTotal.toNumber(), 'examTotal:', examTotal, 'deposit:', depositAmt, 'total:', totalWithAll)
 
     if (amountCents <= 0) {
       return NextResponse.json(

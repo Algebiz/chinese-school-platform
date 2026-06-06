@@ -203,6 +203,7 @@ export function CheckoutClient({ data }: Props) {
               includesDeposit={includesDeposit}
               depositAmount={depositAmount}
               examRegistrationIds={examRegistrationIds}
+              examItems={examItems.map(e => ({ id: e.id, examType: e.examType, level: e.level, fee: e.fee }))}
               onSuccess={() => setPaid(true)}
             />
           )}
