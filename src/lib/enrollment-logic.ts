@@ -145,26 +145,31 @@ export async function createEnrollments(
       })
       if (existingWaitlist) continue
 
-      // If already enrolled, include PENDING enrollment so checkout can proceed
+      // Check for any existing enrollment record (any status)
       const existingEnrollment = await tx.enrollment.findUnique({
         where: { studentId_classId: { studentId, classId } },
       })
-      if (existingEnrollment) {
-        if (existingEnrollment.status === 'PENDING') {
-          enrollments.push(existingEnrollment)
-          const classTextbooks = selectedTextbooks.filter((t) => t.classId === classId)
-          for (const tb of classTextbooks) {
-            await tx.enrollmentTextbook.upsert({
-              where: { enrollmentId_textbookId: { enrollmentId: existingEnrollment.id, textbookId: tb.id } },
-              update: {},
-              create: { enrollmentId: existingEnrollment.id, textbookId: tb.id, price: tb.price },
-            })
-          }
+
+      // Already PENDING — reuse and ensure textbooks are attached
+      if (existingEnrollment?.status === 'PENDING') {
+        enrollments.push(existingEnrollment)
+        const classTextbooks = selectedTextbooks.filter((t) => t.classId === classId)
+        for (const tb of classTextbooks) {
+          await tx.enrollmentTextbook.upsert({
+            where: { enrollmentId_textbookId: { enrollmentId: existingEnrollment.id, textbookId: tb.id } },
+            update: {},
+            create: { enrollmentId: existingEnrollment.id, textbookId: tb.id, price: tb.price },
+          })
         }
         continue
       }
 
-      // Count non-cancelled enrollments against capacity (PENDING + CONFIRMED)
+      // Already CONFIRMED or TRANSFERRED — skip; caller handles this case
+      if (existingEnrollment?.status === 'CONFIRMED' || existingEnrollment?.status === 'TRANSFERRED') {
+        continue
+      }
+
+      // No enrollment or CANCELLED — check capacity then create / re-activate
       const [takenCount, cls] = await Promise.all([
         tx.enrollment.count({ where: { classId, status: { in: ['PENDING', 'CONFIRMED'] } } }),
         tx.class.findUnique({ where: { id: classId }, select: { capacity: true } }),
@@ -176,12 +181,13 @@ export async function createEnrollments(
         const waitlist = await tx.waitlist.create({ data: { studentId, classId, position } })
         waitlists.push(waitlist)
       } else {
-        const enrollment = await tx.enrollment.create({
-          data: { studentId, classId, status: 'PENDING' },
-        })
+        // Re-activate a CANCELLED enrollment in place (unique constraint prevents a new one)
+        const enrollment = existingEnrollment?.status === 'CANCELLED'
+          ? await tx.enrollment.update({ where: { id: existingEnrollment.id }, data: { status: 'PENDING' } })
+          : await tx.enrollment.create({ data: { studentId, classId, status: 'PENDING' } })
+
         enrollments.push(enrollment)
 
-        // Create EnrollmentTextbook records for textbooks belonging to this class
         const classTextbooks = selectedTextbooks.filter((t) => t.classId === classId)
         for (const tb of classTextbooks) {
           await tx.enrollmentTextbook.upsert({
