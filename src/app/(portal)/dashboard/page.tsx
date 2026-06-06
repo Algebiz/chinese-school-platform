@@ -9,43 +9,9 @@ export default async function DashboardPage() {
   const session = await auth()
   if (!session) redirect('/login')
 
-  const CURRENT_YEAR = await getCurrentAcademicYear()
-
-  const familyIdForDeposit = (await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { familyId: true },
-  }))?.familyId
-
-  const [volunteerDeposit, myClassExamResults, myExamRegistrations, user] = await Promise.all([
-    familyIdForDeposit
-      ? prisma.volunteerDeposit.findUnique({
-          where: { familyId_academicYear: { familyId: familyIdForDeposit, academicYear: CURRENT_YEAR } },
-        })
-      : null,
-    prisma.classExamResult.findMany({
-      where: {
-        student: { family: { users: { some: { id: session.user.id } } } },
-        exam: { isPublished: true },
-        score: { not: null },
-      },
-      include: {
-        exam: { select: { id: true, name: true, nameZh: true, examDate: true, maxScore: true, class: { select: { name: true } } } },
-        student: { select: { id: true, name: true } },
-      },
-      orderBy: { exam: { examDate: 'desc' } },
-    }),
-    prisma.examRegistration.findMany({
-      where: {
-        student: { family: { users: { some: { id: session.user.id } } } },
-        status: { notIn: ['CANCELLED'] },
-        examSession: { academicYear: CURRENT_YEAR },
-      },
-      include: {
-        examSession: { select: { examType: true, level: true, examDate: true } },
-        student: { select: { name: true } },
-      },
-      orderBy: { createdAt: 'desc' },
-    }),
+  // Phase 1: academic year + full user/family/students query — independent, run in parallel
+  const [CURRENT_YEAR, user] = await Promise.all([
+    getCurrentAcademicYear(),
     prisma.user.findUnique({
       where: { id: session.user.id },
       select: {
@@ -76,8 +42,64 @@ export default async function DashboardPage() {
     }),
   ])
 
+  const familyId = user?.familyId
   const students = user?.family?.students ?? []
-  const studentStatuses = await getStudentStatuses(students.map((s) => s.id), CURRENT_YEAR)
+  const studentIds = students.map((s) => s.id)
+
+  // Phase 2: all queries that depend on Phase 1 results — run in parallel
+  const [volunteerDeposit, classExamResults, examRegistrations, studentStatuses, firstEnrollments] =
+    await Promise.all([
+      familyId
+        ? prisma.volunteerDeposit.findUnique({
+            where: { familyId_academicYear: { familyId, academicYear: CURRENT_YEAR } },
+          })
+        : null,
+      studentIds.length > 0
+        ? prisma.classExamResult.findMany({
+            where: {
+              studentId: { in: studentIds },
+              exam: { isPublished: true },
+              score: { not: null },
+            },
+            include: {
+              exam: {
+                select: {
+                  id: true,
+                  name: true,
+                  nameZh: true,
+                  examDate: true,
+                  maxScore: true,
+                  class: { select: { name: true } },
+                },
+              },
+              student: { select: { id: true, name: true } },
+            },
+            orderBy: { exam: { examDate: 'desc' } },
+          })
+        : [],
+      studentIds.length > 0
+        ? prisma.examRegistration.findMany({
+            where: {
+              studentId: { in: studentIds },
+              status: { notIn: ['CANCELLED'] },
+              examSession: { academicYear: CURRENT_YEAR },
+            },
+            include: {
+              examSession: { select: { examType: true, level: true, examDate: true } },
+              student: { select: { name: true } },
+            },
+            orderBy: { createdAt: 'desc' },
+          })
+        : [],
+      getStudentStatuses(studentIds, CURRENT_YEAR),
+      studentIds.length > 0
+        ? prisma.enrollment.findMany({
+            where: { studentId: { in: studentIds }, status: 'CONFIRMED' },
+            select: { studentId: true, class: { select: { year: true } } },
+            orderBy: { createdAt: 'asc' },
+          })
+        : [],
+    ])
 
   const studentsThisYear = students.map((s) => ({
     ...s,
@@ -86,25 +108,21 @@ export default async function DashboardPage() {
   }))
 
   const totalConfirmed = studentsThisYear.reduce(
-    (sum, s) => sum + s.enrollments.filter((e) => e.status === 'CONFIRMED').length, 0
+    (sum, s) => sum + s.enrollments.filter((e) => e.status === 'CONFIRMED').length,
+    0
   )
-  const pendingCount = studentsThisYear.flatMap((s) => s.enrollments.filter((e) => e.status === 'PENDING')).length
-  const hasMultiplePending = studentsThisYear.some((s) => s.enrollments.filter((e) => e.status === 'PENDING').length > 1)
+  const pendingCount = studentsThisYear.flatMap((s) =>
+    s.enrollments.filter((e) => e.status === 'PENDING')
+  ).length
+  const hasMultiplePending = studentsThisYear.some(
+    (s) => s.enrollments.filter((e) => e.status === 'PENDING').length > 1
+  )
 
-  // Fetch first confirmed enrollment year per student (for years-at-CCA badge)
-  const firstEnrollments = students.length > 0
-    ? await prisma.enrollment.findMany({
-        where: { studentId: { in: students.map(s => s.id) }, status: 'CONFIRMED' },
-        select: { studentId: true, class: { select: { year: true } } },
-        orderBy: { createdAt: 'asc' },
-      })
-    : []
   const firstYearByStudent: Record<string, string> = {}
   for (const e of firstEnrollments) {
     if (!firstYearByStudent[e.studentId]) firstYearByStudent[e.studentId] = e.class.year
   }
 
-  // Serialize for client component
   const serializedStudents = studentsThisYear.map((s) => ({
     id: s.id,
     name: s.name,
@@ -114,8 +132,17 @@ export default async function DashboardPage() {
     enrollments: s.enrollments.map((e) => ({
       id: e.id,
       status: e.status,
-      class: { id: e.class.id, name: e.class.name, nameEn: e.class.nameEn ?? null, type: e.class.type, fee: e.class.fee.toString() },
-      textbooks: e.textbooks.map((et) => ({ price: et.price.toString(), textbook: { name: et.textbook.name } })),
+      class: {
+        id: e.class.id,
+        name: e.class.name,
+        nameEn: e.class.nameEn ?? null,
+        type: e.class.type,
+        fee: e.class.fee.toString(),
+      },
+      textbooks: e.textbooks.map((et) => ({
+        price: et.price.toString(),
+        textbook: { name: et.textbook.name },
+      })),
     })),
     waitlists: s.waitlists.map((w) => ({
       id: w.id,
@@ -134,8 +161,12 @@ export default async function DashboardPage() {
       pendingCount={pendingCount}
       hasMultiplePending={hasMultiplePending}
       students={serializedStudents}
-      volunteerDeposit={volunteerDeposit ? { status: volunteerDeposit.status, amount: volunteerDeposit.amount.toString() } : null}
-      examRegistrations={myExamRegistrations.map((r) => ({
+      volunteerDeposit={
+        volunteerDeposit
+          ? { status: volunteerDeposit.status, amount: volunteerDeposit.amount.toString() }
+          : null
+      }
+      examRegistrations={examRegistrations.map((r) => ({
         id: r.id,
         status: r.status,
         studentName: r.student.name,
@@ -143,7 +174,7 @@ export default async function DashboardPage() {
         level: r.examSession.level,
         examDate: r.examSession.examDate.toISOString(),
       }))}
-      classExamResults={myClassExamResults.map((r) => ({
+      classExamResults={classExamResults.map((r) => ({
         id: r.id,
         score: r.score!,
         passed: r.passed ?? false,

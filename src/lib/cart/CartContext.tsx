@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, useRef, type ReactNode } from 'react'
 import { useSession } from 'next-auth/react'
 
 export interface CartItemData {
@@ -22,11 +22,11 @@ export interface CartItemData {
 
 interface CartContextType {
   items: CartItemData[]
-  rootItems: CartItemData[]   // top-level items only (no textbook children)
+  rootItems: CartItemData[]
   itemCount: number
   total: number
   loading: boolean
-  refreshCart: () => Promise<void>
+  refreshCart: (force?: boolean) => Promise<void>
   addToCart: (payload: AddToCartPayload) => Promise<{ ok: boolean; error?: string }>
   removeItem: (cartItemId: string) => Promise<void>
   clearCart: () => Promise<void>
@@ -48,20 +48,27 @@ const CartContext = createContext<CartContextType>({
   clearCart: async () => {},
 })
 
+const CACHE_MS = 30_000
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const { data: session } = useSession()
   const [items, setItems] = useState<CartItemData[]>([])
-  // Start as true so CartClient shows skeleton until first fetch completes
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const lastFetchRef = useRef<number>(0)
 
-  const refreshCart = useCallback(async () => {
-    if (!session) { setLoading(false); return }
+  const refreshCart = useCallback(async (force = false) => {
+    if (!session) return
+    const now = Date.now()
+    if (!force && now - lastFetchRef.current < CACHE_MS) return
     setLoading(true)
     try {
       const res = await fetch('/api/cart')
       if (res.ok) {
         const json = await res.json()
-        if (json.success) setItems(json.data)
+        if (json.success) {
+          setItems(json.data)
+          lastFetchRef.current = Date.now()
+        }
       }
     } catch { /* silent */ }
     finally { setLoading(false) }
@@ -69,14 +76,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (session) refreshCart()
-    else setLoading(false)
-  }, [session, refreshCart])
-
-  // Refresh when user switches back to this tab
-  useEffect(() => {
-    function onVisible() { if (!document.hidden && session) refreshCart() }
-    document.addEventListener('visibilitychange', onVisible)
-    return () => document.removeEventListener('visibilitychange', onVisible)
   }, [session, refreshCart])
 
   async function addToCart(payload: AddToCartPayload): Promise<{ ok: boolean; error?: string }> {
@@ -88,7 +87,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify(payload),
       })
       const json = await res.json()
-      if (json.success) { setItems(json.data); return { ok: true } }
+      if (json.success) {
+        setItems(json.data)
+        lastFetchRef.current = Date.now()
+        return { ok: true }
+      }
       return { ok: false, error: json.error }
     } catch {
       return { ok: false, error: 'Network error' }
@@ -98,21 +101,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   async function removeItem(cartItemId: string) {
-    // Optimistic update
     setItems(prev => prev.filter(i => i.id !== cartItemId && i.parentCartItemId !== cartItemId))
     try {
       const res = await fetch(`/api/cart/${cartItemId}`, { method: 'DELETE' })
       const json = await res.json()
-      if (json.success) setItems(json.data)
-    } catch { await refreshCart() }
+      if (json.success) {
+        setItems(json.data)
+        lastFetchRef.current = Date.now()
+      }
+    } catch { await refreshCart(true) }
   }
 
   async function clearCart() {
     setItems([])
+    lastFetchRef.current = Date.now()
     try { await fetch('/api/cart', { method: 'DELETE' }) } catch { /* silent */ }
   }
 
-  // Only root-level items (not TEXTBOOK children)
   const rootItems = items.filter(i => !i.parentCartItemId)
   const itemCount = rootItems.length
   const total = items.reduce((sum, i) => sum + parseFloat(i.price), 0)
