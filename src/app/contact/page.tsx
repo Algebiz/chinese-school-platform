@@ -6,6 +6,8 @@ import { LanguageToggle } from '@/components/LanguageToggle'
 import { LanguageText } from '@/components/LanguageText'
 import { PortalNavLinks, PortalHamburger } from '@/components/PortalNavLinks'
 import { AvatarMenu } from '@/components/AvatarMenu'
+import { CartIcon } from '@/components/CartIcon'
+import { CartProvider } from '@/lib/cart/CartContext'
 
 function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/)
@@ -21,9 +23,12 @@ export default async function ContactPage() {
 
   const userName = session?.user?.name ?? session?.user?.email ?? ''
   const initials = userName ? getInitials(userName) : ''
-  const isAdmin = session?.user?.role === 'ADMIN' || session?.user?.role === 'SUPER_ADMIN'
+  const role = session?.user?.role
+  const isAdmin = role === 'ADMIN' || role === 'SUPER_ADMIN'
+  const isTeacher = role === 'TEACHER'
 
   return (
+    <CartProvider>
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Full portal navbar — same structure as portal layout */}
       <nav className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm relative">
@@ -41,16 +46,21 @@ export default async function ContactPage() {
             {session && <PortalNavLinks />}
           </div>
 
-          {/* Right: hamburger (mobile, logged-in only) + toggle + divider + avatar/login */}
+          {/* Right: hamburger + toggle + cart + divider + avatar/login */}
           <div className="flex items-center gap-2">
             {session && <PortalHamburger />}
             <LanguageToggle />
+            {session && <CartIcon />}
             <div className="hidden sm:block w-px h-5 bg-gray-200" />
             {session ? (
               <AvatarMenu
                 userName={userName}
                 initials={initials}
-                portalLink={isAdmin ? { href: '/admin', labelZh: '管理后台', labelEn: 'Admin Portal' } : undefined}
+                portalLink={
+                  isAdmin ? { href: '/admin', labelZh: '管理后台', labelEn: 'Admin Portal' } :
+                  isTeacher ? { href: '/teacher/classes', labelZh: '教师门户', labelEn: 'Teacher Portal' } :
+                  undefined
+                }
               />
             ) : (
               <Link
@@ -81,5 +91,6 @@ export default async function ContactPage() {
 
       <LegalFooter />
     </div>
+    </CartProvider>
   )
 }
