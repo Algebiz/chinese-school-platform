@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useCart } from '@/lib/cart/CartContext'
 
 interface Props {
   enrollmentId: string
@@ -15,6 +16,7 @@ interface Props {
 export function PendingEnrollmentCard({ enrollmentId, className, total, textbookNames }: Props) {
   const router = useRouter()
   const { t } = useLanguage()
+  const { refreshCart } = useCart()
   const [showDialog, setShowDialog] = useState(false)
   const [cancelling, setCancelling] = useState(false)
   const [cancelled, setCancelled] = useState(false)
@@ -29,6 +31,7 @@ export function PendingEnrollmentCard({ enrollmentId, className, total, textbook
       if (json.success) {
         setCancelled(true)
         setShowDialog(false)
+        await refreshCart()
         router.refresh()
       } else {
         setError(json.error ?? t('取消失败，请重试', 'Cancellation failed, please try again'))

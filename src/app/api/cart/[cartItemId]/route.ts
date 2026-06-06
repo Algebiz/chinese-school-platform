@@ -19,14 +19,27 @@ export async function DELETE(
     return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
   }
 
-  // Delete this item + its children in a transaction
+  // Delete this item + its children in a transaction, and cancel any linked enrollment
   await prisma.$transaction(async (tx) => {
-    // Delete child textbook items
+    // Cancel the linked PENDING enrollment so the spot is freed
+    if (item.type === 'ENROLLMENT' && item.enrollmentId) {
+      const enrollment = await tx.enrollment.findFirst({
+        where: { id: item.enrollmentId, status: 'PENDING' },
+      })
+      if (enrollment) {
+        await tx.enrollmentTextbook.deleteMany({ where: { enrollmentId: item.enrollmentId } })
+        await tx.enrollment.update({
+          where: { id: item.enrollmentId },
+          data: { status: 'CANCELLED' },
+        })
+      }
+    }
+
+    // Delete child textbook items then the cart item itself
     await tx.cartItem.deleteMany({ where: { parentCartItemId: cartItemId } })
-    // Delete the item itself
     await tx.cartItem.delete({ where: { id: cartItemId } })
 
-    // If no more ENROLLMENT items remain, remove the deposit too
+    // If no ENROLLMENT items remain, remove the deposit too
     if (item.type === 'ENROLLMENT' && user.familyId) {
       const remainingEnrollments = await tx.cartItem.count({
         where: { familyId: user.familyId, type: 'ENROLLMENT' },

@@ -52,6 +52,8 @@ export async function DELETE(
       )
     }
 
+    const familyId = enrollment.student.familyId
+
     await prisma.$transaction(async (tx) => {
       await tx.enrollmentTextbook.deleteMany({ where: { enrollmentId } })
       await tx.waitlist.deleteMany({
@@ -61,6 +63,28 @@ export async function DELETE(
         where: { id: enrollmentId },
         data: { status: 'CANCELLED' },
       })
+
+      // Remove the linked cart item (matched by enrollmentId or studentId+classId+familyId)
+      const cartItem = await tx.cartItem.findFirst({
+        where: {
+          OR: [
+            { enrollmentId },
+            { studentId: enrollment.studentId, classId: enrollment.classId, familyId, type: 'ENROLLMENT' },
+          ],
+        },
+      })
+      if (cartItem) {
+        await tx.cartItem.deleteMany({ where: { parentCartItemId: cartItem.id } })
+        await tx.cartItem.delete({ where: { id: cartItem.id } })
+
+        // If no ENROLLMENT items remain, remove the deposit too
+        const remainingEnrollments = await tx.cartItem.count({
+          where: { familyId, type: 'ENROLLMENT' },
+        })
+        if (remainingEnrollments === 0) {
+          await tx.cartItem.deleteMany({ where: { familyId, type: 'DEPOSIT' } })
+        }
+      }
     })
 
     return NextResponse.json({ success: true })
