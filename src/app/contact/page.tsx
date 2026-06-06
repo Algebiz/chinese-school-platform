@@ -74,19 +74,21 @@ export default async function ContactPage() {
         </div>
       </nav>
 
-      <main style={{ flex: 1, maxWidth: 900, margin: '0 auto', width: '100%', padding: '24px' }}>
-        <div style={{ marginBottom: 24 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
-            <LanguageText zh="联系我们" en="Contact Us" />
-          </h1>
-          <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
-            <LanguageText
-              zh="有任何问题？请填写下方表单，我们将在2个工作日内回复您。"
-              en="Have a question? Fill out the form and we'll respond within 2 business days."
-            />
-          </p>
+      <main className="flex-1">
+        <div style={{ maxWidth: 900, margin: '0 auto', width: '100%', padding: '24px' }}>
+          <div style={{ marginBottom: 24 }}>
+            <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
+              <LanguageText zh="联系我们" en="Contact Us" />
+            </h1>
+            <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
+              <LanguageText
+                zh="有任何问题？请填写下方表单，我们将在2个工作日内回复您。"
+                en="Have a question? Fill out the form and we'll respond within 2 business days."
+              />
+            </p>
+          </div>
+          <ContactFormClient prefill={prefill} />
         </div>
-        <ContactFormClient prefill={prefill} />
       </main>
 
       <LegalFooter />
