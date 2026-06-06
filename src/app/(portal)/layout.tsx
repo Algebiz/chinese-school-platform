@@ -18,12 +18,12 @@ function getInitials(name: string): string {
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
   if (!session) redirect('/login')
-  if (session.user?.role === 'TEACHER') redirect('/teacher/classes')
 
   const userName = session.user?.name ?? session.user?.email ?? '用户'
   const initials = getInitials(userName)
-  const role = session.user?.role as 'PARENT' | 'ADMIN' | 'SUPER_ADMIN'
+  const role = session.user?.role as 'PARENT' | 'TEACHER' | 'ADMIN' | 'SUPER_ADMIN'
   const isAdmin = role === 'ADMIN' || role === 'SUPER_ADMIN'
+  const isTeacher = role === 'TEACHER'
 
   return (
     <CartProvider>
@@ -52,7 +52,11 @@ export default async function PortalLayout({ children }: { children: React.React
               <AvatarMenu
                 userName={userName}
                 initials={initials}
-                portalLink={isAdmin ? { href: '/admin', labelZh: '管理后台', labelEn: 'Admin Portal' } : undefined}
+                portalLink={
+                isAdmin ? { href: '/admin', labelZh: '管理后台', labelEn: 'Admin Portal' } :
+                isTeacher ? { href: '/teacher/classes', labelZh: '教师门户', labelEn: 'Teacher Portal' } :
+                undefined
+              }
               />
             </div>
           </div>

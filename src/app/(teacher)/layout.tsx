@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
+import { prisma } from '@/lib/db'
 import Link from 'next/link'
 import { LegalFooter } from '@/components/LegalFooter'
 import { LanguageToggle } from '@/components/LanguageToggle'
@@ -25,6 +26,20 @@ export default async function TeacherLayout({ children }: { children: React.Reac
   const userName = session.user?.name ?? session.user?.email ?? '教师'
   const initials = getInitials(userName)
 
+  // Check if this teacher user has a family so we can show the parent portal link
+  let hasFamily = false
+  if (role === 'TEACHER' && session.user?.id) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { familyId: true },
+      })
+      hasFamily = !!user?.familyId
+    } catch {
+      // non-fatal
+    }
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       <nav className="bg-gray-900 text-white">
@@ -37,10 +52,22 @@ export default async function TeacherLayout({ children }: { children: React.Reac
 
           <div className="ml-auto flex shrink-0 items-center gap-2">
             <LanguageToggle />
+            {hasFamily && (
+              <>
+                <div className="w-px h-5 bg-gray-700" />
+                <Link
+                  href="/dashboard"
+                  className="text-xs text-gray-300 hover:text-white transition-colors whitespace-nowrap"
+                >
+                  <LanguageText zh="家长门户" en="Parent Portal" /> ↗
+                </Link>
+              </>
+            )}
             <div className="w-px h-5 bg-gray-700" />
             <AvatarMenu
               userName={userName}
               initials={initials}
+              portalLink={hasFamily ? { href: '/dashboard', labelZh: '家长门户', labelEn: 'Parent Portal' } : undefined}
             />
           </div>
         </div>

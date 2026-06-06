@@ -63,6 +63,19 @@ export async function PATCH(
           where: { id: userId },
           data: { role: 'TEACHER' },
         })
+
+        // Ensure the teacher user has a Family record so they can use the parent portal
+        const linked = await tx.user.findUnique({
+          where: { id: userId },
+          select: { familyId: true },
+        })
+        if (!linked?.familyId) {
+          const family = await tx.family.create({ data: {} })
+          await tx.user.update({
+            where: { id: userId },
+            data: { familyId: family.id },
+          })
+        }
       })
     }
 
