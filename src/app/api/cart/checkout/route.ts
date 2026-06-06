@@ -23,7 +23,10 @@ export async function POST() {
     orderBy: { createdAt: 'asc' },
   })
 
+  console.log('[cart/checkout] familyId:', familyId, '| ENROLLMENT cart items found:', enrollmentCartItems.length)
+
   if (enrollmentCartItems.length === 0) {
+    console.log('[cart/checkout] No enrollment cart items — returning empty')
     return NextResponse.json({ success: true, data: { enrollmentIds: [] } })
   }
 
@@ -31,7 +34,10 @@ export async function POST() {
   const cartUpdates: Promise<unknown>[] = []
 
   for (const item of enrollmentCartItems) {
-    if (!item.studentId || !item.classId) continue
+    if (!item.studentId || !item.classId) {
+      console.log('[cart/checkout] Skipping item with missing studentId/classId:', item.id)
+      continue
+    }
 
     // Fast path: cart item already references a valid PENDING enrollment
     if (item.enrollmentId) {
@@ -39,15 +45,19 @@ export async function POST() {
         where: { id: item.enrollmentId, status: 'PENDING' },
       })
       if (enrollment) {
+        console.log('[cart/checkout] Fast path — found PENDING enrollment:', enrollment.id)
         enrollmentIds.push(enrollment.id)
         continue
       }
+      console.log('[cart/checkout] enrollmentId', item.enrollmentId, 'is not PENDING — falling to slow path')
     }
 
     // Slow path: look up by student + class
     const existingEnrollment = await prisma.enrollment.findUnique({
       where: { studentId_classId: { studentId: item.studentId, classId: item.classId } },
     })
+
+    console.log('[cart/checkout] Slow path — existing enrollment:', existingEnrollment?.id, 'status:', existingEnrollment?.status)
 
     if (existingEnrollment?.status === 'PENDING') {
       enrollmentIds.push(existingEnrollment.id)
@@ -62,23 +72,37 @@ export async function POST() {
       })
       const textbookIds = textbookChildren.map(t => t.textbookId).filter(Boolean) as string[]
 
-      const { enrollments } = await createEnrollments(
+      console.log('[cart/checkout] Creating new enrollment for student', item.studentId, 'class', item.classId)
+      const { enrollments, waitlists } = await createEnrollments(
         item.studentId,
         [item.classId],
         textbookIds,
         CURRENT_YEAR
       )
+      console.log('[cart/checkout] createEnrollments result — enrollments:', enrollments.length, 'waitlists:', waitlists.length)
       if (enrollments[0]) {
         enrollmentIds.push(enrollments[0].id)
         cartUpdates.push(
           prisma.cartItem.update({ where: { id: item.id }, data: { enrollmentId: enrollments[0].id } })
         )
+      } else if (waitlists[0]) {
+        console.log('[cart/checkout] Class full — student waitlisted, removing stale cart item:', item.id)
+        // Class is at capacity — remove the cart item so the user doesn't get stuck
+        cartUpdates.push(prisma.cartItem.deleteMany({ where: { id: item.id } }))
       }
+    } else {
+      // CONFIRMED or TRANSFERRED — enrollment already paid; this cart item is stale
+      console.log('[cart/checkout] Enrollment', existingEnrollment.id, 'is', existingEnrollment.status, '— removing stale cart item:', item.id)
+      cartUpdates.push(
+        prisma.cartItem.deleteMany({
+          where: { OR: [{ id: item.id }, { parentCartItemId: item.id }] },
+        })
+      )
     }
-    // CONFIRMED / TRANSFERRED: already paid, skip silently
   }
 
   await Promise.all(cartUpdates)
 
+  console.log('[cart/checkout] Returning enrollmentIds:', enrollmentIds)
   return NextResponse.json({ success: true, data: { enrollmentIds } })
 }

@@ -88,6 +88,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, code: 'ALREADY_IN_CART', error: 'Class already in cart' }, { status: 409 })
     }
 
+    // Reject if the student already has a CONFIRMED/TRANSFERRED enrollment for any of these classes
+    const confirmedEnrollment = await prisma.enrollment.findFirst({
+      where: { studentId, classId: { in: classIds }, status: { in: ['CONFIRMED', 'TRANSFERRED'] } },
+      include: { class: { select: { name: true } } },
+    })
+    if (confirmedEnrollment) {
+      return NextResponse.json({
+        success: false, code: 'ALREADY_ENROLLED',
+        error: `Student is already enrolled in ${confirmedEnrollment.class.name}`,
+      }, { status: 409 })
+    }
+
     // Create actual PENDING enrollments (reserves the spot)
     const { enrollments } = await createEnrollments(studentId, classIds, textbookIds, CURRENT_YEAR)
 

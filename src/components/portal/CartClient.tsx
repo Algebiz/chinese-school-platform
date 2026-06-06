@@ -55,30 +55,50 @@ export function CartClient() {
   }
 
   async function handleCheckout() {
+    console.log('=== CHECKOUT CLICKED ===')
+    console.log('Cart items:', items)
+    console.log('Items count:', items.length)
+
     const enrollmentItems = items.filter(i => i.type === 'ENROLLMENT' && !i.parentCartItemId)
     const examItems = items.filter(i => i.type === 'EXAM_REGISTRATION')
+    console.log('Enrollment items:', enrollmentItems.length, 'Exam items:', examItems.length)
 
-    console.log('Checkout clicked, cart items:', items)
-
-    if (enrollmentItems.length === 0 && examItems.length === 0) return
+    if (enrollmentItems.length === 0 && examItems.length === 0) {
+      console.log('No items to checkout, returning early')
+      return
+    }
 
     setCheckingOut(true)
     try {
-      // POST /api/cart/checkout — verifies/creates Enrollment records and returns their IDs
-      const res = await fetch('/api/cart/checkout', { method: 'POST' })
+      console.log('Calling /api/cart/checkout...')
+      const res = await fetch('/api/cart/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      console.log('Response status:', res.status)
       const json = await res.json()
+      console.log('Response data:', json)
 
-      const enrollmentIds: string[] = json.data?.enrollmentIds ?? []
-      console.log('Enrollment IDs:', enrollmentIds)
-
-      if (!json.success) {
+      if (!res.ok || !json.success) {
+        console.error('Checkout API failed:', json)
         setCheckingOut(false)
         return
       }
 
+      const enrollmentIds: string[] = json.data?.enrollmentIds ?? []
+      console.log('Enrollment IDs:', enrollmentIds)
+
+      if (enrollmentIds.length === 0) {
+        console.error('No enrollment IDs returned — possible causes: enrollments already CONFIRMED (stale cart), or class at capacity (waitlisted)')
+      }
+
       if (enrollmentIds.length > 0) {
-        router.push(`/checkout?enrollmentIds=${enrollmentIds.join(',')}`)
+        const checkoutUrl = `/checkout?enrollmentIds=${enrollmentIds.join(',')}`
+        console.log('Redirecting to:', checkoutUrl)
+        router.push(checkoutUrl)
       } else {
+        console.log('No enrollmentIds, redirecting to dashboard')
         router.push('/dashboard')
       }
     } catch (e) {
