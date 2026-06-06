@@ -109,6 +109,15 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     }
   }
 
+  // Clear cart items now that payment is confirmed — non-fatal
+  if (paymentIntent.metadata.familyId) {
+    try {
+      await prisma.cartItem.deleteMany({ where: { familyId: paymentIntent.metadata.familyId } })
+    } catch (err) {
+      console.error('Failed to clear cart after Stripe payment:', err)
+    }
+  }
+
   // Send confirmation email — non-fatal if it fails
   try {
     await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'STRIPE', paymentIntent.id, academicYear)

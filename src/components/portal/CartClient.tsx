@@ -76,8 +76,6 @@ export function CartClient() {
         return
       }
 
-      await clearCart()
-
       if (enrollmentIds.length > 0) {
         router.push(`/checkout?enrollmentIds=${enrollmentIds.join(',')}`)
       } else {

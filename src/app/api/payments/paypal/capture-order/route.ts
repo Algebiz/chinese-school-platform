@@ -110,6 +110,15 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Clear cart items now that payment is confirmed — non-fatal
+    if (familyId) {
+      try {
+        await prisma.cartItem.deleteMany({ where: { familyId } })
+      } catch (err) {
+        console.error('Failed to clear cart after PayPal payment:', err)
+      }
+    }
+
     // Non-fatal email
     try {
       await sendEnrollmentConfirmationByIds(studentId, classIds, textbookIds, 'PAYPAL', orderId, academicYear)
