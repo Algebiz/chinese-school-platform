@@ -67,7 +67,7 @@ export default async function TeacherLayout({ children }: { children: React.Reac
             <AvatarMenu
               userName={userName}
               initials={initials}
-              portalLink={hasFamily ? { href: '/dashboard', labelZh: '家长门户', labelEn: 'Parent Portal' } : undefined}
+              portalLink={{ href: '/dashboard', labelZh: '家长门户', labelEn: 'Parent Portal' }}
             />
           </div>
         </div>
