@@ -135,6 +135,7 @@ model User {
 
 model Student {
   id                 String                     @id @default(cuid())
+  legacyStudentId    String?                    @unique
   name               String
   nameEn             String?
   birthDate          DateTime?

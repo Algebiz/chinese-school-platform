@@ -12,8 +12,8 @@
     "db:studio": "npx prisma studio",
     "db:reset": "echo '❌ DANGEROUS: Use prisma/safe-migrate.sh instead. Never run migrate reset on production.' && exit 1",
     "db:backup": "curl -X GET $NEXT_PUBLIC_APP_URL/api/cron/backup -H 'Authorization: Bearer $CRON_SECRET'",
-    "migrate:dry": "DRY_RUN=true npx tsx prisma/migrate-historical.ts",
-    "migrate:live": "npx tsx prisma/migrate-historical.ts",
+    "migrate:dry": "DRY_RUN=true npx tsx --env-file=.env.local prisma/migrate-historical.ts",
+    "migrate:live": "npx tsx --env-file=.env.local prisma/migrate-historical.ts",
     "migrate:check": "npx tsx --env-file=.env.local prisma/check-migration.ts"
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
+    "csv-parse": "^6.2.1",
     "date-fns": "^4.2.1",
     "lucide-react": "^1.16.0",
     "next": "16.2.6",

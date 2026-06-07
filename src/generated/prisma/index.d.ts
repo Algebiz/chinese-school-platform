@@ -9516,6 +9516,7 @@ export namespace Prisma {
 
   export type StudentMinAggregateOutputType = {
     id: string | null
+    legacyStudentId: string | null
     name: string | null
     nameEn: string | null
     birthDate: Date | null
@@ -9529,6 +9530,7 @@ export namespace Prisma {
 
   export type StudentMaxAggregateOutputType = {
     id: string | null
+    legacyStudentId: string | null
     name: string | null
     nameEn: string | null
     birthDate: Date | null
@@ -9542,6 +9544,7 @@ export namespace Prisma {
 
   export type StudentCountAggregateOutputType = {
     id: number
+    legacyStudentId: number
     name: number
     nameEn: number
     birthDate: number
@@ -9557,6 +9560,7 @@ export namespace Prisma {
 
   export type StudentMinAggregateInputType = {
     id?: true
+    legacyStudentId?: true
     name?: true
     nameEn?: true
     birthDate?: true
@@ -9570,6 +9574,7 @@ export namespace Prisma {
 
   export type StudentMaxAggregateInputType = {
     id?: true
+    legacyStudentId?: true
     name?: true
     nameEn?: true
     birthDate?: true
@@ -9583,6 +9588,7 @@ export namespace Prisma {
 
   export type StudentCountAggregateInputType = {
     id?: true
+    legacyStudentId?: true
     name?: true
     nameEn?: true
     birthDate?: true
@@ -9669,6 +9675,7 @@ export namespace Prisma {
 
   export type StudentGroupByOutputType = {
     id: string
+    legacyStudentId: string | null
     name: string
     nameEn: string | null
     birthDate: Date | null
@@ -9699,6 +9706,7 @@ export namespace Prisma {
 
   export type StudentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    legacyStudentId?: boolean
     name?: boolean
     nameEn?: boolean
     birthDate?: boolean
@@ -9720,6 +9728,7 @@ export namespace Prisma {
 
   export type StudentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    legacyStudentId?: boolean
     name?: boolean
     nameEn?: boolean
     birthDate?: boolean
@@ -9734,6 +9743,7 @@ export namespace Prisma {
 
   export type StudentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    legacyStudentId?: boolean
     name?: boolean
     nameEn?: boolean
     birthDate?: boolean
@@ -9748,6 +9758,7 @@ export namespace Prisma {
 
   export type StudentSelectScalar = {
     id?: boolean
+    legacyStudentId?: boolean
     name?: boolean
     nameEn?: boolean
     birthDate?: boolean
@@ -9759,7 +9770,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameEn" | "birthDate" | "grade" | "gender" | "notes" | "familyId" | "createdAt" | "updatedAt", ExtArgs["result"]["student"]>
+  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "legacyStudentId" | "name" | "nameEn" | "birthDate" | "grade" | "gender" | "notes" | "familyId" | "createdAt" | "updatedAt", ExtArgs["result"]["student"]>
   export type StudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     family?: boolean | FamilyDefaultArgs<ExtArgs>
     enrollments?: boolean | Student$enrollmentsArgs<ExtArgs>
@@ -9790,6 +9801,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      legacyStudentId: string | null
       name: string
       nameEn: string | null
       birthDate: Date | null
@@ -10230,6 +10242,7 @@ export namespace Prisma {
    */
   interface StudentFieldRefs {
     readonly id: FieldRef<"Student", 'String'>
+    readonly legacyStudentId: FieldRef<"Student", 'String'>
     readonly name: FieldRef<"Student", 'String'>
     readonly nameEn: FieldRef<"Student", 'String'>
     readonly birthDate: FieldRef<"Student", 'DateTime'>
@@ -34511,6 +34524,7 @@ export namespace Prisma {
 
   export const StudentScalarFieldEnum: {
     id: 'id',
+    legacyStudentId: 'legacyStudentId',
     name: 'name',
     nameEn: 'nameEn',
     birthDate: 'birthDate',
@@ -35533,6 +35547,7 @@ export namespace Prisma {
     OR?: StudentWhereInput[]
     NOT?: StudentWhereInput | StudentWhereInput[]
     id?: StringFilter<"Student"> | string
+    legacyStudentId?: StringNullableFilter<"Student"> | string | null
     name?: StringFilter<"Student"> | string
     nameEn?: StringNullableFilter<"Student"> | string | null
     birthDate?: DateTimeNullableFilter<"Student"> | Date | string | null
@@ -35553,6 +35568,7 @@ export namespace Prisma {
 
   export type StudentOrderByWithRelationInput = {
     id?: SortOrder
+    legacyStudentId?: SortOrderInput | SortOrder
     name?: SortOrder
     nameEn?: SortOrderInput | SortOrder
     birthDate?: SortOrderInput | SortOrder
@@ -35573,6 +35589,7 @@ export namespace Prisma {
 
   export type StudentWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    legacyStudentId?: string
     AND?: StudentWhereInput | StudentWhereInput[]
     OR?: StudentWhereInput[]
     NOT?: StudentWhereInput | StudentWhereInput[]
@@ -35592,10 +35609,11 @@ export namespace Prisma {
     examRegistrations?: ExamRegistrationListRelationFilter
     classExamResults?: ClassExamResultListRelationFilter
     cartItems?: CartItemListRelationFilter
-  }, "id">
+  }, "id" | "legacyStudentId">
 
   export type StudentOrderByWithAggregationInput = {
     id?: SortOrder
+    legacyStudentId?: SortOrderInput | SortOrder
     name?: SortOrder
     nameEn?: SortOrderInput | SortOrder
     birthDate?: SortOrderInput | SortOrder
@@ -35615,6 +35633,7 @@ export namespace Prisma {
     OR?: StudentScalarWhereWithAggregatesInput[]
     NOT?: StudentScalarWhereWithAggregatesInput | StudentScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Student"> | string
+    legacyStudentId?: StringNullableWithAggregatesFilter<"Student"> | string | null
     name?: StringWithAggregatesFilter<"Student"> | string
     nameEn?: StringNullableWithAggregatesFilter<"Student"> | string | null
     birthDate?: DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
@@ -37841,6 +37860,7 @@ export namespace Prisma {
 
   export type StudentCreateInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -37860,6 +37880,7 @@ export namespace Prisma {
 
   export type StudentUncheckedCreateInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -37879,6 +37900,7 @@ export namespace Prisma {
 
   export type StudentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -37898,6 +37920,7 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -37917,6 +37940,7 @@ export namespace Prisma {
 
   export type StudentCreateManyInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -37930,6 +37954,7 @@ export namespace Prisma {
 
   export type StudentUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -37942,6 +37967,7 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40456,6 +40482,7 @@ export namespace Prisma {
 
   export type StudentCountOrderByAggregateInput = {
     id?: SortOrder
+    legacyStudentId?: SortOrder
     name?: SortOrder
     nameEn?: SortOrder
     birthDate?: SortOrder
@@ -40469,6 +40496,7 @@ export namespace Prisma {
 
   export type StudentMaxOrderByAggregateInput = {
     id?: SortOrder
+    legacyStudentId?: SortOrder
     name?: SortOrder
     nameEn?: SortOrder
     birthDate?: SortOrder
@@ -40482,6 +40510,7 @@ export namespace Prisma {
 
   export type StudentMinOrderByAggregateInput = {
     id?: SortOrder
+    legacyStudentId?: SortOrder
     name?: SortOrder
     nameEn?: SortOrder
     birthDate?: SortOrder
@@ -44427,6 +44456,7 @@ export namespace Prisma {
 
   export type StudentCreateWithoutFamilyInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -44445,6 +44475,7 @@ export namespace Prisma {
 
   export type StudentUncheckedCreateWithoutFamilyInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -44665,6 +44696,7 @@ export namespace Prisma {
     OR?: StudentScalarWhereInput[]
     NOT?: StudentScalarWhereInput | StudentScalarWhereInput[]
     id?: StringFilter<"Student"> | string
+    legacyStudentId?: StringNullableFilter<"Student"> | string | null
     name?: StringFilter<"Student"> | string
     nameEn?: StringNullableFilter<"Student"> | string | null
     birthDate?: DateTimeNullableFilter<"Student"> | Date | string | null
@@ -46290,6 +46322,7 @@ export namespace Prisma {
 
   export type StudentCreateWithoutEnrollmentsInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -46308,6 +46341,7 @@ export namespace Prisma {
 
   export type StudentUncheckedCreateWithoutEnrollmentsInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -46449,6 +46483,7 @@ export namespace Prisma {
 
   export type StudentUpdateWithoutEnrollmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46467,6 +46502,7 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateWithoutEnrollmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46644,6 +46680,7 @@ export namespace Prisma {
 
   export type StudentCreateWithoutWaitlistsInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -46662,6 +46699,7 @@ export namespace Prisma {
 
   export type StudentUncheckedCreateWithoutWaitlistsInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -46745,6 +46783,7 @@ export namespace Prisma {
 
   export type StudentUpdateWithoutWaitlistsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46763,6 +46802,7 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateWithoutWaitlistsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46836,6 +46876,7 @@ export namespace Prisma {
 
   export type StudentCreateWithoutNextClassOverridesInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -46854,6 +46895,7 @@ export namespace Prisma {
 
   export type StudentUncheckedCreateWithoutNextClassOverridesInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -46937,6 +46979,7 @@ export namespace Prisma {
 
   export type StudentUpdateWithoutNextClassOverridesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46955,6 +46998,7 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateWithoutNextClassOverridesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47207,6 +47251,7 @@ export namespace Prisma {
 
   export type StudentCreateWithoutExamRegistrationsInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -47225,6 +47270,7 @@ export namespace Prisma {
 
   export type StudentUncheckedCreateWithoutExamRegistrationsInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -47308,6 +47354,7 @@ export namespace Prisma {
 
   export type StudentUpdateWithoutExamRegistrationsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47326,6 +47373,7 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateWithoutExamRegistrationsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47975,6 +48023,7 @@ export namespace Prisma {
 
   export type StudentCreateWithoutClassExamResultsInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -47993,6 +48042,7 @@ export namespace Prisma {
 
   export type StudentUncheckedCreateWithoutClassExamResultsInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -48068,6 +48118,7 @@ export namespace Prisma {
 
   export type StudentUpdateWithoutClassExamResultsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -48086,6 +48137,7 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateWithoutClassExamResultsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -48139,6 +48191,7 @@ export namespace Prisma {
 
   export type StudentCreateWithoutCartItemsInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -48157,6 +48210,7 @@ export namespace Prisma {
 
   export type StudentUncheckedCreateWithoutCartItemsInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -48370,6 +48424,7 @@ export namespace Prisma {
 
   export type StudentUpdateWithoutCartItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -48388,6 +48443,7 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateWithoutCartItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -48555,6 +48611,7 @@ export namespace Prisma {
 
   export type StudentCreateManyFamilyInput = {
     id?: string
+    legacyStudentId?: string | null
     name: string
     nameEn?: string | null
     birthDate?: Date | string | null
@@ -48713,6 +48770,7 @@ export namespace Prisma {
 
   export type StudentUpdateWithoutFamilyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -48731,6 +48789,7 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateWithoutFamilyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -48749,6 +48808,7 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateManyWithoutFamilyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    legacyStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

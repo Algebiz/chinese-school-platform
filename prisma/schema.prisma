@@ -134,14 +134,15 @@ model User {
 }
 
 model Student {
-  id          String       @id @default(cuid())
-  name        String
-  nameEn      String?
-  birthDate   DateTime?
-  grade       String?
-  gender      String?
-  notes       String?
-  familyId    String
+  id              String       @id @default(cuid())
+  legacyStudentId String?      @unique
+  name            String
+  nameEn          String?
+  birthDate       DateTime?
+  grade           String?
+  gender          String?
+  notes           String?
+  familyId        String
   family      Family       @relation(fields: [familyId], references: [id])
   enrollments        Enrollment[]
   waitlists          Waitlist[]
