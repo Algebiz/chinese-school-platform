@@ -17,7 +17,7 @@ fi
 
 # Check 2: Run database check
 echo "Checking database state..."
-npx tsx prisma/check-migration.ts
+npx tsx --env-file=.env.local prisma/check-migration.ts
 
 # Check 3: Remind about backup
 echo ""
