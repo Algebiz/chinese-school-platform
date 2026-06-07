@@ -39,8 +39,8 @@ yarn-error.log*
 
 # CSV uploads (contain PII — never commit)
 /uploads/
-migration-passwords.csv
-migration-errors.log
+migration-*passwords*.csv
+migration-*errors*.log
 
 # typescript
 *.tsbuildinfo
