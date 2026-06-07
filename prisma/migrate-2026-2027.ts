@@ -17,13 +17,20 @@ console.log(DRY_RUN ? '🔍 DRY RUN — no data written' : '🚀 LIVE RUN — wr
 console.log('='.repeat(60))
 
 // ── CLASS SEARCH MAP ───────────────────────────────────────────────
-// Maps CSV course codes → search terms for active DB class lookup.
+// Maps CSV course codes → exact `nameEn` of the active DB class.
 // null = intentionally skip (TBD, NewStudent, etc.)
+//
+// Exact match (not `contains`) — substring search previously matched
+// "CHL Level 1" against "CHL Level 10" before "CHL Level 1A"/"1B",
+// mis-routing all CHL01 registrants into CHL Level 10. Where a CSV
+// code is ambiguous between sections (e.g. CHL01 → 1A or 1B, CHL04 →
+// 4A/4B/4 Intensive), the exact name below preserves the resolution
+// the old search produced (section A / non-intensive first).
 const CLASS_SEARCH_MAP: Record<string, string | null> = {
-  'CHL01':                 'CHL Level 1',
+  'CHL01':                 'CHL Level 1A',
   'CHL02':                 'CHL Level 2',
-  'CHL03':                 'CHL Level 3',
-  'CHL04':                 'CHL Level 4',
+  'CHL03':                 'CHL Level 3A',
+  'CHL04':                 'CHL Level 4A',
   'CHL05':                 'CHL Level 5',
   'CHL06':                 'CHL Level 6',
   'CHL07':                 'CHL Level 7',
@@ -31,15 +38,15 @@ const CLASS_SEARCH_MAP: Record<string, string | null> = {
   'CHL09':                 'CHL Level 9',
   'CHL10':                 'CHL Level 10',
   'AP':                    'AP Chinese',
-  'CSL01_A':               'CSL Level 1',
+  'CSL01_A':               'CSL Level 1A',
   'CSL02_A':               'CSL Level 2',
   'CSL03_A':               'CSL Level 3',
   'CSL04_A':               'CSL Level 3',
   'Art 1':                 'Art 1',
   'Art 2':                 'Art 2',
-  'Kung Fu and Lion Dance': 'Lion Dance',
-  'Dance Lower Level':     'Dance Lower',
-  'Dance Upper Level':     'Dance Upper',
+  'Kung Fu and Lion Dance': 'Lion Dance & Kung Fu',
+  'Dance Lower Level':     'Dance Lower Level',
+  'Dance Upper Level':     'Dance Upper Level',
   'Chess':                 'Chess',
   'Math':                  'Math',
   'NewStudent':            null,
@@ -73,29 +80,26 @@ async function findActiveClass(csvCourse: string): Promise<{ id: string; name: s
     return null
   }
 
-  const searchTerm = CLASS_SEARCH_MAP[csvCourse]
-  if (searchTerm === null) {
+  const exactName = CLASS_SEARCH_MAP[csvCourse]
+  if (exactName === null) {
     classCache.set(csvCourse, null)
     return null
   }
 
+  // Exact match on nameEn — no substring ambiguity (e.g. "CHL Level 1" ⊂ "CHL Level 10")
   const cls = await prisma.class.findFirst({
     where: {
       year: YEAR,
       isActive: true,
-      OR: [
-        { nameEn: { contains: searchTerm } },
-        { name: { contains: searchTerm } },
-      ],
+      nameEn: exactName,
     },
-    orderBy: { name: 'asc' }, // A section first when A/B sections exist
     select: { id: true, name: true, nameEn: true },
   })
 
   if (!cls) {
     if (!stats.classNotFound.includes(csvCourse)) {
       stats.classNotFound.push(csvCourse)
-      console.warn(`  ⚠️  No active ${YEAR} class for: "${csvCourse}" (search: "${searchTerm}")`)
+      console.warn(`  ⚠️  No active ${YEAR} class for: "${csvCourse}" (looking for nameEn="${exactName}")`)
     }
     classCache.set(csvCourse, null)
     return null
