@@ -37,6 +37,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# CSV uploads (contain PII — never commit)
+/uploads/
+migration-passwords.csv
+migration-errors.log
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
