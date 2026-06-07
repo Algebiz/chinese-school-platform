@@ -51,12 +51,16 @@ export async function GET(request: Request) {
       })),
     }
 
+    const jsonString = JSON.stringify(backupData, null, 2)
+    const base64Content = Buffer.from(jsonString, 'utf8').toString('base64')
+
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
       from: process.env.EMAIL_FROM ?? 'noreply@charlottechineseacademy.org',
       to: process.env.ADMIN_BACKUP_EMAIL ?? 'alg.herbs@gmail.com',
       subject: `CCA Weekly Backup — ${new Date().toLocaleDateString()} — ${students} students`,
       html: `
+        <meta charset="utf-8">
         <h2>CCA Platform Weekly Backup Report</h2>
         <p>Backup completed: ${new Date().toISOString()}</p>
         <h3>Record Counts:</h3>
@@ -76,7 +80,8 @@ export async function GET(request: Request) {
       `,
       attachments: [{
         filename: `cca-backup-${new Date().toISOString().split('T')[0]}.json`,
-        content: Buffer.from(JSON.stringify(backupData, null, 2)).toString('base64'),
+        content: base64Content,
+        contentType: 'application/json; charset=utf-8',
       }],
     })
 
