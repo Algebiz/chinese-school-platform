@@ -7,7 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:push": "npx prisma db push",
+    "db:studio": "npx prisma studio",
+    "db:reset": "echo '❌ DANGEROUS: Use prisma/safe-migrate.sh instead. Never run migrate reset on production.' && exit 1",
+    "db:backup": "curl -X GET $NEXT_PUBLIC_APP_URL/api/cron/backup -H 'Authorization: Bearer $CRON_SECRET'",
+    "migrate:dry": "DRY_RUN=true npx tsx prisma/migrate-historical.ts",
+    "migrate:live": "npx tsx prisma/migrate-historical.ts",
+    "migrate:check": "npx tsx prisma/check-migration.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",
