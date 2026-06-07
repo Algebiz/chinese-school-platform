@@ -3,5 +3,9 @@
     "src/app/api/payments/stripe/webhook/route.ts": {
       "maxDuration": 30
     }
-  }
+  },
+  "crons": [
+    { "path": "/api/cron/keepalive", "schedule": "0 0 */3 * *" },
+    { "path": "/api/cron/backup", "schedule": "0 9 * * 0" }
+  ]
 }
