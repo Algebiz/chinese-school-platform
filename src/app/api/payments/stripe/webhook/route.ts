@@ -49,14 +49,23 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
   const textbookIds = textbookIdsJson ? (JSON.parse(textbookIdsJson) as string[]) : []
   const examIds = examIdsJson ? (JSON.parse(examIdsJson) as string[]) : []
 
+  console.log('[webhook] payment_intent.succeeded:', {
+    paymentIntentId: paymentIntent.id,
+    amount: paymentIntent.amount,
+    studentId,
+    classIds,
+    examRegistrationIds: examIds,
+  })
+
   // Handle enrollment items
   if (studentId && classIds.length > 0) {
     await prisma.$transaction(async (tx) => {
       // Promote PENDING → CONFIRMED
-      await tx.enrollment.updateMany({
+      const promoted = await tx.enrollment.updateMany({
         where: { studentId, classId: { in: classIds }, status: 'PENDING' },
         data: { status: 'CONFIRMED' },
       })
+      console.log('[webhook] promoted PENDING → CONFIRMED:', promoted.count, 'enrollment(s) for studentId:', studentId)
 
       // Fetch confirmed enrollments with fees
       const enrollments = await tx.enrollment.findMany({
