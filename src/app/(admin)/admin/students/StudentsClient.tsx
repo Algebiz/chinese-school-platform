@@ -364,11 +364,11 @@ export function StudentsClient({ rows, selectedYear, currentYear, availableYears
                   </td>
                   <td className="px-4 py-3 text-gray-600">{row.parentName ?? '—'}</td>
                   <td className="px-4 py-3 text-gray-500">{row.parentEmail ?? '—'}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 whitespace-nowrap align-middle">
                     <div className="flex gap-1.5">
                       <button
                         onClick={() => setEditTarget(row)}
-                        className="rounded border border-gray-300 px-2.5 py-1 text-xs text-gray-600 hover:border-gray-400 hover:bg-gray-50"
+                        className="h-8 whitespace-nowrap rounded border border-gray-300 px-2.5 py-1 text-[13px] leading-none text-gray-600 hover:border-gray-400 hover:bg-gray-50"
                       >
                         编辑
                       </button>
@@ -376,7 +376,7 @@ export function StudentsClient({ rows, selectedYear, currentYear, availableYears
                         onClick={() => handleDeleteClick(row)}
                         title="删除"
                         aria-label="删除"
-                        className="rounded border border-red-200 px-2.5 py-1 text-xs text-red-600 hover:border-red-300 hover:bg-red-50"
+                        className="flex h-8 w-8 items-center justify-center rounded border border-red-200 px-2 py-1 text-red-600 hover:border-red-300 hover:bg-red-50"
                       >
                         🗑
                       </button>
