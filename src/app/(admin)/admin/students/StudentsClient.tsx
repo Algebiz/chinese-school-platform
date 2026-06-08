@@ -342,13 +342,15 @@ export function StudentsClient({ rows }: Props) {
                         onClick={() => setEditTarget(row)}
                         className="rounded border border-gray-300 px-2.5 py-1 text-xs text-gray-600 hover:border-gray-400 hover:bg-gray-50"
                       >
-                        编辑 / Edit
+                        编辑
                       </button>
                       <button
                         onClick={() => handleDeleteClick(row)}
+                        title="删除"
+                        aria-label="删除"
                         className="rounded border border-red-200 px-2.5 py-1 text-xs text-red-600 hover:border-red-300 hover:bg-red-50"
                       >
-                        🗑 删除
+                        🗑
                       </button>
                     </div>
                   </td>
