@@ -55,6 +55,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     studentId,
     classIds,
     examRegistrationIds: examIds,
+    familyId: paymentIntent.metadata.familyId,
   })
 
   // Handle enrollment items
@@ -175,7 +176,9 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
   // Clear cart items now that payment is confirmed — non-fatal
   if (paymentIntent.metadata.familyId) {
     try {
-      await prisma.cartItem.deleteMany({ where: { familyId: paymentIntent.metadata.familyId } })
+      const familyId = paymentIntent.metadata.familyId
+      await prisma.cartItem.deleteMany({ where: { familyId } })
+      console.log('[webhook] cart cleared for family:', familyId)
     } catch (err) {
       console.error('Failed to clear cart after Stripe payment:', err)
     }
