@@ -7,20 +7,35 @@ import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { getStudentStatuses } from '@/lib/student-status'
 import { sortByLastNamePinyin } from '@/lib/pinyin-sort'
 
-export default async function AdminStudentsPage() {
+export default async function AdminStudentsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ year?: string }>
+}) {
   const session = await auth()
   if (!session || (session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN'))
     redirect('/dashboard')
 
-  const CURRENT_YEAR = await getCurrentAcademicYear()
+  const currentYear = await getCurrentAcademicYear()
+
+  const yearRows = await prisma.class.findMany({
+    where: { enrollments: { some: { status: 'CONFIRMED' } } },
+    select: { year: true },
+    distinct: ['year'],
+  })
+  const availableYears = Array.from(new Set([currentYear, ...yearRows.map((r) => r.year)]))
+    .sort((a, b) => b.localeCompare(a))
+
+  const { year: yearParam } = await searchParams
+  const selectedYear = yearParam && availableYears.includes(yearParam) ? yearParam : currentYear
 
   const students = await prisma.student.findMany({
     where: {
-      enrollments: { some: { status: 'CONFIRMED', class: { year: CURRENT_YEAR } } },
+      enrollments: { some: { status: 'CONFIRMED', class: { year: selectedYear } } },
     },
     include: {
       enrollments: {
-        where: { class: { year: CURRENT_YEAR }, status: 'CONFIRMED' },
+        where: { class: { year: selectedYear }, status: 'CONFIRMED' },
         include: { class: { select: { name: true, type: true } } },
       },
       examRegistrations: {
@@ -35,7 +50,7 @@ export default async function AdminStudentsPage() {
     },
   })
 
-  const statuses = await getStudentStatuses(students.map((s) => s.id), CURRENT_YEAR)
+  const statuses = await getStudentStatuses(students.map((s) => s.id), selectedYear)
 
   const sortedStudents = sortByLastNamePinyin(students, (s) => s.name, (s) => s.nameEn)
 
@@ -71,10 +86,10 @@ export default async function AdminStudentsPage() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">学生管理 / Students</h1>
         <p className="mt-1 text-sm text-gray-500">
-          {CURRENT_YEAR} 学年已报名学生 — 已确认报名（含新生和老生）
+          {selectedYear} 学年已报名学生 — 已确认报名（含新生和老生）
         </p>
         <p className="text-xs text-gray-400">
-          Student Management — confirmed enrollments for {CURRENT_YEAR}
+          Student Management — confirmed enrollments for {selectedYear}
         </p>
       </div>
       <div className="mb-4 flex items-center gap-4 text-sm text-gray-600">
@@ -88,7 +103,12 @@ export default async function AdminStudentsPage() {
           老生 <strong className="text-blue-600">{returningCount}</strong>
         </span>
       </div>
-      <StudentsClient rows={rows} />
+      <StudentsClient
+        rows={rows}
+        selectedYear={selectedYear}
+        currentYear={currentYear}
+        availableYears={availableYears}
+      />
     </div>
   )
 }

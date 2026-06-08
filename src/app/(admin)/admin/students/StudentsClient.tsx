@@ -29,6 +29,9 @@ type MsgType = 'success' | 'error'
 
 interface Props {
   rows: StudentRow[]
+  selectedYear: string
+  currentYear: string
+  availableYears: string[]
 }
 
 const CLASS_TYPE_LABEL: Record<string, string> = {
@@ -42,7 +45,7 @@ const GENDER_LABEL: Record<string, string> = {
   OTHER: '其他',
 }
 
-export function StudentsClient({ rows }: Props) {
+export function StudentsClient({ rows, selectedYear, currentYear, availableYears }: Props) {
   const router = useRouter()
   const [filter, setFilter] = useState<FilterValue>('all')
   const [query, setQuery] = useState('')
@@ -124,9 +127,31 @@ export function StudentsClient({ rows }: Props) {
     }
   }
 
+  const yearSelector = (
+    <div className="flex items-center gap-2">
+      <label htmlFor="year-select" className="text-sm font-medium text-gray-700 whitespace-nowrap">
+        学年 / Academic Year:
+      </label>
+      <select
+        id="year-select"
+        value={selectedYear}
+        onChange={(e) => router.push(`/admin/students?year=${e.target.value}`)}
+        className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-700 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+      >
+        {availableYears.map((y) => (
+          <option key={y} value={y}>
+            {y}
+            {y === currentYear ? '（当前学年）' : ''}
+          </option>
+        ))}
+      </select>
+    </div>
+  )
+
   if (rows.length === 0) {
     return (
       <div>
+        <div className="mb-4">{yearSelector}</div>
         <div className="mb-4 flex justify-end">
           <button
             onClick={() => setShowAddModal(true)}
@@ -160,6 +185,9 @@ export function StudentsClient({ rows }: Props) {
 
   return (
     <div className="space-y-4">
+      {/* Academic year selector */}
+      {yearSelector}
+
       {/* Top bar: Add button + filter */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 flex-wrap">
