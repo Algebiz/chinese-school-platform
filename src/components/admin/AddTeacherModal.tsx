@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 interface Props {
   onClose: () => void
@@ -11,7 +10,6 @@ interface Props {
 
 export function AddTeacherModal({ onClose, onSuccess }: Props) {
   const router = useRouter()
-  const { t } = useLanguage()
   const [name, setName] = useState('')
   const [nameEn, setNameEn] = useState('')
   const [email, setEmail] = useState('')
@@ -66,7 +64,7 @@ export function AddTeacherModal({ onClose, onSuccess }: Props) {
         <div className="overflow-y-auto px-6 py-5 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">{t('中文姓名', 'Chinese Name')} *</label>
+              <label className="mb-1 block text-sm font-medium text-gray-700">中文姓名 *</label>
               <input
                 type="text"
                 value={name}
@@ -76,7 +74,7 @@ export function AddTeacherModal({ onClose, onSuccess }: Props) {
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">{t('英文姓名', 'English Name')} *</label>
+              <label className="mb-1 block text-sm font-medium text-gray-700">英文姓名 *</label>
               <input
                 type="text"
                 value={nameEn}

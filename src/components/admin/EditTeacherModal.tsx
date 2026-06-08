@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 export interface TeacherForEdit {
   id: string
@@ -30,7 +29,6 @@ interface Props {
 
 export function EditTeacherModal({ teacher, onClose }: Props) {
   const router = useRouter()
-  const { t } = useLanguage()
   const [name, setName] = useState(teacher.name ?? '')
   const [nameEn, setNameEn] = useState(teacher.nameEn ?? '')
   const [photoUrl, setPhotoUrl] = useState(teacher.photoUrl ?? '')
@@ -156,19 +154,19 @@ export function EditTeacherModal({ teacher, onClose }: Props) {
         <div className="space-y-4 px-6 py-5">
           {/* Chinese name */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">{t('中文姓名', 'Chinese Name')}</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">中文姓名</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder={t('请输入中文姓名', 'Chinese name')}
+              placeholder="请输入中文姓名"
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
             />
           </div>
 
           {/* English name */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">{t('英文姓名', 'English Name')}</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">英文姓名</label>
             <input
               type="text"
               value={nameEn}

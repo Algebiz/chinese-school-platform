@@ -3,7 +3,6 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import Link from 'next/link'
 import { LegalFooter } from '@/components/LegalFooter'
-import { LanguageToggle } from '@/components/LanguageToggle'
 import { LanguageText } from '@/components/LanguageText'
 import { TeacherNavLinks } from '@/components/TeacherNavLinks'
 import { AvatarMenu } from '@/components/AvatarMenu'
@@ -51,19 +50,17 @@ export default async function TeacherLayout({ children }: { children: React.Reac
           <TeacherNavLinks />
 
           <div className="ml-auto flex shrink-0 items-center gap-2">
-            <LanguageToggle />
             {hasFamily && (
               <>
-                <div className="w-px h-5 bg-gray-700" />
                 <Link
                   href="/dashboard"
                   className="text-xs text-gray-300 hover:text-white transition-colors whitespace-nowrap"
                 >
                   <LanguageText zh="家长门户" en="Parent Portal" /> ↗
                 </Link>
+                <div className="w-px h-5 bg-gray-700" />
               </>
             )}
-            <div className="w-px h-5 bg-gray-700" />
             <AvatarMenu
               userName={userName}
               initials={initials}

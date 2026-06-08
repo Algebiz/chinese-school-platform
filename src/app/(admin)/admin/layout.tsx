@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { LegalFooter } from '@/components/LegalFooter'
-import { LanguageToggle } from '@/components/LanguageToggle'
 import { LanguageText } from '@/components/LanguageText'
 import { AdminNavLinks } from '@/components/AdminNavLinks'
 import { AvatarMenu } from '@/components/AvatarMenu'
@@ -48,8 +47,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           />
 
           <div className="ml-auto flex shrink-0 items-center gap-2">
-            <LanguageToggle />
-            <div className="w-px h-5 bg-gray-700" />
             <AvatarMenu
               userName={userName}
               initials={initials}
