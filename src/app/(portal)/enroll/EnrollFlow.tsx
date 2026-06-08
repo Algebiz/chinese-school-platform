@@ -340,7 +340,7 @@ export function EnrollFlow({
   const { t, lang } = useLanguage()
   const { addToCart, total: cartTotal } = useCart()
   const [addedToCart, setAddedToCart] = useState(false)
-  const [cartAddedInfo, setCartAddedInfo] = useState<{ studentName: string; classes: string[]; subtotal: number } | null>(null)
+  const [cartAddedInfo, setCartAddedInfo] = useState<{ studentName: string; classes: string[]; subtotal: number; waitlistedClasses: string[] } | null>(null)
 
   const [step, setStep] = useState<Step>(initialStep)
   const [isArtsOnly, setIsArtsOnly] = useState(artsOnly)
@@ -455,14 +455,19 @@ export function EnrollFlow({
         return
       }
       // Show "Added to Cart" screen
-      const classNames = [
-        ...(!isArtsOnly && selectedChineseClass ? [lang === 'en' ? (selectedChineseClass.nameEn || selectedChineseClass.name) : selectedChineseClass.name] : []),
-        ...selectedArtsClasses.map(c => lang === 'en' ? (c.nameEn || c.name) : c.name),
+      const selectedClasses = [
+        ...(!isArtsOnly && selectedChineseClass ? [selectedChineseClass] : []),
+        ...selectedArtsClasses,
       ]
+      const classNames = selectedClasses.map(c => lang === 'en' ? (c.nameEn || c.name) : c.name)
+      const waitlistedClasses = selectedClasses
+        .filter(c => c.spotsRemaining === 0)
+        .map(c => lang === 'en' ? (c.nameEn || c.name) : c.name)
       setCartAddedInfo({
         studentName: selectedStudent?.name ?? '',
         classes: classNames,
         subtotal: totalFee,
+        waitlistedClasses,
       })
       setAddedToCart(true)
     } catch {
@@ -841,6 +846,16 @@ export function EnrollFlow({
             </p>
           </div>
           <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {cartAddedInfo.waitlistedClasses.length > 0 && (
+              <div style={{ background: '#FEF3C7', border: '0.5px solid #FDE68A', borderRadius: 8, padding: '12px 16px', marginBottom: 4 }}>
+                <p style={{ fontSize: 13, color: '#92400E', margin: 0 }}>
+                  📋 {t(
+                    `已加入候补名单：${cartAddedInfo.waitlistedClasses.join('、')}。如有名额将通知您。`,
+                    `Added to waitlist: ${cartAddedInfo.waitlistedClasses.join(', ')}. You will be notified if a spot becomes available.`
+                  )}
+                </p>
+              </div>
+            )}
             <p style={{ fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>
               {t('接下来您可以：', 'What would you like to do next?')}
             </p>

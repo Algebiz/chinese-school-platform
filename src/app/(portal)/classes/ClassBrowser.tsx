@@ -40,7 +40,9 @@ export function ClassBrowser({ chineseClasses, artsClasses, earlyBird }: ClassBr
 
   function handleToggle(cls: ClassData) {
     if (cls.spotsRemaining === 0) {
-      router.push(`/enroll/waitlist?classId=${cls.id}`)
+      // Full classes are handled inside the enroll flow itself — it already
+      // shows "已满 · 可候补" and creates the Waitlist record via createEnrollments.
+      router.push(`/enroll?classIds=${cls.id}`)
       return
     }
     setSelectedIds((prev) => {
