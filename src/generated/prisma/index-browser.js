@@ -269,6 +269,9 @@ exports.Prisma.WaitlistScalarFieldEnum = {
   classId: 'classId',
   position: 'position',
   notified: 'notified',
+  status: 'status',
+  notifiedAt: 'notifiedAt',
+  notifyExpiry: 'notifyExpiry',
   createdAt: 'createdAt'
 };
 
@@ -525,6 +528,12 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
   REFUNDED: 'REFUNDED'
+};
+
+exports.WaitlistStatus = exports.$Enums.WaitlistStatus = {
+  WAITING: 'WAITING',
+  NOTIFIED: 'NOTIFIED',
+  EXPIRED: 'EXPIRED'
 };
 
 exports.ContactStatus = exports.$Enums.ContactStatus = {

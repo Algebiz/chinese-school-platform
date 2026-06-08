@@ -223,6 +223,15 @@ export const ExamRegistrationStatus: {
 export type ExamRegistrationStatus = (typeof ExamRegistrationStatus)[keyof typeof ExamRegistrationStatus]
 
 
+export const WaitlistStatus: {
+  WAITING: 'WAITING',
+  NOTIFIED: 'NOTIFIED',
+  EXPIRED: 'EXPIRED'
+};
+
+export type WaitlistStatus = (typeof WaitlistStatus)[keyof typeof WaitlistStatus]
+
+
 export const DepositStatus: {
   PENDING: 'PENDING',
   PAID: 'PAID',
@@ -287,6 +296,10 @@ export const ExamType: typeof $Enums.ExamType
 export type ExamRegistrationStatus = $Enums.ExamRegistrationStatus
 
 export const ExamRegistrationStatus: typeof $Enums.ExamRegistrationStatus
+
+export type WaitlistStatus = $Enums.WaitlistStatus
+
+export const WaitlistStatus: typeof $Enums.WaitlistStatus
 
 export type DepositStatus = $Enums.DepositStatus
 
@@ -18020,6 +18033,9 @@ export namespace Prisma {
     classId: string | null
     position: number | null
     notified: boolean | null
+    status: $Enums.WaitlistStatus | null
+    notifiedAt: Date | null
+    notifyExpiry: Date | null
     createdAt: Date | null
   }
 
@@ -18029,6 +18045,9 @@ export namespace Prisma {
     classId: string | null
     position: number | null
     notified: boolean | null
+    status: $Enums.WaitlistStatus | null
+    notifiedAt: Date | null
+    notifyExpiry: Date | null
     createdAt: Date | null
   }
 
@@ -18038,6 +18057,9 @@ export namespace Prisma {
     classId: number
     position: number
     notified: number
+    status: number
+    notifiedAt: number
+    notifyExpiry: number
     createdAt: number
     _all: number
   }
@@ -18057,6 +18079,9 @@ export namespace Prisma {
     classId?: true
     position?: true
     notified?: true
+    status?: true
+    notifiedAt?: true
+    notifyExpiry?: true
     createdAt?: true
   }
 
@@ -18066,6 +18091,9 @@ export namespace Prisma {
     classId?: true
     position?: true
     notified?: true
+    status?: true
+    notifiedAt?: true
+    notifyExpiry?: true
     createdAt?: true
   }
 
@@ -18075,6 +18103,9 @@ export namespace Prisma {
     classId?: true
     position?: true
     notified?: true
+    status?: true
+    notifiedAt?: true
+    notifyExpiry?: true
     createdAt?: true
     _all?: true
   }
@@ -18171,6 +18202,9 @@ export namespace Prisma {
     classId: string
     position: number
     notified: boolean
+    status: $Enums.WaitlistStatus
+    notifiedAt: Date | null
+    notifyExpiry: Date | null
     createdAt: Date
     _count: WaitlistCountAggregateOutputType | null
     _avg: WaitlistAvgAggregateOutputType | null
@@ -18199,6 +18233,9 @@ export namespace Prisma {
     classId?: boolean
     position?: boolean
     notified?: boolean
+    status?: boolean
+    notifiedAt?: boolean
+    notifyExpiry?: boolean
     createdAt?: boolean
     student?: boolean | StudentDefaultArgs<ExtArgs>
     class?: boolean | ClassDefaultArgs<ExtArgs>
@@ -18210,6 +18247,9 @@ export namespace Prisma {
     classId?: boolean
     position?: boolean
     notified?: boolean
+    status?: boolean
+    notifiedAt?: boolean
+    notifyExpiry?: boolean
     createdAt?: boolean
     student?: boolean | StudentDefaultArgs<ExtArgs>
     class?: boolean | ClassDefaultArgs<ExtArgs>
@@ -18221,6 +18261,9 @@ export namespace Prisma {
     classId?: boolean
     position?: boolean
     notified?: boolean
+    status?: boolean
+    notifiedAt?: boolean
+    notifyExpiry?: boolean
     createdAt?: boolean
     student?: boolean | StudentDefaultArgs<ExtArgs>
     class?: boolean | ClassDefaultArgs<ExtArgs>
@@ -18232,10 +18275,13 @@ export namespace Prisma {
     classId?: boolean
     position?: boolean
     notified?: boolean
+    status?: boolean
+    notifiedAt?: boolean
+    notifyExpiry?: boolean
     createdAt?: boolean
   }
 
-  export type WaitlistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentId" | "classId" | "position" | "notified" | "createdAt", ExtArgs["result"]["waitlist"]>
+  export type WaitlistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentId" | "classId" | "position" | "notified" | "status" | "notifiedAt" | "notifyExpiry" | "createdAt", ExtArgs["result"]["waitlist"]>
   export type WaitlistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     student?: boolean | StudentDefaultArgs<ExtArgs>
     class?: boolean | ClassDefaultArgs<ExtArgs>
@@ -18261,6 +18307,9 @@ export namespace Prisma {
       classId: string
       position: number
       notified: boolean
+      status: $Enums.WaitlistStatus
+      notifiedAt: Date | null
+      notifyExpiry: Date | null
       createdAt: Date
     }, ExtArgs["result"]["waitlist"]>
     composites: {}
@@ -18692,6 +18741,9 @@ export namespace Prisma {
     readonly classId: FieldRef<"Waitlist", 'String'>
     readonly position: FieldRef<"Waitlist", 'Int'>
     readonly notified: FieldRef<"Waitlist", 'Boolean'>
+    readonly status: FieldRef<"Waitlist", 'WaitlistStatus'>
+    readonly notifiedAt: FieldRef<"Waitlist", 'DateTime'>
+    readonly notifyExpiry: FieldRef<"Waitlist", 'DateTime'>
     readonly createdAt: FieldRef<"Waitlist", 'DateTime'>
   }
     
@@ -34638,6 +34690,9 @@ export namespace Prisma {
     classId: 'classId',
     position: 'position',
     notified: 'notified',
+    status: 'status',
+    notifiedAt: 'notifiedAt',
+    notifyExpiry: 'notifyExpiry',
     createdAt: 'createdAt'
   };
 
@@ -35071,6 +35126,20 @@ export namespace Prisma {
    * Reference to a field of type 'PaymentStatus[]'
    */
   export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'WaitlistStatus'
+   */
+  export type EnumWaitlistStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WaitlistStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'WaitlistStatus[]'
+   */
+  export type ListEnumWaitlistStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WaitlistStatus[]'>
     
 
 
@@ -36162,6 +36231,9 @@ export namespace Prisma {
     classId?: StringFilter<"Waitlist"> | string
     position?: IntFilter<"Waitlist"> | number
     notified?: BoolFilter<"Waitlist"> | boolean
+    status?: EnumWaitlistStatusFilter<"Waitlist"> | $Enums.WaitlistStatus
+    notifiedAt?: DateTimeNullableFilter<"Waitlist"> | Date | string | null
+    notifyExpiry?: DateTimeNullableFilter<"Waitlist"> | Date | string | null
     createdAt?: DateTimeFilter<"Waitlist"> | Date | string
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
     class?: XOR<ClassScalarRelationFilter, ClassWhereInput>
@@ -36173,6 +36245,9 @@ export namespace Prisma {
     classId?: SortOrder
     position?: SortOrder
     notified?: SortOrder
+    status?: SortOrder
+    notifiedAt?: SortOrderInput | SortOrder
+    notifyExpiry?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     student?: StudentOrderByWithRelationInput
     class?: ClassOrderByWithRelationInput
@@ -36188,6 +36263,9 @@ export namespace Prisma {
     classId?: StringFilter<"Waitlist"> | string
     position?: IntFilter<"Waitlist"> | number
     notified?: BoolFilter<"Waitlist"> | boolean
+    status?: EnumWaitlistStatusFilter<"Waitlist"> | $Enums.WaitlistStatus
+    notifiedAt?: DateTimeNullableFilter<"Waitlist"> | Date | string | null
+    notifyExpiry?: DateTimeNullableFilter<"Waitlist"> | Date | string | null
     createdAt?: DateTimeFilter<"Waitlist"> | Date | string
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
     class?: XOR<ClassScalarRelationFilter, ClassWhereInput>
@@ -36199,6 +36277,9 @@ export namespace Prisma {
     classId?: SortOrder
     position?: SortOrder
     notified?: SortOrder
+    status?: SortOrder
+    notifiedAt?: SortOrderInput | SortOrder
+    notifyExpiry?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: WaitlistCountOrderByAggregateInput
     _avg?: WaitlistAvgOrderByAggregateInput
@@ -36216,6 +36297,9 @@ export namespace Prisma {
     classId?: StringWithAggregatesFilter<"Waitlist"> | string
     position?: IntWithAggregatesFilter<"Waitlist"> | number
     notified?: BoolWithAggregatesFilter<"Waitlist"> | boolean
+    status?: EnumWaitlistStatusWithAggregatesFilter<"Waitlist"> | $Enums.WaitlistStatus
+    notifiedAt?: DateTimeNullableWithAggregatesFilter<"Waitlist"> | Date | string | null
+    notifyExpiry?: DateTimeNullableWithAggregatesFilter<"Waitlist"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Waitlist"> | Date | string
   }
 
@@ -38536,6 +38620,9 @@ export namespace Prisma {
     id?: string
     position: number
     notified?: boolean
+    status?: $Enums.WaitlistStatus
+    notifiedAt?: Date | string | null
+    notifyExpiry?: Date | string | null
     createdAt?: Date | string
     student: StudentCreateNestedOneWithoutWaitlistsInput
     class: ClassCreateNestedOneWithoutWaitlistsInput
@@ -38547,6 +38634,9 @@ export namespace Prisma {
     classId: string
     position: number
     notified?: boolean
+    status?: $Enums.WaitlistStatus
+    notifiedAt?: Date | string | null
+    notifyExpiry?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -38554,6 +38644,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
     notified?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumWaitlistStatusFieldUpdateOperationsInput | $Enums.WaitlistStatus
+    notifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notifyExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutWaitlistsNestedInput
     class?: ClassUpdateOneRequiredWithoutWaitlistsNestedInput
@@ -38565,6 +38658,9 @@ export namespace Prisma {
     classId?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
     notified?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumWaitlistStatusFieldUpdateOperationsInput | $Enums.WaitlistStatus
+    notifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notifyExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38574,6 +38670,9 @@ export namespace Prisma {
     classId: string
     position: number
     notified?: boolean
+    status?: $Enums.WaitlistStatus
+    notifiedAt?: Date | string | null
+    notifyExpiry?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -38581,6 +38680,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
     notified?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumWaitlistStatusFieldUpdateOperationsInput | $Enums.WaitlistStatus
+    notifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notifyExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38590,6 +38692,9 @@ export namespace Prisma {
     classId?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
     notified?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumWaitlistStatusFieldUpdateOperationsInput | $Enums.WaitlistStatus
+    notifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notifyExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -41048,6 +41153,13 @@ export namespace Prisma {
     _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
   }
 
+  export type EnumWaitlistStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.WaitlistStatus | EnumWaitlistStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.WaitlistStatus[] | ListEnumWaitlistStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WaitlistStatus[] | ListEnumWaitlistStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumWaitlistStatusFilter<$PrismaModel> | $Enums.WaitlistStatus
+  }
+
   export type WaitlistStudentIdClassIdCompoundUniqueInput = {
     studentId: string
     classId: string
@@ -41059,6 +41171,9 @@ export namespace Prisma {
     classId?: SortOrder
     position?: SortOrder
     notified?: SortOrder
+    status?: SortOrder
+    notifiedAt?: SortOrder
+    notifyExpiry?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -41072,6 +41187,9 @@ export namespace Prisma {
     classId?: SortOrder
     position?: SortOrder
     notified?: SortOrder
+    status?: SortOrder
+    notifiedAt?: SortOrder
+    notifyExpiry?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -41081,11 +41199,24 @@ export namespace Prisma {
     classId?: SortOrder
     position?: SortOrder
     notified?: SortOrder
+    status?: SortOrder
+    notifiedAt?: SortOrder
+    notifyExpiry?: SortOrder
     createdAt?: SortOrder
   }
 
   export type WaitlistSumOrderByAggregateInput = {
     position?: SortOrder
+  }
+
+  export type EnumWaitlistStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WaitlistStatus | EnumWaitlistStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.WaitlistStatus[] | ListEnumWaitlistStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WaitlistStatus[] | ListEnumWaitlistStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumWaitlistStatusWithAggregatesFilter<$PrismaModel> | $Enums.WaitlistStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWaitlistStatusFilter<$PrismaModel>
+    _max?: NestedEnumWaitlistStatusFilter<$PrismaModel>
   }
 
   export type AdjustmentLogCountOrderByAggregateInput = {
@@ -43173,6 +43304,10 @@ export namespace Prisma {
     connect?: ClassWhereUniqueInput
   }
 
+  export type EnumWaitlistStatusFieldUpdateOperationsInput = {
+    set?: $Enums.WaitlistStatus
+  }
+
   export type StudentUpdateOneRequiredWithoutWaitlistsNestedInput = {
     create?: XOR<StudentCreateWithoutWaitlistsInput, StudentUncheckedCreateWithoutWaitlistsInput>
     connectOrCreate?: StudentCreateOrConnectWithoutWaitlistsInput
@@ -44031,6 +44166,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPaymentStatusFilter<$PrismaModel>
     _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumWaitlistStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.WaitlistStatus | EnumWaitlistStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.WaitlistStatus[] | ListEnumWaitlistStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WaitlistStatus[] | ListEnumWaitlistStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumWaitlistStatusFilter<$PrismaModel> | $Enums.WaitlistStatus
+  }
+
+  export type NestedEnumWaitlistStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WaitlistStatus | EnumWaitlistStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.WaitlistStatus[] | ListEnumWaitlistStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WaitlistStatus[] | ListEnumWaitlistStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumWaitlistStatusWithAggregatesFilter<$PrismaModel> | $Enums.WaitlistStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWaitlistStatusFilter<$PrismaModel>
+    _max?: NestedEnumWaitlistStatusFilter<$PrismaModel>
   }
 
   export type NestedDecimalNullableFilter<$PrismaModel = never> = {
@@ -45124,6 +45276,9 @@ export namespace Prisma {
     id?: string
     position: number
     notified?: boolean
+    status?: $Enums.WaitlistStatus
+    notifiedAt?: Date | string | null
+    notifyExpiry?: Date | string | null
     createdAt?: Date | string
     class: ClassCreateNestedOneWithoutWaitlistsInput
   }
@@ -45133,6 +45288,9 @@ export namespace Prisma {
     classId: string
     position: number
     notified?: boolean
+    status?: $Enums.WaitlistStatus
+    notifiedAt?: Date | string | null
+    notifyExpiry?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -45402,6 +45560,9 @@ export namespace Prisma {
     classId?: StringFilter<"Waitlist"> | string
     position?: IntFilter<"Waitlist"> | number
     notified?: BoolFilter<"Waitlist"> | boolean
+    status?: EnumWaitlistStatusFilter<"Waitlist"> | $Enums.WaitlistStatus
+    notifiedAt?: DateTimeNullableFilter<"Waitlist"> | Date | string | null
+    notifyExpiry?: DateTimeNullableFilter<"Waitlist"> | Date | string | null
     createdAt?: DateTimeFilter<"Waitlist"> | Date | string
   }
 
@@ -45764,6 +45925,9 @@ export namespace Prisma {
     id?: string
     position: number
     notified?: boolean
+    status?: $Enums.WaitlistStatus
+    notifiedAt?: Date | string | null
+    notifyExpiry?: Date | string | null
     createdAt?: Date | string
     student: StudentCreateNestedOneWithoutWaitlistsInput
   }
@@ -45773,6 +45937,9 @@ export namespace Prisma {
     studentId: string
     position: number
     notified?: boolean
+    status?: $Enums.WaitlistStatus
+    notifiedAt?: Date | string | null
+    notifyExpiry?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -49031,6 +49198,9 @@ export namespace Prisma {
     classId: string
     position: number
     notified?: boolean
+    status?: $Enums.WaitlistStatus
+    notifiedAt?: Date | string | null
+    notifyExpiry?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -49126,6 +49296,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
     notified?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumWaitlistStatusFieldUpdateOperationsInput | $Enums.WaitlistStatus
+    notifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notifyExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     class?: ClassUpdateOneRequiredWithoutWaitlistsNestedInput
   }
@@ -49135,6 +49308,9 @@ export namespace Prisma {
     classId?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
     notified?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumWaitlistStatusFieldUpdateOperationsInput | $Enums.WaitlistStatus
+    notifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notifyExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -49143,6 +49319,9 @@ export namespace Prisma {
     classId?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
     notified?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumWaitlistStatusFieldUpdateOperationsInput | $Enums.WaitlistStatus
+    notifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notifyExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -49419,6 +49598,9 @@ export namespace Prisma {
     studentId: string
     position: number
     notified?: boolean
+    status?: $Enums.WaitlistStatus
+    notifiedAt?: Date | string | null
+    notifyExpiry?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -49488,6 +49670,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
     notified?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumWaitlistStatusFieldUpdateOperationsInput | $Enums.WaitlistStatus
+    notifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notifyExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutWaitlistsNestedInput
   }
@@ -49497,6 +49682,9 @@ export namespace Prisma {
     studentId?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
     notified?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumWaitlistStatusFieldUpdateOperationsInput | $Enums.WaitlistStatus
+    notifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notifyExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -49505,6 +49693,9 @@ export namespace Prisma {
     studentId?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
     notified?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumWaitlistStatusFieldUpdateOperationsInput | $Enums.WaitlistStatus
+    notifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notifyExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

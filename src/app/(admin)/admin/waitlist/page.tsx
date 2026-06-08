@@ -42,6 +42,8 @@ export default async function WaitlistPage() {
       position: entry.position,
       addedAt: entry.createdAt.toISOString(),
       classHasSpace: confirmedCount < entry.class.capacity,
+      status: entry.status,
+      notifyExpiry: entry.notifyExpiry?.toISOString() ?? null,
     })
   }
 

@@ -30,7 +30,7 @@ export default async function DashboardPage() {
                   orderBy: { createdAt: 'asc' },
                 },
                 waitlists: {
-                  include: { class: { select: { name: true, type: true, year: true } } },
+                  include: { class: { select: { name: true, nameEn: true, type: true, year: true } } },
                   orderBy: { position: 'asc' },
                 },
               },
@@ -147,7 +147,9 @@ export default async function DashboardPage() {
     waitlists: s.waitlists.map((w) => ({
       id: w.id,
       position: w.position,
-      class: { name: w.class.name, type: w.class.type },
+      status: w.status,
+      notifyExpiry: w.notifyExpiry?.toISOString() ?? null,
+      class: { name: w.class.name, nameEn: w.class.nameEn ?? null, type: w.class.type },
     })),
   }))
 

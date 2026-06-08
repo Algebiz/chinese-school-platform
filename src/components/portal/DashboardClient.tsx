@@ -20,7 +20,13 @@ export interface DashboardStudent {
     class: { id: string; name: string; nameEn?: string | null; type: string; fee: string }
     textbooks: Array<{ price: string; textbook: { name: string } }>
   }>
-  waitlists: Array<{ id: string; position: number; class: { name: string; type: string } }>
+  waitlists: Array<{
+    id: string
+    position: number
+    status: string
+    notifyExpiry: string | null
+    class: { name: string; nameEn: string | null; type: string }
+  }>
 }
 
 export interface DashboardProps {
@@ -113,6 +119,13 @@ export function DashboardClient({
     examResultsByStudent[r.studentId].push(r)
   }
 
+  // Waitlist spots that have opened up and are awaiting the parent to complete enrollment
+  const notifiedWaitlists = students.flatMap((s) =>
+    s.waitlists
+      .filter((w) => w.status === 'NOTIFIED')
+      .map((w) => ({ studentName: field(s.name, s.nameEn), className: field(w.class.name, w.class.nameEn), notifyExpiry: w.notifyExpiry }))
+  )
+
   return (
     <div style={PAGE}>
 
@@ -125,6 +138,35 @@ export function DashboardClient({
           {currentYear} {t('学年注册状态', 'Academic Year Enrollment')}
         </p>
       </div>
+
+      {/* ── Waitlist spot available banner(s) ── */}
+      {notifiedWaitlists.map((w, i) => (
+        <div key={i} style={{
+          background: '#FAEEDA', border: '0.5px solid #F9D37F', borderRadius: 8,
+          padding: '16px', display: 'flex', flexDirection: 'column', gap: 8,
+        }}>
+          <p style={{ fontSize: 15, fontWeight: 600, color: '#92400E', margin: 0 }}>
+            🎉 {t('候补名额已开放！', 'Waitlist Spot Available!')}
+          </p>
+          <p style={{ fontSize: 13, color: '#92400E', margin: 0, lineHeight: 1.6 }}>
+            {t(
+              `${w.studentName} 在 ${w.className} 的候补名额已开放。`,
+              `A spot has opened for ${w.studentName} in ${w.className}.`
+            )}
+            {' '}
+            {w.notifyExpiry && t(
+              `请在 ${new Date(w.notifyExpiry).toLocaleString('zh-CN', { dateStyle: 'short', timeStyle: 'short' })} 前完成报名，否则名额将被取消。`,
+              `Please complete enrollment by ${new Date(w.notifyExpiry).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}, otherwise the spot will be released.`
+            )}
+          </p>
+          <Link href="/enroll" style={{
+            alignSelf: 'flex-start', padding: '8px 18px', borderRadius: 6,
+            background: '#CC0000', color: 'white', fontSize: 13, fontWeight: 600, textDecoration: 'none',
+          }}>
+            {t('立即报名', 'Enroll Now')} →
+          </Link>
+        </div>
+      ))}
 
       {/* ── Cart banner ── */}
       {itemCount > 0 && (

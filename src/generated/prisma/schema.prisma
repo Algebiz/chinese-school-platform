@@ -252,15 +252,24 @@ model Payment {
   updatedAt      DateTime      @updatedAt
 }
 
+enum WaitlistStatus {
+  WAITING // queued, not yet notified
+  NOTIFIED // spot available, parent notified
+  EXPIRED // notify deadline passed without enrollment
+}
+
 model Waitlist {
-  id        String   @id @default(cuid())
-  studentId String
-  student   Student  @relation(fields: [studentId], references: [id])
-  classId   String
-  class     Class    @relation(fields: [classId], references: [id])
-  position  Int
-  notified  Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id           String         @id @default(cuid())
+  studentId    String
+  student      Student        @relation(fields: [studentId], references: [id])
+  classId      String
+  class        Class          @relation(fields: [classId], references: [id])
+  position     Int
+  notified     Boolean        @default(false)
+  status       WaitlistStatus @default(WAITING)
+  notifiedAt   DateTime? // when the spot-available notification was sent
+  notifyExpiry DateTime? // deadline to complete enrollment (e.g. 48h after notification)
+  createdAt    DateTime       @default(now())
 
   @@unique([studentId, classId])
 }

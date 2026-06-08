@@ -11,6 +11,7 @@ import { WaitlistNotification } from '@/emails/WaitlistNotification'
 import type { WaitlistNotificationProps } from '@/emails/WaitlistNotification'
 import { WaitlistPromotion } from '@/emails/WaitlistPromotion'
 import type { WaitlistPromotionProps } from '@/emails/WaitlistPromotion'
+import { WaitlistSpotAvailable } from '@/emails/WaitlistSpotAvailable'
 import { ContactConfirmation } from '@/emails/ContactConfirmation'
 import { ContactNotification } from '@/emails/ContactNotification'
 import { ExamRegistrationConfirmation } from '@/emails/ExamRegistrationConfirmation'
@@ -128,6 +129,25 @@ export async function sendWaitlistPromotion(to: string, data: WaitlistData): Pro
     from: FROM,
     to,
     subject: `恭喜！名额已确认 / Spot Available — ${data.studentName}`,
+    html,
+  })
+}
+
+export async function sendWaitlistSpotAvailable(
+  to: string,
+  data: {
+    parentName: string
+    studentName: string
+    className: string
+    expiryDate: Date
+    enrollUrl: string
+  }
+): Promise<void> {
+  const html = await render(createElement(WaitlistSpotAvailable, data))
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: `候补名额通知 / Waitlist Spot Available — ${data.className}`,
     html,
   })
 }

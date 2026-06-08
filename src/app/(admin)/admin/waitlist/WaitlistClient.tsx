@@ -9,6 +9,8 @@ export interface WaitlistEntry {
   position: number
   addedAt: string
   classHasSpace: boolean
+  status: 'WAITING' | 'NOTIFIED' | 'EXPIRED'
+  notifyExpiry: string | null
 }
 
 export interface WaitlistGroup {
@@ -23,13 +25,44 @@ interface Props {
   groups: WaitlistGroup[]
 }
 
+function StatusBadge({ status, notifyExpiry }: { status: WaitlistEntry['status']; notifyExpiry: string | null }) {
+  const expired = status === 'NOTIFIED' && !!notifyExpiry && new Date(notifyExpiry) < new Date()
+
+  if (status === 'WAITING') {
+    return (
+      <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
+        等待中 / Waiting
+      </span>
+    )
+  }
+
+  if (expired || status === 'EXPIRED') {
+    return (
+      <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">
+        已过期 / Expired
+      </span>
+    )
+  }
+
+  // NOTIFIED, not yet expired — show countdown
+  const hoursLeft = notifyExpiry
+    ? Math.max(0, Math.ceil((new Date(notifyExpiry).getTime() - Date.now()) / (60 * 60 * 1000)))
+    : null
+
+  return (
+    <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">
+      已通知{hoursLeft !== null ? ` · 还剩 ${hoursLeft} 小时` : ''} / Notified
+    </span>
+  )
+}
+
 export function WaitlistClient({ groups }: Props) {
   const router = useRouter()
-  const [promoting, setPromoting] = useState<string | null>(null)
+  const [notifying, setNotifying] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  async function handlePromote(waitlistId: string) {
-    setPromoting(waitlistId)
+  async function handleNotify(waitlistId: string) {
+    setNotifying(waitlistId)
     setError(null)
     try {
       const res = await fetch(`/api/admin/waitlist/${waitlistId}/promote`, { method: 'PATCH' })
@@ -42,7 +75,7 @@ export function WaitlistClient({ groups }: Props) {
     } catch {
       setError('网络错误，请重试')
     } finally {
-      setPromoting(null)
+      setNotifying(null)
     }
   }
 
@@ -86,6 +119,7 @@ export function WaitlistClient({ groups }: Props) {
                 <th className="px-5 py-2.5">位次</th>
                 <th className="px-5 py-2.5">学生姓名</th>
                 <th className="px-5 py-2.5">加入时间</th>
+                <th className="px-5 py-2.5">状态</th>
                 <th className="px-5 py-2.5" />
               </tr>
             </thead>
@@ -99,14 +133,27 @@ export function WaitlistClient({ groups }: Props) {
                   <td className="px-5 py-3 text-gray-400">
                     {new Date(entry.addedAt).toLocaleDateString('zh-CN')}
                   </td>
+                  <td className="px-5 py-3">
+                    <StatusBadge status={entry.status} notifyExpiry={entry.notifyExpiry} />
+                  </td>
                   <td className="px-5 py-3 text-right">
-                    <button
-                      disabled={!entry.classHasSpace || promoting === entry.waitlistId}
-                      onClick={() => handlePromote(entry.waitlistId)}
-                      className="rounded border border-green-600 px-3 py-1 text-xs font-medium text-green-700 hover:bg-green-50 disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-400 transition-colors"
-                    >
-                      {promoting === entry.waitlistId ? '处理中…' : '升级报名 / Promote'}
-                    </button>
+                    {entry.status === 'WAITING' ? (
+                      <button
+                        disabled={!entry.classHasSpace || notifying === entry.waitlistId}
+                        onClick={() => handleNotify(entry.waitlistId)}
+                        className="rounded border border-green-600 px-3 py-1 text-xs font-medium text-green-700 hover:bg-green-50 disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-400 transition-colors"
+                      >
+                        {notifying === entry.waitlistId ? '处理中…' : '通知 / Notify'}
+                      </button>
+                    ) : (
+                      <button
+                        disabled={!entry.classHasSpace || notifying === entry.waitlistId}
+                        onClick={() => handleNotify(entry.waitlistId)}
+                        className="rounded border border-amber-500 px-3 py-1 text-xs font-medium text-amber-700 hover:bg-amber-50 disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-400 transition-colors"
+                      >
+                        {notifying === entry.waitlistId ? '处理中…' : '重新通知 / Re-notify'}
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
