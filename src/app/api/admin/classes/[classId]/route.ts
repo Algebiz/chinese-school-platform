@@ -81,31 +81,73 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
   }
 
   const { classId } = await params
+  console.log('[delete-class] attempting:', classId)
+
+  const existing = await prisma.class.findUnique({ where: { id: classId }, select: { id: true } })
+  if (!existing) {
+    return NextResponse.json({ success: false, error: 'Class not found', code: 'NOT_FOUND' }, { status: 404 })
+  }
 
   const confirmedCount = await prisma.enrollment.count({
     where: { classId, status: 'CONFIRMED' },
   })
+  console.log('[delete-class] confirmed enrollment count:', confirmedCount)
   if (confirmedCount > 0) {
     return NextResponse.json(
-      { success: false, error: 'Cannot delete class with confirmed enrollments', code: 'HAS_ENROLLMENTS' },
+      { success: false, error: '无法删除已有学生的班级 / Cannot delete class with enrolled students', code: 'HAS_ENROLLMENTS' },
       { status: 409 }
     )
   }
 
-  await prisma.$transaction(async (tx) => {
-    const pendingIds = await tx.enrollment
-      .findMany({ where: { classId, status: 'PENDING' }, select: { id: true } })
-      .then((rows) => rows.map((r) => r.id))
+  try {
+    await prisma.$transaction(async (tx) => {
+      // All remaining enrollments are non-CONFIRMED (PENDING/CANCELLED/TRANSFERRED) —
+      // they still hold a FK to this class (Enrollment.classId has no onDelete: Cascade)
+      // and must be cleared before the class can be deleted.
+      const enrollmentIds = await tx.enrollment
+        .findMany({ where: { classId }, select: { id: true } })
+        .then((rows) => rows.map((r) => r.id))
+      const textbookIds = await tx.textbook
+        .findMany({ where: { classId }, select: { id: true } })
+        .then((rows) => rows.map((r) => r.id))
+      console.log('[delete-class] non-confirmed enrollments:', enrollmentIds.length, 'textbooks:', textbookIds.length)
 
-    if (pendingIds.length > 0) {
-      await tx.enrollmentTextbook.deleteMany({ where: { enrollmentId: { in: pendingIds } } })
-      await tx.enrollment.deleteMany({ where: { id: { in: pendingIds } } })
-    }
+      // 1. Cart items referencing this class or its textbooks
+      await tx.cartItem.deleteMany({
+        where: {
+          OR: [
+            { classId },
+            ...(textbookIds.length > 0 ? [{ textbookId: { in: textbookIds } }] : []),
+          ],
+        },
+      })
 
-    await tx.waitlist.deleteMany({ where: { classId } })
-    await tx.textbook.deleteMany({ where: { classId } })
-    await tx.class.delete({ where: { id: classId } })
-  })
+      if (enrollmentIds.length > 0) {
+        // 2. Enrollment ↔ textbook links
+        await tx.enrollmentTextbook.deleteMany({ where: { enrollmentId: { in: enrollmentIds } } })
+        // Payment.enrollmentId also has no onDelete: Cascade — must clear before the enrollment
+        await tx.payment.deleteMany({ where: { enrollmentId: { in: enrollmentIds } } })
+        // 3. Enrollments (non-confirmed)
+        await tx.enrollment.deleteMany({ where: { id: { in: enrollmentIds } } })
+      }
 
+      // 4. Waitlist entries
+      await tx.waitlist.deleteMany({ where: { classId } })
+
+      // 5. Textbooks
+      await tx.textbook.deleteMany({ where: { classId } })
+
+      // 6. The class itself
+      await tx.class.delete({ where: { id: classId } })
+    })
+  } catch (err) {
+    console.error('[delete-class] failed:', classId, err)
+    return NextResponse.json(
+      { success: false, error: 'Failed to delete class, please try again', code: 'DELETE_FAILED' },
+      { status: 500 }
+    )
+  }
+
+  console.log('[delete-class] success:', classId)
   return NextResponse.json({ success: true })
 }
