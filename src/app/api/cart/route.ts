@@ -63,6 +63,9 @@ export async function POST(req: NextRequest) {
     descriptionEn?: string
   }
 
+  // Classes that the student was waitlisted for instead of being added to the cart (ENROLLMENT only)
+  let waitlistedClasses: { id: string; name: string; nameEn: string | null }[] = []
+
   if (type === 'ENROLLMENT') {
     if (!studentId || !classIds?.length) {
       return NextResponse.json({ success: false, error: 'studentId and classIds required' }, { status: 400 })
@@ -103,8 +106,8 @@ export async function POST(req: NextRequest) {
       }, { status: 409 })
     }
 
-    // Create actual PENDING enrollments (reserves the spot)
-    const { enrollments } = await createEnrollments(studentId, classIds, textbookIds, CURRENT_YEAR)
+    // Create actual PENDING enrollments (reserves the spot) — full classes become Waitlist entries instead
+    const { enrollments, waitlists } = await createEnrollments(studentId, classIds, textbookIds, CURRENT_YEAR)
 
     // Fetch class + textbook details for pricing
     const [classes, textbooks, earlyBird] = await Promise.all([
@@ -116,10 +119,16 @@ export async function POST(req: NextRequest) {
     const studentName = student.name
     // Map each classId to its created enrollment so each CartItem gets the correct enrollmentId
     const enrollmentByClassId = new Map(enrollments.map(e => [e.classId, e.id]))
+    // Classes that ended up on the waitlist must NOT be added to (and charged in) the cart
+    const waitlistedClassIds = new Set(waitlists.map(w => w.classId))
+    waitlistedClasses = classes
+      .filter(cls => waitlistedClassIds.has(cls.id))
+      .map(cls => ({ id: cls.id, name: cls.name, nameEn: cls.nameEn }))
 
     // Create CartItems in a transaction
     await prisma.$transaction(async (tx) => {
       for (const cls of classes) {
+        if (waitlistedClassIds.has(cls.id)) continue
         const originalFee = Number(cls.fee)
         const isLanguageClass = cls.type === 'CHINESE'
         const discount = (earlyBird.isActive && isLanguageClass)
@@ -216,7 +225,7 @@ export async function POST(req: NextRequest) {
   }
 
   const updated = await getCartItems(familyId)
-  return NextResponse.json({ success: true, data: serialize(updated) }, { status: 201 })
+  return NextResponse.json({ success: true, data: serialize(updated), waitlistedClasses }, { status: 201 })
 }
 
 // ── DELETE — clear entire cart ────────────────────────────────────────────────

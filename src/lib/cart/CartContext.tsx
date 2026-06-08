@@ -30,9 +30,15 @@ interface CartContextType {
   total: number
   loading: boolean
   refreshCart: (force?: boolean) => Promise<void>
-  addToCart: (payload: AddToCartPayload) => Promise<{ ok: boolean; error?: string }>
+  addToCart: (payload: AddToCartPayload) => Promise<{ ok: boolean; error?: string; waitlistedClasses?: WaitlistedClass[] }>
   removeItem: (cartItemId: string) => Promise<void>
   clearCart: () => Promise<void>
+}
+
+export interface WaitlistedClass {
+  id: string
+  name: string
+  nameEn: string | null
 }
 
 interface AddToCartPayload {
@@ -81,7 +87,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (session) refreshCart()
   }, [session, refreshCart])
 
-  async function addToCart(payload: AddToCartPayload): Promise<{ ok: boolean; error?: string }> {
+  async function addToCart(payload: AddToCartPayload): Promise<{ ok: boolean; error?: string; waitlistedClasses?: WaitlistedClass[] }> {
     setLoading(true)
     try {
       const res = await fetch('/api/cart', {
@@ -93,7 +99,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (json.success) {
         setItems(json.data)
         lastFetchRef.current = Date.now()
-        return { ok: true }
+        return { ok: true, waitlistedClasses: json.waitlistedClasses }
       }
       return { ok: false, error: json.error }
     } catch {

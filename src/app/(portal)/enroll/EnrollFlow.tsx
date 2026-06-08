@@ -341,6 +341,7 @@ export function EnrollFlow({
   const { addToCart, total: cartTotal } = useCart()
   const [addedToCart, setAddedToCart] = useState(false)
   const [cartAddedInfo, setCartAddedInfo] = useState<{ studentName: string; classes: string[]; subtotal: number; waitlistedClasses: string[] } | null>(null)
+  const [waitlistedOnly, setWaitlistedOnly] = useState<{ classes: string[] } | null>(null)
 
   const [step, setStep] = useState<Step>(initialStep)
   const [isArtsOnly, setIsArtsOnly] = useState(artsOnly)
@@ -454,22 +455,28 @@ export function EnrollFlow({
         setSubmitError({ code: 'CART_ERROR', message: result.error ?? t('加入购物车失败，请重试', 'Failed to add to cart, please try again') })
         return
       }
-      // Show "Added to Cart" screen
       const selectedClasses = [
         ...(!isArtsOnly && selectedChineseClass ? [selectedChineseClass] : []),
         ...selectedArtsClasses,
       ]
-      const classNames = selectedClasses.map(c => lang === 'en' ? (c.nameEn || c.name) : c.name)
-      const waitlistedClasses = selectedClasses
-        .filter(c => c.spotsRemaining === 0)
-        .map(c => lang === 'en' ? (c.nameEn || c.name) : c.name)
-      setCartAddedInfo({
-        studentName: selectedStudent?.name ?? '',
-        classes: classNames,
-        subtotal: totalFee,
-        waitlistedClasses,
-      })
-      setAddedToCart(true)
+      const waitlistedIds = new Set((result.waitlistedClasses ?? []).map(c => c.id))
+      const nameOf = (c: ClassData) => lang === 'en' ? (c.nameEn || c.name) : c.name
+      const cartedClasses = selectedClasses.filter(c => !waitlistedIds.has(c.id))
+      const waitlistedNames = selectedClasses.filter(c => waitlistedIds.has(c.id)).map(nameOf)
+
+      if (waitlistedIds.size > 0 && cartedClasses.length === 0) {
+        // Every selected class was full — joined the waitlist only, nothing added to cart
+        setWaitlistedOnly({ classes: waitlistedNames })
+      } else {
+        // Show "Added to Cart" screen (with a supplementary waitlist note for any other class that was full)
+        setCartAddedInfo({
+          studentName: selectedStudent?.name ?? '',
+          classes: cartedClasses.map(nameOf),
+          subtotal: totalFee,
+          waitlistedClasses: waitlistedNames,
+        })
+        setAddedToCart(true)
+      }
     } catch {
       setSubmitError({ code: 'NETWORK_ERROR', message: t('网络错误，请重试', 'Network error, please try again') })
     } finally {
@@ -832,6 +839,41 @@ export function EnrollFlow({
   }
 
   // ── Added to Cart screen ─────────────────────────────────────────────────────
+
+  if (waitlistedOnly) {
+    const classNames = waitlistedOnly.classes.join(lang === 'en' ? ', ' : '、')
+    return (
+      <div className="mx-auto max-w-2xl py-8">
+        <div style={{ border: '0.5px solid #E5E7EB', borderRadius: 12, overflow: 'hidden', background: 'white' }}>
+          <div style={{ background: '#FEF3C7', padding: '20px 24px', borderBottom: '0.5px solid #FDE68A' }}>
+            <p style={{ fontSize: 18, fontWeight: 600, color: '#92400E' }}>
+              📋 {t('已加入候补名单！', 'Added to waitlist!')}
+            </p>
+          </div>
+          <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <p style={{ fontSize: 13, color: '#374151', margin: 0, lineHeight: 1.6 }}>
+              {t(
+                `${classNames} 已满员，您已成功加入候补名单。如有名额空出，我们将立即通知您。`,
+                `${classNames} is full. You have been added to the waitlist. We will notify you if a spot opens.`
+              )}
+            </p>
+            <button
+              onClick={() => router.push('/classes')}
+              style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '0.5px solid #E5E7EB', background: 'white', fontSize: 13, fontWeight: 500, cursor: 'pointer', textAlign: 'left' as const, color: '#374151', marginTop: 6 }}
+            >
+              → {t('继续浏览班级', 'Browse other classes')}
+            </button>
+            <button
+              onClick={() => router.push('/dashboard')}
+              style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: 'none', background: '#CC0000', color: 'white', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
+            >
+              {t('前往仪表盘', 'Go to dashboard')} →
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (addedToCart && cartAddedInfo) {
     return (
