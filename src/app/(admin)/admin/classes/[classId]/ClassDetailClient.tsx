@@ -97,14 +97,14 @@ export function ClassDetailClient({
           <tbody className="divide-y divide-gray-100">
             {enrolledStudents.map((s, i) => (
               <tr key={s.enrollmentId} className="hover:bg-gray-50">
-                <td className="px-4 py-3 text-center text-gray-400">{i + 1}</td>
-                <td className="px-4 py-3 font-medium text-gray-900">{s.studentName}</td>
-                <td className="px-4 py-3"><StudentStatusBadge status={s.status} /></td>
-                <td className="px-4 py-3 text-gray-500">{s.studentNameEn ?? '—'}</td>
-                <td className="px-4 py-3 text-gray-600">{s.parentName}</td>
-                <td className="px-4 py-3 text-gray-500">{s.phone ?? '—'}</td>
-                <td className="px-4 py-3 text-gray-500">{s.email}</td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 text-center align-middle text-gray-400">{i + 1}</td>
+                <td className="px-4 py-3 align-middle font-medium text-gray-900">{s.studentName}</td>
+                <td className="px-4 py-3 align-middle"><StudentStatusBadge status={s.status} /></td>
+                <td className="px-4 py-3 align-middle text-gray-500">{s.studentNameEn ?? '—'}</td>
+                <td className="px-4 py-3 align-middle text-gray-600">{s.parentName}</td>
+                <td className="px-4 py-3 align-middle text-gray-500">{s.phone ?? '—'}</td>
+                <td className="px-4 py-3 align-middle text-gray-500">{s.email}</td>
+                <td className="px-4 py-3 align-middle">
                   {s.textbookNames.length === 0 ? (
                     <span className="text-gray-300">—</span>
                   ) : (
@@ -115,16 +115,16 @@ export function ClassDetailClient({
                     </div>
                   )}
                 </td>
-                <td className="px-4 py-3 text-gray-400">
+                <td className="px-4 py-3 align-middle whitespace-nowrap text-gray-400">
                   {new Date(s.enrolledAt).toLocaleDateString('zh-CN')}
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 align-middle whitespace-nowrap">
                   <div className="flex gap-1.5">
                     <button
                       onClick={() => setModal({ enrollmentId: s.enrollmentId, studentName: s.studentName })}
-                      className="rounded border border-gray-300 px-3 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="whitespace-nowrap rounded border border-gray-300 px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                     >
-                      调班 / Transfer
+                      调班
                     </button>
                     <button
                       onClick={() => setUnenrollTarget({
@@ -133,7 +133,7 @@ export function ClassDetailClient({
                         studentNameEn: s.studentNameEn,
                         enrolledAt: s.enrolledAt,
                       })}
-                      className="rounded border border-red-200 px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-50 transition-colors"
+                      className="whitespace-nowrap rounded border border-red-200 px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-50 transition-colors"
                     >
                       取消
                     </button>
