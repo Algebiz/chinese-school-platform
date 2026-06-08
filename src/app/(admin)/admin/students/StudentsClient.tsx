@@ -333,7 +333,7 @@ export function StudentsClient({ rows, selectedYear, currentYear, availableYears
                     <StudentStatusBadge status={row.status} />
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex max-w-[300px] flex-wrap gap-1">
                       {row.enrolledClasses.map((cls) => (
                         <span
                           key={cls.enrollmentId}
