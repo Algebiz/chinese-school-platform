@@ -14,7 +14,8 @@ export async function PATCH(
 
   const { teacherId } = await params
   const body = await req.json()
-  const { nameEn, bioEn, bioZh, photoUrl } = body as {
+  const { name, nameEn, bioEn, bioZh, photoUrl } = body as {
+    name?: string
     nameEn?: string
     bioEn?: string
     bioZh?: string
@@ -90,6 +91,7 @@ export async function PATCH(
   const teacher = await prisma.teacher.update({
     where: { id: teacherId },
     data: {
+      ...(name !== undefined && name.trim() ? { name: name.trim() } : {}),
       ...(nameEn !== undefined ? { nameEn: nameEn || null } : {}),
       ...(bioEn !== undefined ? { bioEn: bioEn || null } : {}),
       ...(bioZh !== undefined ? { bioZh: bioZh || null } : {}),
