@@ -75,7 +75,7 @@ export default async function ContactPage() {
       </nav>
 
       <main className="flex-1">
-        <div style={{ maxWidth: 900, margin: '0 auto', width: '100%', padding: '24px' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px' }}>
           <div style={{ marginBottom: 24 }}>
             <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
               <LanguageText zh="联系我们" en="Contact Us" />
