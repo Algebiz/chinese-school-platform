@@ -54,8 +54,7 @@ const DEPOSIT_META: Record<string, { zh: string; en: string; color: 'green' | 'a
 }
 
 const EXAM_META: Record<string, { zh: string; en: string; color: 'amber' | 'blue' | 'green' | 'red' }> = {
-  PENDING_PAYMENT: { zh: '待支付', en: 'Pending',   color: 'amber' },
-  PAID:            { zh: '待审核', en: 'Review',    color: 'blue'  },
+  PAID:            { zh: '待确认', en: 'Review',    color: 'blue'  },
   CONFIRMED:       { zh: '已确认', en: 'Confirmed', color: 'green' },
   REJECTED:        { zh: '未通过', en: 'Rejected',  color: 'red'   },
 }
@@ -292,9 +291,6 @@ export function DashboardClient({
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
                     {meta && <span style={badge(meta.color)}>{t(meta.zh, meta.en)}</span>}
-                    {r.status === 'PENDING_PAYMENT' && (
-                      <Link href="/cart" style={{ fontSize: 11, color: '#CC0000', textDecoration: 'none', fontWeight: 500 }}>{t('支付', 'Pay')} →</Link>
-                    )}
                   </div>
                 </div>
               )

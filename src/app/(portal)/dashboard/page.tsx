@@ -81,7 +81,7 @@ export default async function DashboardPage() {
         ? prisma.examRegistration.findMany({
             where: {
               studentId: { in: studentIds },
-              status: { notIn: ['CANCELLED'] },
+              status: { in: ['CONFIRMED', 'PAID'] },
               examSession: { academicYear: CURRENT_YEAR },
             },
             include: {
