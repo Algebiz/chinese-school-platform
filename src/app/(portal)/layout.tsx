@@ -32,12 +32,18 @@ export default async function PortalLayout({ children }: { children: React.React
           <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', height: 54, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             {/* Left: logo + desktop nav */}
             <div className="flex items-center gap-4">
+              <a
+                href="https://charlottechineseacademy.org"
+                className="hidden md:inline text-sm text-gray-400 hover:text-[#cc0000] transition-colors mr-3"
+              >
+                ← Charlotte Chinese Academy
+              </a>
               <Link href="/dashboard" className="flex shrink-0 items-center gap-2">
                 <img src="/logo.png" alt="CCA Logo" className="h-9 w-9 object-contain" />
                 <LanguageText
                   zh="夏洛特中文学校"
                   en="Charlotte Chinese Academy"
-                  className="hidden md:block font-bold text-red-700 text-sm"
+                  className="hidden md:block font-sora font-bold text-red-700 text-sm"
                 />
               </Link>
               <PortalNavLinks />
