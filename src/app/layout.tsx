@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
-import { Inter, Noto_Sans_SC } from "next/font/google";
 import "./globals.css";
+import type { Metadata } from "next";
+import { Inter, Noto_Sans_SC, Sora } from "next/font/google";
 import { cookies } from 'next/headers'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
@@ -19,6 +19,13 @@ const notoSansSC = Noto_Sans_SC({
   weight: ['400', '500', '700'],
   display: 'swap',
   variable: '--font-noto-sans-sc',
+})
+
+const sora = Sora({
+  subsets: ['latin'],
+  weight: ['600', '700'],
+  display: 'swap',
+  variable: '--font-sora',
 })
 
 export const metadata: Metadata = {
@@ -55,7 +62,7 @@ export default async function RootLayout({
   return (
     <html
       lang={initialLang === 'en' ? 'en' : 'zh'}
-      className={`${inter.variable} ${notoSansSC.variable} h-full antialiased`}
+      className={`${inter.variable} ${notoSansSC.variable} ${sora.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <SessionProviderWrapper>

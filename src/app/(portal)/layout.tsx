@@ -34,11 +34,14 @@ export default async function PortalLayout({ children }: { children: React.React
             <div className="flex items-center gap-4">
               <Link href="/dashboard" className="flex shrink-0 items-center gap-2">
                 <img src="/logo.png" alt="CCA Logo" className="h-9 w-9 object-contain" />
-                <LanguageText
-                  zh="夏洛特中文学校"
-                  en="Charlotte Chinese Academy"
-                  className="hidden md:block font-bold text-red-700 text-sm"
-                />
+                <span className="hidden md:flex md:flex-col md:leading-tight">
+                  <span className="font-sora font-bold text-[#1a1a1a] text-sm">
+                    Charlotte Chinese Academy
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    夏洛特中文学校
+                  </span>
+                </span>
               </Link>
               <PortalNavLinks />
             </div>
