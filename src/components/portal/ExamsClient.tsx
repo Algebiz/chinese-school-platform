@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useLanguage, useLocalizedField } from '@/lib/i18n/LanguageContext'
+import { BilingualTitle } from '@/components/BilingualTitle'
 import { badge } from '@/lib/design'
 import { useCart } from '@/lib/cart/CartContext'
 
@@ -87,7 +88,7 @@ export function ExamsClient({ currentYear, sessions, myStudents }: Props) {
 
       {/* Hero */}
       <div>
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>{t('考试报名', 'Exam Registration')}</h1>
+        <BilingualTitle en="Exams" zh="考试" />
         <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>{currentYear} · YCT / HSK</p>
       </div>
 

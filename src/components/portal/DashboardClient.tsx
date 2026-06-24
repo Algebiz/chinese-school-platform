@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useLanguage, useLocalizedField } from '@/lib/i18n/LanguageContext'
+import { BilingualTitle } from '@/components/BilingualTitle'
 import { getYearsAtCCA, getYearsLabel } from '@/lib/student-utils'
 import { useCart } from '@/lib/cart/CartContext'
 import { StudentStatusBadge } from '@/components/StudentStatusBadge'
@@ -131,9 +132,7 @@ export function DashboardClient({
 
       {/* ── Hero ── */}
       <div>
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
-          {t('你好', 'Hello')}, {userName ?? t('家长', 'Parent')} 👋
-        </h1>
+        <BilingualTitle en="Dashboard" zh="主页" />
         <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
           {currentYear} {t('学年注册状态', 'Academic Year Enrollment')}
         </p>

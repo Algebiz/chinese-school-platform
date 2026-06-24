@@ -3,6 +3,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { ProfileClient, type ProfileData } from '@/components/portal/ProfileClient'
 import { LanguageText } from '@/components/LanguageText'
+import { BilingualTitle } from '@/components/BilingualTitle'
 
 export default async function ProfilePage() {
   const session = await auth()
@@ -63,9 +64,7 @@ export default async function ProfilePage() {
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
       <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
-          <LanguageText zh="个人资料" en="My Profile" />
-        </h1>
+        <BilingualTitle en="Profile" zh="个人资料" />
         <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
           <LanguageText zh="管理您的账号信息和家庭资料" en="Manage your account and family information" />
         </p>

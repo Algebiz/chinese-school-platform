@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import { getCurrentAcademicYear } from '@/lib/academic-year'
 import { EnrollFlow } from './EnrollFlow'
 import { LanguageText } from '@/components/LanguageText'
+import { BilingualTitle } from '@/components/BilingualTitle'
 import { getReturningStudentData } from '@/lib/re-enrollment-logic'
 import { getEarlyBirdConfig, serializeEarlyBird } from '@/lib/early-bird'
 import type { ClassData } from '@/components/ClassCard'
@@ -116,9 +117,7 @@ export default async function EnrollPage({
     <div className="min-h-screen bg-gray-50">
       <div style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">
-            <LanguageText zh="学生报名" en="Enrollment" />
-          </h1>
+          <BilingualTitle en="Enrollment" zh="报名" />
           <p className="mt-1 text-sm text-gray-500">
             {CURRENT_YEAR} · <LanguageText zh="学年报名" en="Academic Year Enrollment" />
           </p>

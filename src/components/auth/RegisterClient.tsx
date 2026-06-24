@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { LegalFooter } from '@/components/LegalFooter'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { BilingualTitle } from '@/components/BilingualTitle'
 
 const schema = z
   .object({
@@ -63,7 +64,7 @@ export function RegisterClient() {
       <div className="flex flex-1 items-center justify-center py-12 px-4">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900">{t('创建账号', 'Create Account')}</h1>
+            <BilingualTitle en="Create Account" zh="创建账户" />
           </div>
 
           <form className="mt-8 space-y-5" onSubmit={handleSubmit(onSubmit)}>

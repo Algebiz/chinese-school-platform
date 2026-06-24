@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { LegalFooter } from '@/components/LegalFooter'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { BilingualTitle } from '@/components/BilingualTitle'
 
 const schema = z.object({
   email: z.string().email(),
@@ -59,7 +60,7 @@ function LoginForm() {
   return (
     <div className="w-full max-w-md space-y-8">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900">{t('登录账号', 'Sign In')}</h1>
+        <BilingualTitle en="Login" zh="登录" />
       </div>
 
       {sessionExpired && (

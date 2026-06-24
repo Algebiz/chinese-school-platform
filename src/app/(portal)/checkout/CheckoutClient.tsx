@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { StripePaymentForm } from '@/components/payment/StripePaymentForm'
 import { PayPalButton } from '@/components/payment/PayPalButton'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { BilingualTitle } from '@/components/BilingualTitle'
 
 type PaymentTab = 'stripe' | 'paypal'
 
@@ -88,7 +89,7 @@ export function CheckoutClient({ data }: Props) {
     <div style={{ maxWidth: 520, margin: '0 auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Hero */}
       <div>
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>{t('结账', 'Checkout')}</h1>
+        <BilingualTitle en="Checkout" zh="结算" />
         {studentName && (
           <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>
             {t('学生', 'Student')}: <strong>{studentName}</strong> · {academicYear}
