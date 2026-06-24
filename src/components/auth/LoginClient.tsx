@@ -8,7 +8,6 @@ import { signIn, getSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { LegalFooter } from '@/components/LegalFooter'
-import { LanguageToggle } from '@/components/LanguageToggle'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 const schema = z.object({
@@ -143,9 +142,6 @@ function LoginForm() {
 export function LoginClient() {
   return (
     <div className="relative min-h-screen flex flex-col bg-gray-50">
-      <div className="absolute top-4 right-4 z-10">
-        <LanguageToggle />
-      </div>
       <div className="flex flex-1 items-center justify-center py-12 px-4">
         <Suspense>
           <LoginForm />

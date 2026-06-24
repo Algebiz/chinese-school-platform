@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
-import { LanguageToggle } from '@/components/LanguageToggle'
 
 interface Props {
   displayName: string
@@ -15,7 +14,6 @@ export function PortalNavRight({ displayName, isAdmin, logout }: Props) {
 
   return (
     <div className="flex items-center gap-2">
-      <LanguageToggle />
       {isAdmin && (
         <Link
           href="/admin"

@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { ContactFormClient } from './ContactFormClient'
 import { LegalFooter } from '@/components/LegalFooter'
-import { LanguageToggle } from '@/components/LanguageToggle'
 import { LanguageText } from '@/components/LanguageText'
 import { PortalNavLinks, PortalHamburger } from '@/components/PortalNavLinks'
 import { AvatarMenu } from '@/components/AvatarMenu'
@@ -52,7 +51,6 @@ export default async function ContactPage() {
           {/* Right: hamburger + toggle + cart + divider + avatar/login */}
           <div className="flex items-center gap-2">
             {session && <PortalHamburger />}
-            <LanguageToggle />
             {session && <CartIcon />}
             <div className="hidden sm:block w-px h-5 bg-gray-200" />
             {session ? (

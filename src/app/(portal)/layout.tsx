@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import Link from 'next/link'
 import { LegalFooter } from '@/components/LegalFooter'
-import { LanguageToggle } from '@/components/LanguageToggle'
 import { LanguageText } from '@/components/LanguageText'
 import { PortalNavLinks, PortalHamburger } from '@/components/PortalNavLinks'
 import { AvatarMenu } from '@/components/AvatarMenu'
@@ -49,7 +48,6 @@ export default async function PortalLayout({ children }: { children: React.React
             {/* Right: hamburger + toggle + cart + divider + avatar */}
             <div className="flex items-center gap-2">
               <PortalHamburger />
-              <LanguageToggle />
               <CartIcon />
               <div className="hidden sm:block w-px h-5 bg-gray-200" />
               <AvatarMenu
