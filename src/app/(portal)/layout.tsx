@@ -61,8 +61,6 @@ export default async function PortalLayout({ children }: { children: React.React
               />
             </div>
           </div>
-
-          <PortalHamburger />
         </nav>
 
         <div className="flex-1">{children}</div>
