@@ -68,15 +68,6 @@ const EXAM_META: Record<string, { zh: string; en: string; color: 'amber' | 'blue
 
 // ── Shared layout constants ──────────────────────────────────────────────────
 
-const PAGE: React.CSSProperties = {
-  maxWidth: 900,
-  margin: '0 auto',
-  padding: '24px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 24,
-}
-
 const CARD: React.CSSProperties = {
   border: '0.5px solid #E5E7EB',
   borderRadius: 12,
@@ -128,7 +119,7 @@ export function DashboardClient({
   )
 
   return (
-    <div style={PAGE}>
+    <div className="max-w-5xl mx-auto p-6 flex flex-col gap-6">
 
       {/* ── Hero ── */}
       <div>

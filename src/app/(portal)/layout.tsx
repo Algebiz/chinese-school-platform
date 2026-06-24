@@ -28,7 +28,7 @@ export default async function PortalLayout({ children }: { children: React.React
     <CartProvider>
       <div className="min-h-screen bg-gray-50 flex flex-col">
         <nav className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm relative">
-          <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', height: 54, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div className="max-w-5xl mx-auto px-6 flex items-center justify-between" style={{ height: 54 }}>
             {/* Left: logo + desktop nav */}
             <div className="flex items-center gap-4">
               <Link href="/dashboard" className="flex shrink-0 items-center gap-2">

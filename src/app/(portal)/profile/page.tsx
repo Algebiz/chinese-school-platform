@@ -62,7 +62,7 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
+    <div className="max-w-5xl mx-auto p-6">
       <div style={{ marginBottom: 28 }}>
         <BilingualTitle en="Profile" zh="个人资料" />
         <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>

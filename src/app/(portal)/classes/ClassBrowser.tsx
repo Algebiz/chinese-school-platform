@@ -67,7 +67,7 @@ export function ClassBrowser({ chineseClasses, artsClasses, earlyBird }: ClassBr
   })
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px', paddingBottom: 100 }}>
+    <div className="max-w-5xl mx-auto p-6 pb-[100px]">
       {/* Page hero */}
       <div style={{ marginBottom: earlyBird?.isActive ? 12 : 24 }}>
         <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>

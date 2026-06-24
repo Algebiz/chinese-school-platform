@@ -37,7 +37,7 @@ export default async function ExamRegisterPage({
   })
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
+    <div className="max-w-5xl mx-auto p-6">
       <div style={{ marginBottom: 28 }}>
         <Link href="/exams" style={{ fontSize: 13, color: '#6b7280', textDecoration: 'none' }}>
           ← <LanguageText zh="返回考试列表" en="Back to Exams" />

@@ -115,7 +115,7 @@ export default async function EnrollPage({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
+      <div className="max-w-5xl mx-auto p-6">
         <div className="mb-8">
           <BilingualTitle en="Enrollment" zh="报名" />
           <p className="mt-1 text-sm text-gray-500">

@@ -62,7 +62,7 @@ export default async function CheckoutPage({
     if (hasCancelled) {
       return (
         <div className="min-h-screen bg-gray-50">
-          <div style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
+          <div className="max-w-5xl mx-auto p-6">
             <div className="rounded-lg border border-red-200 bg-red-50 p-8 text-center">
               <p className="text-lg font-semibold text-red-800">此注册已被取消</p>
               <p className="mt-2 text-sm text-red-600">
@@ -161,7 +161,7 @@ export default async function CheckoutPage({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
+      <div className="max-w-5xl mx-auto p-6">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">支付报名费</h1>
           <p className="mt-1 text-sm text-gray-500">

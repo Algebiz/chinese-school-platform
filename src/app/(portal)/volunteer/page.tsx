@@ -51,7 +51,7 @@ export default async function VolunteerPage() {
     : null
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
+    <div className="max-w-5xl mx-auto p-6">
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
           <LanguageText zh="志愿服务" en="Volunteer Service" />

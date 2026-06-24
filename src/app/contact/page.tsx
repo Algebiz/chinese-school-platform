@@ -31,7 +31,7 @@ export default async function ContactPage() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Full portal navbar — same structure as portal layout */}
       <nav className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm relative">
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', height: 54, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="max-w-5xl mx-auto px-6 flex items-center justify-between" style={{ height: 54 }}>
           {/* Left: logo + nav links (links only shown when logged in) */}
           <div className="flex items-center gap-4">
             <Link href={session ? '/dashboard' : '/'} className="flex shrink-0 items-center gap-2">
@@ -76,7 +76,7 @@ export default async function ContactPage() {
       </nav>
 
       <main className="flex-1">
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px' }}>
+        <div className="max-w-5xl mx-auto p-6">
           <div style={{ marginBottom: 24 }}>
             <h1 style={{ fontSize: 22, fontWeight: 500, color: '#111827' }}>
               <LanguageText zh="联系我们" en="Contact Us" />
